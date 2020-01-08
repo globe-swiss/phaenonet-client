@@ -1,0 +1,43 @@
+<mat-toolbar id="nav-component">
+  <mat-toolbar-row>
+    <div
+      gdColumns="repeat(8, 1fr)"
+      gdAreas="logo buttons buttons buttons buttons buttons user language"
+      class="menu-row"
+    >
+      <div gdArea="logo" class="logo">
+        <img gdArea="logo" src="assets/img/Bildmarke-Phaenonet_rgb.png" alt="PhaenoNet Logo" />
+      </div>
+      <div gdArea="buttons">
+        <div id="buttons" class="left-border" *ngIf="isLoggedIn()">
+          <button mat-button color="primary" [routerLink]="['objects']">{{ 'Objekte' | translate }}</button>
+          <button mat-button color="primary" [routerLink]="['observations']">{{ 'Beobachtungen' | translate }}</button>
+          <button mat-button color="primary" [routerLink]="['map']">{{ 'Karte' | translate }}</button>
+          <button mat-button color="primary" [routerLink]="['statistics']">{{ 'Statistiken' | translate }}</button>
+          <button mat-button color="primary" [routerLink]="['me']">{{ 'Profil' | translate }}</button>
+        </div>
+      </div>
+      <div
+        gdArea="user"
+        id="userarea"
+        *ngIf="isLoggedIn()"
+        [matMenuTriggerFor]="appMenu"
+      >
+        <div>{{ displayName() }}</div>
+        <mat-menu #appMenu="matMenu">
+          <button mat-menu-item (click)="logout()">{{ 'Abmelden' | translate }}</button>
+        </mat-menu>
+      </div>
+      <div gdArea="language">
+        <mat-form-field class="language-select-form-field" appearance="outline">
+          <mat-select id="langueselect" [value]="selectedLocale()" (selectionChange)="changeLocale($event)">
+            <mat-option value="de-CH">Deutsch</mat-option>
+            <mat-option value="fr-CH">Français</mat-option>
+            <mat-option value="it-CH">Italiano</mat-option>
+            <mat-option value="en-GB">English</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
