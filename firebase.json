@@ -1,0 +1,9 @@
+{
+   "hosting": {
+    "public": "dist/phaenonet",
+    "ignore": [
+      "firebase.json",
+      "**/node_modules/**"
+    ]
+  }
+}
