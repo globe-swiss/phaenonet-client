@@ -19,6 +19,11 @@ import { httpInterceptorProviders } from './http-interceptors';
 import { SharedModule } from './shared/shared.module';
 import { LoginModule } from './login/login.module';
 
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { environment } from '../environments/environment';
+
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
@@ -41,6 +46,9 @@ registerLocaleData(localeFr, 'fr');
         deps: [HttpClient]
       }
     }),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
     CoreModule,
     AppRoutingModule,
     LoginModule

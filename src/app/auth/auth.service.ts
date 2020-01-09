@@ -6,7 +6,7 @@ import { map, catchError, switchMap, tap } from 'rxjs/operators';
 import { Role, roleOrdinal } from './role';
 import { LoginResult } from './login-result';
 import { User } from './user';
-import { AlertService } from '../messaging/alert.service';
+import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { BaseHttpService } from '../core/base-http.service';
 import { Option, some, none } from 'fp-ts/lib/Option';
 import { environment } from '../../environments/environment';
@@ -15,6 +15,11 @@ import { Either, right, left } from 'fp-ts/lib/Either';
 import { fromNullable } from 'fp-ts/lib/Option';
 import { v4 as uuidV4 } from 'uuid';
 import { HttpHeaders } from '@angular/common/http';
+
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { auth } from 'firebase/app';
+import { User as FUser } from 'firebase/app';
 
 export const LOGIN_URL = '/auth/login';
 export const LOGGED_OUT_URL = '/auth/logged-out';
@@ -25,42 +30,52 @@ const LOCALSTORAGE_LOGIN_RESULT_KEY = 'loginResult';
 export class AuthService extends BaseHttpService {
   browserIdHeaders: HttpHeaders;
 
-  constructor(http: HttpClient, alertService: AlertService, private router: Router) {
+  user: Observable<User>;
+  firebaseUser: FUser;
+
+  constructor(
+    http: HttpClient,
+    alertService: AlertService,
+    private router: Router,
+    private afAuth: AngularFireAuth,
+    private afs: AngularFirestore
+  ) {
     super(http, alertService);
+
+    const self = this;
+    this.user = this.afAuth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          self.firebaseUser = user;
+          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+        } else {
+          return of(null);
+        }
+      })
+    );
   }
 
   // store the URL so we can redirect after logging in
   redirectUrl: string;
 
-  login(username: string, password: string): Observable<LoginResult> {
-    return null; // TODO firebase login
-  }
+  login(username: string, password: string): Observable<User> {
+    const self = this;
 
-  private handleLoginResult(loginResult: LoginResult) {
-    // this response has to include the set-cookie header to set the xsrf-token which will be used automatically by angular.
-    if (loginResult && loginResult.status === 'LOGIN_OK') {
-      localStorage.setItem(LOCALSTORAGE_LOGIN_RESULT_KEY, JSON.stringify(loginResult));
-    }
-  }
+    this.afAuth.auth
+      .signInWithEmailAndPassword(username, password)
+      .then(user => {
+        if (user) {
+          self.firebaseUser = user.user;
+          self.user = self.afs.doc<User>(`users/${user.user.uid}`).valueChanges();
+        }
+      })
+      .catch(this.errorHandling.bind(this));
 
-  private doLogin(url: string, data: Object): Observable<LoginResult> {
-    // specific error handling in login.component.ts
-    return this.withoutErrorHandling((client: HttpClient) =>
-      client.post<LoginResult>(url, data).pipe(
-        map((loginResult: LoginResult) => {
-          this.handleLoginResult(loginResult);
-          return loginResult;
-        })
-      )
-    );
+    return this.user;
   }
 
   logout(): void {
-    // we delete client session information anyway, so we don't need to inform the user about the failure
-    this.withoutErrorHandling((client: HttpClient) => client.post('/api/auth/logout', {})).subscribe(() => {
-      this.resetClientSession();
-      this.router.navigate([LOGGED_OUT_URL]);
-    });
+    this.afAuth.auth.signOut();
   }
 
   resetClientSession() {
@@ -103,6 +118,30 @@ export class AuthService extends BaseHttpService {
       return some(JSON.parse(json));
     } else {
       return none;
+    }
+  }
+
+  private errorHandling(error: any) {
+    if (error instanceof HttpErrorResponse) {
+      this.alertService.alertMessage({
+        title: 'Anmeldung fehlgeschlagen',
+        message: 'login-server-failure',
+        level: Level.ERROR,
+        messageParams: error,
+        titleParams: Object,
+        duration: none
+      } as UntranslatedAlertMessage);
+    } else {
+      this.alertService.alertMessage({
+        title: 'Anmeldung fehlgeschlagen',
+        message: 'login-unknown-failure',
+        level: Level.ERROR,
+        messageParams: {
+          error: error
+        },
+        titleParams: Object,
+        duration: none
+      } as UntranslatedAlertMessage);
     }
   }
 }

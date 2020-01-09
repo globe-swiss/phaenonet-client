@@ -6,4 +6,10 @@ export class LoginResult {
   status: LoginResultStatus;
   xsrfToken: string;
   user: User;
+
+  constructor(status: LoginResultStatus, xsrfToken: string, user: User) {
+    this.status = status;
+    this.xsrfToken = xsrfToken;
+    this.user = user;
+  }
 }

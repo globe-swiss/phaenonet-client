@@ -48,37 +48,11 @@ export class LoginFormComponent {
     this.loginFailed = false;
     this.authService
       .login(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
-      .subscribe(loginResult => {
-        this.updateLoginResult(loginResult);
-      }, this.errorHandling.bind(this));
-  }
-
-  private errorHandling(error: any) {
-    if (error instanceof HttpErrorResponse) {
-      if (error.status === 401) {
-        this.loginFailed = true;
-      } else {
-        this.alertService.alertMessage({
-          title: 'Anmeldung fehlgeschlagen',
-          message: 'login-server-failure',
-          level: Level.ERROR,
-          messageParams: error,
-          titleParams: Object,
-          duration: none
-        } as UntranslatedAlertMessage);
-      }
-    } else {
-      this.alertService.alertMessage({
-        title: 'Anmeldung fehlgeschlagen',
-        message: 'login-unknown-failure',
-        level: Level.ERROR,
-        messageParams: {
-          error: error
-        },
-        titleParams: Object,
-        duration: none
-      } as UntranslatedAlertMessage);
-    }
+      .subscribe(user => {
+        if (user) {
+          this.updateLoginResult(new LoginResult('LOGIN_OK', '', user));
+        }
+      });
   }
 
   title(): string {

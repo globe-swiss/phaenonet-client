@@ -5,7 +5,7 @@ import { catchError, map, shareReplay } from 'rxjs/operators';
 import { Option, none } from 'fp-ts/lib/Option';
 
 export abstract class BaseHttpService {
-  constructor(private http: HttpClient, private alertService: AlertService) {}
+  constructor(private http: HttpClient, protected alertService: AlertService) {}
 
   withoutErrorHandling<T>(request: (HttpClient: HttpClient) => Observable<T>): Observable<T> {
     return request(this.http).pipe(shareReplay(1));
