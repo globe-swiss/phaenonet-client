@@ -33,7 +33,7 @@
     "@ngx-translate/i18n-polyfill": "^1.0.0",
     "browser-update": "3.2.5",
     "core-js": "^2.6.5",
-    "firebase": "^7.6.1",
+    "firebase": "^7.6.2",
     "fp-ts": "^1.17.1",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
