@@ -33,8 +33,6 @@ export class LoginFormComponent {
         if (user) {
           this.user = user;
           this.onLoginSuccess.emit();
-        } else {
-          this.loginFailed = true;
         }
       });
   }
