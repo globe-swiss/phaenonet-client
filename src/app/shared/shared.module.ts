@@ -12,6 +12,7 @@ import { RemoveNotAuthorizedDirective } from '../auth/remove-not-authorized.dire
 import { NotFoundComponent } from '../core/not-found.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { GravatarModule } from 'ngx-gravatar';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 /**
  * The `SharedModule` is used to group common services and modules like {@link TranslateModule}.
@@ -25,7 +26,8 @@ import { GravatarModule } from 'ngx-gravatar';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    GravatarModule
+    GravatarModule,
+    GoogleMapsModule
   ],
   declarations: [RemoveNotAuthorizedDirective, DisableNotAuthorizedDirective, NotFoundComponent],
   exports: [
@@ -38,7 +40,8 @@ import { GravatarModule } from 'ngx-gravatar';
     RouterModule,
     TranslateModule,
     FlexLayoutModule,
-    GravatarModule
+    GravatarModule,
+    GoogleMapsModule
   ],
   providers: []
 })
