@@ -17,13 +17,8 @@
           <button mat-button color="primary" [routerLink]="['me']">{{ 'Profil' | translate }}</button>
         </div>
       </div>
-      <div
-        gdArea="user"
-        id="userarea"
-        *ngIf="isLoggedIn()"
-        [matMenuTriggerFor]="appMenu"
-      >
-        <img ngxGravatar [email]="gravatar()">
+      <div gdArea="user" id="userarea" *ngIf="isLoggedIn()" [matMenuTriggerFor]="appMenu">
+        <img ngxGravatar [email]="gravatar()" />
         <mat-menu #appMenu="matMenu">
           <button mat-menu-item (click)="logout()">{{ 'Abmelden' | translate }}</button>
         </mat-menu>
