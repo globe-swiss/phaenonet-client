@@ -24,7 +24,11 @@ export class NavComponent {
   }
 
   displayName(): string {
-    return this.authService.getUserFirstAndLastName();
+    return this.authService.getUserNickname();
+  }
+
+  gravatar(): string {
+    return this.authService.getUserEmail();
   }
 
   selectedLocale(): string {

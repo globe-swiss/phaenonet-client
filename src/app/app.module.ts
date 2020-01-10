@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
+import localeIt from '@angular/common/locales/it';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -30,6 +31,7 @@ export function createTranslateLoader(http: HttpClient) {
 
 registerLocaleData(localeDe, 'de');
 registerLocaleData(localeFr, 'fr');
+registerLocaleData(localeIt, 'it');
 
 @NgModule({
   declarations: [AppComponent],

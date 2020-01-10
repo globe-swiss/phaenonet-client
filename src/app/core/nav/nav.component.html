@@ -23,13 +23,13 @@
         *ngIf="isLoggedIn()"
         [matMenuTriggerFor]="appMenu"
       >
-        <div>{{ displayName() }}</div>
+        <img ngxGravatar [email]="gravatar()">
         <mat-menu #appMenu="matMenu">
           <button mat-menu-item (click)="logout()">{{ 'Abmelden' | translate }}</button>
         </mat-menu>
       </div>
       <div gdArea="language">
-        <mat-form-field class="language-select-form-field" appearance="outline">
+        <mat-form-field class="language-select-form-field">
           <mat-select id="langueselect" [value]="selectedLocale()" (selectionChange)="changeLocale($event)">
             <mat-option value="de-CH">Deutsch</mat-option>
             <mat-option value="fr-CH">Français</mat-option>

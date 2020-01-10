@@ -12,21 +12,6 @@ mat-toolbar.mat-toolbar {
   height: 100%;
 }
 
-.language-select-form-field {
-  width: 8em;
-  ::ng-deep .mat-form-field-wrapper {
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-bottom: 0;
-    .mat-form-field-infix {
-      padding-top: 0.5em;
-    }
-    .mat-select-arrow-wrapper {
-      transform: translateY(0);
-    }
-  }
-}
-
 .logo {
   img {
     max-width: 4rem;

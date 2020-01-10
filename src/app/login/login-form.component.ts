@@ -50,4 +50,12 @@ export class LoginFormComponent {
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
+
+  title(): string {
+    if (this.isLoggedIn()) {
+      return 'Willkommen';
+    } else {
+      return 'Bitte melden Sie sich an';
+    }
+  }
 }

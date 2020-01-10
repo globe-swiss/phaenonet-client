@@ -85,7 +85,9 @@ export class AuthService extends BaseHttpService {
   }
 
   logout(): void {
-    this.afAuth.auth.signOut();
+    this.afAuth.auth.signOut().then(() => {
+      this.resetClientSession();
+    });
   }
 
   resetClientSession() {
@@ -105,9 +107,15 @@ export class AuthService extends BaseHttpService {
     return loginResult.map(r => roleOrdinal(r.user.role) >= roleOrdinal(role)).getOrElse(false);
   }
 
-  getUserFirstAndLastName(): string {
+  getUserNickname(): string {
     return this.getUser()
-      .map(u => u.firstName + ' ' + u.lastName)
+      .map(u => u.nick)
+      .getOrElse('Anonymous');
+  }
+
+  getUserEmail(): string {
+    return this.getUser()
+      .map(u => u.email)
       .getOrElse('Anonymous');
   }
 
