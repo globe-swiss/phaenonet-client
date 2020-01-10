@@ -21,15 +21,7 @@ export class AuthInterceptor implements HttpInterceptor {
           }
           return currentRef.afterClosed().pipe(
             switchMap(() => {
-              return this.authService.getXsrfToken().foldL(
-                () => of(undefined),
-                xsrfToken => {
-                  const modifiedRequest = request.clone({
-                    headers: request.headers.set('x-xsrf-token', xsrfToken)
-                  });
-                  return this.intercept(modifiedRequest, next);
-                }
-              );
+              return this.intercept(request, next);
             })
           );
         }

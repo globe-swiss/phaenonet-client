@@ -34,6 +34,7 @@ export class NavComponent {
   changeLocale(event: MatSelectChange) {
     this.languageService.changeLocale(event.value);
   }
+
   logout() {
     this.authService.logout();
   }

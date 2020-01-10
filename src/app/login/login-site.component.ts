@@ -2,7 +2,6 @@ import { Component, AfterViewChecked } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
-import { LoginFormComponentResult } from './login-form.component';
 import { cons } from 'fp-ts/lib/Array';
 
 @Component({

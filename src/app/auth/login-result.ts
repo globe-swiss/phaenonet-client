@@ -1,15 +1,16 @@
 import { User } from './user';
+import { User as FUser } from 'firebase/app';
 
 type LoginResultStatus = 'LOGIN_OK' | 'LOGIN_PASSWORD_CHANGE_REQUIRED';
 
 export class LoginResult {
   status: LoginResultStatus;
-  xsrfToken: string;
   user: User;
+  firebaseUser: FUser;
 
-  constructor(status: LoginResultStatus, xsrfToken: string, user: User) {
+  constructor(status: LoginResultStatus, firebaseUser: FUser, user: User) {
     this.status = status;
-    this.xsrfToken = xsrfToken;
     this.user = user;
+    this.firebaseUser = firebaseUser;
   }
 }

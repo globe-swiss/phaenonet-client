@@ -67,11 +67,21 @@ export class AuthService extends BaseHttpService {
         if (user) {
           self.firebaseUser = user.user;
           self.user = self.afs.doc<User>(`users/${user.user.uid}`).valueChanges();
+          self.user.subscribe(u => {
+            console.log('setting user', u);
+            this.handleLoginResult(new LoginResult('LOGIN_OK', self.firebaseUser, u));
+          });
         }
       })
       .catch(this.errorHandling.bind(this));
 
     return this.user;
+  }
+
+  private handleLoginResult(loginResult: LoginResult) {
+    if (loginResult && loginResult.status === 'LOGIN_OK') {
+      localStorage.setItem(LOCALSTORAGE_LOGIN_RESULT_KEY, JSON.stringify(loginResult));
+    }
   }
 
   logout(): void {
@@ -80,7 +90,6 @@ export class AuthService extends BaseHttpService {
 
   resetClientSession() {
     localStorage.removeItem(LOCALSTORAGE_LOGIN_RESULT_KEY);
-    this.removeCookie('XSRF-TOKEN');
   }
 
   private removeCookie(name: string, path: string = '/') {
@@ -105,11 +114,6 @@ export class AuthService extends BaseHttpService {
   getUser(): Option<User> {
     const loginResult = this.getParsedLoginResult();
     return loginResult.mapNullable(r => r.user);
-  }
-
-  getXsrfToken(): Option<string> {
-    const loginResult = this.getParsedLoginResult();
-    return loginResult.mapNullable(r => r.xsrfToken);
   }
 
   private getParsedLoginResult(): Option<LoginResult> {
