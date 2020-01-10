@@ -3,7 +3,7 @@ mat-toolbar.mat-toolbar {
   height: 100%;
 
   mat-toolbar-row {
-    padding: 8px;
+    padding: 0px;
   }
 }
 
@@ -12,7 +12,16 @@ mat-toolbar.mat-toolbar {
   height: 100%;
 }
 
+.menu-row #buttons {
+  align-self: center;
+}
+
+.menu-row #userarea {
+  align-self: center;
+}
+
 .logo {
+  padding: 8px;
   img {
     max-width: 4rem;
   }

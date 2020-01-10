@@ -8,8 +8,8 @@
       <div gdArea="logo" class="logo">
         <img gdArea="logo" src="assets/img/Bildmarke-Phaenonet_rgb.png" alt="PhaenoNet Logo" />
       </div>
-      <div gdArea="buttons">
-        <div id="buttons" class="left-border" *ngIf="isLoggedIn()">
+      <div gdArea="buttons" id="buttons">
+        <div class="left-border" *ngIf="isLoggedIn()">
           <button mat-button color="primary" [routerLink]="['objects']">{{ 'Objekte' | translate }}</button>
           <button mat-button color="primary" [routerLink]="['observations']">{{ 'Beobachtungen' | translate }}</button>
           <button mat-button color="primary" [routerLink]="['map']">{{ 'Karte' | translate }}</button>
