@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, OperatorFunction, throwError, of } from 'rxjs';
+import { Observable, OperatorFunction, throwError, of, from } from 'rxjs';
 import { map, catchError, switchMap, tap } from 'rxjs/operators';
 
 import { Role, roleOrdinal } from './role';
@@ -92,6 +92,14 @@ export class AuthService extends BaseHttpService {
 
   resetClientSession() {
     localStorage.removeItem(LOCALSTORAGE_LOGIN_RESULT_KEY);
+  }
+
+  resetPassword(username: string): Observable<void> {
+    return from(
+      this.afAuth.auth.sendPasswordResetEmail(username).catch(error => {
+        // silently ignore errors
+      })
+    );
   }
 
   private removeCookie(name: string, path: string = '/') {

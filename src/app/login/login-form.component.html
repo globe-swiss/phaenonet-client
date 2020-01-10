@@ -26,7 +26,7 @@
         <mat-error>{{ 'Anmeldung fehlgeschlagen' | translate }}</mat-error>
       </p>
       <button
-        mat-button
+        mat-flat-button
         color="primary"
         type="submit"
         (click)="login()"
@@ -37,4 +37,11 @@
       </button>
     </form>
   </mat-card-content>
+  <mat-card-footer>
+    <div fxLayout="column">
+      <div fxLayout="row" fxLayoutAlign="center">
+        <a [routerLink]="'/auth/reset-password'">{{ 'Passwort vergessen?' | translate }}</a>
+      </div>
+    </div>
+  </mat-card-footer>
 </mat-card>
