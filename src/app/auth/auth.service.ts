@@ -15,6 +15,7 @@ import { Either, right, left } from 'fp-ts/lib/Either';
 import { fromNullable } from 'fp-ts/lib/Option';
 import { v4 as uuidV4 } from 'uuid';
 import { HttpHeaders } from '@angular/common/http';
+import { LanguageService } from '../core/language.service';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
@@ -37,6 +38,7 @@ export class AuthService extends BaseHttpService {
     http: HttpClient,
     alertService: AlertService,
     private router: Router,
+    private languageService: LanguageService,
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore
   ) {
@@ -58,24 +60,25 @@ export class AuthService extends BaseHttpService {
   // store the URL so we can redirect after logging in
   redirectUrl: string;
 
-  login(username: string, password: string): Observable<User> {
-    const self = this;
-
+  login(email: string, password: string): Observable<User> {
     this.afAuth.auth
-      .signInWithEmailAndPassword(username, password)
-      .then(user => {
-        if (user) {
-          self.firebaseUser = user.user;
-          self.user = self.afs.doc<User>(`users/${user.user.uid}`).valueChanges();
-          self.user.subscribe(u => {
-            console.log('setting user', u);
-            this.handleLoginResult(new LoginResult('LOGIN_OK', self.firebaseUser, u));
-          });
-        }
+      .signInWithEmailAndPassword(email, password)
+      .then(firebaseResult => {
+        this.handleUserLogin(firebaseResult);
       })
       .catch(this.errorHandling.bind(this));
 
     return this.user;
+  }
+
+  private handleUserLogin(firebaseResult: any): void {
+    if (firebaseResult) {
+      this.firebaseUser = firebaseResult.user;
+      this.user = this.afs.doc<User>(`users/${this.firebaseUser.uid}`).valueChanges();
+      this.user.subscribe(u => {
+        this.handleLoginResult(new LoginResult('LOGIN_OK', this.firebaseUser, u));
+      });
+    }
   }
 
   private handleLoginResult(loginResult: LoginResult) {
@@ -95,12 +98,35 @@ export class AuthService extends BaseHttpService {
     localStorage.removeItem(LOCALSTORAGE_LOGIN_RESULT_KEY);
   }
 
-  resetPassword(username: string): Observable<void> {
+  resetPassword(email: string): Observable<void> {
     return from(
-      this.afAuth.auth.sendPasswordResetEmail(username).catch(error => {
+      this.afAuth.auth.sendPasswordResetEmail(email).catch(error => {
         // silently ignore errors
       })
     );
+  }
+
+  register(email: string, password: string, nick: string): Observable<User> {
+    const createDateTime = new Date().toISOString();
+    this.afAuth.auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(firebaseResult => {
+        this.afs
+          .collection('users')
+          .doc(firebaseResult.user.uid)
+          .set({
+            email: email,
+            lang: this.languageService.determineCurrentLang(),
+            nick: nick,
+            role: 'USER',
+            create_dt: createDateTime,
+            modify_dt: createDateTime
+          })
+          .then(_ => this.handleUserLogin(firebaseResult));
+      })
+      .catch(this.errorHandling.bind(this));
+
+    return this.user;
   }
 
   private removeCookie(name: string, path: string = '/') {

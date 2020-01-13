@@ -6,19 +6,19 @@
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="loginForm" fxLayout="column" *ngIf="showLoginForm()">
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'Benutzername' | translate }} </mat-label>
+      <mat-form-field>
+        <mat-label>{{ 'E-Mail' | translate }} </mat-label>
         <input
           matInput
           type="text"
-          formControlName="username"
+          formControlName="email"
           autofocus
-          id="username"
-          placeholder="{{ 'Benutzername' | translate }}"
+          id="email"
+          placeholder="{{ 'E-Mail' | translate }}"
           required
         />
       </mat-form-field>
-      <mat-form-field appearance="outline">
+      <mat-form-field>
         <mat-label>{{ 'Passwort' | translate }} </mat-label>
         <input matInput type="password" formControlName="password" id="password" required />
       </mat-form-field>
@@ -40,7 +40,8 @@
   <mat-card-footer>
     <div fxLayout="column">
       <div fxLayout="row" fxLayoutAlign="center">
-        <a [routerLink]="'/auth/reset-password'">{{ 'Passwort vergessen?' | translate }}</a>
+        <a mat-button [routerLink]="'/auth/reset-password'">{{ 'Passwort vergessen?' | translate }}</a>
+        <a mat-button [routerLink]="'/auth/register'">{{ 'Neu registrieren' | translate }}</a>
       </div>
     </div>
   </mat-card-footer>

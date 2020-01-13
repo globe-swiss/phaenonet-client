@@ -1,0 +1,58 @@
+<div gdColumns="repeat(8, 1fr)">
+  <mat-card gdColumn="3 / span 4">
+    <mat-card-header>
+      <mat-card-title>
+        {{ title() | translate }}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="registerForm" fxLayout="column" *ngIf="showRegisterForm()">
+        <mat-form-field>
+          <mat-label>{{ 'E-Mail' | translate }} </mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="email"
+            autofocus
+            id="email"
+            placeholder="{{ 'E-Mail' | translate }}"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'Nickname' | translate }} </mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="nick"
+            id="nick"
+            placeholder="{{ 'Nickname' | translate }}"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'Passwort' | translate }} </mat-label>
+          <input matInput type="password" formControlName="password" id="password" required minlength="6" />
+          <mat-error>{{ 'Das Passwort muss mindestens 6 Zeichen lang sein.' | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'Passwort Bestätigung' | translate }} </mat-label>
+          <input matInput type="password" formControlName="passwordConfirm" id="passwordConfirm" required />
+        </mat-form-field>
+        <mat-error *ngIf="registerForm.hasError('passwordMissmatch')">
+          {{ 'Die Passwörter stimmen nicht überein.' | translate }}
+        </mat-error>
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          (click)="register()"
+          id="register-button"
+          [disabled]="registerForm.invalid"
+        >
+          {{ 'Registrieren' | translate }}
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

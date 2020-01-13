@@ -9,7 +9,7 @@ import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, 
 })
 export class ResetPasswordComponent implements OnInit {
   resetPasswordForm = new FormGroup({
-    username: new FormControl('')
+    email: new FormControl('')
   });
 
   resetPasswordEmailSent = false;
@@ -21,7 +21,7 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   resetPassword(): void {
-    this.authService.resetPassword(this.resetPasswordForm.controls.username.value).subscribe(_ => {
+    this.authService.resetPassword(this.resetPasswordForm.controls.email.value).subscribe(_ => {
       this.resetPasswordEmailSent = true;
     });
   }

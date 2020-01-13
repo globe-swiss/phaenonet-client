@@ -12,7 +12,7 @@ import { none } from 'fp-ts/lib/Option';
 })
 export class LoginFormComponent {
   loginForm = new FormGroup({
-    username: new FormControl(''),
+    email: new FormControl(''),
     password: new FormControl('')
   });
 
@@ -28,7 +28,7 @@ export class LoginFormComponent {
   login(): void {
     this.loginFailed = false;
     this.authService
-      .login(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
+      .login(this.loginForm.controls.email.value, this.loginForm.controls.password.value)
       .subscribe(user => {
         if (user) {
           this.user = user;

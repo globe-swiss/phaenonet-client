@@ -9,6 +9,7 @@ import { LoginSiteComponent } from './login-site.component';
 import { LoginDialogComponent } from './login-dialog.component';
 import { LoggedOutComponent } from './logged-out.component';
 import { ResetPasswordComponent } from './reset-password.component';
+import { RegisterComponent } from './register.component';
 
 @NgModule({
   imports: [SharedModule, LoginRoutingModule],
@@ -18,7 +19,8 @@ import { ResetPasswordComponent } from './reset-password.component';
     LoginFormComponent,
     LoginSiteComponent,
     LoggedOutComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    RegisterComponent
   ],
   providers: [],
   entryComponents: [LoginDialogComponent]
