@@ -87,6 +87,7 @@ export class AuthService extends BaseHttpService {
   logout(): void {
     this.afAuth.auth.signOut().then(() => {
       this.resetClientSession();
+      this.router.navigate([LOGGED_OUT_URL]);
     });
   }
 
