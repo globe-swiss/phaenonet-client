@@ -1,0 +1,17 @@
+<div gdColumns="repeat(8, 1fr)" class="map-container">
+  <div gdColumn="2 / span 3">
+    <h2>{{ 'Gruppen' | translate }}</h2>
+    <mat-list>
+      <mat-list-item *ngFor="let item of groups | async">
+        <h3>{{ item.name }}</h3>
+        <div>
+          <mat-list>
+            <mat-list-item *ngFor="let subItem of item.members">
+              {{ subItem.email }}
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
