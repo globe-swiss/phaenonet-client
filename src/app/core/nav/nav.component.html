@@ -2,7 +2,7 @@
   <mat-toolbar-row>
     <div
       gdColumns="repeat(8, 1fr)"
-      gdAreas="logo buttons buttons buttons buttons buttons user language"
+      gdAreas="logo buttons buttons buttons buttons buttons language user"
       class="menu-row"
     >
       <div gdArea="logo" class="logo">
@@ -17,12 +17,6 @@
           <button mat-button color="primary" [routerLink]="['me']">{{ 'Profil' | translate }}</button>
         </div>
       </div>
-      <div gdArea="user" id="userarea" *ngIf="isLoggedIn()" [matMenuTriggerFor]="appMenu">
-        <img ngxGravatar [email]="gravatar()" />
-        <mat-menu #appMenu="matMenu">
-          <button mat-menu-item (click)="logout()">{{ 'Abmelden' | translate }}</button>
-        </mat-menu>
-      </div>
       <div gdArea="language">
         <mat-form-field class="language-select-form-field">
           <mat-select id="langueselect" [value]="selectedLocale()" (selectionChange)="changeLocale($event)">
@@ -32,6 +26,12 @@
             <mat-option value="en-GB">English</mat-option>
           </mat-select>
         </mat-form-field>
+      </div>
+      <div gdArea="user" id="userarea" *ngIf="isLoggedIn()" [matMenuTriggerFor]="appMenu">
+        <img ngxGravatar [email]="gravatar()" />
+        <mat-menu #appMenu="matMenu">
+          <button mat-menu-item (click)="logout()">{{ 'Abmelden' | translate }}</button>
+        </mat-menu>
       </div>
     </div>
   </mat-toolbar-row>
