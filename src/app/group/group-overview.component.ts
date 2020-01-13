@@ -21,9 +21,5 @@ export class GroupOverviewComponent implements OnInit {
     this.navService.setLocation('Gruppen');
 
     this.groups = this.groupService.getMyGroups();
-
-    this.groups.subscribe(groups => {
-      console.log('hello ', groups);
-    });
   }
 }

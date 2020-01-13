@@ -25,7 +25,6 @@ export class GroupService extends BaseHttpService {
   getMyGroups(): Observable<Group[]> {
     return this.authService.user.pipe(
       switchMap(user => {
-        console.log('user', user);
         if (user) {
           return from(this.afs.collection('groups', ref => ref.where('creator', '==', user.email)).valueChanges());
         } else {
