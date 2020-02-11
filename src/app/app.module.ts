@@ -24,9 +24,12 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
+import { Observable, from } from 'rxjs';
 
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+export class CustomTranslateLoader implements TranslateLoader {
+  getTranslation(lang: string): Observable<any> {
+    return from(import(`../assets/i18n/${lang}.json`));
+  }
 }
 
 registerLocaleData(localeDe, 'de');
@@ -44,8 +47,7 @@ registerLocaleData(localeIt, 'it');
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: createTranslateLoader,
-        deps: [HttpClient]
+        useClass: CustomTranslateLoader
       }
     }),
     AngularFireModule.initializeApp(environment.firebase),
