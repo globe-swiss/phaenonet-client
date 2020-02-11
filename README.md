@@ -1,3 +1,13 @@
+# run locally
+
+`ng serve`
+
+`localhost:4200`
+
+# documentation to google maps api
+
+https://github.com/angular/components
+
 # Phaenonet
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.
