@@ -6,9 +6,10 @@ import { MapComponent } from './map.component';
 import { MapOverviewComponent } from './map-overview.component';
 
 import { GoogleMapsModule } from '@angular/google-maps';
+import { IndividualModule } from '../individual/individual.module';
 
 @NgModule({
-  imports: [SharedModule, MapRoutingModule, GoogleMapsModule],
+  imports: [SharedModule, MapRoutingModule, GoogleMapsModule, IndividualModule],
   declarations: [MapComponent, MapOverviewComponent],
   providers: [],
   exports: []

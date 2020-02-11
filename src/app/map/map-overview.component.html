@@ -7,5 +7,14 @@
     [center]="center"
     [zoom]="zoom"
     [options]="options"
-  ></google-map>
+  >
+    <map-marker
+      #marker
+      *ngFor="let pos of positions | async"
+      [position]="pos"
+      [options]="markerOptions"
+      (mapClick)="openInfoWindow(marker, pos)"
+    ></map-marker>
+    <map-info-window>Observation Detail</map-info-window>
+  </google-map>
 </div>

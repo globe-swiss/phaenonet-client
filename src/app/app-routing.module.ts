@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       {
         path: 'objects',
-        loadChildren: () => import('./object/object.module').then(m => m.ObjectModule)
+        loadChildren: () => import('./individual/individual.module').then(m => m.IndividualModule)
       },
       {
         path: 'observations',
