@@ -8,6 +8,12 @@
 
 https://github.com/angular/components
 
+# fireconsole
+
+`npm install -g firebase-tools`
+
+`firebase login`
+
 # Phaenonet
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.
