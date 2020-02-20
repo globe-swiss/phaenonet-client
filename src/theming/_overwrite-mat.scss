@@ -1,0 +1,11 @@
+button[mat-button],
+button[mat-flat-button],
+a[mat-button],
+a[mat-flat-button] {
+  border-radius: 35px;
+}
+
+button[mat-button],
+button[mat-flat-button] {
+  height: 70px;
+}

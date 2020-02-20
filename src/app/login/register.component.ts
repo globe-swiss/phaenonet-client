@@ -15,10 +15,12 @@ import { equalValidation } from '../shared/validation';
 })
 export class RegisterComponent implements OnInit, AfterViewChecked {
   registerForm = new FormGroup({
+    displayName: new FormControl(''),
+    firstname: new FormControl(''),
+    lastname: new FormControl(''),
     email: new FormControl(''),
     password: new FormControl(''),
-    passwordConfirm: new FormControl(''),
-    nick: new FormControl('')
+    passwordConfirm: new FormControl('')
   });
 
   registerFailed = false;
@@ -48,7 +50,9 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
       .register(
         this.registerForm.controls.email.value,
         this.registerForm.controls.password.value,
-        this.registerForm.controls.nick.value
+        this.registerForm.controls.displayName.value,
+        this.registerForm.controls.firstname.value,
+        this.registerForm.controls.lastname.value
       )
       .subscribe(user => {
         if (user) {

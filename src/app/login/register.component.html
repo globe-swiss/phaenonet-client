@@ -1,12 +1,51 @@
 <div gdColumns="repeat(8, 1fr)">
-  <mat-card gdColumn="3 / span 4">
-    <mat-card-header>
-      <mat-card-title>
-        {{ title() | translate }}
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
+  <div gdColumn="3 / span 2">
+    <div>
+      <h3 translate>REGISTRIEREN</h3>
+    </div>
+    <div>
+      <p translate>Herzlich Willkommen bei Phaenonet.</p>
+      <p translate>
+        Möchten Sie uns helfen mehr Daten für die wichtigen phänologischen Untersuchungen zu sammeln, indem Sie Ihre
+        eigenen Beobachtungen zu Pflanzen melden?
+      </p>
+      <p translate>Wir freuen uns, Sie in unsere Community aufzunehmen!</p>
+    </div>
+  </div>
+  <div gdColumn="5 / span 2">
+    <div>
       <form [formGroup]="registerForm" fxLayout="column" *ngIf="showRegisterForm()">
+        <mat-form-field>
+          <mat-label>{{ 'Anzeigename bei PhaenoNet (öffentlich)' | translate }} </mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="displayName"
+            id="displayName"
+            placeholder="{{ 'Nickname' | translate }}"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'Vorname' | translate }} </mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="firstname"
+            id="firstname"
+            placeholder="{{ 'Vorname' | translate }}"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'Nachname' | translate }} </mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="lastname"
+            id="lastname"
+            placeholder="{{ 'Nachname' | translate }}"
+          />
+        </mat-form-field>
         <mat-form-field>
           <mat-label>{{ 'E-Mail' | translate }} </mat-label>
           <input
@@ -16,17 +55,6 @@
             autofocus
             id="email"
             placeholder="{{ 'E-Mail' | translate }}"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'Nickname' | translate }} </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="nick"
-            id="nick"
-            placeholder="{{ 'Nickname' | translate }}"
             required
           />
         </mat-form-field>
@@ -50,9 +78,9 @@
           id="register-button"
           [disabled]="registerForm.invalid"
         >
-          {{ 'Registrieren' | translate }}
+          {{ 'Jetzt registrieren' | translate }}
         </button>
       </form>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 </div>
