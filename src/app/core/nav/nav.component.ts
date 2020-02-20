@@ -24,7 +24,7 @@ export class NavComponent {
   }
 
   displayName(): string {
-    return this.authService.getUserNickname();
+    return this.authService.getUserDisplayName();
   }
 
   gravatar(): string {

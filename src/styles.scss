@@ -1,24 +1,11 @@
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import './theming/phaenonet-theme.scss';
 
 html,
 body {
   height: 100%;
   width: 100%;
   margin: 0;
-  font-family: 'Roboto';
-  font-size: 12;
-  background: white;
-}
-
-.full-width-fixed-container {
-  position: fixed;
-  left: 0;
-  right: 0;
-  max-width: 100%;
-  margin: auto;
-  height: 5rem;
-}
-
-h2 {
-  font-size: 3rem;
+  font-family: 'Open Sans';
+  font-size: 16px;
+  background: #f7f5f2;
 }

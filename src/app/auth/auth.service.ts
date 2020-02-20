@@ -106,7 +106,13 @@ export class AuthService extends BaseHttpService {
     );
   }
 
-  register(email: string, password: string, nick: string): Observable<User> {
+  register(
+    email: string,
+    password: string,
+    displayName: string,
+    firstname: string,
+    lastname: string
+  ): Observable<User> {
     const createDateTime = new Date().toISOString();
     this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
@@ -117,7 +123,9 @@ export class AuthService extends BaseHttpService {
           .set({
             email: email,
             lang: this.languageService.determineCurrentLang(),
-            nick: nick,
+            displayName: displayName,
+            firstname: firstname,
+            lastname: lastname,
             role: 'USER',
             create_dt: createDateTime,
             modify_dt: createDateTime
@@ -142,9 +150,9 @@ export class AuthService extends BaseHttpService {
     return loginResult.map(r => roleOrdinal(r.user.role) >= roleOrdinal(role)).getOrElse(false);
   }
 
-  getUserNickname(): string {
+  getUserDisplayName(): string {
     return this.getUser()
-      .map(u => u.nick)
+      .map(u => u.displayName)
       .getOrElse('Anonymous');
   }
 
