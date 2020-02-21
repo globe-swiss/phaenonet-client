@@ -117,6 +117,8 @@ export class AuthService extends BaseHttpService {
     this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
       .then(firebaseResult => {
+        firebaseResult.user.updateProfile({ displayName: displayName });
+
         this.afs
           .collection('users')
           .doc(firebaseResult.user.uid)
