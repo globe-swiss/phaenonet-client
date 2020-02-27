@@ -15,7 +15,7 @@ import { equalValidation } from '../shared/validation';
 })
 export class RegisterComponent implements OnInit, AfterViewChecked {
   registerForm = new FormGroup({
-    displayName: new FormControl(''),
+    nickname: new FormControl(''),
     firstname: new FormControl(''),
     lastname: new FormControl(''),
     email: new FormControl(''),
@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
       .register(
         this.registerForm.controls.email.value,
         this.registerForm.controls.password.value,
-        this.registerForm.controls.displayName.value,
+        this.registerForm.controls.nickname.value,
         this.registerForm.controls.firstname.value,
         this.registerForm.controls.lastname.value
       )

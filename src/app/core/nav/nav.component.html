@@ -10,11 +10,9 @@
       </div>
       <div gdArea="buttons" id="buttons">
         <div class="left-border" *ngIf="isLoggedIn()">
-          <button mat-button color="primary" [routerLink]="['objects']">{{ 'Objekte' | translate }}</button>
-          <button mat-button color="primary" [routerLink]="['observations']">{{ 'Beobachtungen' | translate }}</button>
+          <button mat-button color="primary" [routerLink]="['profile']">{{ 'Profil' | translate }}</button>
           <button mat-button color="primary" [routerLink]="['map']">{{ 'Karte' | translate }}</button>
-          <button mat-button color="primary" [routerLink]="['statistics']">{{ 'Statistiken' | translate }}</button>
-          <button mat-button color="primary" [routerLink]="['me']">{{ 'Profil' | translate }}</button>
+          <button mat-button color="primary" [routerLink]="['statistics']">{{ 'Auswertung' | translate }}</button>
         </div>
       </div>
       <div gdArea="language">

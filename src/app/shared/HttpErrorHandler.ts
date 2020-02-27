@@ -6,7 +6,7 @@ export class HttpErrorHandler {
   constructor(protected router: Router) {}
 
   // override in subclass if you want a custom error handling
-  entityLoadingFailed<T>(error: any, caught: Observable<T>): ObservableInput<any> {
+  detailLoadingFailed<T>(error: any, caught: Observable<T>): ObservableInput<any> {
     if (error instanceof HttpErrorResponse && error.status == 404) {
       this.router.navigate(['/404'], { skipLocationChange: true });
       return of();

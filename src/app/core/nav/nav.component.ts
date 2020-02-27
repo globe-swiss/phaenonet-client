@@ -23,8 +23,8 @@ export class NavComponent {
     return this.authService.isLoggedIn();
   }
 
-  displayName(): string {
-    return this.authService.getUserDisplayName();
+  nickname(): string {
+    return this.authService.getUserNickname();
   }
 
   gravatar(): string {

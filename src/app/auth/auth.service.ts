@@ -1,26 +1,18 @@
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, OperatorFunction, throwError, of, from } from 'rxjs';
-import { map, catchError, switchMap, tap } from 'rxjs/operators';
-
-import { Role, roleOrdinal } from './role';
-import { LoginResult } from './login-result';
-import { User } from './user';
-import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
-import { BaseHttpService } from '../core/base-http.service';
-import { Option, some, none } from 'fp-ts/lib/Option';
-import { environment } from '../../environments/environment';
-import { Router } from '@angular/router';
-import { Either, right, left } from 'fp-ts/lib/Either';
-import { fromNullable } from 'fp-ts/lib/Option';
-import { v4 as uuidV4 } from 'uuid';
-import { HttpHeaders } from '@angular/common/http';
-import { LanguageService } from '../core/language.service';
-
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { auth } from 'firebase/app';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import { User as FUser } from 'firebase/app';
+import { none, Option, some } from 'fp-ts/lib/Option';
+import { from, Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { BaseService } from '../core/base.service';
+import { LanguageService } from '../core/language.service';
+import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
+import { LoginResult } from './login-result';
+import { Role, roleOrdinal } from './role';
+import { User } from './user';
 
 export const LOGIN_URL = '/auth/login';
 export const LOGGED_OUT_URL = '/auth/logged-out';
@@ -28,21 +20,20 @@ export const LOGGED_OUT_URL = '/auth/logged-out';
 const LOCALSTORAGE_LOGIN_RESULT_KEY = 'loginResult';
 
 @Injectable()
-export class AuthService extends BaseHttpService {
+export class AuthService extends BaseService {
   browserIdHeaders: HttpHeaders;
 
   user: Observable<User>;
   firebaseUser: FUser;
 
   constructor(
-    http: HttpClient,
     alertService: AlertService,
     private router: Router,
     private languageService: LanguageService,
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore
   ) {
-    super(http, alertService);
+    super(alertService);
 
     const self = this;
     this.user = this.afAuth.authState.pipe(
@@ -55,6 +46,7 @@ export class AuthService extends BaseHttpService {
         }
       })
     );
+    this.user.subscribe();
   }
 
   // store the URL so we can redirect after logging in
@@ -106,18 +98,12 @@ export class AuthService extends BaseHttpService {
     );
   }
 
-  register(
-    email: string,
-    password: string,
-    displayName: string,
-    firstname: string,
-    lastname: string
-  ): Observable<User> {
+  register(email: string, password: string, nickname: string, firstname: string, lastname: string): Observable<User> {
     const createDateTime = new Date().toISOString();
     this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
       .then(firebaseResult => {
-        firebaseResult.user.updateProfile({ displayName: displayName });
+        firebaseResult.user.updateProfile({ displayName: nickname });
 
         this.afs
           .collection('users')
@@ -125,7 +111,7 @@ export class AuthService extends BaseHttpService {
           .set({
             email: email,
             lang: this.languageService.determineCurrentLang(),
-            displayName: displayName,
+            nickname: nickname,
             firstname: firstname,
             lastname: lastname,
             role: 'USER',
@@ -152,9 +138,9 @@ export class AuthService extends BaseHttpService {
     return loginResult.map(r => roleOrdinal(r.user.role) >= roleOrdinal(role)).getOrElse(false);
   }
 
-  getUserDisplayName(): string {
+  getUserNickname(): string {
     return this.getUser()
-      .map(u => u.displayName)
+      .map(u => u.nickname)
       .getOrElse('Anonymous');
   }
 
@@ -167,6 +153,13 @@ export class AuthService extends BaseHttpService {
   getUser(): Option<User> {
     const loginResult = this.getParsedLoginResult();
     return loginResult.mapNullable(r => r.user);
+  }
+
+  getUserId(): string {
+    if (this.firebaseUser == null) {
+      return null;
+    }
+    return this.firebaseUser.uid;
   }
 
   private getParsedLoginResult(): Option<LoginResult> {
