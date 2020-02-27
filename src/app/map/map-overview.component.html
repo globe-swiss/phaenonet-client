@@ -17,4 +17,10 @@
     ></map-marker>
     <map-info-window>Observation Detail</map-info-window>
   </google-map>
+  <div class="map-actions">
+    <button mat-fab class="extended-fab-button" color="primary" [routerLink]="'/individuals/new/edit'">
+      <mat-icon>+</mat-icon>
+      <span>{{ 'Objekt hinzufügen' | translate }}</span>
+    </button>
+  </div>
 </div>

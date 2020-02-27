@@ -25,16 +25,12 @@ export class MapOverviewComponent implements OnInit {
 
   ngOnInit() {
     this.navService.setLocation('Karte');
-    this.individuals = this.individualService.getIndividuals();
+    this.individuals = this.individualService.list();
 
     this.positions = this.individuals.pipe(
       map(individuals => {
         return individuals.map(individual => {
-          const [lat, lng] = individual.geopos.split(',').map(s => +s);
-          return {
-            lat: lat,
-            lng: lng
-          } as google.maps.LatLngLiteral;
+          return individual.geopos;
         });
       })
     );

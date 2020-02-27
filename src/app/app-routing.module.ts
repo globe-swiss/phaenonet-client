@@ -12,7 +12,7 @@ const routes: Routes = [
     data: { roles: ['USER'] },
     children: [
       {
-        path: 'objects',
+        path: 'individuals',
         loadChildren: () => import('./individual/individual.module').then(m => m.IndividualModule)
       },
       {
@@ -28,16 +28,12 @@ const routes: Routes = [
         loadChildren: () => import('./statistics/statistics.module').then(m => m.StatisticsModule)
       },
       {
-        path: 'groups',
-        loadChildren: () => import('./group/group.module').then(m => m.GroupModule)
-      },
-      {
-        path: 'me',
+        path: 'profile',
         loadChildren: () => import('./currentuser/current-user.module').then(m => m.CurrentUserModule)
       },
       {
         path: '',
-        redirectTo: '/observations',
+        redirectTo: '/map',
         pathMatch: 'full'
       }
     ]

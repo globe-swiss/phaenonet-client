@@ -1,0 +1,51 @@
+<div gdColumns="repeat(8, 1fr)">
+  <div gdColumn="2 / span 6" gdColumns="repeat(6, 1fr)" class="detail-view">
+    <div gdColumn="1 / span 6" class="detail-header">
+      <google-map class="map" width="100%" height="302px" [center]="center" [zoom]="zoom" [options]="options">
+        <map-marker #marker [position]="geopos" [options]="markerOptions"></map-marker>
+      </google-map>
+    </div>
+    <div gdColumn="1 / span 2" *ngIf="detailSubject | async" class="detail-left">
+      <div class="detail-label">{{ (species | async)?.de | translate }}</div>
+      <h3>{{ (detailSubject | async).name }}</h3>
+      <div class="detail-label"><span translate>Letzte Beobachtung</span><span>, TODO get last date</span></div>
+      <div>
+        <span translate>Von</span><span class="creator"> {{ individualCreatorNickname | async }}</span>
+      </div>
+      <div class="detail-label">{{ 'Umgebung' | translate }}</div>
+      <div>{{ (description | async)?.de | translate }}</div>
+      <div class="detail-label">{{ 'Höhe' | translate }}</div>
+      <div>
+        <span>{{ (elevation | async)?.de | translate }}</span
+        ><span>{{ 'M.ü.M.' }}</span>
+      </div>
+      <div class="detail-label">{{ 'Exposition' | translate }}</div>
+      <div>{{ (exposition | async)?.de | translate }}</div>
+      <div class="detail-label">{{ 'Schatten' | translate }}</div>
+      <div>{{ (shade | async)?.de | translate }}</div>
+      <div class="detail-label">{{ 'Bewässerung' | translate }}</div>
+      <div>{{ (irrigation | async)?.de | translate }}</div>
+      <div class="detail-label">{{ 'Distanz zu Gebäude / Strasse' | translate }}</div>
+      <div>{{ (distance | async)?.de | translate }}</div>
+      <div class="detail-label">{{ 'Habitat' | translate }}</div>
+      <div>{{ (habitat | async)?.de | translate }}</div>
+      <div class="detail-label">{{ 'Waldtyp' | translate }}</div>
+      <div>{{ (forest | async)?.de | translate }}</div>
+
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        id="edit-button"
+        (click)="editDetail()"
+        [appDisableNotOwner]="(detailSubject | async)?.user"
+      >
+        {{ 'Objekt bearbeiten' | translate }}
+      </button>
+    </div>
+    <div gdColumn="3 / span 4" class="detail-right">
+      <h3 translate>Phaenophasen</h3>
+      <div>TODO observations</div>
+    </div>
+  </div>
+</div>

@@ -9,3 +9,25 @@ body {
   font-size: 16px;
   background: #f7f5f2;
 }
+
+.detail-view {
+  margin-top: 2.625rem;
+  padding-bottom: 7.5375rem;
+  background-color: white;
+  border-radius: 1rem;
+}
+
+.detail-left {
+  padding-top: 2.375rem;
+  padding-left: 2.46875rem;
+}
+
+.detail-right {
+  padding-top: 2.375rem;
+  padding-right: 2.46875rem;
+}
+
+.detail-header .map-container {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
