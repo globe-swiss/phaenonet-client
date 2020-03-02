@@ -1,22 +1,21 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow } from '@angular/google-maps';
-import { IndividualService } from './individual.service';
-import { NavService } from '../core/nav/nav.service';
-import { FormGroup, FormControl } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { MasterdataService } from '../masterdata/masterdata.service';
-import { Species } from '../masterdata/species';
-import { Habitat } from '../masterdata/habitat';
-import { Exposition } from '../masterdata/exposition';
-import { Shade } from '../masterdata/shade';
-import { Forest } from '../masterdata/forest';
-import { Description } from '../masterdata/description';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Individual } from './individual';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { BaseDetailComponent } from '../core/base-detail.component';
-import { AuthService } from '../auth/auth.service';
-import { Irrigation } from '../masterdata/irrigation';
+import { NavService } from '../core/nav/nav.service';
+import { Description } from '../masterdata/description';
 import { Distance } from '../masterdata/distance';
+import { Exposition } from '../masterdata/exposition';
+import { Forest } from '../masterdata/forest';
+import { Habitat } from '../masterdata/habitat';
+import { Irrigation } from '../masterdata/irrigation';
+import { MasterdataService } from '../masterdata/masterdata.service';
+import { Shade } from '../masterdata/shade';
+import { Species } from '../masterdata/species';
+import { Individual } from './individual';
+import { IndividualService } from './individual.service';
 
 @Component({
   templateUrl: './individual-edit.component.html',
@@ -31,6 +30,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
   markerOptions = { draggable: true };
 
   geopos: google.maps.LatLngLiteral = this.center;
+  altitude: number = 0;
 
   selectableSpecies: Observable<Species[]>;
 
@@ -51,8 +51,8 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
     shade: new FormControl(''),
     habitat: new FormControl(''),
     forest: new FormControl(''),
-    distance: new FormControl(''),
-    irrigation: new FormControl('')
+    less100: new FormControl(''),
+    watering: new FormControl('')
   });
 
   constructor(
@@ -82,6 +82,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
       if (detail.geopos) {
         this.geopos = detail.geopos;
         this.center = detail.geopos;
+        this.altitude = detail.altitude;
       }
       this.createForm.reset(detail);
     });
@@ -96,6 +97,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
       // merge the detail with the new values from the form
       const individual: Individual = { ...detail, ...this.createForm.value };
       individual.geopos = this.geopos;
+      individual.altitude = this.altitude;
 
       this.individualService.upsert(individual, this.detailId).subscribe(result => {
         this.router.navigate(['individuals', result.year + '_' + result.individual]);

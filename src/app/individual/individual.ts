@@ -15,4 +15,6 @@ export class Individual {
   user: string;
   watering: string;
   year: number;
+  last_observation_date: Date;
+  last_phenophase: string;
 }

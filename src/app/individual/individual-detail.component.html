@@ -8,7 +8,17 @@
     <div gdColumn="1 / span 2" *ngIf="detailSubject | async" class="detail-left">
       <div class="detail-label">{{ (species | async)?.de | translate }}</div>
       <h3>{{ (detailSubject | async).name }}</h3>
-      <div class="detail-label"><span translate>Letzte Beobachtung</span><span>, TODO get last date</span></div>
+      <div class="detail-label" *ngIf="(detailSubject | async).last_observation_date">
+        <span translate>Letzte Beobachtung</span
+        ><span>, {{ (detailSubject | async).last_observation_date?.toDate() | date }}</span>
+      </div>
+      <div class="phenophase-title" *ngIf="lastPhenophase">
+        <span
+          class="phenophase-circle"
+          [ngStyle]="{ 'background-color': colorMap[(lastPhenophase | async)?.id] }"
+        ></span
+        ><span>{{ (lastPhenophase | async)?.name_de | translate }}</span>
+      </div>
       <div>
         <span translate>Von</span><span class="creator"> {{ individualCreatorNickname | async }}</span>
       </div>
@@ -16,7 +26,7 @@
       <div>{{ (description | async)?.de | translate }}</div>
       <div class="detail-label">{{ 'Höhe' | translate }}</div>
       <div>
-        <span>{{ (elevation | async)?.de | translate }}</span
+        <span>{{ (detailSubject | async)?.altitude | translate }}</span
         ><span>{{ 'M.ü.M.' }}</span>
       </div>
       <div class="detail-label">{{ 'Exposition' | translate }}</div>
@@ -45,7 +55,36 @@
     </div>
     <div gdColumn="3 / span 4" class="detail-right">
       <h3 translate>Phaenophasen</h3>
-      <div>TODO observations</div>
+      <div *ngFor="let groupedItem of phenophaseObservationsGroups | async" class="phenophase-group">
+        <h4>{{ groupedItem.phenophaseGroup.name_de | translate }}</h4>
+        <div *ngFor="let item of groupedItem.phenophaseObservations">
+          <div class="detail-label">{{ item.phenophase.name_de | translate }}</div>
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              [matDatepicker]="fakePicker"
+              [id]="item.id"
+              placeholder="{{ item.phenophase.description_de | translate }}"
+              [value]="item.observation.toNullable()?.date"
+              readonly="true"
+            />
+            <mat-icon
+              *ngIf="isOwner() && item.observation.isNone()"
+              matSuffix
+              color="primary"
+              (click)="editPhenophaseDate(item)"
+              >add_circle</mat-icon
+            >
+            <mat-icon
+              *ngIf="isOwner() && item.observation.isSome()"
+              matSuffix
+              color="primary"
+              (click)="editPhenophaseDate(item)"
+              >edit</mat-icon
+            >
+          </mat-form-field>
+        </div>
+      </div>
     </div>
   </div>
 </div>

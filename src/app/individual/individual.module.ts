@@ -6,11 +6,14 @@ import { IndividualEditComponent } from './individual-edit.component';
 import { IndividualDetailComponent } from './individual-detail.component';
 import { IndividualRoutingModule } from './individual-routing.module';
 import { MasterdataModule } from '../masterdata/masterdata.module';
+import { PhenophaseDialogComponent } from './phenophase-dialog.component';
+import { ObservationModule } from '../observation/observation.module';
 
 @NgModule({
-  imports: [SharedModule, IndividualRoutingModule, MasterdataModule],
-  declarations: [IndividualEditComponent, IndividualDetailComponent],
+  imports: [SharedModule, IndividualRoutingModule, MasterdataModule, ObservationModule],
+  declarations: [IndividualEditComponent, IndividualDetailComponent, PhenophaseDialogComponent],
   providers: [IndividualService],
-  exports: []
+  exports: [],
+  entryComponents: [PhenophaseDialogComponent]
 })
 export class IndividualModule {}

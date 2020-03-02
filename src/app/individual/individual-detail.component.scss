@@ -2,10 +2,6 @@
   width: 70%;
 }
 
-.full-width {
-  width: 100%;
-}
-
 h3 {
   font-size: 1.375rem;
   font-weight: 400;
@@ -28,4 +24,26 @@ h3 {
 
 #edit-button {
   margin-top: 4.125rem;
+}
+
+.phenophase-title {
+  font-size: 1.375rem;
+  padding-top: 0.125rem;
+  padding-bottom: 1.25rem;
+}
+
+.phenophase-circle {
+  margin: 0.125rem 0.5rem 0.125rem 0.125rem;
+  height: 0.625rem;
+  width: 0.625rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.phenophase-group {
+  margin-top: 2.5625rem;
+}
+
+h4 {
+  color: #868072;
 }
