@@ -14,6 +14,8 @@ import { Species } from './species';
 import { Distance } from './distance';
 import { Irrigation } from './irrigation';
 import { MasterdataLike } from './masterdata-like';
+import { Phenophase } from './phaenophase';
+import { PhenophaseGroup } from './phaenophase-group';
 
 export type MasterdataType =
   | 'species'
@@ -99,6 +101,14 @@ export class MasterdataService extends BaseService {
     return this.getMasterdataValueFor('watering', id);
   }
 
+  getPhenophases(speciesId: string): Observable<Phenophase[]> {
+    return this.getPhenoDataFor(speciesId, 'phenophases');
+  }
+
+  getPhenophaseGroups(speciesId: string): Observable<PhenophaseGroup[]> {
+    return this.getPhenoDataFor(speciesId, 'groups');
+  }
+
   private getMasterdataFor<T extends MasterdataLike>(name: MasterdataType): Observable<T[]> {
     return this.afs
       .collection('definitions')
@@ -114,5 +124,16 @@ export class MasterdataService extends BaseService {
       publishReplay(1),
       refCount()
     );
+  }
+
+  private getPhenoDataFor<T>(speciesId: string, name: string): Observable<T[]> {
+    return this.afs
+      .collection('definitions')
+      .doc('individuals')
+      .collection('species')
+      .doc(speciesId)
+      .collection<T>(name, ref => ref.orderBy('seq'))
+      .valueChanges({ idField: 'id' })
+      .pipe(publishReplay(1), refCount());
   }
 }
