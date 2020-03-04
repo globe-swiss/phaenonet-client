@@ -26,8 +26,8 @@
       <div>{{ (description | async)?.de | translate }}</div>
       <div class="detail-label">{{ 'Höhe' | translate }}</div>
       <div>
-        <span>{{ (detailSubject | async)?.altitude | translate }}</span
-        ><span>{{ 'M.ü.M.' }}</span>
+        <span>{{ (detailSubject | async)?.altitude }}</span
+        ><span translate> {{ 'M.ü.M.' }}</span>
       </div>
       <div class="detail-label">{{ 'Exposition' | translate }}</div>
       <div>{{ (exposition | async)?.de | translate }}</div>

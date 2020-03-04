@@ -24,6 +24,8 @@ import { IndividualService } from './individual.service';
 export class IndividualEditComponent extends BaseDetailComponent<Individual> implements OnInit {
   @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow;
 
+  elevator = new google.maps.ElevationService();
+
   center: google.maps.LatLngLiteral = { lat: 46.818188, lng: 8.227512 };
   zoom = 9;
   options = { mapTypeId: google.maps.MapTypeId.SATELLITE };
@@ -90,6 +92,13 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
 
   updateGeopos(event: google.maps.MouseEvent): void {
     this.geopos = event.latLng.toJSON();
+    this.elevator.getElevationForLocations({ locations: [event.latLng] }, (results, status) => {
+      if (status === 'OK') {
+        if (results[0]) {
+          this.altitude = results[0].elevation;
+        }
+      }
+    });
   }
 
   onSubmit(): void {
