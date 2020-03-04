@@ -5,6 +5,8 @@ import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';
 import { Individual } from './individual';
 import { AuthService } from '../auth/auth.service';
+import { map } from 'rxjs/operators';
+import { IdLike } from '../masterdata/masterdata-like';
 
 @Injectable()
 export class IndividualService extends BaseResourceService<Individual> {
@@ -23,5 +25,24 @@ export class IndividualService extends BaseResourceService<Individual> {
     }
 
     return super.upsert(individual, individual.year + '_' + individual.individual);
+  }
+
+  listByYear(year: number): Observable<(Individual & IdLike)[]> {
+    return (
+      this.afs
+        // TODO decide if year should be a number or a string
+        .collection<Individual>(this.collectionName, ref => ref.where('year', '==', year.toString()))
+        .valueChanges({ idField: 'id' })
+        .pipe(
+          map(individuals => {
+            return individuals.map(i => {
+              if (i.last_observation_date) {
+                i.last_observation_date = (i.last_observation_date as any).toDate();
+              }
+              return i;
+            });
+          })
+        )
+    );
   }
 }

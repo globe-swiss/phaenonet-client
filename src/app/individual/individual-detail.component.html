@@ -9,15 +9,16 @@
       <div class="detail-label">{{ (species | async)?.de | translate }}</div>
       <h3>{{ (detailSubject | async).name }}</h3>
       <div class="detail-label" *ngIf="(detailSubject | async).last_observation_date">
-        <span translate>Letzte Beobachtung</span
-        ><span>, {{ (detailSubject | async).last_observation_date?.toDate() | date }}</span>
+        <span translate>Letzte Beobachtung</span>
+        <!-- TODO remove method call -->
+        <span>, {{ (detailSubject | async).last_observation_date?.toDate() | date }}</span>
       </div>
       <div class="phenophase-title" *ngIf="lastPhenophase">
         <span
           class="phenophase-circle"
           [ngStyle]="{ 'background-color': colorMap[(lastPhenophase | async)?.id] }"
-        ></span
-        ><span>{{ (lastPhenophase | async)?.name_de | translate }}</span>
+        ></span>
+        <span>{{ (lastPhenophase | async)?.name_de | translate }}</span>
       </div>
       <div>
         <span translate>Von</span><span class="creator"> {{ individualCreatorNickname | async }}</span>
