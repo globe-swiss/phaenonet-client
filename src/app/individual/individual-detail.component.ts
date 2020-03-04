@@ -36,7 +36,7 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
   center = { lat: 46.818188, lng: 8.227512 };
   zoom = 9;
   options: google.maps.MapOptions = { mapTypeId: google.maps.MapTypeId.HYBRID, streetViewControl: false };
-  markerOptions: google.maps.MarkerOptions = { draggable: false };
+  markerOptions: google.maps.MarkerOptions = { draggable: false, icon: { url: '/assets/img/map_pins/map_pin_1.svg' } };
 
   geopos: google.maps.LatLngLiteral = { lat: 46.818188, lng: 8.227512 };
 

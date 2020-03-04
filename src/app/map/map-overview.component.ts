@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavService } from '../core/nav/nav.service';
 import { Observable, combineLatest, ReplaySubject, Subject, of } from 'rxjs';
-import { map, share, switchMap } from 'rxjs/operators';
+import { map, share, switchMap, startWith } from 'rxjs/operators';
 import { IndividualService } from '../individual/individual.service';
 import { Individual } from '../individual/individual';
 import { MapMarker, MapInfoWindow } from '@angular/google-maps';
@@ -93,6 +93,7 @@ export class MapOverviewComponent implements OnInit {
       .pipe(map(species => [allSpecies].concat(species)))
       .subscribe(this.species);
     this.individualsWithMarkerOpts = this.mapFormGroup.valueChanges.pipe(
+      startWith(this.mapFormGroup.getRawValue()),
       switchMap(form => {
         const year = +form.year;
         // TODO what to do with the datasource?
@@ -128,12 +129,6 @@ export class MapOverviewComponent implements OnInit {
   }
 
   openInfoWindow(marker: MapMarker, pos: google.maps.LatLngLiteral, individual: Individual & IdLike) {
-    let asdf: Observable<Phenophase | null>;
-    if (individual.last_phenophase) {
-      asdf = this.msterDataService.getPhenophaseValue(individual.species, individual.last_phenophase);
-    } else {
-      asdf = of();
-    }
     combineLatest([
       this.msterDataService.getSpeciesValue(individual.species),
       this.msterDataService.getPhenophaseValue(individual.species, individual.last_phenophase)
