@@ -13,7 +13,7 @@ import { Shade } from './shade';
 import { Species } from './species';
 import { Distance } from './distance';
 import { Irrigation } from './irrigation';
-import { MasterdataLike } from './masterdata-like';
+import { MasterdataLike, PhenophasesdataLike } from './masterdata-like';
 import { Phenophase } from './phaenophase';
 import { PhenophaseGroup } from './phaenophase-group';
 
@@ -105,6 +105,10 @@ export class MasterdataService extends BaseService {
     return this.getPhenoDataFor(speciesId, 'phenophases');
   }
 
+  getPhenophaseValue(speciesId: string, id: string): Observable<Phenophase> {
+    return this.getPhenoDataValueFor(speciesId, 'phenophases', id);
+  }
+
   getPhenophaseGroups(speciesId: string): Observable<PhenophaseGroup[]> {
     return this.getPhenoDataFor(speciesId, 'groups');
   }
@@ -126,7 +130,7 @@ export class MasterdataService extends BaseService {
     );
   }
 
-  private getPhenoDataFor<T>(speciesId: string, name: string): Observable<T[]> {
+  private getPhenoDataFor<T extends PhenophasesdataLike>(speciesId: string, name: string): Observable<T[]> {
     return this.afs
       .collection('definitions')
       .doc('individuals')
@@ -135,5 +139,13 @@ export class MasterdataService extends BaseService {
       .collection<T>(name, ref => ref.orderBy('seq'))
       .valueChanges({ idField: 'id' })
       .pipe(publishReplay(1), refCount());
+  }
+
+  private getPhenoDataValueFor<T extends PhenophasesdataLike>(
+    speciesId: string,
+    name: string,
+    id: string
+  ): Observable<T> {
+    return this.getPhenoDataFor<T>(speciesId, name).pipe(map(elements => elements.find(element => element.id === id)));
   }
 }

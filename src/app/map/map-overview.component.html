@@ -10,17 +10,77 @@
   >
     <map-marker
       #marker
-      *ngFor="let pos of positions | async"
-      [position]="pos"
-      [options]="markerOptions"
-      (mapClick)="openInfoWindow(marker, pos)"
-    ></map-marker>
-    <map-info-window>Observation Detail</map-info-window>
+      *ngFor="let individualWithMarkerOpts of individualsWithMarkerOpts | async"
+      [position]="individualWithMarkerOpts.individual.geopos"
+      [options]="individualWithMarkerOpts.markerOptions"
+      (mapClick)="
+        openInfoWindow(marker, individualWithMarkerOpts.individual.geopos, individualWithMarkerOpts.individual)
+      "
+    >
+    </map-marker>
+    <map-info-window>
+      <div fxLayout="row" [routerLink]="(infoWindowData | async)?.url" class="map-info-window">
+        <img src="assets/img/Bildmarke-Phaenonet_rgb.png" style="max-height: 100px;" />
+        <div fxLayout="column" style="margin-left: 15px; margin-right: 15px;">
+          <div class="mat-small">
+            {{ (infoWindowData | async)?.species.de | translate }}
+          </div>
+          <div>{{ (infoWindowData | async)?.individual.name }}</div>
+          <div class="mat-small" *ngIf="(infoWindowData | async)?.phenophase">
+            {{ 'Letzte Beobachtung,' | translate }}
+            {{ (infoWindowData | async)?.individual.last_observation_date | date }}
+          </div>
+          <div *ngIf="(infoWindowData | async)?.phenophase">
+            <span
+              class="phenophase-circle"
+              [ngStyle]="{ 'background-color': colorMap[(infoWindowData | async)?.phenophase?.id] }"
+            ></span>
+            {{ (infoWindowData | async)?.phenophase?.name_de | translate }}
+          </div>
+        </div>
+      </div>
+    </map-info-window>
   </google-map>
   <div class="map-actions">
     <button mat-fab class="extended-fab-button" color="primary" [routerLink]="'/individuals/new/edit'">
       <mat-icon>+</mat-icon>
       <span>{{ 'Objekt hinzufügen' | translate }}</span>
     </button>
+  </div>
+  <div class="map-filter">
+    <div>
+      <form [formGroup]="mapFormGroup">
+        <div id="form-year">
+          <mat-form-field>
+            <mat-label>{{ 'Phaenojahr' | translate }}</mat-label>
+            <mat-select formControlName="year">
+              <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="seperator"></div>
+        <div id="form-datasource">
+          <mat-form-field>
+            <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
+            <mat-select formControlName="datasource">
+              <mat-option *ngFor="let datasource of datasources" [value]="datasource">{{
+                datasource | translate
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="seperator"></div>
+        <div id="form-species">
+          <mat-form-field>
+            <mat-label>{{ 'Art' | translate }}</mat-label>
+            <mat-select formControlName="species">
+              <mat-option *ngFor="let specie of species | async" [value]="specie.id">{{
+                specie.de | translate
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

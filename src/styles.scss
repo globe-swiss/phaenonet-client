@@ -35,3 +35,35 @@ body {
 .full-width {
   width: 100%;
 }
+
+#phaenonet-body .gm-style-iw {
+  padding-left: 0;
+  padding-top: 0;
+  top: 0;
+  left: 0;
+}
+// No padding in map info windows
+#phaenonet-body .gm-style .gm-style-iw-c {
+  padding: 0;
+}
+#pahenonet-body button.gm-ui-hover-effect {
+  visibility: hidden;
+}
+
+/* clear the paddings  */
+#pahenonet-body .gm-style .gm-style-iw-c {
+  padding: 0;
+}
+
+/* remove the white space */
+#pahenonet-body .gm-style-iw .gm-style-iw-d {
+  overflow: auto !important;
+}
+
+.phenophase-circle {
+  margin: 0.125rem 0.5rem 0.125rem 0.125rem;
+  height: 0.625rem;
+  width: 0.625rem;
+  border-radius: 50%;
+  display: inline-block;
+}

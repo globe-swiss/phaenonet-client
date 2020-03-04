@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
-import { combineLatest, Observable, forkJoin, of } from 'rxjs';
-import { first, last, scan, map, take, distinctUntilChanged } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 import { UserService } from '../auth/user.service';
 import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
@@ -35,8 +35,8 @@ import { PhenophaseObservationsGroup } from '../observation/phenophase-observati
 export class IndividualDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
   center = { lat: 46.818188, lng: 8.227512 };
   zoom = 9;
-  options = { mapTypeId: google.maps.MapTypeId.SATELLITE };
-  markerOptions = { draggable: false };
+  options: google.maps.MapOptions = { mapTypeId: google.maps.MapTypeId.HYBRID, streetViewControl: false };
+  markerOptions: google.maps.MarkerOptions = { draggable: false };
 
   geopos: google.maps.LatLngLiteral = { lat: 46.818188, lng: 8.227512 };
 

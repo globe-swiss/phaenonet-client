@@ -23,3 +23,45 @@
     text-transform: uppercase;
   }
 }
+
+.map-info-window {
+  cursor: pointer;
+}
+
+.map-filter {
+  position: fixed;
+  left: 15%;
+  top: 11%;
+
+  background-color: white;
+  border-radius: 5px;
+
+  form {
+    display: flex;
+    flex-direction: row;
+    * {
+      margin: 5px;
+      display: flex;
+      flex-direction: column;
+    }
+    .seperator {
+      background-color: #f0f0f0;
+      width: 1px;
+    }
+  }
+}
+
+::ng-deep #phaenonet-body .mat-form-field-wrapper {
+  margin-bottom: -24px;
+}
+
+::ng-deep #phaenonet-body #form-year .mat-form-field-infix {
+  width: 7rem;
+}
+::ng-deep #phaenonet-body #form-datasource .mat-form-field-infix {
+  width: 7rem;
+}
+
+::ng-deep #phaenonet-body #form-species .mat-form-field-infix {
+  width: 15rem;
+}

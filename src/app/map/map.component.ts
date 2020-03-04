@@ -1,5 +1,4 @@
-import { Component, AfterViewChecked } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   template: '<router-outlet></router-outlet>'
