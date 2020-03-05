@@ -2,22 +2,6 @@
   width: 70%;
 }
 
-h3 {
-  font-size: 1.375rem;
-  font-weight: 400;
-  letter-spacing: 0.055rem;
-  line-height: 1.875rem;
-}
-
-.detail-label {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: #868072;
-  letter-spacing: 0.08125rem;
-  line-height: 1.125rem;
-  margin-top: 0.5rem;
-}
-
 .creator {
   font-weight: 700;
 }
@@ -38,4 +22,9 @@ h3 {
 
 h4 {
   color: #868072;
+}
+
+.detail-header-fab {
+  margin-left: 90%;
+  bottom: 28px;
 }

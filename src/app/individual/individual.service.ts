@@ -45,4 +45,15 @@ export class IndividualService extends BaseResourceService<Individual> {
         )
     );
   }
+
+  listByUser(userId: string, limit: number = 50): Observable<(Individual & IdLike)[]> {
+    return this.afs
+      .collection<Individual>(this.collectionName, ref =>
+        ref
+          .where('user', '==', userId)
+          .orderBy('last_observation_date', 'desc')
+          .limit(limit)
+      )
+      .valueChanges({ idField: 'id' });
+  }
 }

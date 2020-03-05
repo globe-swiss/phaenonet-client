@@ -14,6 +14,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { GravatarModule } from 'ngx-gravatar';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { DisableNotOwnerDirective } from '../auth/disable-not-owner.directive';
+import { CopyClipboardDirective } from './copy-clipboard.directive';
 
 /**
  * The `SharedModule` is used to group common services and modules like {@link TranslateModule}.
@@ -34,7 +35,8 @@ import { DisableNotOwnerDirective } from '../auth/disable-not-owner.directive';
     RemoveNotAuthorizedDirective,
     DisableNotAuthorizedDirective,
     DisableNotOwnerDirective,
-    NotFoundComponent
+    NotFoundComponent,
+    CopyClipboardDirective
   ],
   exports: [
     CommonModule,
@@ -44,6 +46,7 @@ import { DisableNotOwnerDirective } from '../auth/disable-not-owner.directive';
     MaterialModule,
     ReactiveFormsModule,
     RemoveNotAuthorizedDirective,
+    CopyClipboardDirective,
     RouterModule,
     TranslateModule,
     FlexLayoutModule,

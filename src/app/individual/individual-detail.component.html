@@ -4,6 +4,24 @@
       <google-map class="map" width="100%" height="302px" [center]="center" [zoom]="zoom" [options]="options">
         <map-marker #marker [position]="geopos" [options]="markerOptions"></map-marker>
       </google-map>
+      <button
+        *ngIf="!isOwner() && isFollowing | async"
+        mat-fab
+        class="detail-header-fab"
+        color="primary"
+        (click)="unfollow()"
+      >
+        <mat-icon>notifications</mat-icon>
+      </button>
+      <button
+        *ngIf="!isOwner() && !(isFollowing | async)"
+        mat-fab
+        class="detail-header-fab"
+        color="primary"
+        (click)="follow()"
+      >
+        <mat-icon>notifications_none</mat-icon>
+      </button>
     </div>
     <div gdColumn="1 / span 2" *ngIf="detailSubject | async" class="detail-left">
       <div class="detail-label">{{ (species | async)?.de | translate }}</div>

@@ -18,18 +18,40 @@ body {
 }
 
 .detail-left {
-  padding-top: 2.375rem;
   padding-left: 2.46875rem;
 }
 
 .detail-right {
-  padding-top: 2.375rem;
   padding-right: 2.46875rem;
+}
+
+.detail-left:nth-child(1n + 1) {
+  margin-top: 7rem;
+}
+
+.detail-right:nth-child(1n + 1) {
+  margin-top: 7rem;
 }
 
 .detail-header .map-container {
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
+}
+
+.detail-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #868072;
+  letter-spacing: 0.08125rem;
+  line-height: 1.125rem;
+  margin-top: 0.5rem;
+}
+
+h3 {
+  font-size: 1.375rem;
+  font-weight: 400;
+  letter-spacing: 0.055rem;
+  line-height: 1.875rem;
 }
 
 .full-width {
