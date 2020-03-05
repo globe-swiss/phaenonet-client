@@ -1,0 +1,91 @@
+<div gdColumns="repeat(8, 1fr)">
+  <div gdColumn="2 / span 6" gdColumns="repeat(6, 1fr)" class="detail-view">
+    <div gdColumn="1 / span 6" class="detail-header">
+      <!-- There is no header -->
+    </div>
+    <div gdColumn="1 / span 2" class="detail-left">
+      <h3>{{ 'PROFIL' | translate }}</h3>
+    </div>
+    <div gdColumn="3 / span 4" *ngIf="detailSubject | async" class="detail-right">
+      <div class="detail-label">{{ 'Hallo' | translate }}</div>
+      <h3>
+        {{ (detailSubject | async).nickname }}
+        <button mat-icon-button [app-copy-clipboard]="profileLink | async" (copied)="notifyCopied()">
+          <mat-icon>link</mat-icon>
+        </button>
+      </h3>
+      <ng-container *ngIf="isOwner()">
+        <div class="detail-label">{{ 'Vorname' | translate }}</div>
+        <div>{{ (detailSubject | async).firstname }}</div>
+        <div class="detail-label">{{ 'Nachname' | translate }}</div>
+        <div>{{ (detailSubject | async).lastname }}</div>
+        <div class="detail-label">{{ 'E-Mail' | translate }}</div>
+        <div>{{ (detailSubject | async).email }}</div>
+        <button mat-flat-button color="primary" type="submit" id="edit-button" (click)="editProfile()">
+          {{ 'Profil bearbeiten' | translate }}
+        </button>
+      </ng-container>
+    </div>
+    <div gdColumn="1 / span 2" class="detail-left">
+      <h3>
+        <span *ngIf="isOwner()">{{ 'MEINE BEOBACHTUNGEN' }}</span
+        ><span *ngIf="!isOwner()">{{ 'BEOBACHTUNGEN' | translate }}</span>
+      </h3>
+    </div>
+    <div gdColumn="3 / span 4" *ngIf="detailSubject | async" class="detail-right">
+      <div
+        fxLayout="row"
+        *ngFor="let item of latestIndividualObservations | async"
+        [routerLink]="['/individuals', item.individual.id]"
+        class="latest-individual-observation"
+      >
+        <img src="assets/img/Bildmarke-Phaenonet_rgb.png" style="max-height: 180px;" />
+        <div fxLayout="column" style="margin-left: 15px; margin-right: 15px;">
+          <div class="detail-label">
+            {{ item.species.de | translate }}
+          </div>
+          <h3>{{ item.individual.name }}</h3>
+          <div class="detail-label">
+            {{ 'Letzte Beobachtung,' | translate }}
+            {{ item.individual.last_observation_date.toDate() | date }}
+          </div>
+          <div class="phenophase-title">
+            <span
+              class="phenophase-circle"
+              [ngStyle]="{ 'background-color': colorMap[item.individual.last_phenophase] }"
+            ></span>
+            {{ item.lastPhenophase.name_de | translate }}
+          </div>
+        </div>
+      </div>
+      <button mat-flat-button color="primary" [routerLink]="'/individuals/new/edit'">
+        <mat-icon>+</mat-icon>
+        <span>{{ 'Objekt hinzufügen' | translate }}</span>
+      </button>
+    </div>
+    <div gdColumn="1 / span 2" class="detail-left" *ngIf="isOwner()">
+      <h3>
+        <span *ngIf="isOwner()">{{ 'AKTIVITÄTEN' }}</span>
+      </h3>
+    </div>
+    <div gdColumn="3 / span 4" *ngIf="isOwner() && detailSubject | async" class="detail-right">
+      <div
+        fxLayout="row"
+        *ngFor="let item of activities | async"
+        [routerLink]="['/individuals', item.individual_id]"
+        class="activity"
+      >
+        <div>
+          <div class="detail-label">
+            <span class="creator">{{ item.user_nickname }}</span
+            ><span> {{ 'am' | translate }}</span
+            ><span> {{ item.date.toDate() | date }}</span
+            ><span> {{ 'um' }}</span
+            ><span> {{ item.date.toDate() | date: 'shortTime' }}</span>
+          </div>
+          <div class="phenophase-title">{{ item.text | translate }}: {{ item.name }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

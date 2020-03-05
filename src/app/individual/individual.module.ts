@@ -8,9 +8,10 @@ import { IndividualRoutingModule } from './individual-routing.module';
 import { MasterdataModule } from '../masterdata/masterdata.module';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
 import { ObservationModule } from '../observation/observation.module';
+import { ActivityModule } from '../activity/activity.module';
 
 @NgModule({
-  imports: [SharedModule, IndividualRoutingModule, MasterdataModule, ObservationModule],
+  imports: [SharedModule, IndividualRoutingModule, MasterdataModule, ObservationModule, ActivityModule],
   declarations: [IndividualEditComponent, IndividualDetailComponent, PhenophaseDialogComponent],
   providers: [IndividualService],
   exports: [],

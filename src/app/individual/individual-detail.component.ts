@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import { combineLatest, Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { first, map, find, share, shareReplay } from 'rxjs/operators';
 import { UserService } from '../auth/user.service';
 import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
@@ -27,6 +27,10 @@ import { some } from 'fp-ts/lib/Option';
 import { AuthService } from '../auth/auth.service';
 import { PhenophaseGroup } from '../masterdata/phaenophase-group';
 import { PhenophaseObservationsGroup } from '../observation/phenophase-observations-group';
+import { FollowingIndividual } from '../profile/following-individual';
+import { User } from '../auth/user';
+import { Activity } from '../activity/activity';
+import { ActivityService } from '../activity/activity.service';
 
 @Component({
   templateUrl: './individual-detail.component.html',
@@ -79,6 +83,9 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
 
   owner: string;
 
+  currentUser: Observable<User>;
+  isFollowing: Observable<boolean>;
+
   constructor(
     private navService: NavService,
     private router: Router,
@@ -87,6 +94,7 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     private observationService: ObservationService,
     private masterdataService: MasterdataService,
     private userService: UserService,
+    private activityService: ActivityService,
     public dialog: MatDialog,
     private authService: AuthService
   ) {
@@ -97,11 +105,17 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     super.ngOnInit();
     this.navService.setLocation('Objekt');
 
+    this.currentUser = this.authService.getUserObservable();
+
     this.detailSubject.subscribe(detail => {
       if (detail.geopos) {
         this.geopos = detail.geopos;
         this.center = detail.geopos;
       }
+
+      this.isFollowing = this.currentUser.pipe(
+        map(u => u.followingIndividual.find(f => f.id === detail.individual) !== undefined)
+      );
 
       this.owner = detail.user;
 
@@ -114,7 +128,7 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
       this.distance = this.masterdataService.getDistanceValue(detail.less100);
       this.irrigation = this.masterdataService.getIrrigationValue(detail.watering);
 
-      this.individualCreatorNickname = this.userService.getNickname(detail.user);
+      this.individualCreatorNickname = this.userService.getNickname(detail.user).pipe(shareReplay());
 
       this.availablePhenophases = this.masterdataService.getPhenophases(detail.species);
       this.availablePhenophaseGroups = this.masterdataService.getPhenophaseGroups(detail.species);
@@ -191,8 +205,8 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
             this.observationService
               .upsert(observation, observationId)
               .pipe(first())
-              .subscribe(_ => {
-                this.updateLastObservation(detail);
+              .subscribe(observation => {
+                this.updateLastObservation(detail, observation, result.phenophase);
               });
           });
         });
@@ -204,12 +218,43 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     return this.authService.getUserId() === this.owner;
   }
 
-  private updateLastObservation(individual: Individual): void {
+  follow(): void {
+    this.individualToFollow().subscribe(f => this.userService.followIndividual(f));
+  }
+
+  unfollow(): void {
+    this.individualToFollow().subscribe(f => this.userService.unfollowIndividual(f));
+  }
+
+  private individualToFollow(): Observable<FollowingIndividual> {
+    return this.detailSubject.pipe(
+      first(),
+      map(i => {
+        return { id: i.individual, name: i.name } as FollowingIndividual;
+      })
+    );
+  }
+
+  private updateLastObservation(individual: Individual, observation: Observation, phenophase: Phenophase): void {
     if (this.lastObservation) {
       const updateIndividual: Individual = {
         ...individual,
         ...{ last_observation_date: this.lastObservation.date, last_phenophase: this.lastObservation.phenophase }
       };
+
+      this.individualCreatorNickname.pipe(first()).subscribe(creator => {
+        const activity: Activity = {
+          user: individual.user,
+          user_nickname: creator,
+          date: observation.created,
+          individual: individual.individual,
+          individual_id: this.detailId,
+          text: phenophase.name_de,
+          name: individual.name
+        };
+
+        this.activityService.insert(activity);
+      });
 
       this.individualService.upsert(updateIndividual, this.detailId);
     }

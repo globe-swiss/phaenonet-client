@@ -155,6 +155,10 @@ export class AuthService extends BaseService {
     return loginResult.mapNullable(r => r.user);
   }
 
+  getUserObservable(): Observable<User> {
+    return this.user;
+  }
+
   getUserId(): string {
     if (this.firebaseUser == null) {
       return null;

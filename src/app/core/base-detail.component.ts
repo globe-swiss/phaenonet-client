@@ -41,7 +41,7 @@ export class BaseDetailComponent<T> implements OnInit {
     }
   }
 
-  private getDetailId(): Observable<string> {
+  protected getDetailId(): Observable<string> {
     if (this.detailId == null) {
       return this.getRouteParam('id');
     } else {

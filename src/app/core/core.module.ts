@@ -17,7 +17,7 @@ import { AlertService } from '../messaging/alert.service';
 import { AlertComponent } from '../messaging/alert.component';
 import { NavService } from './nav/nav.service';
 import { LanguageService } from './language.service';
-import { CurrentUserModule } from '../currentuser/current-user.module';
+import { ProfileModule } from '../profile/profile.module';
 
 /**
  * The `CoreModule` is used to group singleton services like {@link ExceptionService} and single-use components like {@link NavComponent}.
