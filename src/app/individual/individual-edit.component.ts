@@ -29,7 +29,10 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
   center: google.maps.LatLngLiteral = { lat: 46.818188, lng: 8.227512 };
   zoom = 9;
   options: google.maps.MapOptions = { mapTypeId: google.maps.MapTypeId.HYBRID };
-  markerOptions: google.maps.MarkerOptions = { draggable: true, icon: { url: '/assets/img/map_pins/map_pin_1.svg' } };
+  markerOptions: google.maps.MarkerOptions = {
+    draggable: true,
+    icon: { url: '/assets/img/map_pins/map_pin_1.svg', scaledSize: new google.maps.Size(60, 60) }
+  };
 
   geopos: google.maps.LatLngLiteral = this.center;
   altitude: number = 0;

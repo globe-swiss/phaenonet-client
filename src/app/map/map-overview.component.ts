@@ -117,7 +117,8 @@ export class MapOverviewComponent implements OnInit {
             phaenoIndex = this.phenophaseIndex[individual.last_phenophase];
           }
           const icon: google.maps.Icon = {
-            url: '/assets/img/map_pins/map_pin_' + individual.species.toLowerCase() + '_' + phaenoIndex + '.svg'
+            url: '/assets/img/map_pins/map_pin_' + individual.species.toLowerCase() + '_' + phaenoIndex + '.png',
+            scaledSize: new google.maps.Size(60, 60)
           };
           const markerOptions: google.maps.MarkerOptions = { draggable: false, icon: icon };
           return { individual: individual, markerOptions: markerOptions } as IndividualWithMarkerOpt;
