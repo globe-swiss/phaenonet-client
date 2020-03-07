@@ -74,7 +74,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
     super.ngOnInit();
     this.navService.setLocation('Objekt');
 
-    this.selectableSpecies = this.masterdataService.getSpecies();
+    this.selectableSpecies = this.masterdataService.getSelectableSpecies();
     this.selectableDescriptions = this.masterdataService.getDescriptions();
     this.selectableExpositions = this.masterdataService.getExpositions();
     this.selectableShades = this.masterdataService.getShades();

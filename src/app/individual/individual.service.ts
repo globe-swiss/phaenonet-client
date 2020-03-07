@@ -31,7 +31,9 @@ export class IndividualService extends BaseResourceService<Individual> {
     return (
       this.afs
         // TODO decide if year should be a number or a string
-        .collection<Individual>(this.collectionName, ref => ref.where('year', '==', year))
+        .collection<Individual>(this.collectionName, ref =>
+          ref.where('year', '==', year).orderBy('last_observation_date', 'desc')
+        )
         .valueChanges({ idField: 'id' })
         .pipe(
           map(individuals => {

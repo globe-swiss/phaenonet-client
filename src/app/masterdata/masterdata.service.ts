@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { publishReplay, refCount, map } from 'rxjs/operators';
+import { publishReplay, refCount, map, filter } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseService } from '../core/base.service';
 import { AlertService } from '../messaging/alert.service';
@@ -39,6 +39,10 @@ export class MasterdataService extends BaseService {
 
   getSpecies(): Observable<Species[]> {
     return this.getMasterdataFor('species');
+  }
+
+  getSelectableSpecies(): Observable<Species[]> {
+    return this.getSpecies().pipe(map(species => species.filter(s => s.tenant === 'ALL' || s.tenant === 'GLOBE_CH')));
   }
 
   getHabitats(): Observable<Habitat[]> {

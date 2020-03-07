@@ -5,9 +5,9 @@ import { ProfileDetailComponent } from './profile-detail.component';
 const routes: Routes = [
   {
     path: '',
-    component: ProfileDetailComponent,
     children: [
       { path: ':id', component: ProfileDetailComponent },
+      { path: '', component: ProfileDetailComponent },
       { path: '', redirectTo: '', pathMatch: 'full' }
     ]
   }

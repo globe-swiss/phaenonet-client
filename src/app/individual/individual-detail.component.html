@@ -39,7 +39,10 @@
         <span>{{ (lastPhenophase | async)?.name_de | translate }}</span>
       </div>
       <div>
-        <span translate>Von</span><span class="creator"> {{ individualCreatorNickname | async }}</span>
+        <span>{{ 'Von' | translate }} </span
+        ><a mat-button [routerLink]="['/profile', (detailSubject | async).user]" class="creator">{{
+          individualCreatorNickname | async
+        }}</a>
       </div>
       <div class="detail-label">{{ 'Umgebung' | translate }}</div>
       <div>{{ (description | async)?.de | translate }}</div>

@@ -7,7 +7,8 @@
       <h3>{{ 'PROFIL' | translate }}</h3>
     </div>
     <div gdColumn="3 / span 4" *ngIf="detailSubject | async" class="detail-right">
-      <div class="detail-label">{{ 'Hallo' | translate }}</div>
+      <div *ngIf="isOwner()" class="detail-label">{{ 'Hallo' | translate }}</div>
+      <div *ngIf="!isOwner()" class="detail-label">{{ 'Öffentliches Profil von' | translate }}</div>
       <h3>
         {{ (detailSubject | async).nickname }}
         <button mat-icon-button [app-copy-clipboard]="profileLink | async" (copied)="notifyCopied()">
@@ -20,7 +21,7 @@
         <div class="detail-label">{{ 'Nachname' | translate }}</div>
         <div>{{ (detailSubject | async).lastname }}</div>
         <div class="detail-label">{{ 'E-Mail' | translate }}</div>
-        <div>{{ (detailSubject | async).email }}</div>
+        <div>{{ email }}</div>
         <button mat-flat-button color="primary" type="submit" id="edit-button" (click)="editProfile()">
           {{ 'Profil bearbeiten' | translate }}
         </button>
@@ -59,7 +60,7 @@
         </div>
       </div>
       <button mat-flat-button color="primary" [routerLink]="'/individuals/new/edit'">
-        <mat-icon>+</mat-icon>
+        <mat-icon>add</mat-icon>
         <span>{{ 'Objekt hinzufügen' | translate }}</span>
       </button>
     </div>

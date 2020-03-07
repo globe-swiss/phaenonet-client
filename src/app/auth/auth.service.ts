@@ -99,7 +99,7 @@ export class AuthService extends BaseService {
   }
 
   register(email: string, password: string, nickname: string, firstname: string, lastname: string): Observable<User> {
-    const createDateTime = new Date().toISOString();
+    const createDateTime = new Date();
     this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
       .then(firebaseResult => {
@@ -109,7 +109,6 @@ export class AuthService extends BaseService {
           .collection('users')
           .doc(firebaseResult.user.uid)
           .set({
-            email: email,
             lang: this.languageService.determineCurrentLang(),
             nickname: nickname,
             firstname: firstname,
@@ -145,9 +144,11 @@ export class AuthService extends BaseService {
   }
 
   getUserEmail(): string {
-    return this.getUser()
-      .map(u => u.email)
-      .getOrElse('Anonymous');
+    if (this.firebaseUser) {
+      return this.firebaseUser.email;
+    } else {
+      return 'Anonymous';
+    }
   }
 
   getUser(): Option<User> {
