@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "i18n_extract": "ngx-translate-extract --input ./src -o ./src/assets/i18n/fr.json ./src/assets/i18n/en.json --clean --sort --format namespaced-json --format-indentation '  '"
+    "i18n_extract": "ngx-translate-extract --input ./src -o ./src/assets/i18n/fr-CH.json ./src/assets/i18n/it-CH.json --clean --sort --format namespaced-json --format-indentation '  '"
   },
   "private": true,
   "dependencies": {

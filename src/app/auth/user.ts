@@ -7,8 +7,7 @@ export class User {
   nickname: string;
   firstname: string;
   lastname: string;
-  email: string;
 
-  followingUser: FollowingUser[];
-  followingIndividual: FollowingIndividual[];
+  followingUsers: FollowingUser[];
+  followingIndividuals: FollowingIndividual[];
 }

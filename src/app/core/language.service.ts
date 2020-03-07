@@ -8,7 +8,7 @@ export class LanguageService {
 
   constructor(private translateService: TranslateService) {}
   init(): any {
-    this.translateService.addLangs(['de-CH', 'fr-CH', 'it-CH', 'en-GB']);
+    this.translateService.addLangs(['de-CH', 'fr-CH', 'it-CH']);
     const currentLang = this.determineCurrentLang();
     this.translateService.setDefaultLang('de-CH');
     this.translateService.use(currentLang);
@@ -42,9 +42,7 @@ export class LanguageService {
 
   private parseLang(userLang: string): string | null {
     const langLower = userLang.toLowerCase();
-    if (this.isLang(langLower, 'en')) {
-      return 'en-GB';
-    } else if (this.isLang(langLower, 'fr')) {
+    if (this.isLang(langLower, 'fr')) {
       return 'fr-CH';
     } else if (this.isLang(langLower, 'de')) {
       return 'de-CH';

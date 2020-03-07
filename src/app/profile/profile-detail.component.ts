@@ -60,12 +60,16 @@ export class ProfileDetailComponent extends BaseDetailComponent<User> implements
 
   activities: Observable<Activity[]>;
 
+  email: string;
+
   ngOnInit(): void {
     super.ngOnInit();
     this.navService.setLocation('Profil');
 
     this.detailSubject.subscribe(detail => {
       this.profileLink = of(window.location + '/' + this.detailId);
+
+      this.email = this.authService.getUserEmail();
 
       // combine the list of individuals with their phenophase
       this.latestIndividualObservations = this.individualService.listByUser(this.detailId, 4).pipe(
@@ -88,14 +92,18 @@ export class ProfileDetailComponent extends BaseDetailComponent<User> implements
         })
       );
 
-      this.activities = this.activityService.listByIndividual(detail.followingIndividual.map(fi => fi.id));
+      if (detail.followingIndividuals) {
+        this.activities = this.activityService.listByIndividual(detail.followingIndividuals.map(fi => fi.id));
+      }
     });
   }
 
   protected getDetailId(): Observable<string> {
     if (this.detailId == null) {
       return this.getRouteParam('id').pipe(
-        catchError(err => this.authService.getUserObservable().pipe(map(_ => this.authService.getUserId())))
+        catchError(_ => {
+          return this.authService.getUserObservable().pipe(map(_ => this.authService.getUserId()));
+        })
       );
     } else {
       return of(this.detailId);

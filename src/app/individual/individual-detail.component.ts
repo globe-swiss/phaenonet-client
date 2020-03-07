@@ -114,7 +114,7 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
       }
 
       this.isFollowing = this.currentUser.pipe(
-        map(u => u.followingIndividual.find(f => f.id === detail.individual) !== undefined)
+        map(u => u.followingIndividuals.find(f => f.id === detail.individual) !== undefined)
       );
 
       this.owner = detail.user;
