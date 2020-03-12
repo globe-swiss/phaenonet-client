@@ -6,8 +6,6 @@ import { map } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';
-import { FollowingIndividual } from '../profile/following-individual';
-import { FollowingUser } from '../profile/following-user';
 import { User } from './user';
 
 @Injectable()
@@ -20,20 +18,20 @@ export class UserService extends BaseResourceService<User> {
     return this.get(id).pipe(map(u => u.nickname));
   }
 
-  followIndividual(following: FollowingIndividual) {
-    this.followUnfollow({ followingIndividual: firebase.firestore.FieldValue.arrayUnion(following) });
+  followIndividual(target: string) {
+    this.followUnfollow({ following_individuals: firebase.firestore.FieldValue.arrayUnion(target) });
   }
 
-  unfollowIndividual(following: FollowingIndividual) {
-    this.followUnfollow({ followingIndividual: firebase.firestore.FieldValue.arrayRemove(following) });
+  unfollowIndividual(target: string) {
+    this.followUnfollow({ following_individuals: firebase.firestore.FieldValue.arrayRemove(target) });
   }
 
-  followUser(following: FollowingUser) {
-    this.followUnfollow({ followingUser: firebase.firestore.FieldValue.arrayUnion(following) });
+  followUser(target: string) {
+    this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayUnion(target) });
   }
 
-  unfollowUser(following: FollowingUser) {
-    this.followUnfollow({ followingUser: firebase.firestore.FieldValue.arrayRemove(following) });
+  unfollowUser(target: string) {
+    this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayRemove(target) });
   }
 
   private followUnfollow(partial: Partial<unknown>) {

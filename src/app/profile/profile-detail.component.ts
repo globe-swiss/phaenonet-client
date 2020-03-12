@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
-import { combineLatest, Observable, of, merge, concat } from 'rxjs';
-import { catchError, map, mergeMap, concatAll } from 'rxjs/operators';
+import { combineLatest, Observable, of, BehaviorSubject } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { Activity } from '../activity/activity';
+import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
 import { UserService } from '../auth/user.service';
@@ -14,8 +16,6 @@ import { IndividualService } from '../individual/individual.service';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { ObservationService } from '../observation/observation.service';
-import { ActivityService } from '../activity/activity.service';
-import { Activity } from '../activity/activity';
 
 @Component({
   templateUrl: './profile-detail.component.html',
@@ -58,9 +58,13 @@ export class ProfileDetailComponent extends BaseDetailComponent<User> implements
 
   latestIndividualObservations: Observable<IndividualPhenophase[]>;
 
+  limitActivities = new BehaviorSubject<number>(8);
+
   activities: Observable<Activity[]>;
 
   email: string;
+
+  isFollowing: Observable<boolean>;
 
   ngOnInit(): void {
     super.ngOnInit();
@@ -92,9 +96,13 @@ export class ProfileDetailComponent extends BaseDetailComponent<User> implements
         })
       );
 
-      if (detail.followingIndividuals) {
-        this.activities = this.activityService.listByIndividual(detail.followingIndividuals.map(fi => fi.id));
-      }
+      this.activities = this.limitActivities.pipe(
+        switchMap(limit => this.activityService.listByUser(this.authService.getUserId(), limit))
+      );
+
+      this.isFollowing = this.authService
+        .getUserObservable()
+        .pipe(map(u => u.following_users.find(id => id === this.detailId) !== undefined));
     });
   }
 
@@ -129,5 +137,20 @@ export class ProfileDetailComponent extends BaseDetailComponent<User> implements
       titleParams: Object,
       duration: none
     } as UntranslatedAlertMessage);
+  }
+
+  /**
+   * show 1000 for now
+   */
+  showAllActivities() {
+    this.limitActivities.next(1000);
+  }
+
+  follow(): void {
+    this.userService.followUser(this.detailId);
+  }
+
+  unfollow(): void {
+    this.userService.unfollowUser(this.detailId);
   }
 }
