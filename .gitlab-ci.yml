@@ -25,5 +25,5 @@ deploy:
     - npm ci
     - ng build
     - firebase --project phaenonet --token "$FIREBASE_TOKEN" deploy
-  #only:
-  #  - master
+  only:
+    - master

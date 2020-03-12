@@ -5,8 +5,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User as FUser } from 'firebase/app';
 import { none, Option, some } from 'fp-ts/lib/Option';
-import { from, Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { from, Observable, of, identity } from 'rxjs';
+import { switchMap, map, mergeMap, mergeAll, switchAll } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
@@ -53,23 +53,26 @@ export class AuthService extends BaseService {
   redirectUrl: string;
 
   login(email: string, password: string): Observable<User> {
-    this.afAuth.auth
-      .signInWithEmailAndPassword(email, password)
-      .then(firebaseResult => {
-        this.handleUserLogin(firebaseResult);
-      })
-      .catch(this.errorHandling.bind(this));
-
-    return this.user;
+    return from(
+      this.afAuth.auth
+        .signInWithEmailAndPassword(email, password)
+        .then(firebaseResult => {
+          return this.handleUserLogin(firebaseResult);
+        })
+        .catch(this.errorHandling.bind(this))
+    ).pipe(switchAll());
   }
 
-  private handleUserLogin(firebaseResult: any): void {
+  private handleUserLogin(firebaseResult: any): Observable<User> {
     if (firebaseResult) {
       this.firebaseUser = firebaseResult.user;
-      this.user = this.afs.doc<User>(`users/${this.firebaseUser.uid}`).valueChanges();
       this.user.subscribe(u => {
         this.handleLoginResult(new LoginResult('LOGIN_OK', this.firebaseUser, u));
       });
+
+      return this.user;
+    } else {
+      return of(null);
     }
   }
 
@@ -122,6 +125,38 @@ export class AuthService extends BaseService {
       .catch(this.errorHandling.bind(this));
 
     return this.user;
+  }
+
+  /**
+   * Email wasn't mandatory in the old application. This method is used to complete the existing account with an email address.
+   * The given nickname has been migrated to the authentication database as `nickname@example.com`.
+   *
+   * @param nickname nickname from the old days
+   * @param password existing password
+   * @param email the new email address
+   */
+  completeAccount(nickname: string, password: string, email: string): Observable<User> {
+    return from(
+      this.afAuth.auth
+        .signInWithEmailAndPassword(this.nicknameAsEmail(nickname), password)
+        .then(firebaseResult => {
+          if (firebaseResult) {
+            return from(
+              firebaseResult.user
+                .updateEmail(email)
+                .then(_ => {
+                  return this.login(email, password);
+                })
+                .catch(this.errorHandling.bind(this))
+            ).pipe(mergeAll());
+          }
+        })
+        .catch(this.errorHandling.bind(this))
+    ).pipe(mergeAll());
+  }
+
+  private nicknameAsEmail(nickname: string): string {
+    return nickname + '@example.com';
   }
 
   private removeCookie(name: string, path: string = '/') {
@@ -177,26 +212,15 @@ export class AuthService extends BaseService {
   }
 
   private errorHandling(error: any) {
-    if (error instanceof HttpErrorResponse) {
-      this.alertService.alertMessage({
-        title: 'Anmeldung fehlgeschlagen',
-        message: 'login-server-failure',
-        level: Level.ERROR,
-        messageParams: error,
-        titleParams: Object,
-        duration: none
-      } as UntranslatedAlertMessage);
-    } else {
-      this.alertService.alertMessage({
-        title: 'Anmeldung fehlgeschlagen',
-        message: 'login-unknown-failure',
-        level: Level.ERROR,
-        messageParams: {
-          error: error
-        },
-        titleParams: Object,
-        duration: none
-      } as UntranslatedAlertMessage);
-    }
+    this.alertService.alertMessage({
+      title: 'Anmeldung fehlgeschlagen',
+      message: 'login-unknown-failure',
+      level: Level.ERROR,
+      messageParams: {
+        error: error
+      },
+      titleParams: Object,
+      duration: none
+    } as UntranslatedAlertMessage);
   }
 }
