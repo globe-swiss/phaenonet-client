@@ -32,6 +32,24 @@
         <span *ngIf="isOwner()">{{ 'MEINE BEOBACHTUNGEN' }}</span
         ><span *ngIf="!isOwner()">{{ 'BEOBACHTUNGEN' | translate }}</span>
       </h3>
+      <button
+        *ngIf="!isOwner() && isFollowing | async"
+        mat-flat-button
+        class="detail-header-fab"
+        color="warn"
+        (click)="unfollow()"
+      >
+        {{ 'Kündigen' | translate }}
+      </button>
+      <button
+        *ngIf="!isOwner() && !(isFollowing | async)"
+        mat-flat-button
+        class="detail-header-fab"
+        color="primary"
+        (click)="follow()"
+      >
+        {{ 'Abonnieren' | translate }}
+      </button>
     </div>
     <div gdColumn="3 / span 4" *ngIf="detailSubject | async" class="detail-right">
       <div
@@ -87,6 +105,9 @@
           <div class="phenophase-title">{{ item.text | translate }}: {{ item.name }}</div>
         </div>
       </div>
+      <button mat-flat-button color="accent" (click)="showAllActivities()">
+        <span>{{ 'Mehr anzeigen' | translate }}</span>
+      </button>
     </div>
   </div>
 </div>

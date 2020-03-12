@@ -27,7 +27,6 @@ import { some } from 'fp-ts/lib/Option';
 import { AuthService } from '../auth/auth.service';
 import { PhenophaseGroup } from '../masterdata/phaenophase-group';
 import { PhenophaseObservationsGroup } from '../observation/phenophase-observations-group';
-import { FollowingIndividual } from '../profile/following-individual';
 import { User } from '../auth/user';
 import { Activity } from '../activity/activity';
 import { ActivityService } from '../activity/activity.service';
@@ -114,7 +113,7 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
       }
 
       this.isFollowing = this.currentUser.pipe(
-        map(u => u.followingIndividuals.find(f => f.id === detail.individual) !== undefined)
+        map(u => u.following_individuals.find(id => id === detail.individual) !== undefined)
       );
 
       this.owner = detail.user;
@@ -193,6 +192,7 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
               observation.phenophase = result.phenophase.id;
               observation.species = detail.species;
               observation.year = detail.year;
+              observation.user = detail.user;
             }
 
             const observationId = [
@@ -226,12 +226,10 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     this.individualToFollow().subscribe(f => this.userService.unfollowIndividual(f));
   }
 
-  private individualToFollow(): Observable<FollowingIndividual> {
+  private individualToFollow(): Observable<string> {
     return this.detailSubject.pipe(
       first(),
-      map(i => {
-        return { id: i.individual, name: i.name } as FollowingIndividual;
-      })
+      map(i => i.individual)
     );
   }
 

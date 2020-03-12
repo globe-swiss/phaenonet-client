@@ -11,13 +11,14 @@ export class ActivityService extends BaseResourceService<Activity> {
     super(alertService, afs, 'activities');
   }
 
-  /**
-   *
-   * @param individuals ids with at most 10 entries because of firebase. TODO: check if combining all arrays is feasible.
-   */
-  listByIndividual(individuals: string[]): Observable<Activity[]> {
+  listByUser(userId: string, limit: number = 8): Observable<Activity[]> {
     return this.afs
-      .collection<Activity>('activities', ref => ref.where('individual', 'in', individuals))
+      .collection<Activity>('activities', ref =>
+        ref
+          .where('followers', 'array-contains', userId)
+          .orderBy('date', 'desc')
+          .limit(limit)
+      )
       .valueChanges();
   }
 
