@@ -132,7 +132,7 @@ export class MasterdataService extends BaseService {
   private getMasterdataFor<T extends MasterdataLike>(reference: ReferenceType, name: MasterdataType): Observable<T[]> {
     return this.afs
       .collection('definitions')
-      .doc('individuals')
+      .doc(reference)
       .collection<T>(name)
       .valueChanges({ idField: 'id' })
       .pipe(publishReplay(1), refCount());
