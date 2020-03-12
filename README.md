@@ -14,6 +14,18 @@ https://github.com/angular/components
 
 `firebase login`
 
+# Import and rename pngs
+
+in src/assets/img/map_pins:
+
+`mmv 'map_pin_*_*_*@3x.png' 'map_pin_#1_#2.png'`
+
+`mv map_pin_meteoschweiz@3x.png map_pin_meteoschweiz_1.png` <- temporär
+
+`find . -regex ".*[^0-9]\.png" -type f -delete`
+
+`mv map_pin_meteoschweiz_1.png map_pin_meteoschweiz.png` <- temporär
+
 # Phaenonet
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.

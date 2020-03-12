@@ -11,6 +11,7 @@ export class Individual {
   less100: string;
   distance: string;
   shade: string;
+  source: 'globe' | 'meteoswiss';
   species: string;
   user: string;
   watering: string;

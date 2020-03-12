@@ -19,26 +19,41 @@
     >
     </map-marker>
     <map-info-window>
-      <div fxLayout="row" [routerLink]="(infoWindowData | async)?.url" class="map-info-window">
-        <img src="assets/img/Bildmarke-Phaenonet_rgb.png" style="max-height: 100px;" />
-        <div fxLayout="column" style="margin-left: 15px; margin-right: 15px;">
-          <div class="mat-small">
-            {{ (infoWindowData | async)?.species.de | translate }}
+      <ng-container *ngIf="(infoWindowType | async) === 'globe'">
+        <ng-container *ngIf="globeInfoWindowData | async as d">
+          <div fxLayout="row" [routerLink]="d.url" class="map-info-window">
+            <img src="assets/img/Bildmarke-Phaenonet_rgb.png" style="max-height: 100px;" />
+            <div fxLayout="column" style="margin-left: 15px; margin-right: 15px;">
+              <div class="mat-small">
+                {{ d.species.de | translate }}
+              </div>
+              <div>{{ d.individual.name }}</div>
+              <div class="mat-small" *ngIf="d.phenophase">
+                {{ 'Letzte Beobachtung,' | translate }}
+                {{ d.individual.last_observation_date | date }}
+              </div>
+              <div *ngIf="d.phenophase">
+                <span class="phenophase-circle" [ngStyle]="{ 'background-color': colorMap[d.phenophase?.id] }"></span>
+                {{ d.phenophase?.name_de | translate }}
+              </div>
+            </div>
           </div>
-          <div>{{ (infoWindowData | async)?.individual.name }}</div>
-          <div class="mat-small" *ngIf="(infoWindowData | async)?.phenophase">
-            {{ 'Letzte Beobachtung,' | translate }}
-            {{ (infoWindowData | async)?.individual.last_observation_date | date }}
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="(infoWindowType | async) === 'meteoswiss'">
+        <ng-container *ngIf="meteoswissInfoWindowData | async as d">
+          <div fxLayout="row" [routerLink]="d.url" class="map-info-window">
+            <img src="assets/img/Bildmarke-Phaenonet_rgb.png" style="max-height: 100px;" />
+            <div fxLayout="column" style="margin-left: 15px; margin-right: 15px;">
+              <div class="mat-small">
+                {{ 'Meteswiss' | translate }}
+              </div>
+              <div>{{ d.individual.name }}</div>
+            </div>
           </div>
-          <div *ngIf="(infoWindowData | async)?.phenophase">
-            <span
-              class="phenophase-circle"
-              [ngStyle]="{ 'background-color': colorMap[(infoWindowData | async)?.phenophase?.id] }"
-            ></span>
-            {{ (infoWindowData | async)?.phenophase?.name_de | translate }}
-          </div>
-        </div>
-      </div>
+        </ng-container>
+      </ng-container>
     </map-info-window>
   </google-map>
   <div class="map-actions">
