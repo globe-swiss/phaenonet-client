@@ -5,6 +5,7 @@ import { LoginComponent } from './login.component';
 import { LoggedOutComponent } from './logged-out.component';
 import { ResetPasswordComponent } from './reset-password.component';
 import { RegisterComponent } from './register.component';
+import { CompleteAccountComponent } from './complete-account.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,7 @@ const routes: Routes = [
       { path: 'logged-out', component: LoggedOutComponent },
       { path: 'reset-password', component: ResetPasswordComponent },
       { path: 'register', component: RegisterComponent },
+      { path: 'nickname-only', component: CompleteAccountComponent },
       { path: '', redirectTo: 'login', pathMatch: 'full' }
     ]
   }

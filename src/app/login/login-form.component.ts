@@ -8,7 +8,8 @@ import { none } from 'fp-ts/lib/Option';
 
 @Component({
   selector: 'app-login-form',
-  templateUrl: './login-form.component.html'
+  templateUrl: './login-form.component.html',
+  styleUrls: ['./login-form.component.scss']
 })
 export class LoginFormComponent {
   loginForm = new FormGroup({
