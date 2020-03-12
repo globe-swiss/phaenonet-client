@@ -13,6 +13,15 @@
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
+  <mat-form-field class="full-width" *ngIf="data.availableComments.length > 0">
+    <mat-label>{{ 'Kommentar' | translate }}</mat-label>
+    <mat-select [(value)]="data.observation.toNullable().comment">
+      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+      <mat-option *ngFor="let element of data.availableComments" [value]="element.id">
+        {{ element.de | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 <div mat-dialog-actions>
   <button mat-flat-button [mat-dialog-close]="data" cdkFocusInitial translate>Speichern</button>

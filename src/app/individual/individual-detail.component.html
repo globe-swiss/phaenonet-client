@@ -81,7 +81,7 @@
         <h4>{{ groupedItem.phenophaseGroup.name_de | translate }}</h4>
         <div *ngFor="let item of groupedItem.phenophaseObservations">
           <div class="detail-label">{{ item.phenophase.name_de | translate }}</div>
-          <mat-form-field class="full-width">
+          <mat-form-field class="full-width detail-observation-date">
             <input
               matInput
               [matDatepicker]="fakePicker"
@@ -105,6 +105,9 @@
               >edit</mat-icon
             >
           </mat-form-field>
+          <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment">
+            {{ 'Kommentar' }}: {{ staticComments[item.observation.toNullable()?.comment] | translate }}
+          </div>
         </div>
       </div>
     </div>

@@ -7,5 +7,5 @@ export class Observation {
   year: number;
   user: string;
   created: Date;
-  comment: string;
+  comment: string | null;
 }

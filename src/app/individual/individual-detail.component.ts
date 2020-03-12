@@ -87,6 +87,8 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
   currentUser: Observable<User>;
   isFollowing: Observable<boolean>;
 
+  staticComments = {};
+
   constructor(
     private navService: NavService,
     private router: Router,
@@ -153,6 +155,10 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
             observations.length - 1
           ];
 
+          comments.forEach(element => {
+            this.staticComments[element.id] = element.de;
+          });
+
           return phenophaseGroups.map(phenophaseGroup => {
             return {
               phenophaseGroup: phenophaseGroup,
@@ -181,7 +187,8 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
       width: '615px',
       data: {
         phenophase: phenophaseObservation.phenophase,
-        observation: some(phenophaseObservation.observation.getOrElse({} as Observation))
+        observation: some(phenophaseObservation.observation.getOrElse({} as Observation)),
+        availableComments: phenophaseObservation.availableComments
       }
     });
 
