@@ -7,4 +7,5 @@ export class Observation {
   year: number;
   user: string;
   created: Date;
+  comment: string;
 }

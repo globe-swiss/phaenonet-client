@@ -30,6 +30,7 @@ import { PhenophaseObservationsGroup } from '../observation/phenophase-observati
 import { User } from '../auth/user';
 import { Activity } from '../activity/activity';
 import { ActivityService } from '../activity/activity.service';
+import { Comment } from '../masterdata/comment';
 
 @Component({
   templateUrl: './individual-detail.component.html',
@@ -76,6 +77,7 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
 
   availablePhenophases: Observable<Phenophase[]>;
   availablePhenophaseGroups: Observable<PhenophaseGroup[]>;
+  availableComments: Observable<Comment[]>;
   individualObservations: Observable<Observation[]>;
   phenophaseObservationsGroups: Observable<PhenophaseObservationsGroup[]>;
   lastObservation: Observation;
@@ -132,6 +134,7 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
       this.availablePhenophases = this.masterdataService.getPhenophases(detail.species);
       this.availablePhenophaseGroups = this.masterdataService.getPhenophaseGroups(detail.species);
       this.individualObservations = this.observationService.listByIndividual(this.detailId);
+      this.availableComments = this.masterdataService.getComments();
 
       this.lastPhenophase = this.availablePhenophases.pipe(
         map(phenophases => {
@@ -144,7 +147,8 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
         this.availablePhenophaseGroups,
         this.availablePhenophases,
         this.individualObservations,
-        (phenophaseGroups, phenophases, observations) => {
+        this.availableComments,
+        (phenophaseGroups, phenophases, observations, comments) => {
           this.lastObservation = observations.sort((o1, o2) => o1.date.getTime() - o2.date.getTime())[
             observations.length - 1
           ];
@@ -157,7 +161,8 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
                 .map(p => {
                   return {
                     phenophase: p,
-                    observation: findFirst((o: Observation) => o.phenophase === p.id)(observations)
+                    observation: findFirst((o: Observation) => o.phenophase === p.id)(observations),
+                    availableComments: comments.filter(a => p.comments.find(commentId => commentId == a.id))
                   };
                 })
             };
