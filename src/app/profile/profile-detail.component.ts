@@ -39,20 +39,7 @@ export class ProfileDetailComponent extends BaseDetailComponent<User> implements
   }
 
   // temporary solution
-  colorMap = {
-    KNS: '#4b9f6f',
-    KNV: '#4b9f6f',
-    BEA: '#7bb53b',
-    BES: '#7bb53b',
-    BFA: '#7bb53b',
-    BLA: '#e8d439',
-    BLB: '#e8d439',
-    BLE: '#e8d439',
-    FRA: '#e8b658',
-    FRB: '#e8b658',
-    BVA: '#b29976',
-    BVS: '#b29976'
-  };
+  colorMap = {};
 
   profileLink: Observable<string>;
 
@@ -69,6 +56,8 @@ export class ProfileDetailComponent extends BaseDetailComponent<User> implements
   ngOnInit(): void {
     super.ngOnInit();
     this.navService.setLocation('Profil');
+
+    this.colorMap = this.masterdataService.colorMap;
 
     this.detailSubject.subscribe(detail => {
       this.profileLink = of(window.location + '/' + this.detailId);

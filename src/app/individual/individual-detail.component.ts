@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
-import { combineLatest, Observable } from 'rxjs';
-import { first, map, find, share, shareReplay } from 'rxjs/operators';
+import { combineLatest, Observable, ReplaySubject } from 'rxjs';
+import { first, map, find, share, shareReplay, tap } from 'rxjs/operators';
 import { UserService } from '../auth/user.service';
 import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
@@ -40,31 +40,16 @@ import { altitudeLimits } from '../masterdata/AltitudeLimits';
 export class IndividualDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
   center = { lat: 46.818188, lng: 8.227512 };
   zoom = 9;
-  options: google.maps.MapOptions = { mapTypeId: google.maps.MapTypeId.HYBRID, streetViewControl: false };
-  markerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    icon: { url: '/assets/img/map_pins/map_pin_1.svg', scaledSize: new google.maps.Size(60, 60) }
+  options: google.maps.MapOptions = {
+    mapTypeId: google.maps.MapTypeId.HYBRID,
+    streetViewControl: false,
+    draggable: false
   };
-
+  markerOptions = new ReplaySubject<google.maps.MarkerOptions>(1);
   geopos: google.maps.LatLngLiteral = { lat: 46.818188, lng: 8.227512 };
 
-  // temporary solution
-  colorMap = {
-    KNS: '#4b9f6f',
-    KNV: '#4b9f6f',
-    BEA: '#7bb53b',
-    BES: '#7bb53b',
-    BLA: '#e8d439',
-    BLB: '#e8d439',
-    BLE: '#e8d439',
-    FRA: '#e8b658',
-    FRB: '#e8b658',
-    BVA: '#b29976',
-    BVS: '#b29976',
-    BFA: '#000000'
-  };
-
   lastPhenophase: Observable<Phenophase>;
+  lastPhenophaseColor: Observable<string>;
 
   individualCreatorNickname: Observable<string>;
   species: Observable<Species>;
@@ -145,6 +130,8 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
         })
       );
 
+      this.lastPhenophaseColor = this.lastPhenophase.pipe(map(p => this.masterdataService.colorMap[p.id]));
+
       // combine the available phenophases with the existing observations
       this.phenophaseObservationsGroups = combineLatest([
         this.availablePhenophaseGroups,
@@ -178,6 +165,11 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
           });
         })
       );
+
+      this.markerOptions.next({
+        draggable: false,
+        icon: this.masterdataService.individualToIcon(detail)
+      } as google.maps.MarkerOptions);
     });
   }
 
