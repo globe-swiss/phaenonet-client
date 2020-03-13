@@ -121,8 +121,8 @@ export class MasterdataService extends BaseService {
     return this.getPhenoDataFor(speciesId, 'phenophases');
   }
 
-  getPhenophaseValue(speciesId: string, id: string): Observable<Phenophase> {
-    return this.getPhenoDataValueFor(speciesId, 'phenophases', id);
+  getPhenophaseValue(speciesId: string, phenophase: string): Observable<Phenophase> {
+    return this.getPhenoDataValueFor(speciesId, 'phenophases', phenophase);
   }
 
   getPhenophaseGroups(speciesId: string): Observable<PhenophaseGroup[]> {

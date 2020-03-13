@@ -9,6 +9,8 @@
       [matDatepicker]="picker"
       [ngModel]="data.observation.toNullable().date"
       (dateInput)="data.observation.toNullable().date = $event.value.toDate()"
+      [min]="data.limits.start_day"
+      [max]="data.limits.end_day"
     />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>

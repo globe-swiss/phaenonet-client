@@ -1,3 +1,5 @@
+import { AltitudeLimits } from './AltitudeLimits';
+
 export class Phenophase {
   id: string;
   description_de: string;
@@ -5,4 +7,5 @@ export class Phenophase {
   group_id: string;
   seq: number;
   comments: string[];
+  limits: AltitudeLimits;
 }
