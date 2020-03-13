@@ -39,7 +39,7 @@ import { altitudeLimits } from '../masterdata/AltitudeLimits';
 })
 export class IndividualDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
   center = { lat: 46.818188, lng: 8.227512 };
-  zoom = 9;
+  zoom = 13;
   options: google.maps.MapOptions = {
     mapTypeId: google.maps.MapTypeId.HYBRID,
     streetViewControl: false,
