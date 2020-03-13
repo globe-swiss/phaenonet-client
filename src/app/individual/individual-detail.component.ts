@@ -31,6 +31,7 @@ import { User } from '../auth/user';
 import { Activity } from '../activity/activity';
 import { ActivityService } from '../activity/activity.service';
 import { Comment } from '../masterdata/comment';
+import { altitudeLimits } from '../masterdata/AltitudeLimits';
 
 @Component({
   templateUrl: './individual-detail.component.html',
@@ -53,14 +54,14 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     KNV: '#4b9f6f',
     BEA: '#7bb53b',
     BES: '#7bb53b',
-    BFA: '#7bb53b',
     BLA: '#e8d439',
     BLB: '#e8d439',
     BLE: '#e8d439',
     FRA: '#e8b658',
     FRB: '#e8b658',
     BVA: '#b29976',
-    BVS: '#b29976'
+    BVS: '#b29976',
+    BFA: '#000000'
   };
 
   lastPhenophase: Observable<Phenophase>;
@@ -145,12 +146,13 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
       );
 
       // combine the available phenophases with the existing observations
-      this.phenophaseObservationsGroups = combineLatest(
+      this.phenophaseObservationsGroups = combineLatest([
         this.availablePhenophaseGroups,
         this.availablePhenophases,
         this.individualObservations,
-        this.availableComments,
-        (phenophaseGroups, phenophases, observations, comments) => {
+        this.availableComments
+      ]).pipe(
+        map(([phenophaseGroups, phenophases, observations, comments]) => {
           this.lastObservation = observations.sort((o1, o2) => o1.date.getTime() - o2.date.getTime())[
             observations.length - 1
           ];
@@ -167,13 +169,14 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
                 .map(p => {
                   return {
                     phenophase: p,
+                    limits: altitudeLimits(detail.altitude, p.limits),
                     observation: findFirst((o: Observation) => o.phenophase === p.id)(observations),
-                    availableComments: comments.filter(a => p.comments.find(commentId => commentId == a.id))
+                    availableComments: comments.filter(a => p.comments.find(commentId => commentId === a.id))
                   };
                 })
             };
           });
-        }
+        })
       );
     });
   }
@@ -187,9 +190,10 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
       width: '615px',
       data: {
         phenophase: phenophaseObservation.phenophase,
+        limits: phenophaseObservation.limits,
         observation: some(phenophaseObservation.observation.getOrElse({} as Observation)),
         availableComments: phenophaseObservation.availableComments
-      }
+      } as PhenophaseObservation
     });
 
     dialogRef.afterClosed().subscribe((result: PhenophaseObservation) => {
