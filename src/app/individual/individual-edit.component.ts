@@ -31,7 +31,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
   options: google.maps.MapOptions = { mapTypeId: google.maps.MapTypeId.HYBRID };
   markerOptions: google.maps.MarkerOptions = {
     draggable: true,
-    icon: { url: '/assets/img/map_pins/map_pin_1.svg', scaledSize: new google.maps.Size(60, 60) }
+    icon: { url: '/assets/img/map_pins/map_pin_generic.png', scaledSize: new google.maps.Size(55, 60) }
   };
 
   geopos: google.maps.LatLngLiteral = this.center;

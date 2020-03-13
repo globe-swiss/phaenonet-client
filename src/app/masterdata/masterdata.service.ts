@@ -17,6 +17,7 @@ import { MasterdataLike, PhenophasesdataLike } from './masterdata-like';
 import { Phenophase } from './phaenophase';
 import { PhenophaseGroup } from './phaenophase-group';
 import { Comment } from './comment';
+import { Individual } from '../individual/individual';
 
 export type MasterdataType =
   | 'species'
@@ -35,6 +36,58 @@ export type ReferenceType = 'individuals' | 'observations';
 export class MasterdataService extends BaseService {
   constructor(alertService: AlertService, private authService: AuthService, private afs: AngularFirestore) {
     super(alertService);
+  }
+
+  // temporary solution
+  public colorMap = {
+    KNS: '#4b9f6f',
+    KNV: '#4b9f6f',
+    BEA: '#7bb53b',
+    BES: '#7bb53b',
+    BLA: '#e8d439',
+    BLB: '#e8d439',
+    BLE: '#e8d439',
+    FRA: '#e8b658',
+    FRB: '#e8b658',
+    BVA: '#b29976',
+    BVS: '#b29976',
+    BFA: '#868072'
+  };
+
+  public phenophaseIndex = {
+    KNS: 1,
+    KNV: 1,
+    BEA: 2,
+    BES: 2,
+    BLA: 3,
+    BLB: 3,
+    BLE: 3,
+    FRA: 4,
+    FRB: 4,
+    BVA: 5,
+    BVS: 5,
+    BFA: 6
+  };
+
+  individualToIcon(individual: Individual): google.maps.Icon {
+    let phaenoIndex = 1;
+    if (individual.last_phenophase) {
+      phaenoIndex = this.phenophaseIndex[individual.last_phenophase];
+    }
+    let icon: google.maps.Icon;
+    if (individual.source === 'meteoswiss') {
+      icon = {
+        url: '/assets/img/map_pins/map_pin_meteoschweiz.png',
+        scaledSize: new google.maps.Size(60, 60)
+      };
+    } else {
+      icon = {
+        url: '/assets/img/map_pins/map_pin_' + individual.species.toLowerCase() + '_' + phaenoIndex + '.png',
+        scaledSize: new google.maps.Size(55, 60)
+      };
+    }
+
+    return icon;
   }
 
   /*
@@ -135,7 +188,10 @@ export class MasterdataService extends BaseService {
       .doc(reference)
       .collection<T>(name)
       .valueChanges({ idField: 'id' })
-      .pipe(publishReplay(1), refCount());
+      .pipe(
+        publishReplay(1),
+        refCount()
+      );
   }
 
   private getMasterdataValueFor<T extends MasterdataLike>(
@@ -158,7 +214,10 @@ export class MasterdataService extends BaseService {
       .doc(speciesId)
       .collection<T>(name, ref => ref.orderBy('seq'))
       .valueChanges({ idField: 'id' })
-      .pipe(publishReplay(1), refCount());
+      .pipe(
+        publishReplay(1),
+        refCount()
+      );
   }
 
   private getPhenoDataValueFor<T extends PhenophasesdataLike>(

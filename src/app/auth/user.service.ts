@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
@@ -18,26 +18,28 @@ export class UserService extends BaseResourceService<User> {
     return this.get(id).pipe(map(u => u.nickname));
   }
 
-  followIndividual(target: string) {
-    this.followUnfollow({ following_individuals: firebase.firestore.FieldValue.arrayUnion(target) });
+  followIndividual(target: string): Observable<void> {
+    return this.followUnfollow({ following_individuals: firebase.firestore.FieldValue.arrayUnion(target) });
   }
 
-  unfollowIndividual(target: string) {
-    this.followUnfollow({ following_individuals: firebase.firestore.FieldValue.arrayRemove(target) });
+  unfollowIndividual(target: string): Observable<void> {
+    return this.followUnfollow({ following_individuals: firebase.firestore.FieldValue.arrayRemove(target) });
   }
 
-  followUser(target: string) {
-    this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayUnion(target) });
+  followUser(target: string): Observable<void> {
+    return this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayUnion(target) });
   }
 
-  unfollowUser(target: string) {
-    this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayRemove(target) });
+  unfollowUser(target: string): Observable<void> {
+    return this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayRemove(target) });
   }
 
-  private followUnfollow(partial: Partial<unknown>) {
-    this.afs
-      .collection('users')
-      .doc(this.authService.getUserId())
-      .update(partial);
+  private followUnfollow(partial: Partial<unknown>): Observable<void> {
+    return from(
+      this.afs
+        .collection('users')
+        .doc(this.authService.getUserId())
+        .update(partial)
+    );
   }
 }

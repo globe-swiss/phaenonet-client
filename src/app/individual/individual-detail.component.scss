@@ -1,3 +1,5 @@
+@import '../../theming/palettes';
+
 .geopos-width {
   width: 70%;
 }
@@ -33,4 +35,8 @@ h4 {
   font-style: italic;
   margin-top: -1.25rem;
   padding-bottom: 1.25rem;
+}
+
+.following {
+  color: #1dff6e; //mat-color($phaenonet-p, A700);
 }

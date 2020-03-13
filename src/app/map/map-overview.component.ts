@@ -57,45 +57,19 @@ export class MapOverviewComponent implements OnInit {
     species: new FormControl(allSpecies.id)
   });
 
-  // temporary solution
-  colorMap = {
-    KNS: '#4b9f6f',
-    KNV: '#4b9f6f',
-    BEA: '#7bb53b',
-    BES: '#7bb53b',
-    BLA: '#e8d439',
-    BLB: '#e8d439',
-    BLE: '#e8d439',
-    FRA: '#e8b658',
-    FRB: '#e8b658',
-    BVA: '#b29976',
-    BVS: '#b29976',
-    BFA: '#000000'
-  };
-  phenophaseIndex = {
-    KNS: 1,
-    KNV: 1,
-    BEA: 2,
-    BES: 2,
-    BLA: 3,
-    BLB: 3,
-    BLE: 3,
-    FRA: 4,
-    FRB: 4,
-    BVA: 5,
-    BVS: 5,
-    BFA: 6
-  };
+  colorMap = {};
 
   constructor(
     private navService: NavService,
     private individualService: IndividualService,
-    private msterDataService: MasterdataService
-  ) {}
+    private masterDataService: MasterdataService
+  ) {
+    this.colorMap = masterDataService.colorMap;
+  }
 
   ngOnInit() {
     this.navService.setLocation('Karte');
-    this.msterDataService
+    this.masterDataService
       .getSpecies()
       .pipe(map(species => [allSpecies].concat(species)))
       .subscribe(this.species);
@@ -124,22 +98,7 @@ export class MapOverviewComponent implements OnInit {
       }),
       map(individuals => {
         const ret = individuals.map(individual => {
-          let phaenoIndex = 1;
-          if (individual.last_phenophase) {
-            phaenoIndex = this.phenophaseIndex[individual.last_phenophase];
-          }
-          let icon: google.maps.Icon;
-          if (individual.source === 'meteoswiss') {
-            icon = {
-              url: '/assets/img/map_pins/map_pin_meteoschweiz.png',
-              scaledSize: new google.maps.Size(60, 60)
-            };
-          } else {
-            icon = {
-              url: '/assets/img/map_pins/map_pin_' + individual.species.toLowerCase() + '_' + phaenoIndex + '.png',
-              scaledSize: new google.maps.Size(55, 60)
-            };
-          }
+          const icon = this.masterDataService.individualToIcon(individual);
           const markerOptions: google.maps.MarkerOptions = { draggable: false, icon: icon };
           return { individual: individual, markerOptions: markerOptions } as IndividualWithMarkerOpt;
         });
@@ -158,8 +117,8 @@ export class MapOverviewComponent implements OnInit {
       this.infoWindowType.next('meteoswiss');
     } else {
       combineLatest([
-        this.msterDataService.getSpeciesValue(individual.species),
-        this.msterDataService.getPhenophaseValue(individual.species, individual.last_phenophase)
+        this.masterDataService.getSpeciesValue(individual.species),
+        this.masterDataService.getPhenophaseValue(individual.species, individual.last_phenophase)
       ])
         .pipe(
           map(([species, phenophase]) => {

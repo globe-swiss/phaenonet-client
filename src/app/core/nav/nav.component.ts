@@ -27,10 +27,6 @@ export class NavComponent {
     return this.authService.getUserNickname();
   }
 
-  gravatar(): string {
-    return this.authService.getUserEmail();
-  }
-
   selectedLocale(): string {
     return this.translateService.currentLang || this.translateService.defaultLang;
   }

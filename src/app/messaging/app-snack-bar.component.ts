@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { AlertService, AlertMessage, Level } from './alert.service';
-import { AlertComponent } from './alert.component';
 import { TranslateService } from '@ngx-translate/core';
-import { of, forkJoin, Observable } from 'rxjs';
-import * as moment from 'moment';
-import { formatShortDate, formatShortDateTime } from '../core/formatDate';
+import { AlertComponent } from './alert.component';
+import { AlertMessage, AlertService, Level } from './alert.service';
 
 @Component({
   selector: 'app-snack-bar',

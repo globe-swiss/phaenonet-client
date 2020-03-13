@@ -2,11 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
-import { combineLatest, Observable } from 'rxjs';
-import { first, map, find, share, shareReplay } from 'rxjs/operators';
+import { some } from 'fp-ts/lib/Option';
+import { combineLatest, Observable, ReplaySubject } from 'rxjs';
+import { first, map, shareReplay } from 'rxjs/operators';
+import { Activity } from '../activity/activity';
+import { ActivityService } from '../activity/activity.service';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user';
 import { UserService } from '../auth/user.service';
 import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
+import { altitudeLimits } from '../masterdata/AltitudeLimits';
+import { Comment } from '../masterdata/comment';
 import { Description } from '../masterdata/description';
 import { Distance } from '../masterdata/distance';
 import { Exposition } from '../masterdata/exposition';
@@ -15,23 +22,17 @@ import { Habitat } from '../masterdata/habitat';
 import { Irrigation } from '../masterdata/irrigation';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
+import { PhenophaseGroup } from '../masterdata/phaenophase-group';
 import { Shade } from '../masterdata/shade';
 import { Species } from '../masterdata/species';
+import { AlertService } from '../messaging/alert.service';
 import { Observation } from '../observation/observation';
 import { ObservationService } from '../observation/observation.service';
 import { PhenophaseObservation } from '../observation/phenophase-observation';
+import { PhenophaseObservationsGroup } from '../observation/phenophase-observations-group';
 import { Individual } from './individual';
 import { IndividualService } from './individual.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
-import { some } from 'fp-ts/lib/Option';
-import { AuthService } from '../auth/auth.service';
-import { PhenophaseGroup } from '../masterdata/phaenophase-group';
-import { PhenophaseObservationsGroup } from '../observation/phenophase-observations-group';
-import { User } from '../auth/user';
-import { Activity } from '../activity/activity';
-import { ActivityService } from '../activity/activity.service';
-import { Comment } from '../masterdata/comment';
-import { altitudeLimits } from '../masterdata/AltitudeLimits';
 
 @Component({
   templateUrl: './individual-detail.component.html',
@@ -39,32 +40,17 @@ import { altitudeLimits } from '../masterdata/AltitudeLimits';
 })
 export class IndividualDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
   center = { lat: 46.818188, lng: 8.227512 };
-  zoom = 9;
-  options: google.maps.MapOptions = { mapTypeId: google.maps.MapTypeId.HYBRID, streetViewControl: false };
-  markerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    icon: { url: '/assets/img/map_pins/map_pin_1.svg', scaledSize: new google.maps.Size(60, 60) }
+  zoom = 13;
+  options: google.maps.MapOptions = {
+    mapTypeId: google.maps.MapTypeId.HYBRID,
+    streetViewControl: false,
+    draggable: false
   };
-
+  markerOptions = new ReplaySubject<google.maps.MarkerOptions>(1);
   geopos: google.maps.LatLngLiteral = { lat: 46.818188, lng: 8.227512 };
 
-  // temporary solution
-  colorMap = {
-    KNS: '#4b9f6f',
-    KNV: '#4b9f6f',
-    BEA: '#7bb53b',
-    BES: '#7bb53b',
-    BLA: '#e8d439',
-    BLB: '#e8d439',
-    BLE: '#e8d439',
-    FRA: '#e8b658',
-    FRB: '#e8b658',
-    BVA: '#b29976',
-    BVS: '#b29976',
-    BFA: '#000000'
-  };
-
   lastPhenophase: Observable<Phenophase>;
+  lastPhenophaseColor: Observable<string>;
 
   individualCreatorNickname: Observable<string>;
   species: Observable<Species>;
@@ -100,7 +86,8 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     private userService: UserService,
     private activityService: ActivityService,
     public dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService
   ) {
     super(individualService, route);
   }
@@ -145,6 +132,8 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
         })
       );
 
+      this.lastPhenophaseColor = this.lastPhenophase.pipe(map(p => this.masterdataService.colorMap[p.id]));
+
       // combine the available phenophases with the existing observations
       this.phenophaseObservationsGroups = combineLatest([
         this.availablePhenophaseGroups,
@@ -178,6 +167,11 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
           });
         })
       );
+
+      this.markerOptions.next({
+        draggable: false,
+        icon: this.masterdataService.individualToIcon(detail)
+      } as google.maps.MarkerOptions);
     });
   }
 
@@ -235,11 +229,28 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
   }
 
   follow(): void {
-    this.individualToFollow().subscribe(f => this.userService.followIndividual(f));
+    this.individualToFollow().subscribe(f =>
+      this.userService
+        .followIndividual(f)
+        .pipe(first())
+        .subscribe(_ => {
+          this.alertService.infoMessage('Aktivitäten abonniert', 'Sie haben die Aktivitäten des Objekts abonniert.');
+        })
+    );
   }
 
   unfollow(): void {
-    this.individualToFollow().subscribe(f => this.userService.unfollowIndividual(f));
+    this.individualToFollow().subscribe(f =>
+      this.userService
+        .unfollowIndividual(f)
+        .pipe(first())
+        .subscribe(_ => {
+          this.alertService.infoMessage(
+            'Aktivitäten gekündigt',
+            'Sie erhalten keine Aktivitäten mehr zu diesem Objekt.'
+          );
+        })
+    );
   }
 
   private individualToFollow(): Observable<string> {

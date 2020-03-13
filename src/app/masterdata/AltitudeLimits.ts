@@ -1,5 +1,4 @@
 import * as moment from 'moment';
-import { Phenophase } from './phaenophase';
 
 export interface AltitudeLimits {
   altitude_grp_1_start_day: number;
