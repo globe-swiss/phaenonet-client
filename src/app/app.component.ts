@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import browserUpdate from 'browser-update';
 import { LanguageService } from './core/language.service';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +13,12 @@ import { LanguageService } from './core/language.service';
 export class AppComponent {
   title = 'phaenonet';
 
-  constructor(languageService: LanguageService, translateService: TranslateService) {
+  constructor(
+    languageService: LanguageService,
+    translateService: TranslateService,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
+  ) {
     languageService.init();
 
     translateService.get('browser-support').subscribe(translation =>
@@ -20,6 +27,16 @@ export class AppComponent {
         required: { e: 14, f: 60, o: 53, s: 11, c: 67 },
         text: translation
       })
+    );
+
+    this.matIconRegistry.addSvgIcon(
+      'subscribe-active',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/btn_subscribe_active.svg')
+    );
+
+    this.matIconRegistry.addSvgIcon(
+      'subscribe',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/btn_subscribe_normal.svg')
     );
   }
 }

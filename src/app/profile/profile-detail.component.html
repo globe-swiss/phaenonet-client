@@ -38,8 +38,8 @@
         <button
           *ngIf="(!isOwner() && isFollowing | async)"
           mat-flat-button
-          class="detail-header-fab"
-          color="warn"
+          class="detail-header-fab a100"
+          color="primary"
           (click)="unfollow()"
         >
           {{ 'Kündigen' | translate }}
