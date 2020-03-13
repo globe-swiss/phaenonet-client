@@ -10,9 +10,18 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
 import { ObservationModule } from '../observation/observation.module';
 import { ActivityModule } from '../activity/activity.module';
 import { OpenModule } from '../open/open.module';
+import { StorageModule } from '../core/storage/storage.module';
 
 @NgModule({
-  imports: [SharedModule, IndividualRoutingModule, MasterdataModule, ObservationModule, ActivityModule, OpenModule],
+  imports: [
+    SharedModule,
+    IndividualRoutingModule,
+    MasterdataModule,
+    ObservationModule,
+    ActivityModule,
+    OpenModule,
+    StorageModule
+  ],
   declarations: [IndividualEditComponent, IndividualDetailComponent, PhenophaseDialogComponent],
   providers: [IndividualService],
   exports: [],

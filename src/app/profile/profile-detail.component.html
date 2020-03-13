@@ -106,7 +106,12 @@
           <span *ngIf="isOwner()">{{ 'AKTIVITÄTEN' | translate }}</span>
         </h3>
       </div>
-      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="(isOwner() && detailSubject | async)" class="detail-right">
+      <div
+        gdColumn="3 / span 4"
+        gdColumn.lt-md="2 / span 5"
+        *ngIf="(isOwner() && detailSubject | async)"
+        class="detail-right"
+      >
         <div
           fxLayout="row"
           *ngFor="let item of (activities | async)"
