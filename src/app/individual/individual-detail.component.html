@@ -23,87 +23,89 @@
         <mat-icon>notifications_none</mat-icon>
       </button>
     </div>
-    <div gdColumn="1 / span 2" *ngIf="(detailSubject | async)" class="detail-left">
-      <div class="detail-label">{{ (species | async)?.de | translate }}</div>
-      <h3>{{ (detailSubject | async).name }}</h3>
-      <div class="detail-label" *ngIf="(detailSubject | async).last_observation_date">
-        <span translate>Letzte Beobachtung</span>
-        <!-- TODO remove method call -->
-        <span>, {{ (detailSubject | async).last_observation_date?.toDate() | date }}</span>
-      </div>
-      <div class="phenophase-title" *ngIf="(lastPhenophase | async)">
-        <span class="phenophase-circle" [ngStyle]="{ 'background-color': lastPhenophaseColor | async }"></span>
-        <span>{{ (lastPhenophase | async)?.name_de | translate }}</span>
-      </div>
-      <div>
-        <span>{{ 'Von' | translate }} </span
-        ><a mat-button [routerLink]="['/profile', (detailSubject | async).user]" class="creator">{{
-          individualCreatorNickname | async
-        }}</a>
-      </div>
-      <div class="detail-label">{{ 'Umgebung' | translate }}</div>
-      <div>{{ (description | async)?.de | translate }}</div>
-      <div class="detail-label">{{ 'Höhe' | translate }}</div>
-      <div>
-        <span>{{ (detailSubject | async)?.altitude }}</span
-        ><span translate> {{ 'M.ü.M.' }}</span>
-      </div>
-      <div class="detail-label">{{ 'Exposition' | translate }}</div>
-      <div>{{ (exposition | async)?.de | translate }}</div>
-      <div class="detail-label">{{ 'Schatten' | translate }}</div>
-      <div>{{ (shade | async)?.de | translate }}</div>
-      <div class="detail-label">{{ 'Bewässerung' | translate }}</div>
-      <div>{{ (irrigation | async)?.de | translate }}</div>
-      <div class="detail-label">{{ 'Distanz zu Gebäude / Strasse' | translate }}</div>
-      <div>{{ (distance | async)?.de | translate }}</div>
-      <div class="detail-label">{{ 'Habitat' | translate }}</div>
-      <div>{{ (habitat | async)?.de | translate }}</div>
-      <div class="detail-label">{{ 'Waldtyp' | translate }}</div>
-      <div>{{ (forest | async)?.de | translate }}</div>
+    <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
+      <div gdColumn="1 / span 2" *ngIf="(detailSubject | async)" class="detail-left">
+        <div class="detail-label">{{ (species | async)?.de | translate }}</div>
+        <h3>{{ (detailSubject | async).name }}</h3>
+        <div class="detail-label" *ngIf="(detailSubject | async).last_observation_date">
+          <span translate>Letzte Beobachtung</span>
+          <!-- TODO remove method call -->
+          <span>, {{ (detailSubject | async).last_observation_date?.toDate() | date }}</span>
+        </div>
+        <div class="phenophase-title" *ngIf="(lastPhenophase | async)">
+          <span class="phenophase-circle" [ngStyle]="{ 'background-color': lastPhenophaseColor | async }"></span>
+          <span>{{ (lastPhenophase | async)?.name_de | translate }}</span>
+        </div>
+        <div>
+          <span>{{ 'Von' | translate }} </span
+          ><a mat-button [routerLink]="['/profile', (detailSubject | async).user]" class="creator">{{
+            individualCreatorNickname | async
+          }}</a>
+        </div>
+        <div class="detail-label">{{ 'Umgebung' | translate }}</div>
+        <div>{{ (description | async)?.de | translate }}</div>
+        <div class="detail-label">{{ 'Höhe' | translate }}</div>
+        <div>
+          <span>{{ (detailSubject | async)?.altitude }}</span
+          ><span translate> {{ 'M.ü.M.' }}</span>
+        </div>
+        <div class="detail-label">{{ 'Exposition' | translate }}</div>
+        <div>{{ (exposition | async)?.de | translate }}</div>
+        <div class="detail-label">{{ 'Schatten' | translate }}</div>
+        <div>{{ (shade | async)?.de | translate }}</div>
+        <div class="detail-label">{{ 'Bewässerung' | translate }}</div>
+        <div>{{ (irrigation | async)?.de | translate }}</div>
+        <div class="detail-label">{{ 'Distanz zu Gebäude / Strasse' | translate }}</div>
+        <div>{{ (distance | async)?.de | translate }}</div>
+        <div class="detail-label">{{ 'Habitat' | translate }}</div>
+        <div>{{ (habitat | async)?.de | translate }}</div>
+        <div class="detail-label">{{ 'Waldtyp' | translate }}</div>
+        <div>{{ (forest | async)?.de | translate }}</div>
 
-      <button
-        mat-flat-button
-        color="primary"
-        type="submit"
-        id="edit-button"
-        (click)="editDetail()"
-        [appDisableNotOwner]="(detailSubject | async)?.user"
-      >
-        {{ 'Objekt bearbeiten' | translate }}
-      </button>
-    </div>
-    <div gdColumn="3 / span 4" class="detail-right">
-      <h3 translate>Phaenophasen</h3>
-      <div *ngFor="let groupedItem of (phenophaseObservationsGroups | async)" class="phenophase-group">
-        <h4>{{ groupedItem.phenophaseGroup.name_de | translate }}</h4>
-        <div *ngFor="let item of groupedItem.phenophaseObservations">
-          <div class="detail-label">{{ item.phenophase.name_de | translate }}</div>
-          <mat-form-field class="full-width detail-observation-date">
-            <input
-              matInput
-              [matDatepicker]="fakePicker"
-              [id]="item.id"
-              placeholder="{{ item.phenophase.description_de | translate }}"
-              [value]="item.observation.toNullable()?.date"
-              readonly="true"
-            />
-            <mat-icon
-              *ngIf="isOwner() && item.observation.isNone()"
-              matSuffix
-              color="primary"
-              (click)="editPhenophaseDate(item)"
-              >add_circle</mat-icon
-            >
-            <mat-icon
-              *ngIf="isOwner() && item.observation.isSome()"
-              matSuffix
-              color="primary"
-              (click)="editPhenophaseDate(item)"
-              >edit</mat-icon
-            >
-          </mat-form-field>
-          <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment">
-            {{ 'Kommentar' }}: {{ staticComments[(item.observation.toNullable()?.comment)] | translate }}
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          id="edit-button"
+          (click)="editDetail()"
+          [appDisableNotOwner]="(detailSubject | async)?.user"
+        >
+          {{ 'Objekt bearbeiten' | translate }}
+        </button>
+      </div>
+      <div gdColumn="3 / span 4" class="detail-right">
+        <h3 translate>Phaenophasen</h3>
+        <div *ngFor="let groupedItem of (phenophaseObservationsGroups | async)" class="phenophase-group">
+          <h4>{{ groupedItem.phenophaseGroup.name_de | translate }}</h4>
+          <div *ngFor="let item of groupedItem.phenophaseObservations">
+            <div class="detail-label">{{ item.phenophase.name_de | translate }}</div>
+            <mat-form-field class="full-width detail-observation-date">
+              <input
+                matInput
+                [matDatepicker]="fakePicker"
+                [id]="item.id"
+                placeholder="{{ item.phenophase.description_de | translate }}"
+                [value]="item.observation.toNullable()?.date"
+                readonly="true"
+              />
+              <mat-icon
+                *ngIf="isOwner() && item.observation.isNone()"
+                matSuffix
+                color="primary"
+                (click)="editPhenophaseDate(item)"
+                >add_circle</mat-icon
+              >
+              <mat-icon
+                *ngIf="isOwner() && item.observation.isSome()"
+                matSuffix
+                color="primary"
+                (click)="editPhenophaseDate(item)"
+                >edit</mat-icon
+              >
+            </mat-form-field>
+            <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment">
+              {{ 'Kommentar' }}: {{ staticComments[(item.observation.toNullable()?.comment)] | translate }}
+            </div>
           </div>
         </div>
       </div>
