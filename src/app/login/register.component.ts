@@ -8,6 +8,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { none } from 'fp-ts/lib/Option';
 import { equalValidation } from '../shared/validation';
+import { MatSelectChange } from '@angular/material';
+import { LanguageService } from '../core/language.service';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +22,8 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     lastname: new FormControl(''),
     email: new FormControl(''),
     password: new FormControl(''),
-    passwordConfirm: new FormControl('')
+    passwordConfirm: new FormControl(''),
+    locale: new FormControl('de-CH')
   });
 
   registerFailed = false;
@@ -31,7 +34,8 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     private authService: AuthService,
     private alertService: AlertService,
     private router: Router,
-    private navService: NavService
+    private navService: NavService,
+    private languageService: LanguageService
   ) {}
 
   ngOnInit(): void {
@@ -52,7 +56,8 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
         this.registerForm.controls.password.value,
         this.registerForm.controls.nickname.value,
         this.registerForm.controls.firstname.value,
-        this.registerForm.controls.lastname.value
+        this.registerForm.controls.lastname.value,
+        this.registerForm.controls.locale.value
       )
       .subscribe(user => {
         if (user) {
@@ -80,5 +85,9 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     } else {
       return 'Registrieren Sie sich für PhaenoNet';
     }
+  }
+
+  changeLocale(event: MatSelectChange) {
+    this.languageService.changeLocale(event.value);
   }
 }

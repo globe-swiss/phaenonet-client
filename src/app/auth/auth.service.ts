@@ -101,7 +101,14 @@ export class AuthService extends BaseService {
     );
   }
 
-  register(email: string, password: string, nickname: string, firstname: string, lastname: string): Observable<User> {
+  register(
+    email: string,
+    password: string,
+    nickname: string,
+    firstname: string,
+    lastname: string,
+    locale: string
+  ): Observable<User> {
     const createDateTime = new Date();
     this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
@@ -117,6 +124,7 @@ export class AuthService extends BaseService {
             firstname: firstname,
             lastname: lastname,
             role: 'USER',
+            locale: locale,
             create_dt: createDateTime,
             modify_dt: createDateTime
           })

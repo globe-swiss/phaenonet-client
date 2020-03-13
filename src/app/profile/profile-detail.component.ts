@@ -152,4 +152,8 @@ export class ProfileDetailComponent extends BaseDetailComponent<User> implements
         this.alertService.infoMessage('Aktivitäten gekündigt', 'Sie erhalten keine Aktivitäten mehr dieses Benutzers.');
       });
   }
+
+  logout() {
+    this.authService.logout();
+  }
 }
