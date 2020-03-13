@@ -2,11 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
+import { some } from 'fp-ts/lib/Option';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { first, map, find, share, shareReplay, tap } from 'rxjs/operators';
+import { first, map, shareReplay } from 'rxjs/operators';
+import { Activity } from '../activity/activity';
+import { ActivityService } from '../activity/activity.service';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user';
 import { UserService } from '../auth/user.service';
 import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
+import { altitudeLimits } from '../masterdata/AltitudeLimits';
+import { Comment } from '../masterdata/comment';
 import { Description } from '../masterdata/description';
 import { Distance } from '../masterdata/distance';
 import { Exposition } from '../masterdata/exposition';
@@ -15,23 +22,17 @@ import { Habitat } from '../masterdata/habitat';
 import { Irrigation } from '../masterdata/irrigation';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
+import { PhenophaseGroup } from '../masterdata/phaenophase-group';
 import { Shade } from '../masterdata/shade';
 import { Species } from '../masterdata/species';
+import { AlertService } from '../messaging/alert.service';
 import { Observation } from '../observation/observation';
 import { ObservationService } from '../observation/observation.service';
 import { PhenophaseObservation } from '../observation/phenophase-observation';
+import { PhenophaseObservationsGroup } from '../observation/phenophase-observations-group';
 import { Individual } from './individual';
 import { IndividualService } from './individual.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
-import { some } from 'fp-ts/lib/Option';
-import { AuthService } from '../auth/auth.service';
-import { PhenophaseGroup } from '../masterdata/phaenophase-group';
-import { PhenophaseObservationsGroup } from '../observation/phenophase-observations-group';
-import { User } from '../auth/user';
-import { Activity } from '../activity/activity';
-import { ActivityService } from '../activity/activity.service';
-import { Comment } from '../masterdata/comment';
-import { altitudeLimits } from '../masterdata/AltitudeLimits';
 
 @Component({
   templateUrl: './individual-detail.component.html',
@@ -85,7 +86,8 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     private userService: UserService,
     private activityService: ActivityService,
     public dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService
   ) {
     super(individualService, route);
   }
@@ -227,11 +229,28 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
   }
 
   follow(): void {
-    this.individualToFollow().subscribe(f => this.userService.followIndividual(f));
+    this.individualToFollow().subscribe(f =>
+      this.userService
+        .followIndividual(f)
+        .pipe(first())
+        .subscribe(_ => {
+          this.alertService.infoMessage('Aktivitäten abonniert', 'Sie haben die Aktivitäten des Objekts abonniert.');
+        })
+    );
   }
 
   unfollow(): void {
-    this.individualToFollow().subscribe(f => this.userService.unfollowIndividual(f));
+    this.individualToFollow().subscribe(f =>
+      this.userService
+        .unfollowIndividual(f)
+        .pipe(first())
+        .subscribe(_ => {
+          this.alertService.infoMessage(
+            'Aktivitäten gekündigt',
+            'Sie erhalten keine Aktivitäten mehr zu diesem Objekt.'
+          );
+        })
+    );
   }
 
   private individualToFollow(): Observable<string> {

@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
 import { combineLatest, Observable, of, BehaviorSubject } from 'rxjs';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, first } from 'rxjs/operators';
 import { Activity } from '../activity/activity';
 import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
@@ -136,10 +136,20 @@ export class ProfileDetailComponent extends BaseDetailComponent<User> implements
   }
 
   follow(): void {
-    this.userService.followUser(this.detailId);
+    this.userService
+      .followUser(this.detailId)
+      .pipe(first())
+      .subscribe(_ => {
+        this.alertService.infoMessage('Aktivitäten abonniert', 'Sie haben die Aktivitäten des Benutzers abonniert.');
+      });
   }
 
   unfollow(): void {
-    this.userService.unfollowUser(this.detailId);
+    this.userService
+      .unfollowUser(this.detailId)
+      .pipe(first())
+      .subscribe(_ => {
+        this.alertService.infoMessage('Aktivitäten gekündigt', 'Sie erhalten keine Aktivitäten mehr dieses Benutzers.');
+      });
   }
 }

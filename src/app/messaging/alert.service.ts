@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Subject, combineLatest } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Option } from 'fp-ts/lib/Option';
+import { Option, some } from 'fp-ts/lib/Option';
+import { combineLatest, Subject } from 'rxjs';
 
 export enum Level {
   INFO,
@@ -44,5 +44,22 @@ export class AlertService {
         duration: untranslated.duration.getOrElse(7000)
       } as AlertMessage);
     });
+  }
+
+  infoMessage(
+    title: string,
+    message: string,
+    duration: Option<number> = some(3000),
+    messageParams: Object = {},
+    titleParams: Object = {}
+  ): void {
+    this.alertMessage({
+      title: title,
+      message: message,
+      level: Level.INFO,
+      messageParams: messageParams,
+      titleParams: titleParams,
+      duration: duration
+    } as UntranslatedAlertMessage);
   }
 }
