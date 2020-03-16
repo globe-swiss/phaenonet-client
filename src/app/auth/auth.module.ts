@@ -2,7 +2,6 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth-guard.service';
-import { RoleGuard } from './role-guard.service';
 import { throwIfAlreadyLoaded } from '../core/module-import-guard';
 import { UserService } from './user.service';
 
@@ -11,7 +10,7 @@ import { UserService } from './user.service';
  */
 @NgModule({
   imports: [],
-  providers: [AuthService, AuthGuard, RoleGuard, UserService]
+  providers: [AuthService, AuthGuard, UserService]
 })
 export class AuthModule {
   constructor(

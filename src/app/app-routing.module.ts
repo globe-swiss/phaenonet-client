@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './auth/auth-guard.service';
-import { RoleGuard } from './auth/role-guard.service';
 import { LOGIN_URL } from './auth/auth.service';
 import { NotFoundComponent } from './core/not-found.component';
 
 const routes: Routes = [
   {
     path: '',
-    canActivateChild: [AuthGuard, RoleGuard],
-    data: { roles: ['USER'] },
+    canActivateChild: [AuthGuard],
+    data: {},
     children: [
       {
         path: 'individuals',

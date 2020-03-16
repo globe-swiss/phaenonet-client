@@ -5,7 +5,6 @@ import { AuthService } from './auth.service';
   selector: '[appDisableNotOwner]'
 })
 export class DisableNotOwnerDirective implements AfterViewInit {
-  // weakest role by default
   @Input('appDisableNotOwner')
   owner: string = '';
 

@@ -11,7 +11,6 @@ import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { LoginResult } from './login-result';
-import { Role, roleOrdinal } from './role';
 import { User } from './user';
 
 export const LOGIN_URL = '/auth/login';
@@ -123,7 +122,6 @@ export class AuthService extends BaseService {
             nickname: nickname,
             firstname: firstname,
             lastname: lastname,
-            role: 'USER',
             locale: locale,
             create_dt: createDateTime,
             modify_dt: createDateTime
@@ -173,11 +171,6 @@ export class AuthService extends BaseService {
 
   isLoggedIn(): boolean {
     return this.getParsedLoginResult().isSome();
-  }
-
-  hasRole(role: Role): boolean {
-    const loginResult = this.getParsedLoginResult();
-    return loginResult.map(r => roleOrdinal(r.user.role) >= roleOrdinal(role)).getOrElse(false);
   }
 
   getUserNickname(): string {
