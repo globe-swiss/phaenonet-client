@@ -13,7 +13,7 @@ export class PublicUserService {
   getByUserId(userId: string): Observable<PublicUser> {
     return this.afs
       .collection<PublicUser>(this.collectionName, ref => ref.where('user', '==', userId))
-      .valueChanges()
+      .valueChanges({ idField: 'id' })
       .pipe(map(publicUsers => (publicUsers.length > 0 ? publicUsers[0] : null)));
   }
 
