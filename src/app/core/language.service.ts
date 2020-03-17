@@ -41,13 +41,17 @@ export class LanguageService {
   }
 
   private parseLang(userLang: string): string | null {
-    const langLower = userLang.toLowerCase();
-    if (this.isLang(langLower, 'fr')) {
-      return 'fr-CH';
-    } else if (this.isLang(langLower, 'de')) {
-      return 'de-CH';
-    } else if (this.isLang(langLower, 'it')) {
-      return 'it-CH';
+    if (userLang) {
+      const langLower = userLang.toLowerCase();
+      if (this.isLang(langLower, 'fr')) {
+        return 'fr-CH';
+      } else if (this.isLang(langLower, 'de')) {
+        return 'de-CH';
+      } else if (this.isLang(langLower, 'it')) {
+        return 'it-CH';
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
