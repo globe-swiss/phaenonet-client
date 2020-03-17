@@ -1,8 +1,12 @@
 <mat-toolbar id="nav-component">
   <mat-toolbar-row>
-    <div gdColumns="repeat(8, 1fr)" class="menu-row">
-      <div gdColumn="2" class="logo">
-        <img src="assets/img/Bildmarke-Phaenonet_rgb.png" alt="PhaenoNet Logo" />
+    <div
+      gdColumns="repeat(8, 1fr)"
+      gdAreas="logo buttons buttons buttons buttons buttons language user"
+      class="menu-row"
+    >
+      <div gdArea="logo" class="logo">
+        <img [routerLink]="''" gdArea="logo" src="assets/img/Bildmarke-Phaenonet_rgb.png" alt="PhaenoNet Logo" />
       </div>
       <div gdColumn="3 / span 5" fxLayoutAlign="flex-end" id="buttons">
         <div class="left-border" *ngIf="isLoggedIn()">

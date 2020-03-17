@@ -1,10 +1,8 @@
-import { Component, Output, EventEmitter, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
-import { none } from 'fp-ts/lib/Option';
+import { AlertService } from '../messaging/alert.service';
 
 @Component({
   selector: 'app-login-form',

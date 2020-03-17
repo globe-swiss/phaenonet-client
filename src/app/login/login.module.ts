@@ -11,9 +11,10 @@ import { LoggedOutComponent } from './logged-out.component';
 import { ResetPasswordComponent } from './reset-password.component';
 import { RegisterComponent } from './register.component';
 import { CompleteAccountComponent } from './complete-account.component';
+import { OpenModule } from '../open/open.module';
 
 @NgModule({
-  imports: [SharedModule, LoginRoutingModule],
+  imports: [SharedModule, LoginRoutingModule, OpenModule],
   declarations: [
     LoginComponent,
     LoginDialogComponent,

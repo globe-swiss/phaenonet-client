@@ -25,6 +25,9 @@
             placeholder="{{ 'Nickname' | translate }}"
             required
           />
+          <mat-error>
+            {{ 'Dieser Nickname ist bereits vergeben.' | translate }}
+          </mat-error>
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ 'Vorname' | translate }} </mat-label>

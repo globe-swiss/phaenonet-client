@@ -1,15 +1,16 @@
-import { Component, Output, Input, ElementRef, ViewChild, OnInit, AfterViewChecked } from '@angular/core';
+import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { debounceTime, map, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
-import { NavService } from '../core/nav/nav.service';
 import { User } from '../auth/user';
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
-import { none } from 'fp-ts/lib/Option';
+import { NavService } from '../core/nav/nav.service';
+import { AlertService } from '../messaging/alert.service';
 import { equalValidation } from '../shared/validation';
 import { MatSelectChange } from '@angular/material';
 import { LanguageService } from '../core/language.service';
+import { PublicUserService } from '../open/public-user.service';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,7 @@ import { LanguageService } from '../core/language.service';
 })
 export class RegisterComponent implements OnInit, AfterViewChecked {
   registerForm = new FormGroup({
-    nickname: new FormControl(''),
+    nickname: new FormControl('', { asyncValidators: this.uniqueNicknameValidator() }),
     firstname: new FormControl(''),
     lastname: new FormControl(''),
     email: new FormControl(''),
@@ -32,6 +33,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private authService: AuthService,
+    private publicUserService: PublicUserService,
     private alertService: AlertService,
     private router: Router,
     private navService: NavService,
@@ -89,5 +91,25 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
 
   changeLocale(event: MatSelectChange) {
     this.languageService.changeLocale(event.value);
+  }
+
+  private uniqueNicknameValidator(initialValue: string = ''): AsyncValidatorFn {
+    return (
+      control: AbstractControl
+    ): Promise<{ [key: string]: any } | null> | Observable<{ [key: string]: any } | null> => {
+      if (control.value === null || control.value.length === 0 || control.value === initialValue) {
+        return of(null);
+      } else {
+        return control.valueChanges.pipe(
+          debounceTime(500),
+          take(1),
+          switchMap(_ =>
+            this.publicUserService
+              .existingNickname(control.value)
+              .pipe(map(existingNickname => (existingNickname ? { existingNickname: { value: control.value } } : null)))
+          )
+        );
+      }
+    };
   }
 }
