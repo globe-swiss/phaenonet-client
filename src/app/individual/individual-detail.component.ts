@@ -30,6 +30,7 @@ import { Observation } from '../observation/observation';
 import { ObservationService } from '../observation/observation.service';
 import { PhenophaseObservation } from '../observation/phenophase-observation';
 import { PhenophaseObservationsGroup } from '../observation/phenophase-observations-group';
+import { PublicUserService } from '../open/public-user.service';
 import { Individual } from './individual';
 import { IndividualService } from './individual.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
@@ -84,6 +85,7 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     private observationService: ObservationService,
     private masterdataService: MasterdataService,
     private userService: UserService,
+    private publicUserService: PublicUserService,
     private activityService: ActivityService,
     public dialog: MatDialog,
     private authService: AuthService,
@@ -105,7 +107,9 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
       }
 
       this.isFollowing = this.currentUser.pipe(
-        map(u => u.following_individuals.find(id => id === detail.individual) !== undefined)
+        map(u =>
+          u.following_individuals ? u.following_individuals.find(id => id === detail.individual) !== undefined : false
+        )
       );
 
       this.owner = detail.user;
@@ -119,7 +123,10 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
       this.distance = this.masterdataService.getDistanceValue(detail.less100);
       this.irrigation = this.masterdataService.getIrrigationValue(detail.watering);
 
-      this.individualCreatorNickname = this.userService.getNickname(detail.user).pipe(shareReplay());
+      this.individualCreatorNickname = this.publicUserService.getByUserId(detail.user).pipe(
+        map(u => u.id),
+        shareReplay()
+      );
 
       this.availablePhenophases = this.masterdataService.getPhenophases(detail.species);
       this.availablePhenophaseGroups = this.masterdataService.getPhenophaseGroups(detail.species);
