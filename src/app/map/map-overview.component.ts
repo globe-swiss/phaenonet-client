@@ -109,7 +109,8 @@ export class MapOverviewComponent implements OnInit {
   }
 
   openInfoWindow(marker: MapMarker, pos: google.maps.LatLngLiteral, individual: Individual & IdLike) {
-    const url = { url: ['/individuals', individual.id] };
+    const baseUrl = individual.source === 'meteoswiss' ? '/stations' : '/individuals';
+    const url = { url: [baseUrl, individual.id] };
 
     if (individual.source === 'meteoswiss') {
       this.meteoswissInfoWindowData.next({ ...{ individual: individual }, ...url } as MeteoswissInfoWindowData);
