@@ -18,7 +18,7 @@ import { PublicUserService } from '../open/public-user.service';
 })
 export class RegisterComponent implements OnInit, AfterViewChecked {
   registerForm = new FormGroup({
-    nickname: new FormControl('', { asyncValidators: this.uniqueNicknameValidator() }),
+    nickname: new FormControl('', { asyncValidators: this.publicUserService.uniqueNicknameValidator() }),
     firstname: new FormControl(''),
     lastname: new FormControl(''),
     email: new FormControl(''),
@@ -91,25 +91,5 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
 
   changeLocale(event: MatSelectChange) {
     this.languageService.changeLocale(event.value);
-  }
-
-  private uniqueNicknameValidator(initialValue: string = ''): AsyncValidatorFn {
-    return (
-      control: AbstractControl
-    ): Promise<{ [key: string]: any } | null> | Observable<{ [key: string]: any } | null> => {
-      if (control.value === null || control.value.length === 0 || control.value === initialValue) {
-        return of(null);
-      } else {
-        return control.valueChanges.pipe(
-          debounceTime(250),
-          take(1),
-          switchMap(_ =>
-            this.publicUserService
-              .existingNickname(control.value)
-              .pipe(map(existingNickname => (existingNickname ? { existingNickname: { value: control.value } } : null)))
-          )
-        );
-      }
-    };
   }
 }
