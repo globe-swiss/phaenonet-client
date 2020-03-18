@@ -101,7 +101,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
         return of(null);
       } else {
         return control.valueChanges.pipe(
-          debounceTime(500),
+          debounceTime(250),
           take(1),
           switchMap(_ =>
             this.publicUserService

@@ -1,4 +1,4 @@
 export class PublicUser {
   id: string;
-  user: string;
+  nickname: string;
 }
