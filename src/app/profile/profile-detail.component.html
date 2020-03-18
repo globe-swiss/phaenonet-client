@@ -88,7 +88,7 @@
             </div>
           </div>
         </div>
-        <button mat-flat-button color="primary" [routerLink]="'/individuals/new/edit'">
+        <button *ngIf="isOwner()" mat-flat-button color="primary" [routerLink]="'/individuals/new/edit'">
           <mat-icon>add</mat-icon>
           <span>{{ 'Objekt hinzufügen' | translate }}</span>
         </button>

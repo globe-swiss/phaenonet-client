@@ -10,7 +10,6 @@ import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
 import { UserService } from '../auth/user.service';
-import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
 import { altitudeLimits } from '../masterdata/AltitudeLimits';
 import { Comment } from '../masterdata/comment';
@@ -31,6 +30,7 @@ import { ObservationService } from '../observation/observation.service';
 import { PhenophaseObservation } from '../observation/phenophase-observation';
 import { PhenophaseObservationsGroup } from '../observation/phenophase-observations-group';
 import { PublicUserService } from '../open/public-user.service';
+import { BaseIndividualDetailComponent } from './base-individual-detail.component';
 import { Individual } from './individual';
 import { IndividualService } from './individual.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
@@ -39,7 +39,7 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
   templateUrl: './individual-detail.component.html',
   styleUrls: ['./individual-detail.component.scss']
 })
-export class IndividualDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
+export class IndividualDetailComponent extends BaseIndividualDetailComponent implements OnInit {
   center = { lat: 46.818188, lng: 8.227512 };
   zoom = 13;
   options: google.maps.MapOptions = {
@@ -81,22 +81,22 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     private navService: NavService,
     private router: Router,
     protected route: ActivatedRoute,
-    private individualService: IndividualService,
+    protected individualService: IndividualService,
     private observationService: ObservationService,
     private masterdataService: MasterdataService,
-    private userService: UserService,
+    protected userService: UserService,
     private publicUserService: PublicUserService,
     private activityService: ActivityService,
     public dialog: MatDialog,
     private authService: AuthService,
-    private alertService: AlertService
+    protected alertService: AlertService
   ) {
-    super(individualService, route);
+    super(route, individualService, userService, alertService);
   }
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.navService.setLocation('Objekt');
+    this.navService.setLocation('Station');
 
     this.currentUser = this.authService.getUserObservable();
 
@@ -233,38 +233,6 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
 
   isOwner(): boolean {
     return this.authService.getUserId() === this.owner;
-  }
-
-  follow(): void {
-    this.individualToFollow().subscribe(f =>
-      this.userService
-        .followIndividual(f)
-        .pipe(first())
-        .subscribe(_ => {
-          this.alertService.infoMessage('Aktivitäten abonniert', 'Sie haben die Aktivitäten des Objekts abonniert.');
-        })
-    );
-  }
-
-  unfollow(): void {
-    this.individualToFollow().subscribe(f =>
-      this.userService
-        .unfollowIndividual(f)
-        .pipe(first())
-        .subscribe(_ => {
-          this.alertService.infoMessage(
-            'Aktivitäten gekündigt',
-            'Sie erhalten keine Aktivitäten mehr zu diesem Objekt.'
-          );
-        })
-    );
-  }
-
-  private individualToFollow(): Observable<string> {
-    return this.detailSubject.pipe(
-      first(),
-      map(i => i.individual)
-    );
   }
 
   private updateLastObservation(individual: Individual, observation: Observation, phenophase: Phenophase): void {

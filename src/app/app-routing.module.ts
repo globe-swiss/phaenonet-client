@@ -15,6 +15,10 @@ const routes: Routes = [
         loadChildren: () => import('./individual/individual.module').then(m => m.IndividualModule)
       },
       {
+        path: 'stations',
+        loadChildren: () => import('./station/station.module').then(m => m.StationModule)
+      },
+      {
         path: 'observations',
         loadChildren: () => import('./observation/observation.module').then(m => m.ObservationModule)
       },
