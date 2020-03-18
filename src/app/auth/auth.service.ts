@@ -12,6 +12,7 @@ import { LanguageService } from '../core/language.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { LoginResult } from './login-result';
 import { User } from './user';
+import * as firebase from 'firebase';
 
 export const LOGIN_URL = '/auth/login';
 export const LOGGED_OUT_URL = '/auth/logged-out';
@@ -97,6 +98,21 @@ export class AuthService extends BaseService {
       this.afAuth.auth.sendPasswordResetEmail(email).catch(error => {
         // silently ignore errors
       })
+    );
+  }
+
+  changePassword(currentPassword: string, password: string) {
+    const credentials = firebase.auth.EmailAuthProvider.credential(this.getUserEmail(), currentPassword);
+
+    this.afAuth.auth.currentUser.reauthenticateWithCredential(credentials).then(
+      _ => {
+        this.afAuth.auth.currentUser.updatePassword(password).then(_ => {
+          this.alertService.infoMessage('Passwort geändert', 'Das Passwort wurde erfolgreich geändert.');
+        });
+      },
+      _ => {
+        this.alertService.errorMessage('Passwort falsch', 'Das eingegebene aktuelle Passwort ist falsch.');
+      }
     );
   }
 

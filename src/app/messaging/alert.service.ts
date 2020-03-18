@@ -53,10 +53,31 @@ export class AlertService {
     messageParams: Object = {},
     titleParams: Object = {}
   ): void {
+    this.simpleMessage(Level.INFO, title, message, duration, messageParams, titleParams);
+  }
+
+  errorMessage(
+    title: string,
+    message: string,
+    duration: Option<number> = some(3000),
+    messageParams: Object = {},
+    titleParams: Object = {}
+  ): void {
+    this.simpleMessage(Level.ERROR, title, message, duration, messageParams, titleParams);
+  }
+
+  private simpleMessage(
+    level: Level,
+    title: string,
+    message: string,
+    duration: Option<number> = some(3000),
+    messageParams: Object = {},
+    titleParams: Object = {}
+  ): void {
     this.alertMessage({
       title: title,
       message: message,
-      level: Level.INFO,
+      level: level,
       messageParams: messageParams,
       titleParams: titleParams,
       duration: duration
