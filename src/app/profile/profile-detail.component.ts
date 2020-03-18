@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
-import { combineLatest, Observable, of, BehaviorSubject } from 'rxjs';
-import { catchError, map, mergeMap, switchMap, first } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { catchError, first, map, mergeMap, switchMap } from 'rxjs/operators';
 import { Activity } from '../activity/activity';
 import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
-import { User } from '../auth/user';
 import { UserService } from '../auth/user.service';
 import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
@@ -16,12 +15,14 @@ import { IndividualService } from '../individual/individual.service';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { ObservationService } from '../observation/observation.service';
+import { PublicUser } from '../open/public-user';
+import { PublicUserService } from '../open/public-user.service';
 
 @Component({
   templateUrl: './profile-detail.component.html',
   styleUrls: ['./profile-detail.component.scss']
 })
-export class ProfileDetailComponent extends BaseDetailComponent<User> implements OnInit {
+export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> implements OnInit {
   constructor(
     private navService: NavService,
     private router: Router,
@@ -30,12 +31,13 @@ export class ProfileDetailComponent extends BaseDetailComponent<User> implements
     private observationService: ObservationService,
     private masterdataService: MasterdataService,
     private userService: UserService,
+    private publicUserService: PublicUserService,
     private activityService: ActivityService,
     public dialog: MatDialog,
     private authService: AuthService,
     private alertService: AlertService
   ) {
-    super(userService, route);
+    super(publicUserService, route);
   }
 
   // temporary solution
@@ -60,7 +62,7 @@ export class ProfileDetailComponent extends BaseDetailComponent<User> implements
     this.colorMap = this.masterdataService.colorMap;
 
     this.detailSubject.subscribe(detail => {
-      this.profileLink = of(window.location + '/' + this.detailId);
+      this.profileLink = of(window.location.origin + '/profile/' + this.detailId);
 
       this.email = this.authService.getUserEmail();
 
@@ -91,7 +93,7 @@ export class ProfileDetailComponent extends BaseDetailComponent<User> implements
 
       this.isFollowing = this.authService
         .getUserObservable()
-        .pipe(map(u => u.following_users.find(id => id === this.detailId) !== undefined));
+        .pipe(map(u => (u.following_users ? u.following_users.find(id => id === this.detailId) !== undefined : false)));
     });
   }
 

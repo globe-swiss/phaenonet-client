@@ -123,8 +123,8 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
       this.distance = this.masterdataService.getDistanceValue(detail.less100);
       this.irrigation = this.masterdataService.getIrrigationValue(detail.watering);
 
-      this.individualCreatorNickname = this.publicUserService.getByUserId(detail.user).pipe(
-        map(u => u.id),
+      this.individualCreatorNickname = this.publicUserService.get(detail.user).pipe(
+        map(u => u.nickname),
         shareReplay()
       );
 
