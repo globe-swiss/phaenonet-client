@@ -48,7 +48,8 @@ export class MapOverviewComponent implements OnInit {
   infoWindowType = new ReplaySubject<'globe' | 'meteoswiss'>(1);
 
   // TODO how to get the avaiable years?
-  years = [2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011];
+  years = this.masterDataService.availableYears;
+
   datasources = ['ALL', 'Globe', 'Meteoswiss'];
   species: Subject<Species[]> = new ReplaySubject(1);
   mapFormGroup = new FormGroup({
