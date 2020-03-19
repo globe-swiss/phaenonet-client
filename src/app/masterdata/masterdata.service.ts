@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { publishReplay, refCount, map, filter } from 'rxjs/operators';
+import { map, publishReplay, refCount } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseService } from '../core/base.service';
+import { Individual } from '../individual/individual';
 import { AlertService } from '../messaging/alert.service';
+import { Comment } from './comment';
 import { Description } from './description';
+import { Distance } from './distance';
 import { Exposition } from './exposition';
 import { Forest } from './forest';
 import { Habitat } from './habitat';
-import { Shade } from './shade';
-import { Species } from './species';
-import { Distance } from './distance';
 import { Irrigation } from './irrigation';
 import { MasterdataLike, PhenophasesdataLike } from './masterdata-like';
 import { Phenophase } from './phaenophase';
 import { PhenophaseGroup } from './phaenophase-group';
-import { Comment } from './comment';
-import { Individual } from '../individual/individual';
+import { Shade } from './shade';
+import { Species } from './species';
 
 export type MasterdataType =
   | 'species'
@@ -68,6 +68,8 @@ export class MasterdataService extends BaseService {
     BVS: 5,
     BFA: 6
   };
+
+  public availableYears = [2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011];
 
   individualToIcon(individual: Individual): google.maps.Icon {
     let phaenoIndex = 1;

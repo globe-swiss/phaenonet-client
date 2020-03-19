@@ -1,3 +1,28 @@
 {
-  "login-unknown-failure": "Der Benutzername oder das Passwort ist falsch."
+  "login-unknown-failure": "Der Benutzername oder das Passwort ist falsch.",
+  "all": "Alle",
+  "globe": "Globe",
+  "meteoswiss": "MeteoSchweiz",
+  "species": "Art",
+  "height": "Höhe",
+
+  "BA": "Bergahorn",
+  "BR": "Buschwindröschen",
+  "BU": "Rotbuche",
+  "EK": "Edelkastanie",
+  "FI": "Fichte",
+  "FL": "Flieder",
+  "HB": "Hängebirke",
+  "HS": "Hasel",
+  "HU": "Huflattich",
+  "LA": "Lärche",
+  "RH": "Roter Holunder",
+  "RK": "Rosskastanie",
+  "RO": "Robinie",
+  "SD": "Schwarzdorn",
+  "SH": "Schwarzer Holunder",
+  "SL": "Sommerlinde",
+  "VB": "Vogelbeere",
+  "WL": "Winterlinde",
+  "WT": "Weisstanne"
 }
