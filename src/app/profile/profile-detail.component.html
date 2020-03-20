@@ -18,9 +18,9 @@
         </h3>
         <ng-container *ngIf="isOwner()">
           <div class="detail-label">{{ 'Vorname' | translate }}</div>
-          <div>{{ (detailSubject | async).firstname }}</div>
+          <div>{{ firstname | async }}</div>
           <div class="detail-label">{{ 'Nachname' | translate }}</div>
-          <div>{{ (detailSubject | async).lastname }}</div>
+          <div>{{ lastname | async }}</div>
           <div class="detail-label">{{ 'E-Mail' | translate }}</div>
           <div>{{ email }}</div>
           <button
@@ -77,7 +77,7 @@
             <h3>{{ item.individual.name }}</h3>
             <div class="detail-label">
               {{ 'Letzte Beobachtung,' | translate }}
-              {{ item.individual.last_observation_date.toDate() | date }}
+              {{ formatShortDate(item.individual.last_observation_date.toDate()) }}
             </div>
             <div class="phenophase-title">
               <span
@@ -111,9 +111,7 @@
             <div class="detail-label">
               <span class="creator">{{ item.user_nickname }}</span
               ><span> {{ 'am' | translate }}</span
-              ><span> {{ item.date.toDate() | date }}</span
-              ><span> {{ 'um' }}</span
-              ><span> {{ item.date.toDate() | date: 'shortTime' }}</span>
+              ><span> {{ formatShortDateTime(item.date.toDate()) }}</span>
             </div>
             <div class="phenophase-title">{{ item.text | translate }}: {{ item.name }}</div>
           </div>

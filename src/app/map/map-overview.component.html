@@ -30,7 +30,7 @@
               <div>{{ d.individual.name }}</div>
               <div class="mat-small" *ngIf="d.phenophase">
                 {{ 'Letzte Beobachtung,' | translate }}
-                {{ d.individual.last_observation_date | date }}
+                {{ formatShortDate(d.individual.last_observation_date) }}
               </div>
               <div *ngIf="d.phenophase">
                 <span class="phenophase-circle" [ngStyle]="{ 'background-color': colorMap[(d.phenophase?.id)] }"></span>

@@ -9,6 +9,7 @@ import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../auth/user.service';
 import { BaseDetailComponent } from '../core/base-detail.component';
+import { formatShortDate, formatShortDateTime } from '../core/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { IndividualPhenophase } from '../individual/individual-phenophase';
 import { IndividualService } from '../individual/individual.service';
@@ -51,9 +52,14 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
 
   activities: Observable<Activity[]>;
 
+  firstname: Observable<string>;
+  lastname: Observable<string>;
   email: string;
 
   isFollowing: Observable<boolean>;
+
+  formatShortDateTime = formatShortDateTime;
+  formatShortDate = formatShortDate;
 
   ngOnInit(): void {
     super.ngOnInit();
@@ -64,7 +70,11 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
     this.detailSubject.subscribe(detail => {
       this.profileLink = of(window.location.origin + '/profile/' + this.detailId);
 
-      this.email = this.authService.getUserEmail();
+      if (this.isOwner()) {
+        this.email = this.authService.getUserEmail();
+        this.firstname = this.userService.get(this.detailId).pipe(map(u => u.firstname));
+        this.lastname = this.userService.get(this.detailId).pipe(map(u => u.lastname));
+      }
 
       // combine the list of individuals with their phenophase
       this.latestIndividualObservations = this.individualService.listByUser(this.detailId, 4).pipe(

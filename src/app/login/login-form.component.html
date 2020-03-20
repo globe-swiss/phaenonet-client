@@ -1,11 +1,11 @@
-<mat-card>
+<mat-card *ngIf="showLoginForm()">
   <mat-card-header>
     <mat-card-title>
       {{ title() | translate }}
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form [formGroup]="loginForm" fxLayout="column" *ngIf="showLoginForm()">
+    <form [formGroup]="loginForm" fxLayout="column">
       <mat-form-field>
         <mat-label>{{ 'E-Mail' | translate }} </mat-label>
         <input

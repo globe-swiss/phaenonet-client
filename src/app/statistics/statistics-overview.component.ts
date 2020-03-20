@@ -15,7 +15,7 @@ import { Observation } from '../observation/observation';
 import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
 import { AnalyticsValue } from './analytics-value';
-import { SourceType } from './source-type';
+import { SourceType } from '../masterdata/source-type';
 import { StatisticsService } from './statistics.service';
 import { NavService } from '../core/nav/nav.service';
 
