@@ -41,7 +41,7 @@
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
       <div gdColumn="1 / span 2" class="detail-left">
         <h3>
-          <span *ngIf="isOwner()">{{ 'MEINE BEOBACHTUNGEN' }}</span
+          <span *ngIf="isOwner()">{{ 'MEINE BEOBACHTUNGEN' | translate }}</span
           ><span *ngIf="!isOwner()">{{ 'BEOBACHTUNGEN' | translate }}</span>
         </h3>
         <button
@@ -76,7 +76,7 @@
             </div>
             <h3>{{ item.individual.name }}</h3>
             <div class="detail-label">
-              {{ 'Letzte Beobachtung,' | translate }}
+              {{ 'Letzte Beobachtung' | translate }},
               {{ formatShortDate(item.individual.last_observation_date.toDate()) }}
             </div>
             <div class="phenophase-title">
@@ -97,7 +97,7 @@
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
       <div gdColumn="1 / span 2" class="detail-left" *ngIf="isOwner()">
         <h3>
-          <span *ngIf="isOwner()">{{ 'AKTIVITÄTEN' }}</span>
+          <span *ngIf="isOwner()">{{ 'AKTIVITÄTEN' | translate }}</span>
         </h3>
       </div>
       <div gdColumn="3 / span 4" *ngIf="(isOwner() && detailSubject | async)" class="detail-right">

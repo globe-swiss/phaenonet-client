@@ -25,7 +25,7 @@
         </div>
       </div>
       <div gdColumn="3 / span 4" class="detail-right">
-        <h3>{{ 'Phaenophasen' | translate }}</h3>
+        <h3>{{ 'Phänophasen' | translate }}</h3>
         <div *ngFor="let groupedItem of (phenophaseObservationsBySpecies | async)" class="species-group">
           <h4>{{ groupedItem.species.de | translate }}</h4>
           <div *ngFor="let item of groupedItem.phenophaseObservations">

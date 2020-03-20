@@ -29,7 +29,7 @@
               </div>
               <div>{{ d.individual.name }}</div>
               <div class="mat-small" *ngIf="d.phenophase">
-                {{ 'Letzte Beobachtung,' | translate }}
+                {{ 'Letzte Beobachtung' | translate }},
                 {{ formatShortDate(d.individual.last_observation_date) }}
               </div>
               <div *ngIf="d.phenophase">
@@ -67,7 +67,7 @@
       <form [formGroup]="mapFormGroup">
         <div id="form-year">
           <mat-form-field>
-            <mat-label>{{ 'Phaenojahr' | translate }}</mat-label>
+            <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
             <mat-select formControlName="year">
               <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
             </mat-select>
