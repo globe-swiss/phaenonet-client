@@ -29,20 +29,22 @@
         <div *ngFor="let groupedItem of (phenophaseObservationsBySpecies | async)" class="species-group">
           <h4>{{ groupedItem.species.de | translate }}</h4>
           <div *ngFor="let item of groupedItem.phenophaseObservations">
-            <div class="detail-label">{{ item.phenophase.name_de | translate }}</div>
-            <mat-form-field class="full-width detail-observation-date">
-              <input
-                matInput
-                [matDatepicker]="fakePicker"
-                [id]="item.id"
-                placeholder="{{ item.phenophase.description_de | translate }}"
-                [value]="item.observation.toNullable()?.date"
-                readonly="true"
-              />
-            </mat-form-field>
-            <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment">
-              {{ 'Kommentar' }}: {{ staticComments[(item.observation.toNullable()?.comment)] | translate }}
-            </div>
+            <ng-container *ngIf="item.observation.isSome()">
+              <div class="detail-label">{{ item.phenophase.name_de | translate }}</div>
+              <mat-form-field class="full-width detail-observation-date">
+                <input
+                  matInput
+                  [matDatepicker]="fakePicker"
+                  [id]="item.id"
+                  placeholder="{{ item.phenophase.description_de | translate }}"
+                  [value]="item.observation.toNullable()?.date"
+                  readonly="true"
+                />
+              </mat-form-field>
+              <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment">
+                {{ 'Kommentar' }}: {{ staticComments[(item.observation.toNullable()?.comment)] | translate }}
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>

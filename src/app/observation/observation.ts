@@ -6,6 +6,7 @@ export class Observation {
   species: string;
   year: number;
   user: string;
-  created: Date;
   comment: string | null;
+  created: Date;
+  modified: Date;
 }

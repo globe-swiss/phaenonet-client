@@ -1,8 +1,7 @@
-import { Component, AfterViewChecked } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
+import { AfterViewChecked, Component } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
-import { cons } from 'fp-ts/lib/Array';
 
 @Component({
   templateUrl: './login-site.component.html'

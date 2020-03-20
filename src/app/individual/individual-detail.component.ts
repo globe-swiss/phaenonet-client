@@ -34,6 +34,7 @@ import { BaseIndividualDetailComponent } from './base-individual-detail.componen
 import { Individual } from './individual';
 import { IndividualService } from './individual.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
+import { formatShortDate } from '../core/formatDate';
 
 @Component({
   templateUrl: './individual-detail.component.html',
@@ -69,6 +70,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
   individualObservations: Observable<Observation[]>;
   phenophaseObservationsGroups: Observable<PhenophaseObservationsGroup[]>;
   lastObservation: Observation;
+  lastObservationDate: string;
 
   owner: string;
 
@@ -153,23 +155,32 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
             observations.length - 1
           ];
 
+          if (this.lastObservation) {
+            this.lastObservationDate = formatShortDate(this.lastObservation.date);
+          }
+
           comments.forEach(element => {
             this.staticComments[element.id] = element.de;
           });
 
           return phenophaseGroups.map(phenophaseGroup => {
+            const phenophaseObservations = phenophases
+              .filter(p => p.group_id === phenophaseGroup.id)
+              .map(p => {
+                return {
+                  phenophase: p,
+                  limits: altitudeLimits(detail.altitude, p.limits),
+                  observation: findFirst((o: Observation) => o.phenophase === p.id)(observations),
+                  availableComments: comments.filter(a => p.comments.find(commentId => commentId === a.id))
+                };
+              });
+
+            const hasObservations = phenophaseObservations.find(po => po.observation.isSome()) !== undefined;
+
             return {
               phenophaseGroup: phenophaseGroup,
-              phenophaseObservations: phenophases
-                .filter(p => p.group_id === phenophaseGroup.id)
-                .map(p => {
-                  return {
-                    phenophase: p,
-                    limits: altitudeLimits(detail.altitude, p.limits),
-                    observation: findFirst((o: Observation) => o.phenophase === p.id)(observations),
-                    availableComments: comments.filter(a => p.comments.find(commentId => commentId === a.id))
-                  };
-                })
+              phenophaseObservations: phenophaseObservations,
+              hasObservations: hasObservations
             };
           });
         })
@@ -203,7 +214,9 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
           result.observation.map(observation => {
             // if this is a new observation only the date is known
             if (!observation.created) {
-              observation.created = new Date();
+              const now = new Date();
+              observation.created = now;
+              observation.modified = now;
               observation.individual = detail.individual;
               observation.individual_id = this.detailId;
               observation.phenophase = result.phenophase.id;
@@ -246,7 +259,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
         const activity: Activity = {
           user: individual.user,
           user_nickname: creator,
-          date: observation.created,
+          date: observation.modified,
           individual: individual.individual,
           individual_id: this.detailId,
           text: phenophase.name_de,

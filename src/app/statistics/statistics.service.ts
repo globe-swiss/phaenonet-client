@@ -6,7 +6,7 @@ import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';
 import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
-import { SourceType } from './source-type';
+import { SourceType } from '../masterdata/source-type';
 
 @Injectable()
 export class StatisticsService extends BaseResourceService<Analytics> {

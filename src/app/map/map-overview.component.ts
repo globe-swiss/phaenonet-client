@@ -10,6 +10,8 @@ import { Species } from '../masterdata/species';
 import { Phenophase } from '../masterdata/phaenophase';
 import { IdLike } from '../masterdata/masterdata-like';
 import { FormControl, FormGroup } from '@angular/forms';
+import { SourceType } from '../masterdata/source-type';
+import { formatShortDate, formatShortDateTime } from '../core/formatDate';
 
 class GlobeInfoWindowData {
   individual: Individual;
@@ -28,7 +30,7 @@ class IndividualWithMarkerOpt {
   markerOptions: google.maps.MarkerOptions;
 }
 
-const allSpecies = { id: 'ALL', de: 'All' } as Species;
+const allSpecies = { id: 'ALL', de: 'Alle' } as Species;
 
 @Component({
   templateUrl: './map-overview.component.html',
@@ -50,7 +52,7 @@ export class MapOverviewComponent implements OnInit {
   // TODO how to get the avaiable years?
   years = this.masterDataService.availableYears;
 
-  datasources = ['ALL', 'Globe', 'Meteoswiss'];
+  datasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
   species: Subject<Species[]> = new ReplaySubject(1);
   mapFormGroup = new FormGroup({
     year: new FormControl(this.years[0]),
@@ -59,6 +61,8 @@ export class MapOverviewComponent implements OnInit {
   });
 
   colorMap = {};
+
+  formatShortDate = formatShortDate;
 
   constructor(
     private navService: NavService,
@@ -78,14 +82,14 @@ export class MapOverviewComponent implements OnInit {
       startWith(this.mapFormGroup.getRawValue()),
       switchMap(form => {
         const year = +form.year;
-        const datasource = form.datasource;
+        const datasource: SourceType = form.datasource;
         const species = form.species;
         return this.individualService.listByYear(year).pipe(
           map(individuals => {
-            if (datasource === 'Meteoswiss') {
+            if (datasource === 'meteoswiss') {
               individuals = individuals.filter(i => i.source === 'meteoswiss');
             } else {
-              if (datasource === 'Globe') {
+              if (datasource === 'globe') {
                 individuals = individuals.filter(i => i.source === 'globe');
               }
               if (species !== allSpecies.id) {
