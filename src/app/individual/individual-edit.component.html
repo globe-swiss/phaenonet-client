@@ -95,6 +95,24 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+          <div>
+            <mat-form-field>
+              <mat-label>{{ 'Hangneigung' | translate }}</mat-label>
+              <input
+                matInput
+                formControlName="gradient"
+                type="number"
+                min="0"
+                max="100"
+                step="1"
+                placeholder="{{ 'Hangneigung in %' | translate }}"
+                class="right-align"
+                required
+              />
+              <span matSuffix>%</span>
+            </mat-form-field>
+            <img class="gradient-info-img" src="assets/img/info_gradient.png" />
+          </div>
           <mat-form-field class="full-width">
             <mat-label>{{ 'Schatten' | translate }}</mat-label>
             <mat-select formControlName="shade" required>

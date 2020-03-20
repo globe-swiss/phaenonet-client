@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MapInfoWindow } from '@angular/google-maps';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -53,6 +53,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
     fotos: new FormControl(''),
     description: new FormControl(''),
     exposition: new FormControl(''),
+    gradient: new FormControl(0, [Validators.min(0), Validators.max(100)]),
     shade: new FormControl(''),
     habitat: new FormControl(''),
     forest: new FormControl(''),
@@ -91,6 +92,11 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
         this.center = detail.geopos;
         this.altitude = detail.altitude;
       }
+
+      if (!detail.gradient) {
+        detail.gradient = 0;
+      }
+
       this.createForm.reset(detail);
     });
   }
