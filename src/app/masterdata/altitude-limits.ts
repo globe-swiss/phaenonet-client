@@ -16,6 +16,7 @@ export interface AltitudeLimits {
 export interface AltitudeLimit {
   start_day: Date;
   end_day: Date;
+  isEditable: boolean;
 }
 
 export function altitudeLimits(altitude: number, limits: AltitudeLimits): AltitudeLimit {
@@ -39,12 +40,25 @@ export function altitudeLimits(altitude: number, limits: AltitudeLimits): Altitu
     end = limits.altitude_grp_5_end_day;
   }
 
+  const start_day = moment()
+    .dayOfYear(start)
+    .toDate();
+  const end_day = new Date(
+    Math.min(
+      moment()
+        .endOf('day')
+        .toDate()
+        .getTime(),
+      moment()
+        .dayOfYear(end)
+        .toDate()
+        .getTime()
+    )
+  );
+
   return {
-    start_day: moment()
-      .dayOfYear(start)
-      .toDate(),
-    end_day: moment()
-      .dayOfYear(end)
-      .toDate()
+    start_day: start_day,
+    end_day: end_day,
+    isEditable: moment(start_day).isBefore(end_day)
   };
 }

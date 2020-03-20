@@ -40,3 +40,16 @@ h4 {
 .following {
   color: #1dff6e; //mat-color($phaenonet-p, A700);
 }
+
+.add-phenophase {
+  cursor: pointer;
+}
+
+.add-phenophase-disabled {
+  cursor: not-allowed;
+  color: grey;
+}
+
+.edit-phenophase {
+  cursor: pointer;
+}

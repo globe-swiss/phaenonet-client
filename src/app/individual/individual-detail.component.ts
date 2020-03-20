@@ -11,7 +11,7 @@ import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
 import { UserService } from '../auth/user.service';
 import { NavService } from '../core/nav/nav.service';
-import { altitudeLimits } from '../masterdata/AltitudeLimits';
+import { altitudeLimits } from '../masterdata/altitude-limits';
 import { Comment } from '../masterdata/comment';
 import { Description } from '../masterdata/description';
 import { Distance } from '../masterdata/distance';

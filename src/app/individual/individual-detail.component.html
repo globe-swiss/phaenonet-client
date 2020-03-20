@@ -51,6 +51,8 @@
         </div>
         <div class="detail-label">{{ 'Exposition' | translate }}</div>
         <div>{{ (exposition | async)?.de | translate }}</div>
+        <div class="detail-label">{{ 'Hangneigung' | translate }}</div>
+        <div>{{ (detailSubject | async)?.gradient }}%</div>
         <div class="detail-label">{{ 'Schatten' | translate }}</div>
         <div>{{ (shade | async)?.de | translate }}</div>
         <div class="detail-label">{{ 'Bewässerung' | translate }}</div>
@@ -91,16 +93,25 @@
                     readonly="true"
                   />
                   <mat-icon
-                    *ngIf="isOwner() && item.observation.isNone()"
+                    *ngIf="isOwner() && item.observation.isNone() && item.limits.isEditable"
                     matSuffix
+                    class="add-phenophase"
                     color="primary"
                     (click)="editPhenophaseDate(item)"
+                    >add_circle</mat-icon
+                  >
+                  <mat-icon
+                    *ngIf="isOwner() && item.observation.isNone() && !item.limits.isEditable"
+                    matSuffix
+                    class="add-phenophase-disabled"
+                    color="accent"
                     >add_circle</mat-icon
                   >
                   <mat-icon
                     *ngIf="isOwner() && item.observation.isSome()"
                     matSuffix
                     color="primary"
+                    class="edit-phenophase"
                     (click)="editPhenophaseDate(item)"
                     >edit</mat-icon
                   >
