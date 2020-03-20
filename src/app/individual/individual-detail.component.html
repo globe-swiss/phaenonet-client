@@ -76,7 +76,7 @@
         </button>
       </div>
       <div gdColumn="3 / span 4" class="detail-right">
-        <h3 translate>Phaenophasen</h3>
+        <h3>{{ 'Phänophasen' | translate }}</h3>
         <div *ngFor="let groupedItem of (phenophaseObservationsGroups | async)" class="phenophase-group">
           <ng-container *ngIf="isOwner() || groupedItem.hasObservations">
             <h4>{{ groupedItem.phenophaseGroup.name_de | translate }}</h4>
