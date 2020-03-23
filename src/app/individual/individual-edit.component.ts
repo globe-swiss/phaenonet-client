@@ -91,6 +91,8 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
         this.geopos = detail.geopos;
         this.center = detail.geopos;
         this.altitude = detail.altitude;
+      } else {
+        this.updateAltitude(new google.maps.LatLng(this.geopos));
       }
 
       if (!detail.gradient) {
@@ -107,7 +109,11 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
 
   updateGeopos(event: google.maps.MouseEvent): void {
     this.geopos = event.latLng.toJSON();
-    this.elevator.getElevationForLocations({ locations: [event.latLng] }, (results, status) => {
+    this.updateAltitude(event.latLng);
+  }
+
+  private updateAltitude(latLng: google.maps.LatLng) {
+    this.elevator.getElevationForLocations({ locations: [latLng] }, (results, status) => {
       if (status === 'OK') {
         if (results[0]) {
           this.altitude = results[0].elevation;
