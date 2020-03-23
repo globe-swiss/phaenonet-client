@@ -41,7 +41,12 @@ export class MapOverviewComponent implements OnInit {
 
   center = { lat: 46.818188, lng: 8.227512 };
   zoom = 9;
-  options: google.maps.MapOptions = { mapTypeId: google.maps.MapTypeId.HYBRID, streetViewControl: false };
+  options: google.maps.MapOptions = {
+    mapTypeId: google.maps.MapTypeId.HYBRID,
+    mapTypeControl: false,
+    fullscreenControl: false,
+    streetViewControl: false
+  };
   individualsWithMarkerOpts: Observable<IndividualWithMarkerOpt[]>;
   infoWindowDatas: Observable<GlobeInfoWindowData[]>;
 

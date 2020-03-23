@@ -31,7 +31,7 @@
 .map-filter {
   position: fixed;
   left: 15%;
-  top: 11%;
+  top: 8rem;
 
   background-color: white;
   border-radius: 20px;
@@ -48,6 +48,12 @@
       background-color: #f0f0f0;
       width: 1px;
     }
+  }
+}
+@media screen and (max-width: 959px) {
+  .map-filter {
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 

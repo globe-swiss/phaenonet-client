@@ -1,14 +1,14 @@
 <div gdColumns="repeat(8, 1fr)">
-  <div gdColumn="2 / span 6" gdColumns="repeat(6, 1fr)" class="detail-view" *ngIf="isOwner()">
+  <div gdColumn="2 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-view" *ngIf="isOwner()">
     <div gdColumn="1 / span 6" class="detail-header">
       <!-- There is no header -->
     </div>
-    <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
-      <div gdColumn="1 / span 2" class="detail-left">
+    <div gdColumn="1 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-content">
+      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
         <h3>{{ 'PROFIL BEARBEITEN' | translate }}</h3>
       </div>
     </div>
-    <div gdColumn="3 / span 4" class="detail-right">
+    <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 4" class="detail-right">
       <div>
         <form [formGroup]="editForm" fxLayout="column">
           <mat-form-field>
@@ -59,7 +59,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div fxLayout="row" fxLayoutGap="1rem">
+          <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="1rem">
             <button
               mat-flat-button
               color="primary"
