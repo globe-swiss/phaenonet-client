@@ -1,13 +1,13 @@
 <div gdColumns="repeat(8, 1fr)">
-  <div gdColumn="2 / span 6" gdColumns="repeat(6, 1fr)" class="detail-view">
+  <div gdColumn="2 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-view">
     <div gdColumn="1 / span 6" class="detail-header">
       <!-- There is no header -->
     </div>
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
-      <div gdColumn="1 / span 2" class="detail-left">
+      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
         <h3>{{ 'PROFIL' | translate }}</h3>
       </div>
-      <div gdColumn="3 / span 4" *ngIf="(detailSubject | async)" class="detail-right">
+      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="(detailSubject | async)" class="detail-right">
         <div *ngIf="isOwner()" class="detail-label">{{ 'Hallo' | translate }}</div>
         <div *ngIf="!isOwner()" class="detail-label">{{ 'Öffentliches Profil von' | translate }}</div>
         <h3 class="title-nickname">
@@ -38,7 +38,7 @@
         </ng-container>
       </div>
     </div>
-    <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
+    <div gdColumn="1 / span 6" gdColumn.lt-md="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
       <div gdColumn="1 / span 2" class="detail-left">
         <h3>
           <span *ngIf="isOwner()">{{ 'MEINE BEOBACHTUNGEN' | translate }}</span
@@ -62,7 +62,7 @@
           {{ 'Abonnieren' | translate }}
         </button>
       </div>
-      <div gdColumn="3 / span 4" *ngIf="(detailSubject | async)" class="detail-right">
+      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="(detailSubject | async)" class="detail-right">
         <div
           fxLayout="row"
           *ngFor="let item of (latestIndividualObservations | async)"
@@ -101,12 +101,12 @@
       </div>
     </div>
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
-      <div gdColumn="1 / span 2" class="detail-left" *ngIf="isOwner()">
+      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left" *ngIf="isOwner()">
         <h3>
           <span *ngIf="isOwner()">{{ 'AKTIVITÄTEN' | translate }}</span>
         </h3>
       </div>
-      <div gdColumn="3 / span 4" *ngIf="(isOwner() && detailSubject | async)" class="detail-right">
+      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="(isOwner() && detailSubject | async)" class="detail-right">
         <div
           fxLayout="row"
           *ngFor="let item of (activities | async)"

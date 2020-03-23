@@ -32,6 +32,8 @@ export class StationDetailComponent extends BaseIndividualDetailComponent implem
   zoom = 13;
   options: google.maps.MapOptions = {
     mapTypeId: google.maps.MapTypeId.HYBRID,
+    mapTypeControl: false,
+    fullscreenControl: false,
     streetViewControl: false,
     draggable: false
   };

@@ -28,7 +28,12 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
 
   center: google.maps.LatLngLiteral = { lat: 46.818188, lng: 8.227512 };
   zoom = 9;
-  options: google.maps.MapOptions = { mapTypeId: google.maps.MapTypeId.HYBRID };
+  options: google.maps.MapOptions = {
+    mapTypeId: google.maps.MapTypeId.HYBRID,
+    mapTypeControl: false,
+    fullscreenControl: false,
+    streetViewControl: false
+  };
   markerOptions: google.maps.MarkerOptions = {
     draggable: true,
     icon: { url: '/assets/img/map_pins/map_pin_generic.png', scaledSize: new google.maps.Size(55, 60) }

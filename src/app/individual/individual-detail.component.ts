@@ -45,6 +45,8 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
   zoom = 13;
   options: google.maps.MapOptions = {
     mapTypeId: google.maps.MapTypeId.HYBRID,
+    mapTypeControl: false,
+    fullscreenControl: false,
     streetViewControl: false,
     draggable: false
   };
