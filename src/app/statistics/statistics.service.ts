@@ -14,20 +14,28 @@ export class StatisticsService extends BaseResourceService<Analytics> {
     super(alertService, afs, 'analytics_result');
   }
 
-  listByYear(year: number, analyticsType: AnalyticsType, source: SourceType): Observable<Analytics[]> {
+  listByYear(year: number, analyticsType: AnalyticsType, source: SourceType, species: string): Observable<Analytics[]> {
     return this.afs
-      .collection<Analytics>(this.collectionName, ref =>
-        ref
+      .collection<Analytics>(this.collectionName, ref => {
+        const query = ref
           .where('year', '==', year)
           .where('type', '==', analyticsType)
-          .where('source', '==', source)
-      )
+          .where('source', '==', source);
+
+        if (species !== 'all') {
+          return query.where('species', '==', species);
+        }
+
+        return query;
+      })
       .valueChanges({ idField: 'id' })
       .pipe(
         map(analytics =>
           analytics.map(a => ({
             source: a.source,
             species: a.species,
+            type: a.type,
+            altitude_grp: a.altitude_grp,
             year: a.year,
             values: Object.entries(a.values).map(([k, v]) => ({
               phenophase: k,

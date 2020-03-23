@@ -9,7 +9,7 @@
   "meteoswiss": "MétéoSuisse",
   "MeteoSchweiz": "MétéoSuisse",
   "species": "Espèce",
-  "height": "Altitude",
+  "altitude": "Altitude",
   "Phänophasen": "Phases phéno",
   "Phänojahr": "Année phénologique",
   "Datenquelle": "Source",
@@ -88,6 +88,12 @@
   "VB": "Sorbier",
   "WL": "Tilleul à petites feuilles",
   "WT": "Sapin blanc",
+
+  "alt1": "à 499",
+  "alt2": "500 - 799",
+  "alt3": "800 - 999",
+  "alt4": "1000 - 1199",
+  "alt5": "à p. 1200",
 
   "Bergahorn": "Erable sycomore",
   "Buschwindröschen": "Anémone des bois",

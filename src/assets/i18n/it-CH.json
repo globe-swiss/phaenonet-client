@@ -9,7 +9,7 @@
   "meteoswiss": "MeteoSvizzera",
   "MeteoSchweiz": "MeteoSvizzera",
   "species": "Specie",
-  "height": "Quota",
+  "altitude": "Quota",
   "Phänophasen": "Fase fenologica",
   "Phänojahr": "Anno fenologico",
   "Datenquelle": "Fonte",
@@ -88,6 +88,12 @@
   "VB": "Sorbo degli uccellatori",
   "WL": "Tiglio selvatico",
   "WT": "Abete bianco",
+
+  "alt1": "a 499",
+  "alt2": "500 - 799",
+  "alt3": "800 - 999",
+  "alt4": "1000 - 1199",
+  "alt5": "via 1200",
 
   "Bergahorn": "Acero di monte",
   "Buschwindröschen": "Anemone bianca",

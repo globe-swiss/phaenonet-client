@@ -5,7 +5,7 @@ import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import * as d3 from 'd3-selection';
 import * as d3Time from 'd3-time';
-import { Observable } from 'rxjs';
+import { Observable, Subject, ReplaySubject } from 'rxjs';
 import { first, map, startWith, switchMap } from 'rxjs/operators';
 import { formatShortDate } from '../core/formatDate';
 import { MasterdataService } from '../masterdata/masterdata.service';
@@ -18,6 +18,8 @@ import { AnalyticsValue } from './analytics-value';
 import { SourceType } from '../masterdata/source-type';
 import { StatisticsService } from './statistics.service';
 import { NavService } from '../core/nav/nav.service';
+import { analytics } from 'firebase';
+import { Species } from '../masterdata/species';
 
 export interface Margin {
   top: number;
@@ -36,6 +38,8 @@ export interface GroupedByPhenophaseGroup {
   observations: Observation[];
 }
 
+const allSpecies = { id: 'all', de: 'Alle' } as Species;
+
 @Component({
   encapsulation: ViewEncapsulation.None,
   templateUrl: './statistics-overview.component.html',
@@ -46,12 +50,14 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   years = this.masterdataService.availableYears;
   datasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
-  analyticsTypes: AnalyticsType[] = ['species', 'height'];
+  analyticsTypes: AnalyticsType[] = ['species', 'altitude'];
+  species: Subject<Species[]> = new ReplaySubject(1);
 
   filterForm = new FormGroup({
     year: new FormControl(this.years[0]),
     datasource: new FormControl(this.datasources[0]),
-    analyticsType: new FormControl(this.analyticsTypes[0])
+    analyticsType: new FormControl(this.analyticsTypes[0]),
+    species: new FormControl(allSpecies.id)
   });
 
   private margin: Margin = { top: 20, right: 20, bottom: 30, left: 160 };
@@ -84,6 +90,11 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.navService.setLocation('Auswerungen');
+
+    this.masterdataService
+      .getSpecies()
+      .pipe(map(species => [allSpecies].concat(species)))
+      .subscribe(this.species);
   }
 
   ngAfterViewInit(): void {
@@ -94,11 +105,13 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         startWith(this.filterForm.getRawValue()),
         switchMap(form => {
           const year = +form.year;
-          const datasource = form.datasource;
-          const analyticsType = form.analyticsType;
+          const datasource: SourceType = form.datasource;
+          const analyticsType: AnalyticsType = form.analyticsType;
+          const species: string = form.species;
 
           this.initSvg(year);
-          return this.statisticsService.listByYear(year, analyticsType, datasource);
+
+          return this.statisticsService.listByYear(year, analyticsType, datasource, species);
         }),
         map(results => {
           this.drawChart(results);
@@ -126,12 +139,32 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     this.x.ticks(d3Time.timeDay.every(1));
   }
 
+  private toKey(analytics: Analytics) {
+    if (analytics.altitude_grp) {
+      return analytics.species + '-' + analytics.altitude_grp;
+    } else {
+      return analytics.species;
+    }
+  }
+
   private drawChart(data: Analytics[]) {
-    const species = data.map(analytics => analytics.species);
+    const domain = data.map(analytics => analytics.species);
+    const subdomain = [...new Set(data.map(analytics => analytics.altitude_grp))].sort().reverse();
+
+    const resultingDomain = [];
+    domain.forEach(species => {
+      subdomain.forEach(altitudeGroup => {
+        if (altitudeGroup) {
+          resultingDomain.push(species + '-' + altitudeGroup);
+        } else {
+          resultingDomain.push(species);
+        }
+      });
+    });
 
     this.y = d3Scale
       .scaleBand()
-      .domain(species)
+      .domain(resultingDomain)
       .rangeRound([0, this.height])
       .padding(0.4);
 
@@ -143,8 +176,8 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         .append('line')
         .attr('x1', d => this.x(d.min))
         .attr('x2', d => this.x(d.max))
-        .attr('y1', d => this.y(analytics.species) + this.y.bandwidth() / 2)
-        .attr('y2', d => this.y(analytics.species) + this.y.bandwidth() / 2)
+        .attr('y1', d => this.y(this.toKey(analytics)) + this.y.bandwidth() / 2)
+        .attr('y2', d => this.y(this.toKey(analytics)) + this.y.bandwidth() / 2)
         .attr('stroke', '#000')
         .attr('stroke-width', 0.5)
         .attr('fill', 'none');
@@ -158,7 +191,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         .attr('height', this.y.bandwidth())
         .attr('width', d => this.x(d.quantile_75) - this.x(d.quantile_25))
         .attr('x', d => this.x(d.quantile_25))
-        .attr('y', d => this.y(analytics.species))
+        .attr('y', d => this.y(this.toKey(analytics)))
         .attr('fill', d => this.colorMap[d.phenophase])
         .attr('stroke', '#000')
         .attr('stroke-width', 0.5)
@@ -203,7 +236,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
       this.drawVerticalLines('.whiskersMax', analytics, d => this.x(d.max), d => this.x(d.max));
     });
 
-    const axisLeft = d3Axis.axisLeft(this.y).tickFormat(t => this.translateService.instant(t.toString()));
+    const axisLeft = d3Axis.axisLeft(this.y).tickFormat(t => this.translateLeftAxisTick(t.toString()));
     this.g.append('g').call(axisLeft);
 
     const axisBottom = d3Axis.axisBottom(this.x);
@@ -224,11 +257,21 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
       .data(analytics.values)
       .enter()
       .append('line')
-      .attr('y1', _ => this.y(analytics.species))
-      .attr('y2', _ => this.y(analytics.species) + this.y.bandwidth())
+      .attr('y1', _ => this.y(this.toKey(analytics)))
+      .attr('y2', _ => this.y(this.toKey(analytics)) + this.y.bandwidth())
       .attr('x1', d => x1(d))
       .attr('x2', d => x2(d))
       .attr('stroke', '#000')
       .style('stroke-width', 0.5);
+  }
+
+  private translateLeftAxisTick(input: string) {
+    if (input.indexOf('-') > 0) {
+      return (
+        this.translateService.instant(input.split('-')[0]) + ' - ' + this.translateService.instant(input.split('-')[1])
+      );
+    } else {
+      return this.translateService.instant(input);
+    }
   }
 }
