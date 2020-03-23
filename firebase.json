@@ -1,19 +1,26 @@
 {
   "hosting": {
     "public": "dist/phaenonet",
-    // Add the "rewrites" attribute within "hosting"
-    "rewrites": [ {
-      // Serves index.html for requests to files or directories that do not exist
-      "source": "**",
-      "destination": "/index.html"
-    }, {
-    // Excludes specified pathways from rewrites
-    "source": "!/@(assets)/**",
-    "destination": "/index.html"
-    } ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "!/@(assets)/**",
+        "destination": "/index.html"
+      }
+    ],
     "ignore": [
       "firebase.json",
       "**/node_modules/**"
     ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }

@@ -1,0 +1,95 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    function phenoyear() {
+      return 2020
+    }
+  
+    match /{document=**} {
+      allow read, write: if false; // deny all by default
+    }
+    
+    match /public_users/{document=**} {
+      allow read; // allow anonymous users to read all public_users
+    }
+
+    match /definitions/{document=**} {
+      allow read; // allow anonymous users to read all definitions
+    }
+
+    match /analytics_result/{analytics_id} {
+      allow read; // allow anonymous users to read all analytical data
+    }
+
+    match /activities/{analytics_id} {
+      allow read: if request.auth.uid != null;                         // allow all logged in users to read all activities
+      allow create: if request.auth.uid == request.resource.data.user; // allow to create activities only for your own user_id
+    }
+
+    match /individuals/{individual_id} {
+      allow read;                                                     // allow anonymous users to read all individuals
+      allow create: if request.auth.uid == request.resource.data.user // allow to create individuals only for your own user_id
+                    && ( // mandatory fields
+                         request.resource.data.year == phenoyear()                    
+                      && request.resource.data.source == 'globe'
+                      && request.resource.data.altitude > 0
+                      && request.resource.data.type == 'individual'
+                      && request.resource.data.keys().hasAll(
+                          ['user', 'source', 'year', 'type',
+                           'individual', 'species',  
+                           'altitude', 'description', 'exposition', 'forest', 'geopos', 'habitat', 'less100', 'name', 'shade', 'watering', 'gradient'
+                          ]));
+      allow update: if request.auth.uid == resource.data.user // if you own them
+                    && ( // disallowed fields
+                         request.resource.data.user == resource.data.user
+                      && request.resource.data.year == resource.data.year                    
+                      && request.resource.data.source == resource.data.source
+                      && request.resource.data.type == resource.data.type
+                      && request.resource.data.individual == resource.data.individual
+                      && request.resource.data.species == resource.data.species
+                      
+                      && request.resource.data.created == resource.data.created
+                      && request.resource.data.last_observation_date == resource.data.last_observation_date
+                      && request.resource.data.last_phenophase == resource.data.last_phenophase
+                    )
+      // no delete allowed: not sure how to check for ref integrity (observations)
+    }
+
+    match /observations/{observation_id} {
+      allow read; // allow anonymous users to read all individuals
+      allow create: if request.auth.uid == request.resource.data.user // allow to create observations only for your owned individuals
+                    && ( // mandatory fields
+                         request.resource.data.year == phenoyear()
+                      && request.resource.data.source == 'globe'
+                      && request.resource.data.keys().hasAll(
+                          ['individual_id', 'year', 'source',
+                            'individual', 'phenophase', 'species', 
+                            'date'
+                          ]));
+      allow update: if request.auth.uid == resource.data.user // allow to update observations only for your owned individuals
+                    && ( // disallowed fields
+                         request.resource.data.user == resource.data.user
+                      && request.resource.data.year == resource.data.year
+                      && request.resource.data.source == resource.data.source
+                      && request.resource.data.individual == resource.data.individual
+                      && request.resource.data.individual_id == resource.data.individual_id     
+                      && request.resource.data.phenophase == resource.data.phenophase
+                      && request.resource.data.species == resource.data.species  
+                      
+                      && request.resource.data.created == resource.data.created
+                    )
+    }
+
+    match /users/{user_id} {
+      allow read: if request.auth.uid == user_id // allow to read your user only
+      allow create: if request.auth.uid == user_id // allow to create your user only
+                    && !exists(/databases/$(database)/documents/nicknames/$(request.resource.data.nickname))
+                    && request.resource.data.nickname.size() > 2;
+      allow update: if request.auth.uid == user_id // allow to modify your user only
+                    && !exists(/databases/$(database)/documents/nicknames/$(request.resource.data.nickname))
+                    && (request.resource.data.nickname == null || request.resource.data.nickname.size() > 2);
+      // no delete allowed 
+    }
+  }
+}
