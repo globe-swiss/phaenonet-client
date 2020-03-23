@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { catchError, first, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, first, map, mergeMap, switchMap, filter, mergeAll } from 'rxjs/operators';
 import { Activity } from '../activity/activity';
 import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
@@ -49,6 +49,7 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
   latestIndividualObservations: Observable<IndividualPhenophase[]>;
 
   limitActivities = new BehaviorSubject<number>(8);
+  limitIndividuals = new BehaviorSubject<number>(4);
 
   activities: Observable<Activity[]>;
 
@@ -77,25 +78,29 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
       }
 
       // combine the list of individuals with their phenophase
-      this.latestIndividualObservations = this.individualService.listByUser(this.detailId, 4).pipe(
-        mergeMap(individuals => {
-          return combineLatest(
-            individuals.map(individual => {
-              return combineLatest(
-                this.masterdataService.getSpeciesValue(individual.species),
-                this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase),
-                (species, phenophase) => {
-                  return {
-                    individual: individual,
-                    species: species,
-                    lastPhenophase: phenophase
-                  } as IndividualPhenophase;
-                }
-              );
-            })
-          );
-        })
-      );
+      // if the profile is of a foreign user, display only those with an observation
+      this.latestIndividualObservations = combineLatest(
+        [this.limitIndividuals, this.individualService.listByUser(this.detailId)],
+        (limit, individuals) =>
+          combineLatest(
+            individuals
+              .filter(i => this.isOwner() || i.last_observation_date !== undefined)
+              .slice(0, limit)
+              .map(individual => {
+                return combineLatest(
+                  this.masterdataService.getSpeciesValue(individual.species),
+                  this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase),
+                  (species, phenophase) => {
+                    return {
+                      individual: individual,
+                      species: species,
+                      lastPhenophase: phenophase
+                    } as IndividualPhenophase;
+                  }
+                );
+              })
+          )
+      ).pipe(mergeAll());
 
       this.activities = this.limitActivities.pipe(
         switchMap(limit => this.activityService.listByUser(this.authService.getUserId(), limit))
@@ -145,6 +150,10 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
    */
   showAllActivities() {
     this.limitActivities.next(1000);
+  }
+
+  showMoreIndividuals() {
+    this.limitIndividuals.next(100);
   }
 
   follow(): void {

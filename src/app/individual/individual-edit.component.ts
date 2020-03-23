@@ -97,6 +97,10 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
         detail.gradient = 0;
       }
 
+      if (!detail.type) {
+        detail.type = 'individual';
+      }
+
       this.createForm.reset(detail);
     });
   }

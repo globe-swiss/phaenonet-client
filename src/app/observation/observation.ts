@@ -9,4 +9,5 @@ export class Observation {
   comment: string | null;
   created: Date;
   modified: Date;
+  source: 'globe' | 'meteoswiss';
 }

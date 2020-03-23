@@ -18,4 +18,7 @@ export class Individual {
   year: number;
   last_observation_date: Date | null;
   last_phenophase: string | null;
+  created: Date;
+  modified: Date;
+  type: 'individual' | 'station';
 }

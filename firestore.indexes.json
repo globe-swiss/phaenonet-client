@@ -23,7 +23,7 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "last_observation_date",
+          "fieldPath": "modified",
           "order": "DESCENDING"
         }
       ]

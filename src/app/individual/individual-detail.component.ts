@@ -212,17 +212,15 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
       if (result) {
         this.detailSubject.pipe(first()).subscribe(detail => {
           result.observation.map(observation => {
-            // if this is a new observation only the date is known
+            // if this is a new observation the created date is not set
             if (!observation.created) {
-              const now = new Date();
-              observation.created = now;
-              observation.modified = now;
               observation.individual = detail.individual;
               observation.individual_id = this.detailId;
               observation.phenophase = result.phenophase.id;
               observation.species = detail.species;
               observation.year = detail.year;
               observation.user = detail.user;
+              observation.source = 'globe';
             }
 
             const observationId = [

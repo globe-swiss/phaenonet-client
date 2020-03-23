@@ -75,11 +75,14 @@
               {{ item.species.de | translate }}
             </div>
             <h3>{{ item.individual.name }}</h3>
-            <div class="detail-label">
+            <div class="detail-label" *ngIf="item.individual.last_observation_date">
               {{ 'Letzte Beobachtung' | translate }},
               {{ formatShortDate(item.individual.last_observation_date.toDate()) }}
             </div>
-            <div class="phenophase-title">
+            <div class="detail-label" *ngIf="!item.individual.last_observation_date">
+              {{ 'Noch keine Beobachtungen' | translate }}
+            </div>
+            <div class="phenophase-title" *ngIf="item.lastPhenophase">
               <span
                 class="phenophase-circle"
                 [ngStyle]="{ 'background-color': colorMap[item.individual.last_phenophase] }"
@@ -91,6 +94,9 @@
         <button *ngIf="isOwner()" mat-flat-button color="primary" [routerLink]="'/individuals/new/edit'">
           <mat-icon>add</mat-icon>
           <span>{{ 'Objekt hinzufügen' | translate }}</span>
+        </button>
+        <button mat-flat-button color="accent" (click)="showMoreIndividuals()">
+          <span>{{ 'Mehr anzeigen' | translate }}</span>
         </button>
       </div>
     </div>
