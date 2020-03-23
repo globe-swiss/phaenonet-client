@@ -15,6 +15,7 @@
   "Datenquelle": "Source",
   "Art": "Espèce",
   "Letzte Beobachtung": "Dernière observation",
+  "Noch keine Beobachtungen": "Pas encore d'observations",
   "Umgebung": "Environnement",
   "Höhe": "Altitude",
   "Exposition": "Exposition",
@@ -65,6 +66,8 @@
   "Passwort Bestätigung": "Confirmation du mot de passe",
   "Jetzt registrieren": "S'inscrire maintenant",
   "Anzeigename bei PhaenoNet (öffentlich)": "Afficher le nom sur PhaenoNet (public)",
+  "Dieser Nickname ist bereits vergeben.": "Cette pseudonyme est déjà pris.",
+  "Der Nickname muss mindestens 3 Zeichen lang sein.": "La pseudonyme doit comporter au moins 3 caractères.",
 
   "BA": "Erable sycomore",
   "BR": "Anémone des bois",

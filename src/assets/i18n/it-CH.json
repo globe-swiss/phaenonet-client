@@ -15,6 +15,7 @@
   "Datenquelle": "Fonte",
   "Art": "Specie",
   "Letzte Beobachtung": "Ultima osservazione",
+  "Noch keine Beobachtungen": "Ancora nessuna osservazione",
   "Umgebung": "Dintorni",
   "Höhe": "Altezza",
   "Exposition": "Esposizione",
@@ -65,6 +66,8 @@
   "Passwort Bestätigung": "Conferma della password",
   "Jetzt registrieren": "Registrati ora",
   "Anzeigename bei PhaenoNet (öffentlich)": "Visualizza il nome su PhaenoNet (pubblico)",
+  "Dieser Nickname ist bereits vergeben.": "Questo pseudonyme è già stato preso.",
+  "Der Nickname muss mindestens 3 Zeichen lang sein.": "Il pseudonyme deve contenere almeno 3 caratteri.",
 
   "BA": "Acero di monte",
   "BR": "Anemone bianca",
