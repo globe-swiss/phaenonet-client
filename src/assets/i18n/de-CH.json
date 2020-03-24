@@ -4,7 +4,7 @@
   "globe": "Globe",
   "meteoswiss": "MeteoSchweiz",
   "species": "Art",
-  "height": "Höhe",
+  "altitude": "Höhe",
 
   "BA": "Bergahorn",
   "BR": "Buschwindröschen",
@@ -24,5 +24,11 @@
   "SL": "Sommerlinde",
   "VB": "Vogelbeere",
   "WL": "Winterlinde",
-  "WT": "Weisstanne"
+  "WT": "Weisstanne",
+
+  "alt1": "bis 499",
+  "alt2": "500 - 799",
+  "alt3": "800 - 999",
+  "alt4": "1000 - 1199",
+  "alt5": "ab 1200"
 }

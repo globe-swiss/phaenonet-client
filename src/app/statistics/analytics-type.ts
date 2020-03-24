@@ -1,1 +1,1 @@
-export type AnalyticsType = 'species' | 'height';
+export type AnalyticsType = 'species' | 'altitude';
