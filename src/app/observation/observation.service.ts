@@ -19,9 +19,9 @@ export class ObservationService extends BaseResourceService<Observation> {
       .pipe(
         map(obs =>
           obs.map(o => {
-            o.date = (o.date as any).toDate();
-            o.created = (o.created as any).toDate();
-            o.modified = (o.modified as any).toDate();
+            o.date = o.date ? (o.date as any).toDate() : o.date;
+            o.created = o.created ? (o.created as any).toDate() : o.created;
+            o.modified = o.modified ? (o.modified as any).toDate() : o.modified;
 
             return o;
           })
