@@ -39,7 +39,8 @@ service cloud.firestore {
                           ['user', 'source', 'year', 'type',
                            'individual', 'species',  
                            'altitude', 'description', 'exposition', 'forest', 'geopos', 'habitat', 'less100', 'name', 'shade', 'watering', 'gradient'
-                          ]));
+                          ])
+                    );
       allow update: if request.auth.uid == resource.data.user // if you own them
                     && ( // disallowed fields
                          request.resource.data.user == resource.data.user
@@ -47,12 +48,7 @@ service cloud.firestore {
                       && request.resource.data.source == resource.data.source
                       && request.resource.data.type == resource.data.type
                       && request.resource.data.individual == resource.data.individual
-                      && request.resource.data.species == resource.data.species
-                      
-                      && request.resource.data.created == resource.data.created
-                      && request.resource.data.last_observation_date == resource.data.last_observation_date
-                      && request.resource.data.last_phenophase == resource.data.last_phenophase
-                    )
+                    );
       // no delete allowed: not sure how to check for ref integrity (observations)
     }
 
@@ -66,7 +62,8 @@ service cloud.firestore {
                           ['individual_id', 'year', 'source',
                             'individual', 'phenophase', 'species', 
                             'date'
-                          ]));
+                          ])
+                    );
       allow update: if request.auth.uid == resource.data.user // allow to update observations only for your owned individuals
                     && ( // disallowed fields
                          request.resource.data.user == resource.data.user
@@ -76,9 +73,7 @@ service cloud.firestore {
                       && request.resource.data.individual_id == resource.data.individual_id     
                       && request.resource.data.phenophase == resource.data.phenophase
                       && request.resource.data.species == resource.data.species  
-                      
-                      && request.resource.data.created == resource.data.created
-                    )
+                    );
     }
 
     match /users/{user_id} {
