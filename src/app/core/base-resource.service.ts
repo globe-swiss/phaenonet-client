@@ -14,12 +14,19 @@ export abstract class BaseResourceService<T> extends BaseService implements Reso
     return this.afs.collection<T>(this.collectionName).valueChanges({ idField: 'id' });
   }
 
+  /**
+   * Upserts the given object t stripping it of created and modified dates as they will be set by cloud functions.
+   *
+   * @param t the object to be created or updated
+   * @param id the id of the object
+   */
   upsert(t: T, id: string): Observable<T> {
+    const { created, modified, ...withoutDates } = t as any;
     return from(
       this.afs
         .collection<T>(this.collectionName)
         .doc<T>(id)
-        .set(t, { merge: true })
+        .set(withoutDates, { merge: true })
         .then(_ => this.get(id))
     ).pipe(mergeMap(identity));
   }
