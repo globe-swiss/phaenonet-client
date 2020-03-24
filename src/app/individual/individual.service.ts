@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import * as firebase from 'firebase';
+import { Observable, from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
+import { IdLike } from '../masterdata/masterdata-like';
 import { AlertService } from '../messaging/alert.service';
 import { Individual } from './individual';
-import { AuthService } from '../auth/auth.service';
-import { map } from 'rxjs/operators';
-import { IdLike } from '../masterdata/masterdata-like';
 
 @Injectable()
 export class IndividualService extends BaseResourceService<Individual> {
@@ -14,7 +15,7 @@ export class IndividualService extends BaseResourceService<Individual> {
     super(alertService, afs, 'individuals');
   }
 
-  upsert(individual: Individual, id: string): Observable<Individual> {
+  upsert(individual: Individual): Observable<Individual> {
     if (!individual.individual) {
       individual.individual = this.afs.createId();
       individual.user = this.authService.getUserId();
@@ -62,5 +63,14 @@ export class IndividualService extends BaseResourceService<Individual> {
           .limit(limit)
       )
       .valueChanges({ idField: 'id' });
+  }
+
+  addImageUrl(id: string, imageUrl: string): Observable<void> {
+    return from(
+      this.afs
+        .collection(this.collectionName)
+        .doc(id)
+        .update({ image_urls: firebase.firestore.FieldValue.arrayUnion(imageUrl) })
+    );
   }
 }

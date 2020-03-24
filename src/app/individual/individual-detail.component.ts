@@ -35,6 +35,7 @@ import { Individual } from './individual';
 import { IndividualService } from './individual.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
 import { formatShortDate } from '../core/formatDate';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   templateUrl: './individual-detail.component.html',
@@ -52,6 +53,8 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
   };
   markerOptions = new ReplaySubject<google.maps.MarkerOptions>(1);
   geopos: google.maps.LatLngLiteral = { lat: 46.818188, lng: 8.227512 };
+
+  imageUrl: Observable<string>;
 
   lastPhenophase: Observable<Phenophase>;
   lastPhenophaseColor: Observable<string>;
@@ -93,7 +96,8 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
     private activityService: ActivityService,
     public dialog: MatDialog,
     private authService: AuthService,
-    protected alertService: AlertService
+    protected alertService: AlertService,
+    private afStorage: AngularFireStorage
   ) {
     super(route, individualService, userService, alertService);
   }
@@ -108,6 +112,15 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
       if (detail.geopos) {
         this.geopos = detail.geopos;
         this.center = detail.geopos;
+      }
+
+      if (detail.image_urls) {
+        // TODO: this should change on the data level
+        this.imageUrl = this.afStorage
+          .ref(
+            detail.image_urls[0].substring(detail.image_urls[0].lastIndexOf('.com/') + 4, detail.image_urls[0].length)
+          )
+          .getDownloadURL();
       }
 
       this.isFollowing = this.currentUser.pipe(
@@ -269,7 +282,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
         this.activityService.insert(activity);
       });
 
-      this.individualService.upsert(updateIndividual, this.detailId);
+      this.individualService.upsert(updateIndividual);
     }
   }
 }

@@ -21,4 +21,5 @@ export class Individual {
   created: Date;
   modified: Date;
   type: 'individual' | 'station';
+  image_urls: string[];
 }

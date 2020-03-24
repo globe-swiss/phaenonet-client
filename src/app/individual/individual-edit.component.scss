@@ -10,3 +10,18 @@
   height: 61px;
   padding-left: 2rem;
 }
+
+.image-container {
+  width: 100%;
+  height: 302px;
+  overflow: hidden;
+}
+
+.image-container img {
+  margin: -25% 0;
+}
+
+.individual-map-with-image ::ng-deep .map-container {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 0rem;
+}
