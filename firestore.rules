@@ -82,8 +82,9 @@ service cloud.firestore {
                     && !exists(/databases/$(database)/documents/nicknames/$(request.resource.data.nickname))
                     && request.resource.data.nickname.size() > 2;
       allow update: if request.auth.uid == user_id // allow to modify your user only
-                    && !exists(/databases/$(database)/documents/nicknames/$(request.resource.data.nickname))
-                    && (request.resource.data.nickname == null || request.resource.data.nickname.size() > 2);
+                    && (request.resource.data.nickname == resource.data.nickname
+                        || !exists(/databases/$(database)/documents/nicknames/$(request.resource.data.nickname)))
+                    && request.resource.data.nickname.size() > 2;
       // no delete allowed 
     }
   }
