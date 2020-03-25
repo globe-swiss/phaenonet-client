@@ -249,7 +249,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
               .upsert(observation, observationId)
               .pipe(first())
               .subscribe(observation => {
-                this.updateLastObservation(detail, observation, result.phenophase);
+                this.updateLastObservation(detail, result.phenophase);
               });
           });
         });
@@ -261,7 +261,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
     return this.authService.getUserId() === this.owner;
   }
 
-  private updateLastObservation(individual: Individual, observation: Observation, phenophase: Phenophase): void {
+  private updateLastObservation(individual: Individual, phenophase: Phenophase): void {
     if (this.lastObservation) {
       const updateIndividual: Individual = {
         ...individual,
@@ -272,7 +272,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
         const activity: Activity = {
           user: individual.user,
           user_nickname: creator,
-          date: observation.modified,
+          date: new Date(),
           individual: individual.individual,
           individual_id: this.detailId,
           text: phenophase.name_de,
