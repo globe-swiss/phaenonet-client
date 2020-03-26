@@ -27,12 +27,12 @@
               <div class="mat-small">
                 {{ d.species.de | translate }}
               </div>
-              <div>{{ d.individual.name }}</div>
+              <div class="map-info-content">{{ d.individual.name }}</div>
               <div class="mat-small" *ngIf="d.phenophase">
                 {{ 'Letzte Beobachtung' | translate }},
                 {{ formatShortDate(d.individual.last_observation_date) }}
               </div>
-              <div *ngIf="d.phenophase">
+              <div *ngIf="d.phenophase" class="map-info-content">
                 {{ d.phenophase?.name_de | translate }}
               </div>
             </div>
