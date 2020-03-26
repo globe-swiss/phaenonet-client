@@ -33,7 +33,6 @@
                 {{ formatShortDate(d.individual.last_observation_date) }}
               </div>
               <div *ngIf="d.phenophase">
-                <span class="phenophase-circle" [ngStyle]="{ 'background-color': colorMap[d.phenophase?.id] }"></span>
                 {{ d.phenophase?.name_de | translate }}
               </div>
             </div>
