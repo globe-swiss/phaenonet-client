@@ -173,17 +173,13 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
 
   private uploadImage(individual: Individual, file: File) {
     const extension = file.type.substring(file.type.lastIndexOf('/') + 1, file.type.length);
-    const path = '/images/objects/foto_' + individual.individual + '_obj.' + extension;
+    const path = '/images/' + individual.user + '/individuals/foto_' + individual.individual + '_obj.' + extension;
     const ref = this.afStorage.ref(path);
     const task = ref.put(file);
 
     task.snapshotChanges().pipe(
       finalize(() => {
-        // update the individual with the resulting url
-        ref.getDownloadURL().subscribe(downloadUrl => {
-          this.individualService.addImageUrl(this.toIndividualId(individual), downloadUrl);
-          this.router.navigate(['individuals', this.toIndividualId(individual)]);
-        });
+        this.router.navigate(['individuals', this.toIndividualId(individual)]);
       })
     );
   }
