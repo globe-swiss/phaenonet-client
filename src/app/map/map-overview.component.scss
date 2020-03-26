@@ -44,7 +44,7 @@
     display: flex;
     flex-direction: row;
     * {
-      margin: 5px;
+      margin: 3px 5px -5px 5px;
       display: flex;
       flex-direction: column;
     }
@@ -70,4 +70,8 @@
 
 ::ng-deep #phaenonet-body #form-species .mat-form-field-infix {
   width: 15rem;
+}
+
+::ng-deep .map-filter .mat-form-field-underline {
+  display: none;
 }
