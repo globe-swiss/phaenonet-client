@@ -18,7 +18,7 @@
             (mapDragend)="updateGeopos($event)"
           ></map-marker>
         </google-map>
-        <div gdColumn="5 / span 2" class="image-container" *ngIf="(imageUrl | async); let url">
+        <div gdColumn="5 / span 2" class="image-container" *ngIf="imageUrl | async; let url">
           <img [src]="url" width="100%" />
         </div>
       </div>
@@ -29,7 +29,7 @@
         <img *ngIf="fileToUploadBase64" [src]="fileToUploadBase64" height="200" />
       </div>
       <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" class="detail-right">
-        <form id="createForm" [formGroup]="createForm" (ngSubmit)="onSubmit()" *ngIf="(detailSubject | async)">
+        <form id="createForm" [formGroup]="createForm" (ngSubmit)="onSubmit()" *ngIf="detailSubject | async">
           <div>
             <mat-form-field class="geopos-width">
               <input
@@ -57,7 +57,7 @@
             <mat-label>{{ 'Pflanzenart' | translate }}</mat-label>
             <mat-select formControlName="species" required>
               <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-              <mat-option *ngFor="let element of (selectableSpecies | async)" [value]="element.id">
+              <mat-option *ngFor="let element of selectableSpecies | async" [value]="element.id">
                 {{ element.de | translate }}
               </mat-option>
             </mat-select>
@@ -96,7 +96,7 @@
             <mat-label>{{ 'Umgebung' | translate }}</mat-label>
             <mat-select formControlName="description" required>
               <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-              <mat-option *ngFor="let element of (selectableDescriptions | async)" [value]="element.id">
+              <mat-option *ngFor="let element of selectableDescriptions | async" [value]="element.id">
                 {{ element.de | translate }}
               </mat-option>
             </mat-select>
@@ -105,7 +105,7 @@
             <mat-label>{{ 'Exposition' | translate }}</mat-label>
             <mat-select formControlName="exposition" required>
               <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-              <mat-option *ngFor="let element of (selectableExpositions | async)" [value]="element.id">
+              <mat-option *ngFor="let element of selectableExpositions | async" [value]="element.id">
                 {{ element.de | translate }}
               </mat-option>
             </mat-select>
@@ -132,7 +132,7 @@
             <mat-label>{{ 'Schatten' | translate }}</mat-label>
             <mat-select formControlName="shade" required>
               <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-              <mat-option *ngFor="let element of (selectableShades | async)" [value]="element.id">
+              <mat-option *ngFor="let element of selectableShades | async" [value]="element.id">
                 {{ element.de | translate }}
               </mat-option>
             </mat-select>
@@ -141,7 +141,7 @@
             <mat-label>{{ 'Bewässerung' | translate }}</mat-label>
             <mat-select formControlName="watering" required>
               <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-              <mat-option *ngFor="let element of (selectableIrrigations | async)" [value]="element.id">
+              <mat-option *ngFor="let element of selectableIrrigations | async" [value]="element.id">
                 {{ element.de | translate }}
               </mat-option>
             </mat-select>
@@ -150,7 +150,7 @@
             <mat-label>{{ 'Distanz zu Gebäude / Strasse' | translate }}</mat-label>
             <mat-select formControlName="less100" required>
               <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-              <mat-option *ngFor="let element of (selectableDistances | async)" [value]="element.id">
+              <mat-option *ngFor="let element of selectableDistances | async" [value]="element.id">
                 {{ element.de | translate }}
               </mat-option>
             </mat-select>
@@ -159,7 +159,7 @@
             <mat-label>{{ 'Habitat' | translate }}</mat-label>
             <mat-select formControlName="habitat" required>
               <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-              <mat-option *ngFor="let element of (selectableHabitats | async)" [value]="element.id">
+              <mat-option *ngFor="let element of selectableHabitats | async" [value]="element.id">
                 {{ element.de | translate }}
               </mat-option>
             </mat-select>
@@ -168,7 +168,7 @@
             <mat-label>{{ 'Waldtyp' | translate }}</mat-label>
             <mat-select formControlName="forest" required>
               <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-              <mat-option *ngFor="let element of (selectableForests | async)" [value]="element.id">
+              <mat-option *ngFor="let element of selectableForests | async" [value]="element.id">
                 {{ element.de | translate }}
               </mat-option>
             </mat-select>

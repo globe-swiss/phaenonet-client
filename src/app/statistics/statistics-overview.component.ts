@@ -162,11 +162,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
       });
     });
 
-    this.y = d3Scale
-      .scaleBand()
-      .domain(resultingDomain)
-      .rangeRound([0, this.height])
-      .padding(0.4);
+    this.y = d3Scale.scaleBand().domain(resultingDomain).rangeRound([0, this.height]).padding(0.4);
 
     data.forEach(analytics => {
       this.g
@@ -196,7 +192,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         .attr('stroke', '#000')
         .attr('stroke-width', 0.5)
         .style('opacity', 0.7)
-        .on('mouseover', function(d) {
+        .on('mouseover', function (d) {
           const xPosition =
             parseFloat(d3.select(this).attr('x')) +
             self.margin.left +
@@ -216,9 +212,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
             .pipe(
               first(),
               map(phenophase => {
-                d3.select('#tooltip')
-                  .select('#title')
-                  .text(self.translateService.instant(phenophase.name_de));
+                d3.select('#tooltip').select('#title').text(self.translateService.instant(phenophase.name_de));
 
                 d3.select('#tooltip').classed('hidden', false);
               })
@@ -229,11 +223,26 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
           d3.select('#tooltip').classed('hidden', true);
         });
 
-      this.drawVerticalLines('.median', analytics, d => this.x(d.median), d => this.x(d.median));
+      this.drawVerticalLines(
+        '.median',
+        analytics,
+        d => this.x(d.median),
+        d => this.x(d.median)
+      );
 
-      this.drawVerticalLines('.whiskersMin', analytics, d => this.x(d.min), d => this.x(d.min));
+      this.drawVerticalLines(
+        '.whiskersMin',
+        analytics,
+        d => this.x(d.min),
+        d => this.x(d.min)
+      );
 
-      this.drawVerticalLines('.whiskersMax', analytics, d => this.x(d.max), d => this.x(d.max));
+      this.drawVerticalLines(
+        '.whiskersMax',
+        analytics,
+        d => this.x(d.max),
+        d => this.x(d.max)
+      );
     });
 
     const axisLeft = d3Axis.axisLeft(this.y).tickFormat(t => this.translateLeftAxisTick(t.toString()));

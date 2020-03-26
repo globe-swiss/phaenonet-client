@@ -7,7 +7,7 @@
       <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
         <h3>{{ 'PROFIL' | translate }}</h3>
       </div>
-      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="(detailSubject | async)" class="detail-right">
+      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="detailSubject | async" class="detail-right">
         <div *ngIf="isOwner()" class="detail-label">{{ 'Hallo' | translate }}</div>
         <div *ngIf="!isOwner()" class="detail-label">{{ 'Öffentliches Profil von' | translate }}</div>
         <h3 class="title-nickname">
@@ -45,7 +45,7 @@
           ><span *ngIf="!isOwner()">{{ 'BEOBACHTUNGEN' | translate }}</span>
         </h3>
         <button
-          *ngIf="(!isOwner() && isFollowing | async)"
+          *ngIf="!isOwner() && isFollowing | async"
           mat-flat-button
           class="detail-header-fab a100"
           (click)="unfollow()"
@@ -62,10 +62,10 @@
           {{ 'Abonnieren' | translate }}
         </button>
       </div>
-      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="(detailSubject | async)" class="detail-right">
+      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="detailSubject | async" class="detail-right">
         <div
           fxLayout="row"
-          *ngFor="let item of (latestIndividualObservations | async)"
+          *ngFor="let item of latestIndividualObservations | async"
           [routerLink]="['/individuals', item.individual.id]"
           class="latest-individual-observation"
         >
@@ -109,12 +109,12 @@
       <div
         gdColumn="3 / span 4"
         gdColumn.lt-md="2 / span 5"
-        *ngIf="(isOwner() && detailSubject | async)"
+        *ngIf="isOwner() && detailSubject | async"
         class="detail-right"
       >
         <div
           fxLayout="row"
-          *ngFor="let item of (activities | async)"
+          *ngFor="let item of activities | async"
           [routerLink]="['/individuals', item.individual_id]"
           class="activity"
         >

@@ -13,12 +13,12 @@
         >
           <map-marker #marker [position]="geopos" [options]="markerOptions | async"></map-marker>
         </google-map>
-        <div gdColumn="5 / span 2" class="image-container" *ngIf="(imageUrl | async); let url">
+        <div gdColumn="5 / span 2" class="image-container" *ngIf="imageUrl | async; let url">
           <img [src]="url" width="100%" />
         </div>
       </div>
       <button
-        *ngIf="(!isOwner() && isFollowing | async)"
+        *ngIf="!isOwner() && isFollowing | async"
         mat-fab
         class="detail-header-fab a100"
         color="primary"
@@ -37,7 +37,7 @@
       </button>
     </div>
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
-      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 5" *ngIf="(detailSubject | async)" class="detail-left">
+      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 5" *ngIf="detailSubject | async" class="detail-left">
         <div class="detail-label">{{ (species | async)?.de | translate }}</div>
         <h3>{{ (detailSubject | async).name }}</h3>
         <div class="detail-label" *ngIf="(detailSubject | async).last_observation_date">
@@ -45,7 +45,7 @@
           <!-- TODO remove method call -->
           <span>, {{ lastObservationDate }}</span>
         </div>
-        <div class="phenophase-title" *ngIf="(lastPhenophase | async)">
+        <div class="phenophase-title" *ngIf="lastPhenophase | async">
           <span class="phenophase-circle" [ngStyle]="{ 'background-color': lastPhenophaseColor | async }"></span>
           <span>{{ (lastPhenophase | async)?.name_de | translate }}</span>
         </div>
@@ -90,7 +90,7 @@
       </div>
       <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" class="detail-right">
         <h3>{{ 'Phänophasen' | translate }}</h3>
-        <div *ngFor="let groupedItem of (phenophaseObservationsGroups | async)" class="phenophase-group">
+        <div *ngFor="let groupedItem of phenophaseObservationsGroups | async" class="phenophase-group">
           <ng-container *ngIf="isOwner() || groupedItem.hasObservations">
             <h4>{{ groupedItem.phenophaseGroup.name_de | translate }}</h4>
             <div *ngFor="let item of groupedItem.phenophaseObservations">
@@ -130,7 +130,7 @@
                   >
                 </mat-form-field>
                 <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment">
-                  {{ 'Kommentar' }}: {{ staticComments[(item.observation.toNullable()?.comment)] | translate }}
+                  {{ 'Kommentar' }}: {{ staticComments[item.observation.toNullable()?.comment] | translate }}
                 </div>
               </ng-container>
             </div>

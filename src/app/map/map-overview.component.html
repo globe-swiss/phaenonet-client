@@ -10,7 +10,7 @@
   >
     <map-marker
       #marker
-      *ngFor="let individualWithMarkerOpts of (individualsWithMarkerOpts | async)"
+      *ngFor="let individualWithMarkerOpts of individualsWithMarkerOpts | async"
       [position]="individualWithMarkerOpts.individual.geopos"
       [options]="individualWithMarkerOpts.markerOptions"
       (mapClick)="
@@ -20,7 +20,7 @@
     </map-marker>
     <map-info-window>
       <ng-container *ngIf="(infoWindowType | async) === 'globe'">
-        <ng-container *ngIf="(globeInfoWindowData | async) as d">
+        <ng-container *ngIf="globeInfoWindowData | async as d">
           <div fxLayout="row" [routerLink]="d.url" class="map-info-window">
             <img src="assets/img/Bildmarke-Phaenonet_rgb.png" style="max-height: 100px;" />
             <div fxLayout="column" style="margin-left: 15px; margin-right: 15px;">
@@ -33,7 +33,7 @@
                 {{ formatShortDate(d.individual.last_observation_date) }}
               </div>
               <div *ngIf="d.phenophase">
-                <span class="phenophase-circle" [ngStyle]="{ 'background-color': colorMap[(d.phenophase?.id)] }"></span>
+                <span class="phenophase-circle" [ngStyle]="{ 'background-color': colorMap[d.phenophase?.id] }"></span>
                 {{ d.phenophase?.name_de | translate }}
               </div>
             </div>
@@ -42,7 +42,7 @@
       </ng-container>
 
       <ng-container *ngIf="(infoWindowType | async) === 'meteoswiss'">
-        <ng-container *ngIf="(meteoswissInfoWindowData | async) as d">
+        <ng-container *ngIf="meteoswissInfoWindowData | async as d">
           <div fxLayout="row" [routerLink]="d.url" class="map-info-window">
             <img src="assets/img/Bildmarke-Phaenonet_rgb.png" style="max-height: 100px;" />
             <div fxLayout="column" style="margin-left: 15px; margin-right: 15px;">
@@ -89,7 +89,7 @@
           <mat-form-field>
             <mat-label>{{ 'Art' | translate }}</mat-label>
             <mat-select formControlName="species">
-              <mat-option *ngFor="let specie of (species | async)" [value]="specie.id">{{
+              <mat-option *ngFor="let specie of species | async" [value]="specie.id">{{
                 specie.de | translate
               }}</mat-option>
             </mat-select>
