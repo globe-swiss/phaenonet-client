@@ -82,7 +82,7 @@
               type="text"
               readonly="true"
             />
-            <mat-icon matSuffix color="primary" (click)="fileInput.click()">add_circle</mat-icon>
+            <mat-icon class="add-image" matSuffix color="primary" (click)="fileInput.click()">add_circle</mat-icon>
             <input
               hidden
               (change)="onFileSelected($event.target.files)"
