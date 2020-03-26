@@ -40,20 +40,9 @@ export function altitudeLimits(altitude: number, limits: AltitudeLimits): Altitu
     end = limits.altitude_grp_5_end_day;
   }
 
-  const start_day = moment()
-    .dayOfYear(start)
-    .toDate();
+  const start_day = moment().dayOfYear(start).toDate();
   const end_day = new Date(
-    Math.min(
-      moment()
-        .endOf('day')
-        .toDate()
-        .getTime(),
-      moment()
-        .dayOfYear(end)
-        .toDate()
-        .getTime()
-    )
+    Math.min(moment().endOf('day').toDate().getTime(), moment().dayOfYear(end).toDate().getTime())
   );
 
   return {

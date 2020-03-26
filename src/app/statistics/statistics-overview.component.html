@@ -28,7 +28,7 @@
           <mat-form-field>
             <mat-label>{{ 'Art' | translate }}</mat-label>
             <mat-select formControlName="species">
-              <mat-option *ngFor="let s of (species | async)" [value]="s.id">{{ s.de | translate }}</mat-option>
+              <mat-option *ngFor="let s of species | async" [value]="s.id">{{ s.de | translate }}</mat-option>
             </mat-select>
           </mat-form-field>
         </form>

@@ -190,10 +190,7 @@ export class MasterdataService extends BaseService {
       .doc(reference)
       .collection<T>(name)
       .valueChanges({ idField: 'id' })
-      .pipe(
-        publishReplay(1),
-        refCount()
-      );
+      .pipe(publishReplay(1), refCount());
   }
 
   private getMasterdataValueFor<T extends MasterdataLike>(
@@ -216,10 +213,7 @@ export class MasterdataService extends BaseService {
       .doc(speciesId)
       .collection<T>(name, ref => ref.orderBy('seq'))
       .valueChanges({ idField: 'id' })
-      .pipe(
-        publishReplay(1),
-        refCount()
-      );
+      .pipe(publishReplay(1), refCount());
   }
 
   private getPhenoDataValueFor<T extends PhenophasesdataLike>(
