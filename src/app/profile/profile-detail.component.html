@@ -23,16 +23,10 @@
           <div>{{ lastname | async }}</div>
           <div class="detail-label">{{ 'E-Mail' | translate }}</div>
           <div>{{ email }}</div>
-          <button
-            mat-flat-button
-            color="primary"
-            type="submit"
-            id="edit-button"
-            [routerLink]="['/profile', detailId, 'edit']"
-          >
+          <button mat-flat-button type="submit" id="edit-button" [routerLink]="['/profile', detailId, 'edit']">
             {{ 'Profil bearbeiten' | translate }}
           </button>
-          <button mat-flat-button type="submit" id="logout-button" (click)="logout()">
+          <button mat-flat-button color="accent" type="submit" id="logout-button" (click)="logout()">
             {{ 'Logout' | translate }}
           </button>
         </ng-container>
