@@ -56,26 +56,26 @@
           }}</a>
         </div>
         <div class="detail-label">{{ 'Umgebung' | translate }}</div>
-        <div>{{ (description | async)?.de | translate }}</div>
+        <div class="detail-info-value">{{ (description | async)?.de | translate }}</div>
         <div class="detail-label">{{ 'Höhe' | translate }}</div>
         <div>
-          <span>{{ (detailSubject | async)?.altitude }}</span
+          <span class="detail-info-value">{{ (detailSubject | async)?.altitude }}</span
           ><span translate> {{ 'M.ü.M.' }}</span>
         </div>
         <div class="detail-label">{{ 'Exposition' | translate }}</div>
-        <div>{{ (exposition | async)?.de | translate }}</div>
+        <div class="detail-info-value">{{ (exposition | async)?.de | translate }}</div>
         <div class="detail-label">{{ 'Hangneigung' | translate }}</div>
-        <div>{{ (detailSubject | async)?.gradient }}%</div>
+        <div class="detail-info-value">{{ (detailSubject | async)?.gradient }}%</div>
         <div class="detail-label">{{ 'Schatten' | translate }}</div>
-        <div>{{ (shade | async)?.de | translate }}</div>
+        <div class="detail-info-value">{{ (shade | async)?.de | translate }}</div>
         <div class="detail-label">{{ 'Bewässerung' | translate }}</div>
-        <div>{{ (irrigation | async)?.de | translate }}</div>
+        <div class="detail-info-value">{{ (irrigation | async)?.de | translate }}</div>
         <div class="detail-label">{{ 'Distanz zu Gebäude / Strasse' | translate }}</div>
-        <div>{{ (distance | async)?.de | translate }}</div>
+        <div class="detail-info-value">{{ (distance | async)?.de | translate }}</div>
         <div class="detail-label">{{ 'Habitat' | translate }}</div>
-        <div>{{ (habitat | async)?.de | translate }}</div>
+        <div class="detail-info-value">{{ (habitat | async)?.de | translate }}</div>
         <div class="detail-label">{{ 'Waldtyp' | translate }}</div>
-        <div>{{ (forest | async)?.de | translate }}</div>
+        <div class="detail-info-value">{{ (forest | async)?.de | translate }}</div>
 
         <button
           mat-flat-button
