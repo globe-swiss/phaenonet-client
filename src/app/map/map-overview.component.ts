@@ -42,7 +42,7 @@ export class MapOverviewComponent implements OnInit {
   center = { lat: 46.818188, lng: 8.227512 };
   zoom = 9;
   options: google.maps.MapOptions = {
-    mapTypeId: google.maps.MapTypeId.HYBRID,
+    mapTypeId: google.maps.MapTypeId.TERRAIN,
     mapTypeControl: false,
     fullscreenControl: false,
     streetViewControl: false

@@ -45,7 +45,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
   center = { lat: 46.818188, lng: 8.227512 };
   zoom = 13;
   options: google.maps.MapOptions = {
-    mapTypeId: google.maps.MapTypeId.HYBRID,
+    mapTypeId: google.maps.MapTypeId.TERRAIN,
     mapTypeControl: false,
     fullscreenControl: false,
     streetViewControl: false,
