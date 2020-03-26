@@ -45,7 +45,8 @@ export class MapOverviewComponent implements OnInit {
     mapTypeId: google.maps.MapTypeId.TERRAIN,
     mapTypeControl: false,
     fullscreenControl: false,
-    streetViewControl: false
+    streetViewControl: false,
+    minZoom: 8
   };
   individualsWithMarkerOpts: Observable<IndividualWithMarkerOpt[]>;
   infoWindowDatas: Observable<GlobeInfoWindowData[]>;

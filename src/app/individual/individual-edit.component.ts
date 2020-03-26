@@ -34,7 +34,8 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
     mapTypeId: google.maps.MapTypeId.HYBRID,
     mapTypeControl: false,
     fullscreenControl: false,
-    streetViewControl: false
+    streetViewControl: false,
+    minZoom: 8
   };
   markerOptions: google.maps.MarkerOptions = {
     draggable: true,
