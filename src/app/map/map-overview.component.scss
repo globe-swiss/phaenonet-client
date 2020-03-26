@@ -10,8 +10,11 @@
 
 .extended-fab-button {
   width: unset;
-  padding: 0 26px;
-  border-radius: 29px;
+  border-radius: 35px;
+  padding-left: 75px;
+  padding-right: 75px;
+  margin-top: 2.5rem;
+  height: 70px;
 
   .mat-icon {
     margin-right: 10px;

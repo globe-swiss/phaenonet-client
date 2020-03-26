@@ -10,12 +10,12 @@
       <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="detailSubject | async" class="detail-right">
         <div *ngIf="isOwner()" class="detail-label">{{ 'Hallo' | translate }}</div>
         <div *ngIf="!isOwner()" class="detail-label">{{ 'Öffentliches Profil von' | translate }}</div>
-        <h3 class="title-nickname">
+        <div class="title-nickname">
           {{ (detailSubject | async).nickname }}
           <button mat-icon-button [app-copy-clipboard]="profileLink | async" (copied)="notifyCopied()">
             <mat-icon>link</mat-icon>
           </button>
-        </h3>
+        </div>
         <ng-container *ngIf="isOwner()">
           <div class="detail-label">{{ 'Vorname' | translate }}</div>
           <div class="detail-value">{{ firstname | async }}</div>
