@@ -39,7 +39,7 @@
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
       <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 5" *ngIf="detailSubject | async" class="detail-left">
         <div class="detail-label">{{ (species | async)?.de | translate }}</div>
-        <h3>{{ (detailSubject | async).name }}</h3>
+        <div class="title-individual">{{ (detailSubject | async).name }}</div>
         <div class="detail-label" *ngIf="(detailSubject | async).last_observation_date">
           <span translate>Letzte Beobachtung</span>
           <!-- TODO remove method call -->
