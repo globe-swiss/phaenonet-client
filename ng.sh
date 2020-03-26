@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-npx ng $@
+npx ng "$@"

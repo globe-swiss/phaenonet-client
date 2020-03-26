@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-npx firebase $@
+npx firebase "$@"
