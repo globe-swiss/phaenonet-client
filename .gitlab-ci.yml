@@ -20,7 +20,7 @@ deploy:
   script:
     - apk add --no-cache python3 make g++
     - npm ci
-    - ngx ng build
-    - ngx firebase --project phaenonet --token "$FIREBASE_TOKEN" deploy
+    - npx ng build
+    - npx firebase --project phaenonet --token "$FIREBASE_TOKEN" deploy
   only:
     - master
