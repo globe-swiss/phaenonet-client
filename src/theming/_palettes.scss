@@ -1,6 +1,6 @@
 @import '~@angular/material/theming';
 
-// generated using http://mcg.mbitson.com/#!?mcgpalette0=%23205b36&mcgpalette1=%23f7f5f2&mcgpalette2=%23d8b917&themename=phaenonet
+// generated using http://mcg.mbitson.com/#!?mcgpalette0=%23478b64&mcgpalette1=%23f7f5f2&mcgpalette2=%23d37872&themename=phaenonet
 
 $phaenonet-p: (
   50: #e9f1ec,
@@ -13,7 +13,7 @@ $phaenonet-p: (
   700: #377852,
   800: #2f6e48,
   900: #205b36,
-  A100: #7bb53b,
+  A100: #9cffc0,
   A200: #69ff9f,
   A400: #36ff7e,
   A700: #1dff6e,
@@ -69,20 +69,20 @@ $phaenonet-s: (
 );
 
 $phaenonet-w: (
-  50: #fcfae7,
-  100: #f8f2c4,
-  200: #f4ea9c,
-  300: #efe174,
-  400: #ebda57,
-  500: #e8d439,
-  600: #e5cf33,
-  700: #e2c92c,
-  800: #dec324,
-  900: #d8b917,
+  50: #faefee,
+  100: #f2d7d5,
+  200: #e9bcb9,
+  300: #e0a19c,
+  400: #da8c87,
+  500: #d37872,
+  600: #ce706a,
+  700: #c8655f,
+  800: #c25b55,
+  900: #b74842,
   A100: #ffffff,
-  A200: #fff8d7,
-  A400: #ffefa4,
-  A700: #ffeb8b,
+  A200: #ffdad8,
+  A400: #ffa9a5,
+  A700: #ff918b,
   contrast: (
     50: #000000,
     100: #000000,
@@ -92,8 +92,8 @@ $phaenonet-w: (
     500: #000000,
     600: #000000,
     700: #000000,
-    800: #000000,
-    900: #000000,
+    800: #ffffff,
+    900: #ffffff,
     A100: #000000,
     A200: #000000,
     A400: #000000,
@@ -101,8 +101,8 @@ $phaenonet-w: (
   )
 );
 
-$phaenonet-primary: mat-palette($phaenonet-p, 900);
-$phaenonet-accent: mat-palette($phaenonet-s, 900);
-$phaenonet-warn: mat-palette($phaenonet-w, 900);
+$phaenonet-primary: mat-palette($phaenonet-p, 500);
+$phaenonet-accent: mat-palette($phaenonet-s, 500);
+$phaenonet-warn: mat-palette($phaenonet-w, 500);
 
 $phaenonet-theme: mat-light-theme($phaenonet-primary, $phaenonet-accent, $phaenonet-warn);
