@@ -18,11 +18,11 @@
         </h3>
         <ng-container *ngIf="isOwner()">
           <div class="detail-label">{{ 'Vorname' | translate }}</div>
-          <div>{{ firstname | async }}</div>
+          <div class="detail-value">{{ firstname | async }}</div>
           <div class="detail-label">{{ 'Nachname' | translate }}</div>
-          <div>{{ lastname | async }}</div>
+          <div class="detail-value">{{ lastname | async }}</div>
           <div class="detail-label">{{ 'E-Mail' | translate }}</div>
-          <div>{{ email }}</div>
+          <div class="detail-value">{{ email }}</div>
           <button mat-flat-button type="submit" id="edit-button" [routerLink]="['/profile', detailId, 'edit']">
             {{ 'Profil bearbeiten' | translate }}
           </button>
