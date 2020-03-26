@@ -25,10 +25,14 @@
               formControlName="nickname"
               id="nickname"
               placeholder="{{ 'Nickname' | translate }}"
+              minlength="3"
               required
             />
-            <mat-error>
+            <mat-error *ngIf="editForm.get('nickname').hasError('existingNickname')">
               {{ 'Dieser Nickname ist bereits vergeben.' | translate }}
+            </mat-error>
+            <mat-error *ngIf="editForm.get('nickname').hasError('minlength')">
+              {{ 'Der Nickname muss mindestens 3 Zeichen lang sein.' | translate }}
             </mat-error>
           </mat-form-field>
           <mat-form-field>

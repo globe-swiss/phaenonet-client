@@ -162,7 +162,11 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
       });
     });
 
-    this.y = d3Scale.scaleBand().domain(resultingDomain).rangeRound([0, this.height]).padding(0.4);
+    this.y = d3Scale
+      .scaleBand()
+      .domain(resultingDomain)
+      .rangeRound([0, this.height])
+      .padding(0.4);
 
     data.forEach(analytics => {
       this.g
@@ -192,7 +196,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         .attr('stroke', '#000')
         .attr('stroke-width', 0.5)
         .style('opacity', 0.7)
-        .on('mouseover', function (d) {
+        .on('mouseover', function(d) {
           const xPosition =
             parseFloat(d3.select(this).attr('x')) +
             self.margin.left +
@@ -212,7 +216,9 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
             .pipe(
               first(),
               map(phenophase => {
-                d3.select('#tooltip').select('#title').text(self.translateService.instant(phenophase.name_de));
+                d3.select('#tooltip')
+                  .select('#title')
+                  .text(self.translateService.instant(phenophase.name_de));
 
                 d3.select('#tooltip').classed('hidden', false);
               })

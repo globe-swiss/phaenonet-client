@@ -14,7 +14,10 @@ export class ActivityService extends BaseResourceService<Activity> {
   listByUser(userId: string, limit: number = 8): Observable<Activity[]> {
     return this.afs
       .collection<Activity>('activities', ref =>
-        ref.where('followers', 'array-contains', userId).orderBy('date', 'desc').limit(limit)
+        ref
+          .where('followers', 'array-contains', userId)
+          .orderBy('date', 'desc')
+          .limit(limit)
       )
       .valueChanges();
   }

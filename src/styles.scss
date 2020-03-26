@@ -8,12 +8,12 @@ body {
   font-family: 'Open Sans';
   font-size: 16px;
   background: #f7f5f2;
+  color: #262626;
 }
 
 .detail-view {
   margin-top: 2.625rem;
   padding-bottom: 7.5375rem;
-  background-color: white;
   border-radius: 1rem;
 }
 
@@ -48,7 +48,7 @@ body {
   color: #868072;
   letter-spacing: 0.08125rem;
   line-height: 1.125rem;
-  margin-top: 0.5rem;
+  margin-top: 1.125rem;
 }
 
 h3 {
@@ -56,6 +56,7 @@ h3 {
   font-weight: 400;
   letter-spacing: 0.055rem;
   line-height: 1.875rem;
+  color: #868072;
 }
 
 .full-width {

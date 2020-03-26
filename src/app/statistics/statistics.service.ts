@@ -17,7 +17,10 @@ export class StatisticsService extends BaseResourceService<Analytics> {
   listByYear(year: number, analyticsType: AnalyticsType, source: SourceType, species: string): Observable<Analytics[]> {
     return this.afs
       .collection<Analytics>(this.collectionName, ref => {
-        const query = ref.where('year', '==', year).where('type', '==', analyticsType).where('source', '==', source);
+        const query = ref
+          .where('year', '==', year)
+          .where('type', '==', analyticsType)
+          .where('source', '==', source);
 
         if (species !== 'all') {
           return query.where('species', '==', species);

@@ -6,9 +6,9 @@
       </div>
       <div gdColumn="3 / span 5" fxLayoutAlign="flex-end" id="buttons">
         <div class="left-border" *ngIf="isLoggedIn()">
-          <button mat-button color="primary" [routerLink]="['profile']">{{ 'Profil' | translate }}</button>
-          <button mat-button color="primary" [routerLink]="['map']">{{ 'Karte' | translate }}</button>
-          <button mat-button color="primary" [routerLink]="['statistics']">{{ 'Auswertung' | translate }}</button>
+          <button mat-button class="nav-button" [routerLink]="['profile']">{{ 'Profil' | translate }}</button>
+          <button mat-button class="nav-button" [routerLink]="['map']">{{ 'Karte' | translate }}</button>
+          <button mat-button class="nav-button" [routerLink]="['statistics']">{{ 'Auswertung' | translate }}</button>
         </div>
       </div>
     </div>

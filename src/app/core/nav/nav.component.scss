@@ -21,9 +21,10 @@ mat-toolbar.mat-toolbar {
 }
 
 .logo {
-  padding: 8px;
+  padding: 28px;
   img {
-    max-width: 4rem;
+    width: 30px;
+    height: 36px;
   }
 }
 
@@ -33,4 +34,11 @@ mat-toolbar.mat-toolbar {
 
 #userarea {
   cursor: pointer;
+}
+
+.nav-button {
+  font-size: 0.875rem;
+  letter-spacing: 0.13125rem;
+  font-weight: 500;
+  color: #5d5d5d;
 }

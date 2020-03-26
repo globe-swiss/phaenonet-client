@@ -35,6 +35,11 @@ export class UserService extends BaseResourceService<User> {
   }
 
   private followUnfollow(partial: Partial<unknown>): Observable<void> {
-    return from(this.afs.collection('users').doc(this.authService.getUserId()).update(partial));
+    return from(
+      this.afs
+        .collection('users')
+        .doc(this.authService.getUserId())
+        .update(partial)
+    );
   }
 }

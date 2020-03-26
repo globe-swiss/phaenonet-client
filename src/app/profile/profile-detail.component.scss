@@ -1,6 +1,13 @@
 .latest-individual-observation {
   margin-bottom: 1.875rem;
   cursor: pointer;
+  background-color: white;
+  border-radius: 1rem;
+
+  img {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+  }
 }
 
 .phenophase-title {
@@ -20,4 +27,16 @@
 
 .title-nickname {
   font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: 0.055rem;
+  line-height: 1.875rem;
+}
+
+#logout-button {
+  color: #d37872;
+}
+
+.detail-value {
+  font-size: 1.375rem;
+  line-height: 1.875rem;
 }

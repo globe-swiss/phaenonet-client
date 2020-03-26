@@ -45,7 +45,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
   center = { lat: 46.818188, lng: 8.227512 };
   zoom = 13;
   options: google.maps.MapOptions = {
-    mapTypeId: google.maps.MapTypeId.HYBRID,
+    mapTypeId: google.maps.MapTypeId.TERRAIN,
     mapTypeControl: false,
     fullscreenControl: false,
     streetViewControl: false,
@@ -115,12 +115,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
       }
 
       if (detail.image_urls) {
-        // TODO: this should change on the data level
-        this.imageUrl = this.afStorage
-          .ref(
-            detail.image_urls[0].substring(detail.image_urls[0].lastIndexOf('.com/') + 4, detail.image_urls[0].length)
-          )
-          .getDownloadURL();
+        this.imageUrl = this.afStorage.ref(detail.image_urls[0]).getDownloadURL();
       }
 
       this.isFollowing = this.currentUser.pipe(

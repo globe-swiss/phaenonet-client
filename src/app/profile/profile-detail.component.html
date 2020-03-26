@@ -10,29 +10,23 @@
       <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="detailSubject | async" class="detail-right">
         <div *ngIf="isOwner()" class="detail-label">{{ 'Hallo' | translate }}</div>
         <div *ngIf="!isOwner()" class="detail-label">{{ 'Öffentliches Profil von' | translate }}</div>
-        <h3 class="title-nickname">
+        <div class="title-nickname">
           {{ (detailSubject | async).nickname }}
           <button mat-icon-button [app-copy-clipboard]="profileLink | async" (copied)="notifyCopied()">
             <mat-icon>link</mat-icon>
           </button>
-        </h3>
+        </div>
         <ng-container *ngIf="isOwner()">
           <div class="detail-label">{{ 'Vorname' | translate }}</div>
-          <div>{{ firstname | async }}</div>
+          <div class="detail-value">{{ firstname | async }}</div>
           <div class="detail-label">{{ 'Nachname' | translate }}</div>
-          <div>{{ lastname | async }}</div>
+          <div class="detail-value">{{ lastname | async }}</div>
           <div class="detail-label">{{ 'E-Mail' | translate }}</div>
-          <div>{{ email }}</div>
-          <button
-            mat-flat-button
-            color="primary"
-            type="submit"
-            id="edit-button"
-            [routerLink]="['/profile', detailId, 'edit']"
-          >
+          <div class="detail-value">{{ email }}</div>
+          <button mat-flat-button type="submit" id="edit-button" [routerLink]="['/profile', detailId, 'edit']">
             {{ 'Profil bearbeiten' | translate }}
           </button>
-          <button mat-flat-button type="submit" id="logout-button" (click)="logout()">
+          <button mat-flat-button color="accent" type="submit" id="logout-button" (click)="logout()">
             {{ 'Logout' | translate }}
           </button>
         </ng-container>
@@ -70,7 +64,7 @@
           class="latest-individual-observation"
         >
           <img src="assets/img/Bildmarke-Phaenonet_rgb.png" style="max-height: 180px;" />
-          <div fxLayout="column" style="margin-left: 15px; margin-right: 15px;">
+          <div fxLayout="column" style="margin-left: 25px; margin-right: 25px; margin-top: 15px;">
             <div class="detail-label">
               {{ item.species.de | translate }}
             </div>
