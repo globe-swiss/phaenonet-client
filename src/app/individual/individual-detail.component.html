@@ -77,14 +77,7 @@
         <div class="detail-label">{{ 'Waldtyp' | translate }}</div>
         <div class="detail-info-value">{{ (forest | async)?.de | translate }}</div>
 
-        <button
-          mat-flat-button
-          color="primary"
-          type="submit"
-          id="edit-button"
-          (click)="editDetail()"
-          [appDisableNotOwner]="(detailSubject | async)?.user"
-        >
+        <button mat-flat-button color="primary" type="submit" id="edit-button" (click)="editDetail()" *ngIf="isOwner()">
           {{ 'Objekt bearbeiten' | translate }}
         </button>
       </div>
