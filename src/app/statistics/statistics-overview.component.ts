@@ -107,7 +107,13 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
           const year = +form.year;
           const datasource: SourceType = form.datasource;
           const analyticsType: AnalyticsType = form.analyticsType;
-          const species: string = form.species;
+          let species: string = form.species;
+
+          // set to single species if altitude and all species
+          if (analyticsType === 'altitude' && form.species === allSpecies.id) {
+            species = 'BA';
+            this.filterForm.controls.species.setValue('BA');
+          }
 
           this.initSvg(year);
 
@@ -194,6 +200,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         .attr('x', d => this.x(d.quantile_25))
         .attr('y', d => this.y(this.toKey(analytics)))
         .attr('fill', d => this.colorMap[d.phenophase])
+        .style('opacity', 0.7)
         .attr('stroke', '#262626')
         .attr('stroke-width', 0.5)
         .on('mouseover', function(d) {
