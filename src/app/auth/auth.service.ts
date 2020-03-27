@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { User as FUser } from 'firebase/app';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import { from, Observable, of, identity } from 'rxjs';
-import { switchMap, map, mergeMap, mergeAll, switchAll } from 'rxjs/operators';
+import { switchMap, map, mergeMap, mergeAll, switchAll, first, take } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
@@ -66,7 +66,7 @@ export class AuthService extends BaseService {
   private handleUserLogin(firebaseResult: any): Observable<User> {
     if (firebaseResult) {
       this.firebaseUser = firebaseResult.user;
-      this.user.subscribe(u => {
+      this.user.pipe(take(1)).subscribe(u => {
         this.handleLoginResult(new LoginResult('LOGIN_OK', this.firebaseUser, u));
       });
 

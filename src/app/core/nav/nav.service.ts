@@ -1,3 +1,4 @@
+import { first } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
@@ -36,9 +37,12 @@ export class NavService {
   }
 
   private translate(untranslatedString: string, params?: Object) {
-    this.translateService.get(untranslatedString, params).subscribe(translatedString => {
-      this.location.next(translatedString);
-      this.titleService.setTitle(translatedString);
-    });
+    this.translateService
+      .get(untranslatedString, params)
+      .pipe(first())
+      .subscribe(translatedString => {
+        this.location.next(translatedString);
+        this.titleService.setTitle(translatedString);
+      });
   }
 }
