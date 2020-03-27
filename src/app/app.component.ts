@@ -38,5 +38,10 @@ export class AppComponent {
       'subscribe',
       this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/btn_subscribe_normal.svg')
     );
+
+    this.matIconRegistry.addSvgIcon(
+      'copylink',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/btn_copyurl_normal.svg')
+    );
   }
 }
