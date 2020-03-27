@@ -294,9 +294,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   private translateLeftAxisTick(input: string) {
     if (input.indexOf('-') > 0) {
-      return (
-        this.translateService.instant(input.split('-')[0]) + ' - ' + this.translateService.instant(input.split('-')[1])
-      );
+      return this.translateService.instant(input.split('-')[1]);
     } else {
       return this.translateService.instant(input);
     }
