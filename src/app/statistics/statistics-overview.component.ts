@@ -178,8 +178,9 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         .attr('x2', d => this.x(d.max))
         .attr('y1', d => this.y(this.toKey(analytics)) + this.y.bandwidth() / 2)
         .attr('y2', d => this.y(this.toKey(analytics)) + this.y.bandwidth() / 2)
-        .attr('stroke', '#000')
-        .attr('stroke-width', 0.5)
+        .attr('stroke', d => this.colorMap[d.phenophase])
+        .attr('stroke-width', 1)
+        .style('opacity', 0.7)
         .attr('fill', 'none');
 
       const self = this;
@@ -193,9 +194,8 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         .attr('x', d => this.x(d.quantile_25))
         .attr('y', d => this.y(this.toKey(analytics)))
         .attr('fill', d => this.colorMap[d.phenophase])
-        .attr('stroke', '#000')
+        .attr('stroke', '#262626')
         .attr('stroke-width', 0.5)
-        .style('opacity', 0.7)
         .on('mouseover', function(d) {
           const xPosition =
             parseFloat(d3.select(this).attr('x')) +
@@ -233,21 +233,24 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         '.median',
         analytics,
         d => this.x(d.median),
-        d => this.x(d.median)
+        d => this.x(d.median),
+        d => this.colorMap[d.phenophase]
       );
 
       this.drawVerticalLines(
         '.whiskersMin',
         analytics,
         d => this.x(d.min),
-        d => this.x(d.min)
+        d => this.x(d.min),
+        d => this.colorMap[d.phenophase]
       );
 
       this.drawVerticalLines(
         '.whiskersMax',
         analytics,
         d => this.x(d.max),
-        d => this.x(d.max)
+        d => this.x(d.max),
+        d => this.colorMap[d.phenophase]
       );
     });
 
@@ -265,7 +268,8 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     selection: string,
     analytics: Analytics,
     x1: (d: AnalyticsValue) => number,
-    x2: (d: AnalyticsValue) => number
+    x2: (d: AnalyticsValue) => number,
+    color: (d: AnalyticsValue) => string
   ) {
     this.g
       .selectAll(selection)
@@ -276,8 +280,9 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
       .attr('y2', _ => this.y(this.toKey(analytics)) + this.y.bandwidth())
       .attr('x1', d => x1(d))
       .attr('x2', d => x2(d))
-      .attr('stroke', '#000')
-      .style('stroke-width', 0.5);
+      .attr('stroke', d => color(d))
+      .style('stroke-width', 1)
+      .style('opacity', 0.7);
   }
 
   private translateLeftAxisTick(input: string) {
