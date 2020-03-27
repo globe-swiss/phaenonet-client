@@ -22,7 +22,7 @@
       <ng-container *ngIf="(infoWindowType | async) === 'globe'">
         <ng-container *ngIf="globeInfoWindowData | async as d">
           <div fxLayout="row" [routerLink]="d.url" class="map-info-window">
-            <img src="assets/img/Bildmarke-Phaenonet_rgb.png" style="max-height: 100px;" />
+            <img *ngIf="d.imgUrl | async" [src]="d.imgUrl | async" style="max-height: 100px;" />
             <div fxLayout="column" style="margin-left: 15px; margin-right: 15px;">
               <div class="mat-small">
                 {{ d.species.de | translate }}
@@ -43,10 +43,10 @@
       <ng-container *ngIf="(infoWindowType | async) === 'meteoswiss'">
         <ng-container *ngIf="meteoswissInfoWindowData | async as d">
           <div fxLayout="row" [routerLink]="d.url" class="map-info-window">
-            <img src="assets/img/Bildmarke-Phaenonet_rgb.png" style="max-height: 100px;" />
+            <img src="assets/img/pic_placeholder.svg" style="max-height: 100px;" />
             <div fxLayout="column" style="margin-left: 15px; margin-right: 15px;">
               <div class="mat-small">
-                {{ 'Meteoswiss' | translate }}
+                {{ 'MeteoSchweiz' | translate }}
               </div>
               <div>{{ d.individual.name }}</div>
             </div>
@@ -55,7 +55,7 @@
       </ng-container>
     </map-info-window>
   </google-map>
-  <div class="map-actions">
+  <div class="map-actions" *ngIf="isLoggedIn">
     <button mat-fab class="extended-fab-button" color="primary" [routerLink]="'/individuals/new/edit'">
       <mat-icon>add</mat-icon>
       <span>{{ 'Objekt hinzufügen' | translate }}</span>

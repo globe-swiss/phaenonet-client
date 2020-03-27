@@ -13,7 +13,7 @@
         <div class="title-nickname">
           {{ (detailSubject | async).nickname }}
           <button mat-icon-button [app-copy-clipboard]="profileLink | async" (copied)="notifyCopied()">
-            <mat-icon>link</mat-icon>
+            <mat-icon svgIcon="copylink"></mat-icon>
           </button>
         </div>
         <ng-container *ngIf="isOwner()">
@@ -39,7 +39,7 @@
           ><span *ngIf="!isOwner()">{{ 'BEOBACHTUNGEN' | translate }}</span>
         </h3>
         <button
-          *ngIf="!isOwner() && isFollowing | async"
+          *ngIf="isLoggedIn && !isOwner() && isFollowing | async"
           mat-flat-button
           class="detail-header-fab a100"
           (click)="unfollow()"
@@ -47,7 +47,7 @@
           {{ 'Abbestellen' | translate }}
         </button>
         <button
-          *ngIf="!isOwner() && !(isFollowing | async)"
+          *ngIf="isLoggedIn && !isOwner() && !(isFollowing | async)"
           mat-flat-button
           class="detail-header-fab"
           color="primary"
@@ -63,7 +63,7 @@
           [routerLink]="['/individuals', item.individual.id]"
           class="latest-individual-observation"
         >
-          <img src="assets/img/Bildmarke-Phaenonet_rgb.png" style="max-height: 180px;" />
+          <img *ngIf="item.imgUrl | async" [src]="item.imgUrl | async" style="max-height: 180px;" />
           <div fxLayout="column" style="margin-left: 25px; margin-right: 25px; margin-top: 15px;">
             <div class="detail-label">
               {{ item.species.de | translate }}

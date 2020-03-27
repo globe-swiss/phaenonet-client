@@ -1,28 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatSelectChange } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { none } from 'fp-ts/lib/Option';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { catchError, first, map, mergeMap, switchMap } from 'rxjs/operators';
-import { Activity } from '../activity/activity';
-import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user';
 import { UserService } from '../auth/user.service';
 import { BaseDetailComponent } from '../core/base-detail.component';
-import { NavService } from '../core/nav/nav.service';
-import { IndividualPhenophase } from '../individual/individual-phenophase';
-import { IndividualService } from '../individual/individual.service';
-import { MasterdataService } from '../masterdata/masterdata.service';
-import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
-import { ObservationService } from '../observation/observation.service';
-import { PublicUser } from '../open/public-user';
-import { PublicUserService } from '../open/public-user.service';
-import { User } from '../auth/user';
-import { FormGroup, FormControl } from '@angular/forms';
-import { MatSelectChange } from '@angular/material';
 import { LanguageService } from '../core/language.service';
-import { ChangePasswordDialogComponent } from './change-password-dialog.component';
+import { NavService } from '../core/nav/nav.service';
+import { PublicUserService } from '../open/public-user.service';
 import { ChangePasswordData } from './change-password-data';
+import { ChangePasswordDialogComponent } from './change-password-dialog.component';
 
 @Component({
   templateUrl: './profile-edit.component.html',

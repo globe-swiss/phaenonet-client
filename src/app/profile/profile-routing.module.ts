@@ -1,3 +1,4 @@
+import { AuthGuard } from './../auth/auth-guard.service';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProfileDetailComponent } from './profile-detail.component';
@@ -9,7 +10,7 @@ const routes: Routes = [
     children: [
       { path: ':id', component: ProfileDetailComponent },
       { path: '', component: ProfileDetailComponent },
-      { path: ':id/edit', component: ProfileEditComponent },
+      { path: ':id/edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
       { path: '', redirectTo: '', pathMatch: 'full' }
     ]
   }

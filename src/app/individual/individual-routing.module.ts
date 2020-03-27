@@ -1,3 +1,4 @@
+import { AuthGuard } from './../auth/auth-guard.service';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IndividualEditComponent } from './individual-edit.component';
@@ -7,7 +8,7 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      { path: ':id/edit', component: IndividualEditComponent },
+      { path: ':id/edit', component: IndividualEditComponent, canActivate: [AuthGuard] },
       { path: ':id', component: IndividualDetailComponent },
       { path: '', redirectTo: 'individuals', pathMatch: 'full' }
     ]

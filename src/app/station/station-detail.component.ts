@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import * as _ from 'lodash';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { first, map, mergeAll } from 'rxjs/operators';
+import { first, map, mergeAll, filter } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
 import { UserService } from '../auth/user.service';
@@ -52,6 +52,8 @@ export class StationDetailComponent extends BaseIndividualDetailComponent implem
   currentUser: Observable<User>;
   isFollowing: Observable<boolean>;
 
+  isLoggedIn: boolean;
+
   staticComments = {};
 
   constructor(
@@ -72,6 +74,8 @@ export class StationDetailComponent extends BaseIndividualDetailComponent implem
     super.ngOnInit();
     this.navService.setLocation('Objekt');
 
+    this.isLoggedIn = this.authService.isLoggedIn();
+
     this.currentUser = this.authService.getUserObservable();
 
     this.detailSubject.subscribe(detail => {
@@ -81,6 +85,7 @@ export class StationDetailComponent extends BaseIndividualDetailComponent implem
       }
 
       this.isFollowing = this.currentUser.pipe(
+        filter(u => u !== null),
         map(u =>
           u.following_individuals ? u.following_individuals.find(id => id === detail.individual) !== undefined : false
         )

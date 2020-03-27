@@ -14,11 +14,11 @@
           <map-marker #marker [position]="geopos" [options]="markerOptions | async"></map-marker>
         </google-map>
         <div gdColumn="5 / span 2" class="image-container" *ngIf="imageUrl | async; let url">
-          <img [src]="url" width="100%" />
+          <img [src]="url" width="475.75px" />
         </div>
       </div>
       <button
-        *ngIf="!isOwner() && isFollowing | async"
+        *ngIf="isLoggedIn && !isOwner() && isFollowing | async"
         mat-fab
         class="detail-header-fab a100"
         color="primary"
@@ -27,7 +27,7 @@
         <mat-icon svgIcon="subscribe-active"></mat-icon>
       </button>
       <button
-        *ngIf="!isOwner() && !(isFollowing | async)"
+        *ngIf="isLoggedIn && !isOwner() && !(isFollowing | async)"
         mat-fab
         class="detail-header-fab"
         color="primary"

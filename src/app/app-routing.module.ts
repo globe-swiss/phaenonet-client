@@ -7,7 +7,6 @@ import { NotFoundComponent } from './core/not-found.component';
 const routes: Routes = [
   {
     path: '',
-    canActivateChild: [AuthGuard],
     data: {},
     children: [
       {

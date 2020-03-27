@@ -4,10 +4,22 @@
       <google-map class="map" width="100%" height="302px" [center]="center" [zoom]="zoom" [options]="options">
         <map-marker #marker [position]="geopos" [options]="markerOptions | async"></map-marker>
       </google-map>
-      <button *ngIf="isFollowing | async" mat-fab class="detail-header-fab a100" color="primary" (click)="unfollow()">
+      <button
+        *ngIf="isLoggedIn && isFollowing | async"
+        mat-fab
+        class="detail-header-fab a100"
+        color="primary"
+        (click)="unfollow()"
+      >
         <mat-icon svgIcon="subscribe-active"></mat-icon>
       </button>
-      <button *ngIf="!(isFollowing | async)" mat-fab class="detail-header-fab" color="primary" (click)="follow()">
+      <button
+        *ngIf="isLoggedIn && !(isFollowing | async)"
+        mat-fab
+        class="detail-header-fab"
+        color="primary"
+        (click)="follow()"
+      >
         <mat-icon svgIcon="subscribe"></mat-icon>
       </button>
     </div>

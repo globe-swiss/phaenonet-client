@@ -1,23 +1,25 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavService } from '../core/nav/nav.service';
-import { Observable, combineLatest, ReplaySubject, Subject, of } from 'rxjs';
-import { map, share, switchMap, startWith } from 'rxjs/operators';
-import { IndividualService } from '../individual/individual.service';
-import { Individual } from '../individual/individual';
-import { MapMarker, MapInfoWindow } from '@angular/google-maps';
-import { MasterdataService } from '../masterdata/masterdata.service';
-import { Species } from '../masterdata/species';
-import { Phenophase } from '../masterdata/phaenophase';
-import { IdLike } from '../masterdata/masterdata-like';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
+import { map, share, startWith, switchMap, first } from 'rxjs/operators';
+import { formatShortDate } from '../core/formatDate';
+import { NavService } from '../core/nav/nav.service';
+import { Individual } from '../individual/individual';
+import { IndividualService } from '../individual/individual.service';
+import { IdLike } from '../masterdata/masterdata-like';
+import { MasterdataService } from '../masterdata/masterdata.service';
+import { Phenophase } from '../masterdata/phaenophase';
 import { SourceType } from '../masterdata/source-type';
-import { formatShortDate, formatShortDateTime } from '../core/formatDate';
+import { Species } from '../masterdata/species';
+import { AuthService } from './../auth/auth.service';
 
 class GlobeInfoWindowData {
   individual: Individual;
   species: Species;
   phenophase?: Phenophase;
   url: string[];
+  imgUrl: Observable<string>;
 }
 
 class MeteoswissInfoWindowData {
@@ -68,22 +70,29 @@ export class MapOverviewComponent implements OnInit {
 
   colorMap = {};
 
+  isLoggedIn: boolean;
+
   formatShortDate = formatShortDate;
 
   constructor(
     private navService: NavService,
     private individualService: IndividualService,
-    private masterDataService: MasterdataService
+    private masterDataService: MasterdataService,
+    private authService: AuthService
   ) {
     this.colorMap = masterDataService.colorMap;
   }
 
   ngOnInit() {
     this.navService.setLocation('Karte');
+
+    this.isLoggedIn = this.authService.isLoggedIn();
+
     this.masterDataService
       .getSpecies()
       .pipe(map(species => [allSpecies].concat(species)))
       .subscribe(this.species);
+
     this.individualsWithMarkerOpts = this.mapFormGroup.valueChanges.pipe(
       startWith(this.mapFormGroup.getRawValue()),
       switchMap(form => {
@@ -138,7 +147,11 @@ export class MapOverviewComponent implements OnInit {
               ...{
                 individual: individual,
                 species: species,
-                phenophase: phenophase
+                phenophase: phenophase,
+                imgUrl: this.individualService.getImageUrl(individual, true).pipe(
+                  first(),
+                  map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
+                )
               },
               ...url
             } as GlobeInfoWindowData;
