@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { catchError, first, map, mergeMap, switchMap, filter, mergeAll } from 'rxjs/operators';
+import { catchError, first, map, mergeAll, switchMap, take } from 'rxjs/operators';
 import { Activity } from '../activity/activity';
 import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
@@ -73,8 +73,14 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
 
       if (this.isOwner()) {
         this.email = this.authService.getUserEmail();
-        this.firstname = this.userService.get(this.detailId).pipe(map(u => u.firstname));
-        this.lastname = this.userService.get(this.detailId).pipe(map(u => u.lastname));
+        this.firstname = this.userService.get(this.detailId).pipe(
+          first(),
+          map(u => u.firstname)
+        );
+        this.lastname = this.userService.get(this.detailId).pipe(
+          first(),
+          map(u => u.lastname)
+        );
       }
 
       // combine the list of individuals with their phenophase
@@ -102,13 +108,13 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
           )
       ).pipe(mergeAll());
 
-      this.activities = this.limitActivities.pipe(
-        switchMap(limit => this.activityService.listByUser(this.authService.getUserId(), limit))
-      );
-
       this.isFollowing = this.authService
         .getUserObservable()
         .pipe(map(u => (u.following_users ? u.following_users.find(id => id === this.detailId) !== undefined : false)));
+
+      this.activities = this.limitActivities.pipe(
+        switchMap(limit => this.activityService.listByUser(this.detailId, limit).pipe(take(1)))
+      );
     });
   }
 
@@ -116,7 +122,10 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
     if (this.detailId == null) {
       return this.getRouteParam('id').pipe(
         catchError(_ => {
-          return this.authService.getUserObservable().pipe(map(_ => this.authService.getUserId()));
+          return this.authService.getUserObservable().pipe(
+            first(),
+            map(_ => this.authService.getUserId())
+          );
         })
       );
     } else {
@@ -175,6 +184,9 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
   }
 
   logout() {
+    this.limitActivities.unsubscribe();
+    this.limitIndividuals.unsubscribe();
+    this.detailSubject.unsubscribe();
     this.authService.logout();
   }
 }
