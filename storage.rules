@@ -7,16 +7,14 @@ service firebase.storage {
        allow read;
      }
 
-     // Allow write files to the path "images/*", subject to the constraints:
+     // Allow write files to the users path when:
      // 1) File is less than 5MB
      // 2) Content type is an image
-     // 3) Uploaded content type matches existing content type (if it exists)
-     // 4) File name (stored in imageId wildcard variable) is less than 32 characters
-     match /{imageId} {
+     // 3) folder matches his uid
+     match /{user_id}/{allImages=**} {
        allow write: if request.resource.size < 5 * 1024 * 1024
                     && request.resource.contentType.matches('image/.*')
-                    && (resource == null || request.resource.contentType == resource.contentType)
-                    && imageId.size() < 32
+                    && request.auth.uid == user_id
      }
    }
   }
