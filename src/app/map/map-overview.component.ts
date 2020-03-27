@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
-import { map, share, startWith, switchMap } from 'rxjs/operators';
+import { map, share, startWith, switchMap, first } from 'rxjs/operators';
 import { formatShortDate } from '../core/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
@@ -148,7 +148,10 @@ export class MapOverviewComponent implements OnInit {
                 individual: individual,
                 species: species,
                 phenophase: phenophase,
-                imgUrl: this.individualService.getImageUrl(individual, true)
+                imgUrl: this.individualService.getImageUrl(individual, true).pipe(
+                  first(),
+                  map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
+                )
               },
               ...url
             } as GlobeInfoWindowData;

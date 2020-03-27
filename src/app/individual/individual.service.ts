@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { IdLike } from '../masterdata/masterdata-like';
@@ -34,24 +34,21 @@ export class IndividualService extends BaseResourceService<Individual> {
   }
 
   listByYear(year: number): Observable<(Individual & IdLike)[]> {
-    return (
-      this.afs
-        // TODO decide if year should be a number or a string
-        .collection<Individual>(this.collectionName, ref =>
-          ref.where('year', '==', year).orderBy('last_observation_date', 'desc')
-        )
-        .valueChanges({ idField: 'id' })
-        .pipe(
-          map(individuals => {
-            return individuals.map(i => {
-              if (i.last_observation_date) {
-                i.last_observation_date = (i.last_observation_date as any).toDate();
-              }
-              return i;
-            });
-          })
-        )
-    );
+    return this.afs
+      .collection<Individual>(this.collectionName, ref =>
+        ref.where('year', '==', year).orderBy('last_observation_date', 'desc')
+      )
+      .valueChanges({ idField: 'id' })
+      .pipe(
+        map(individuals => {
+          return individuals.map(i => {
+            if (i.last_observation_date) {
+              i.last_observation_date = (i.last_observation_date as any).toDate();
+            }
+            return i;
+          });
+        })
+      );
   }
 
   /**
@@ -73,9 +70,12 @@ export class IndividualService extends BaseResourceService<Individual> {
   getImageUrl(individual: Individual, thumbnail = false): Observable<string | null> {
     const path = '/images/' + individual.user + '/individuals/' + individual.individual + (thumbnail ? '_tn' : '');
 
-    return this.afStorage
-      .ref(path)
-      .getDownloadURL()
-      .pipe(catchError(_ => of(null)));
+    return from(
+      this.afStorage
+        .ref(path)
+        .getDownloadURL()
+        .toPromise()
+        .catch(_ => null)
+    );
   }
 }

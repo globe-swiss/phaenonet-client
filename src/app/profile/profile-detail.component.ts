@@ -1,3 +1,4 @@
+import { Individual } from './../individual/individual';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -104,7 +105,11 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
                     return {
                       individual: individual,
                       species: species,
-                      lastPhenophase: phenophase
+                      lastPhenophase: phenophase,
+                      imgUrl: this.individualService.getImageUrl(individual, true).pipe(
+                        first(),
+                        map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
+                      )
                     } as IndividualPhenophase;
                   }
                 );
