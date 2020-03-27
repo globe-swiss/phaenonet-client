@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { catchError, first, map, mergeAll, switchMap, take } from 'rxjs/operators';
+import { catchError, first, map, mergeAll, switchMap, take, filter } from 'rxjs/operators';
 import { Activity } from '../activity/activity';
 import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
@@ -59,6 +59,8 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
 
   isFollowing: Observable<boolean>;
 
+  isLoggedIn: boolean;
+
   formatShortDateTime = formatShortDateTime;
   formatShortDate = formatShortDate;
 
@@ -67,6 +69,8 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
     this.navService.setLocation('Profil');
 
     this.colorMap = this.masterdataService.colorMap;
+
+    this.isLoggedIn = this.authService.isLoggedIn();
 
     this.detailSubject.subscribe(detail => {
       this.profileLink = of(window.location.origin + '/profile/' + this.detailId);
@@ -108,9 +112,10 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
           )
       ).pipe(mergeAll());
 
-      this.isFollowing = this.authService
-        .getUserObservable()
-        .pipe(map(u => (u.following_users ? u.following_users.find(id => id === this.detailId) !== undefined : false)));
+      this.isFollowing = this.authService.getUserObservable().pipe(
+        filter(u => u !== null),
+        map(u => (u.following_users ? u.following_users.find(id => id === this.detailId) !== undefined : false))
+      );
 
       this.activities = this.limitActivities.pipe(
         switchMap(limit => this.activityService.listByUser(this.detailId, limit).pipe(take(1)))

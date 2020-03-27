@@ -89,7 +89,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   phenophaseObservationsGroups: Observable<ObservationData[]>;
 
   ngOnInit() {
-    this.navService.setLocation('Auswerungen');
+    this.navService.setLocation('Auswertungen');
 
     this.masterdataService
       .getSpecies()

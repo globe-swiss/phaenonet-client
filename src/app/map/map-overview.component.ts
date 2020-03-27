@@ -1,3 +1,4 @@
+import { AuthService } from './../auth/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavService } from '../core/nav/nav.service';
 import { Observable, combineLatest, ReplaySubject, Subject, of } from 'rxjs';
@@ -68,22 +69,29 @@ export class MapOverviewComponent implements OnInit {
 
   colorMap = {};
 
+  isLoggedIn: boolean;
+
   formatShortDate = formatShortDate;
 
   constructor(
     private navService: NavService,
     private individualService: IndividualService,
-    private masterDataService: MasterdataService
+    private masterDataService: MasterdataService,
+    private authService: AuthService
   ) {
     this.colorMap = masterDataService.colorMap;
   }
 
   ngOnInit() {
     this.navService.setLocation('Karte');
+
+    this.isLoggedIn = this.authService.isLoggedIn();
+
     this.masterDataService
       .getSpecies()
       .pipe(map(species => [allSpecies].concat(species)))
       .subscribe(this.species);
+
     this.individualsWithMarkerOpts = this.mapFormGroup.valueChanges.pipe(
       startWith(this.mapFormGroup.getRawValue()),
       switchMap(form => {

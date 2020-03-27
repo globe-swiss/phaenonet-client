@@ -7,9 +7,12 @@
       <div gdColumn="3 / span 5" fxLayoutAlign="flex-end" id="buttons">
         <div class="left-border" *ngIf="isLoggedIn()">
           <button mat-button class="nav-button" [routerLink]="['profile']">{{ 'Profil' | translate }}</button>
-          <button mat-button class="nav-button" [routerLink]="['map']">{{ 'Karte' | translate }}</button>
-          <button mat-button class="nav-button" [routerLink]="['statistics']">{{ 'Auswertung' | translate }}</button>
         </div>
+        <div class="left-border" *ngIf="!isLoggedIn()">
+          <button mat-button class="nav-button" [routerLink]="['auth/login']">{{ 'Anmelden' | translate }}</button>
+        </div>
+        <button mat-button class="nav-button" [routerLink]="['map']">{{ 'Karte' | translate }}</button>
+        <button mat-button class="nav-button" [routerLink]="['statistics']">{{ 'Auswertung' | translate }}</button>
       </div>
     </div>
   </mat-toolbar-row>

@@ -82,6 +82,8 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
   currentUser: Observable<User>;
   isFollowing: Observable<boolean>;
 
+  isLoggedIn: boolean;
+
   staticComments = {};
 
   constructor(
@@ -106,6 +108,8 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
     super.ngOnInit();
     this.navService.setLocation('Station');
 
+    this.isLoggedIn = this.authService.isLoggedIn();
+
     this.currentUser = this.authService.getUserObservable();
 
     this.detailSubject.subscribe(detail => {
@@ -120,6 +124,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
         .pipe(catchError(_ => of(null)));
 
       this.isFollowing = this.currentUser.pipe(
+        filter(u => u !== null),
         map(u =>
           u.following_individuals ? u.following_individuals.find(id => id === detail.individual) !== undefined : false
         )
