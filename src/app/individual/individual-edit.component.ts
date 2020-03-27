@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MapInfoWindow } from '@angular/google-maps';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
 import { Description } from '../masterdata/description';
@@ -17,7 +17,7 @@ import { Species } from '../masterdata/species';
 import { Individual } from './individual';
 import { IndividualService } from './individual.service';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { finalize } from 'rxjs/operators';
+import { finalize, first, catchError } from 'rxjs/operators';
 
 @Component({
   templateUrl: './individual-edit.component.html',
@@ -108,9 +108,10 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
         this.updateAltitude(new google.maps.LatLng(this.geopos));
       }
 
-      if (detail.image_urls) {
-        this.imageUrl = this.afStorage.ref(detail.image_urls[0]).getDownloadURL();
-      }
+      this.imageUrl = this.afStorage
+        .ref(this.individualService.getImageUrl(detail, true))
+        .getDownloadURL()
+        .pipe(catchError(_ => of(null)));
 
       if (!detail.gradient) {
         detail.gradient = 0;
@@ -173,16 +174,11 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
   }
 
   private uploadImage(individual: Individual, file: File) {
-    const extension = file.type.substring(file.type.lastIndexOf('/') + 1, file.type.length);
-    const path = '/images/' + individual.user + '/individuals/foto_' + individual.individual + '_obj.' + extension;
+    const path = this.individualService.getImageUrl(individual);
     const ref = this.afStorage.ref(path);
-    const task = ref.put(file);
-
-    task.snapshotChanges().pipe(
-      finalize(() => {
-        this.router.navigate(['individuals', this.toIndividualId(individual)]);
-      })
-    );
+    ref
+      .put(file, { contentType: file.type })
+      .then(() => this.router.navigate(['individuals', this.toIndividualId(individual)]));
   }
 
   private toIndividualId(individual: Individual): string {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
-import { Observable, from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
@@ -63,5 +63,9 @@ export class IndividualService extends BaseResourceService<Individual> {
           .limit(limit)
       )
       .valueChanges({ idField: 'id' });
+  }
+
+  getImageUrl(individual: Individual, thumbnail = false) {
+    return '/images/' + individual.user + '/individuals/' + individual.individual + (thumbnail ? '_tn' : '');
   }
 }

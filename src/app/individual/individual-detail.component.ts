@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
-import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { first, map, shareReplay } from 'rxjs/operators';
+import { combineLatest, Observable, ReplaySubject, of } from 'rxjs';
+import { first, map, shareReplay, catchError, filter } from 'rxjs/operators';
 import { Activity } from '../activity/activity';
 import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
@@ -114,9 +114,10 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
         this.center = detail.geopos;
       }
 
-      if (detail.image_urls) {
-        this.imageUrl = this.afStorage.ref(detail.image_urls[0]).getDownloadURL();
-      }
+      this.imageUrl = this.afStorage
+        .ref(this.individualService.getImageUrl(detail, true))
+        .getDownloadURL()
+        .pipe(catchError(_ => of(null)));
 
       this.isFollowing = this.currentUser.pipe(
         map(u =>
@@ -243,7 +244,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
             this.observationService
               .upsert(observation, observationId)
               .pipe(first())
-              .subscribe(observation => {
+              .subscribe(_ => {
                 this.updateLastObservation(detail, result.phenophase);
               });
           });
