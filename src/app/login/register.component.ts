@@ -64,6 +64,10 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
       .subscribe(user => {
         if (user) {
           this.user = user;
+          this.alertService.infoMessage(
+            'Registration erfolgreich',
+            'Sie haben sich erfolgreich bei PhaenoNet registriert.'
+          );
           this.router.navigateByUrl('/');
         }
       });
