@@ -3,13 +3,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
-import { combineLatest, Observable, ReplaySubject, of } from 'rxjs';
-import { first, map, shareReplay, catchError, filter } from 'rxjs/operators';
+import { combineLatest, Observable, ReplaySubject } from 'rxjs';
+import { filter, first, map, shareReplay } from 'rxjs/operators';
 import { Activity } from '../activity/activity';
 import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
 import { UserService } from '../auth/user.service';
+import { formatShortDate } from '../core/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { altitudeLimits } from '../masterdata/altitude-limits';
 import { Comment } from '../masterdata/comment';
@@ -34,8 +35,6 @@ import { BaseIndividualDetailComponent } from './base-individual-detail.componen
 import { Individual } from './individual';
 import { IndividualService } from './individual.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
-import { formatShortDate } from '../core/formatDate';
-import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   templateUrl: './individual-detail.component.html',
@@ -98,8 +97,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
     private activityService: ActivityService,
     public dialog: MatDialog,
     private authService: AuthService,
-    protected alertService: AlertService,
-    private afStorage: AngularFireStorage
+    protected alertService: AlertService
   ) {
     super(route, individualService, userService, alertService);
   }
@@ -118,10 +116,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
         this.center = detail.geopos;
       }
 
-      this.imageUrl = this.afStorage
-        .ref(this.individualService.getImageUrl(detail, true))
-        .getDownloadURL()
-        .pipe(catchError(_ => of(null)));
+      this.imageUrl = this.individualService.getImageUrl(detail, true);
 
       this.isFollowing = this.currentUser.pipe(
         filter(u => u !== null),

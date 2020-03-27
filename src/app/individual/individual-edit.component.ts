@@ -108,10 +108,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
         this.updateAltitude(new google.maps.LatLng(this.geopos));
       }
 
-      this.imageUrl = this.afStorage
-        .ref(this.individualService.getImageUrl(detail, true))
-        .getDownloadURL()
-        .pipe(catchError(_ => of(null)));
+      this.imageUrl = this.individualService.getImageUrl(detail, true);
 
       if (!detail.gradient) {
         detail.gradient = 0;

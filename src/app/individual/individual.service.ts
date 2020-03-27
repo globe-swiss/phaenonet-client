@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import * as firebase from 'firebase';
-import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { IdLike } from '../masterdata/masterdata-like';
@@ -11,7 +11,12 @@ import { Individual } from './individual';
 
 @Injectable()
 export class IndividualService extends BaseResourceService<Individual> {
-  constructor(alertService: AlertService, protected afs: AngularFirestore, private authService: AuthService) {
+  constructor(
+    alertService: AlertService,
+    protected afs: AngularFirestore,
+    private authService: AuthService,
+    private afStorage: AngularFireStorage
+  ) {
     super(alertService, afs, 'individuals');
   }
 
@@ -65,7 +70,12 @@ export class IndividualService extends BaseResourceService<Individual> {
       .valueChanges({ idField: 'id' });
   }
 
-  getImageUrl(individual: Individual, thumbnail = false) {
-    return '/images/' + individual.user + '/individuals/' + individual.individual + (thumbnail ? '_tn' : '');
+  getImageUrl(individual: Individual, thumbnail = false): Observable<string | null> {
+    const path = '/images/' + individual.user + '/individuals/' + individual.individual + (thumbnail ? '_tn' : '');
+
+    return this.afStorage
+      .ref(path)
+      .getDownloadURL()
+      .pipe(catchError(_ => of(null)));
   }
 }
