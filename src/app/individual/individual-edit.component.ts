@@ -171,7 +171,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
   }
 
   private uploadImage(individual: Individual, file: File) {
-    const path = this.individualService.getImageUrl(individual);
+    const path = this.individualService.getImagePath(individual);
     const ref = this.afStorage.ref(path);
     ref
       .put(file, { contentType: file.type })

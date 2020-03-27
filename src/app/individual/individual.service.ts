@@ -67,8 +67,12 @@ export class IndividualService extends BaseResourceService<Individual> {
       .valueChanges({ idField: 'id' });
   }
 
+  getImagePath(individual: Individual, thumbnail = false): string {
+    return '/images/' + individual.user + '/individuals/' + individual.individual + (thumbnail ? '_tn' : '');
+  }
+
   getImageUrl(individual: Individual, thumbnail = false): Observable<string | null> {
-    const path = '/images/' + individual.user + '/individuals/' + individual.individual + (thumbnail ? '_tn' : '');
+    const path = this.getImagePath(individual, thumbnail);
 
     return from(
       this.afStorage
