@@ -27,3 +27,9 @@
 #tooltip.hidden {
   display: none;
 }
+
+@media screen and (max-width: 959px) {
+  .mat-form-field {
+    width: 8rem;
+  }
+}

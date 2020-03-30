@@ -78,3 +78,16 @@
 ::ng-deep .map-filter .mat-form-field-underline {
   display: none;
 }
+
+@media screen and (max-width: 959px) {
+  ::ng-deep #phaenonet-body #form-year .mat-form-field-infix {
+    width: 6rem;
+  }
+  ::ng-deep #phaenonet-body #form-datasource .mat-form-field-infix {
+    width: 6rem;
+  }
+
+  ::ng-deep #phaenonet-body #form-species .mat-form-field-infix {
+    width: 6rem;
+  }
+}
