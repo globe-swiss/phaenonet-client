@@ -25,6 +25,17 @@ body {
   padding-right: 2.46875rem;
 }
 
+@media screen and (max-width: 959px) {
+  .detail-left {
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+  }
+  .detail-right {
+    padding-right: 0.3rem;
+    padding-left: 0.3rem;
+  }
+}
+
 .detail-content {
   margin-top: 2.625rem;
 }
@@ -101,4 +112,8 @@ snack-bar-container.info {
 
 snack-bar-container.error {
   color: #f8f2c4;
+}
+
+.mat-card-header-text {
+  margin: 0 !important;
 }

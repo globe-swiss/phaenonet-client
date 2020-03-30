@@ -1,5 +1,12 @@
 <div gdColumns="repeat(8, 1fr)" class="statistics-overview">
-  <div #statisticsContainer class="chart-view" gdColumn="2 / span 6" width="100%" height="100%">
+  <div
+    #statisticsContainer
+    class="chart-view"
+    gdColumn="2 / span 6"
+    gdColumn.lt-md="1 / span 8"
+    width="100%"
+    height="100%"
+  >
     <div class="statistics-filter">
       <div>
         <form [formGroup]="filterForm">

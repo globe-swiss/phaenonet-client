@@ -57,6 +57,7 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
   firstname: Observable<string>;
   lastname: Observable<string>;
   email: string;
+  locale: Observable<string>;
 
   isFollowing: Observable<boolean>;
 
@@ -85,6 +86,10 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
         this.lastname = this.userService.get(this.detailId).pipe(
           first(),
           map(u => u.lastname)
+        );
+        this.locale = this.userService.get(this.detailId).pipe(
+          first(),
+          map(u => u.locale)
         );
       }
 

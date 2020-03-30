@@ -1,56 +1,57 @@
 <div gdColumns="repeat(8, 1fr)">
-  <div gdColumn="3 / span 2">
-    <div>
-      <h3 translate>ACCOUNT VERVOLLSTÄNDIGEN</h3>
+  <div gdColumn="2 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-view">
+    <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6">
+      <div>
+        <h3 translate>ACCOUNT VERVOLLSTÄNDIGEN</h3>
+      </div>
+      <div>
+        <p translate>
+          Mit der Angabe Ihres PhaenoNet Nicknames und Passworts können Sie eine neue Mailadresse hinterlegen.
+        </p>
+      </div>
     </div>
-    <div>
-      <p translate>
-        Sie besitzen einen PhaenoNet-Account ohne E-Mail?
-      </p>
-      <p translate>Bitte vervollständigen Sie Ihren Account mit Ihrer E-Mail.</p>
-    </div>
-  </div>
-  <div gdColumn="5 / span 2">
-    <div>
-      <form [formGroup]="completeAccountForm" fxLayout="column">
-        <mat-form-field>
-          <mat-label>{{ 'Nickname' | translate }} </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="nickname"
-            id="nickname"
-            placeholder="{{ 'Nickname' | translate }}"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'Passwort' | translate }} </mat-label>
-          <input matInput type="password" formControlName="password" id="password" required />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'E-Mail' | translate }} </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="email"
-            autofocus
-            id="email"
-            placeholder="{{ 'E-Mail' | translate }}"
-            required
-          />
-        </mat-form-field>
-        <button
-          mat-flat-button
-          color="primary"
-          type="submit"
-          (click)="completeAccount()"
-          id="register-button"
-          [disabled]="completeAccountForm.invalid"
-        >
-          {{ 'Vervollständigen' | translate }}
-        </button>
-      </form>
+    <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6">
+      <div>
+        <form [formGroup]="completeAccountForm" fxLayout="column">
+          <mat-form-field>
+            <mat-label>{{ 'Nickname' | translate }} </mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="nickname"
+              id="nickname"
+              placeholder="{{ 'Nickname' | translate }}"
+              required
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'Passwort' | translate }} </mat-label>
+            <input matInput type="password" formControlName="password" id="password" required />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'E-Mail' | translate }} </mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="email"
+              autofocus
+              id="email"
+              placeholder="{{ 'E-Mail' | translate }}"
+              required
+            />
+          </mat-form-field>
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            (click)="completeAccount()"
+            id="register-button"
+            [disabled]="completeAccountForm.invalid"
+          >
+            {{ 'Vervollständigen' | translate }}
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

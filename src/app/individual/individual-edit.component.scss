@@ -17,6 +17,11 @@
   overflow: hidden;
 }
 
+.individual-image {
+  height: 402px;
+  object-fit: cover;
+}
+
 .individual-map-with-image ::ng-deep .map-container {
   border-top-left-radius: 1rem;
   border-top-right-radius: 0rem;

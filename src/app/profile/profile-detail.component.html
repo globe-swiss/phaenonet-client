@@ -15,6 +15,18 @@
           <button mat-icon-button [app-copy-clipboard]="profileLink | async" (copied)="notifyCopied()">
             <mat-icon svgIcon="copylink"></mat-icon>
           </button>
+          <button
+            *ngIf="isLoggedIn && !isOwner() && isFollowing | async"
+            mat-fab
+            color="primary"
+            class="a100"
+            (click)="unfollow()"
+          >
+            <mat-icon svgIcon="subscribe-active"></mat-icon>
+          </button>
+          <button *ngIf="isLoggedIn && !isOwner() && !(isFollowing | async)" mat-fab color="primary" (click)="follow()">
+            <mat-icon svgIcon="subscribe"></mat-icon>
+          </button>
         </div>
         <ng-container *ngIf="isOwner()">
           <div class="detail-label">{{ 'Vorname' | translate }}</div>
@@ -23,6 +35,8 @@
           <div class="detail-value">{{ lastname | async }}</div>
           <div class="detail-label">{{ 'E-Mail' | translate }}</div>
           <div class="detail-value">{{ email }}</div>
+          <div class="detail-label">{{ 'Sprache' | translate }}</div>
+          <div class="detail-value">{{ locale | async | translate }}</div>
           <button mat-flat-button type="submit" id="edit-button" [routerLink]="['/profile', detailId, 'edit']">
             {{ 'Profil bearbeiten' | translate }}
           </button>
@@ -38,32 +52,15 @@
           <span *ngIf="isOwner()">{{ 'MEINE BEOBACHTUNGEN' | translate }}</span
           ><span *ngIf="!isOwner()">{{ 'BEOBACHTUNGEN' | translate }}</span>
         </h3>
-        <button
-          *ngIf="isLoggedIn && !isOwner() && isFollowing | async"
-          mat-flat-button
-          class="detail-header-fab a100"
-          (click)="unfollow()"
-        >
-          {{ 'Abbestellen' | translate }}
-        </button>
-        <button
-          *ngIf="isLoggedIn && !isOwner() && !(isFollowing | async)"
-          mat-flat-button
-          class="detail-header-fab"
-          color="primary"
-          (click)="follow()"
-        >
-          {{ 'Abonnieren' | translate }}
-        </button>
       </div>
-      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="detailSubject | async" class="detail-right">
+      <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject | async" class="detail-right">
         <div
           fxLayout="row"
           *ngFor="let item of latestIndividualObservations | async"
           [routerLink]="['/individuals', item.individual.id]"
           class="latest-individual-observation"
         >
-          <img *ngIf="item.imgUrl | async" [src]="item.imgUrl | async" style="max-height: 180px;" />
+          <img class="individual-image" *ngIf="item.imgUrl | async" [src]="item.imgUrl | async" />
           <div fxLayout="column" style="margin-left: 25px; margin-right: 25px; margin-top: 15px;">
             <div class="detail-label">
               {{ item.species.de | translate }}
@@ -102,7 +99,7 @@
       </div>
       <div
         gdColumn="3 / span 4"
-        gdColumn.lt-md="2 / span 5"
+        gdColumn.lt-md="1 / span 6"
         *ngIf="isOwner() && detailSubject | async"
         class="detail-right"
       >

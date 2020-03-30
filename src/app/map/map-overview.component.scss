@@ -4,7 +4,7 @@
 
 .map-actions {
   position: fixed;
-  left: 15%;
+  left: 13.5%;
   bottom: 5%;
 }
 
@@ -37,7 +37,7 @@
 
 .map-filter {
   position: fixed;
-  left: 15%;
+  left: 13.5%;
   top: 8rem;
 
   background-color: white;
@@ -77,4 +77,17 @@
 
 ::ng-deep .map-filter .mat-form-field-underline {
   display: none;
+}
+
+@media screen and (max-width: 959px) {
+  ::ng-deep #phaenonet-body #form-year .mat-form-field-infix {
+    width: 6rem;
+  }
+  ::ng-deep #phaenonet-body #form-datasource .mat-form-field-infix {
+    width: 6rem;
+  }
+
+  ::ng-deep #phaenonet-body #form-species .mat-form-field-infix {
+    width: 6rem;
+  }
 }
