@@ -53,14 +53,14 @@
           ><span *ngIf="!isOwner()">{{ 'BEOBACHTUNGEN' | translate }}</span>
         </h3>
       </div>
-      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="detailSubject | async" class="detail-right">
+      <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject | async" class="detail-right">
         <div
           fxLayout="row"
           *ngFor="let item of latestIndividualObservations | async"
           [routerLink]="['/individuals', item.individual.id]"
           class="latest-individual-observation"
         >
-          <img *ngIf="item.imgUrl | async" [src]="item.imgUrl | async" style="max-height: 180px;" />
+          <img class="individual-image" *ngIf="item.imgUrl | async" [src]="item.imgUrl | async" />
           <div fxLayout="column" style="margin-left: 25px; margin-right: 25px; margin-top: 15px;">
             <div class="detail-label">
               {{ item.species.de | translate }}
@@ -99,7 +99,7 @@
       </div>
       <div
         gdColumn="3 / span 4"
-        gdColumn.lt-md="2 / span 5"
+        gdColumn.lt-md="1 / span 6"
         *ngIf="isOwner() && detailSubject | async"
         class="detail-right"
       >
