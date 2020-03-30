@@ -39,9 +39,13 @@
   </mat-card-content>
   <mat-card-footer>
     <div fxLayout="column">
-      <div fxLayout="row" fxLayoutAlign="center">
+      <div fxLayout="row" fxLayoutAlign="start">
         <a mat-button [routerLink]="'/auth/reset-password'">{{ 'Passwort vergessen?' | translate }}</a>
-        <a mat-button [routerLink]="'/auth/register'">{{ 'Neu registrieren' | translate }}</a>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start">
+        <a mat-button [routerLink]="'/auth/register'">{{
+          'Noch keinen Account? Jetzt kostenlos registrieren!' | translate
+        }}</a>
       </div>
       <div fxLayout="row" fxLayoutAlign="flex-end">
         <a class="nickname-only-button" mat-button [routerLink]="'/auth/nickname-only'">{{
