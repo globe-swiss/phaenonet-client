@@ -5,6 +5,9 @@
   "meteoswiss": "MeteoSchweiz",
   "species": "Art",
   "altitude": "Höhe",
+  "de-CH": "Deutsch",
+  "fr-CH": "Français",
+  "it-CH": "Italiano",
 
   "BA": "Bergahorn",
   "BR": "Buschwindröschen",
