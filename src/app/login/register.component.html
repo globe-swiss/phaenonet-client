@@ -1,102 +1,104 @@
 <div gdColumns="repeat(8, 1fr)">
-  <div gdColumn="3 / span 2">
-    <div>
-      <h3 translate>REGISTRIEREN</h3>
+  <div gdColumn="2 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-view">
+    <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6">
+      <div>
+        <h3 translate>REGISTRIEREN</h3>
+      </div>
+      <div>
+        <p translate>Herzlich Willkommen bei Phaenonet.</p>
+        <p translate>
+          Möchten Sie uns helfen mehr Daten für die wichtigen phänologischen Untersuchungen zu sammeln, indem Sie Ihre
+          eigenen Beobachtungen zu Pflanzen melden?
+        </p>
+        <p translate>Wir freuen uns, Sie in unsere Community aufzunehmen!</p>
+      </div>
     </div>
-    <div>
-      <p translate>Herzlich Willkommen bei Phaenonet.</p>
-      <p translate>
-        Möchten Sie uns helfen mehr Daten für die wichtigen phänologischen Untersuchungen zu sammeln, indem Sie Ihre
-        eigenen Beobachtungen zu Pflanzen melden?
-      </p>
-      <p translate>Wir freuen uns, Sie in unsere Community aufzunehmen!</p>
-    </div>
-  </div>
-  <div gdColumn="5 / span 2">
-    <div>
-      <form [formGroup]="registerForm" fxLayout="column" *ngIf="showRegisterForm()">
-        <mat-form-field>
-          <mat-label>{{ 'Anzeigename bei PhaenoNet (öffentlich)' | translate }} </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="nickname"
-            id="nickname"
-            placeholder="{{ 'Nickname' | translate }}"
-            minlength="3"
-            required
-          />
-          <mat-error *ngIf="registerForm.get('nickname').hasError('existingNickname')">
-            {{ 'Dieser Nickname ist bereits vergeben.' | translate }}
-          </mat-error>
-          <mat-error *ngIf="registerForm.get('nickname').hasError('minlength')">
-            {{ 'Der Nickname muss mindestens 3 Zeichen lang sein.' | translate }}
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'Vorname' | translate }} </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="firstname"
-            id="firstname"
-            placeholder="{{ 'Vorname' | translate }}"
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'Nachname' | translate }} </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="lastname"
-            id="lastname"
-            placeholder="{{ 'Nachname' | translate }}"
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'E-Mail' | translate }} </mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="email"
-            autofocus
-            id="email"
-            placeholder="{{ 'E-Mail' | translate }}"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'Passwort' | translate }} </mat-label>
-          <input matInput type="password" formControlName="password" id="password" required minlength="6" />
-          <mat-error>{{ 'Das Passwort muss mindestens 6 Zeichen lang sein.' | translate }}</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'Passwort Bestätigung' | translate }} </mat-label>
-          <input matInput type="password" formControlName="passwordConfirm" id="passwordConfirm" required />
-        </mat-form-field>
-        <div gdArea="language">
-          <mat-form-field class="language-select-form-field">
-            <mat-select id="langueselect" formControlName="locale" (selectionChange)="changeLocale($event)">
-              <mat-option value="de-CH">Deutsch</mat-option>
-              <mat-option value="fr-CH">Français</mat-option>
-              <mat-option value="it-CH">Italiano</mat-option>
-            </mat-select>
+    <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6">
+      <div>
+        <form [formGroup]="registerForm" fxLayout="column" *ngIf="showRegisterForm()">
+          <mat-form-field>
+            <mat-label>{{ 'Anzeigename bei PhaenoNet (öffentlich)' | translate }} </mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="nickname"
+              id="nickname"
+              placeholder="{{ 'Nickname' | translate }}"
+              minlength="3"
+              required
+            />
+            <mat-error *ngIf="registerForm.get('nickname').hasError('existingNickname')">
+              {{ 'Dieser Nickname ist bereits vergeben.' | translate }}
+            </mat-error>
+            <mat-error *ngIf="registerForm.get('nickname').hasError('minlength')">
+              {{ 'Der Nickname muss mindestens 3 Zeichen lang sein.' | translate }}
+            </mat-error>
           </mat-form-field>
-        </div>
-        <mat-error *ngIf="registerForm.hasError('passwordMissmatch')">
-          {{ 'Die Passwörter stimmen nicht überein.' | translate }}
-        </mat-error>
-        <button
-          mat-flat-button
-          color="primary"
-          type="submit"
-          (click)="register()"
-          id="register-button"
-          [disabled]="registerForm.invalid"
-        >
-          {{ 'Jetzt registrieren' | translate }}
-        </button>
-      </form>
+          <mat-form-field>
+            <mat-label>{{ 'Vorname' | translate }} </mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="firstname"
+              id="firstname"
+              placeholder="{{ 'Vorname' | translate }}"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'Nachname' | translate }} </mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="lastname"
+              id="lastname"
+              placeholder="{{ 'Nachname' | translate }}"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'E-Mail' | translate }} </mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="email"
+              autofocus
+              id="email"
+              placeholder="{{ 'E-Mail' | translate }}"
+              required
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'Passwort' | translate }} </mat-label>
+            <input matInput type="password" formControlName="password" id="password" required minlength="6" />
+            <mat-error>{{ 'Das Passwort muss mindestens 6 Zeichen lang sein.' | translate }}</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'Passwort Bestätigung' | translate }} </mat-label>
+            <input matInput type="password" formControlName="passwordConfirm" id="passwordConfirm" required />
+          </mat-form-field>
+          <div gdArea="language">
+            <mat-form-field class="language-select-form-field">
+              <mat-select id="langueselect" formControlName="locale" (selectionChange)="changeLocale($event)">
+                <mat-option value="de-CH">Deutsch</mat-option>
+                <mat-option value="fr-CH">Français</mat-option>
+                <mat-option value="it-CH">Italiano</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <mat-error *ngIf="registerForm.hasError('passwordMissmatch')">
+            {{ 'Die Passwörter stimmen nicht überein.' | translate }}
+          </mat-error>
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            (click)="register()"
+            id="register-button"
+            [disabled]="registerForm.invalid"
+          >
+            {{ 'Jetzt registrieren' | translate }}
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>
