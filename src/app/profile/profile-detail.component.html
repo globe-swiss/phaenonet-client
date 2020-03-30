@@ -15,6 +15,18 @@
           <button mat-icon-button [app-copy-clipboard]="profileLink | async" (copied)="notifyCopied()">
             <mat-icon svgIcon="copylink"></mat-icon>
           </button>
+          <button
+            *ngIf="isLoggedIn && !isOwner() && isFollowing | async"
+            mat-fab
+            color="primary"
+            class="a100"
+            (click)="unfollow()"
+          >
+            <mat-icon svgIcon="subscribe-active"></mat-icon>
+          </button>
+          <button *ngIf="isLoggedIn && !isOwner() && !(isFollowing | async)" mat-fab color="primary" (click)="follow()">
+            <mat-icon svgIcon="subscribe"></mat-icon>
+          </button>
         </div>
         <ng-container *ngIf="isOwner()">
           <div class="detail-label">{{ 'Vorname' | translate }}</div>
@@ -40,23 +52,6 @@
           <span *ngIf="isOwner()">{{ 'MEINE BEOBACHTUNGEN' | translate }}</span
           ><span *ngIf="!isOwner()">{{ 'BEOBACHTUNGEN' | translate }}</span>
         </h3>
-        <button
-          *ngIf="isLoggedIn && !isOwner() && isFollowing | async"
-          mat-flat-button
-          class="detail-header-fab a100"
-          (click)="unfollow()"
-        >
-          {{ 'Abbestellen' | translate }}
-        </button>
-        <button
-          *ngIf="isLoggedIn && !isOwner() && !(isFollowing | async)"
-          mat-flat-button
-          class="detail-header-fab"
-          color="primary"
-          (click)="follow()"
-        >
-          {{ 'Abonnieren' | translate }}
-        </button>
       </div>
       <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="detailSubject | async" class="detail-right">
         <div
