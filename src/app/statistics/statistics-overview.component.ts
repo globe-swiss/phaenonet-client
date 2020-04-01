@@ -1,25 +1,32 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import * as d3 from 'd3-selection';
 import * as d3Time from 'd3-time';
-import { Observable, Subject, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { first, map, startWith, switchMap } from 'rxjs/operators';
 import { formatShortDate } from '../core/formatDate';
+import { NavService } from '../core/nav/nav.service';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
 import { PhenophaseGroup } from '../masterdata/phaenophase-group';
+import { SourceType } from '../masterdata/source-type';
+import { Species } from '../masterdata/species';
 import { Observation } from '../observation/observation';
 import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
 import { AnalyticsValue } from './analytics-value';
-import { SourceType } from '../masterdata/source-type';
 import { StatisticsService } from './statistics.service';
-import { NavService } from '../core/nav/nav.service';
-import { analytics } from 'firebase';
-import { Species } from '../masterdata/species';
 
 export interface Margin {
   top: number;
@@ -74,6 +81,9 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   private y: any;
   private g: any;
 
+  private year: number;
+  private data: Analytics[];
+
   private colorMap = {};
 
   constructor(
@@ -87,6 +97,12 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   availablePhenophaseGroups: Observable<PhenophaseGroup[]>;
   observations: Observable<Observation[]>;
   phenophaseObservationsGroups: Observable<ObservationData[]>;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: UIEvent) {
+    // re-render the svg on window resize
+    this.drawChart();
+  }
 
   ngOnInit() {
     this.navService.setLocation('Auswertungen');
@@ -115,18 +131,27 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
             this.filterForm.controls.species.setValue('BA');
           }
 
-          this.initSvg(year);
+          this.year = year;
 
           return this.statisticsService.listByYear(year, analyticsType, datasource, species);
         }),
         map(results => {
-          this.drawChart(results);
+          this.data = results;
+          this.drawChart();
         })
       )
       .subscribe();
   }
 
-  private initSvg(year: number) {
+  private toKey(analytics: Analytics) {
+    if (analytics.altitude_grp) {
+      return analytics.species + '-' + analytics.altitude_grp;
+    } else {
+      return analytics.species;
+    }
+  }
+
+  private drawChart() {
     this.svg = d3.select('svg');
 
     this.svg.selectAll('*').remove();
@@ -140,22 +165,12 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
     this.x = d3Scale
       .scaleTime()
-      .domain([new Date(year - 1, 11, 1), new Date(year + 1, 0, 31)])
+      .domain([new Date(this.year - 1, 11, 1), new Date(this.year + 1, 0, 31)])
       .range([0, this.width]);
     this.x.ticks(d3Time.timeDay.every(1));
-  }
 
-  private toKey(analytics: Analytics) {
-    if (analytics.altitude_grp) {
-      return analytics.species + '-' + analytics.altitude_grp;
-    } else {
-      return analytics.species;
-    }
-  }
-
-  private drawChart(data: Analytics[]) {
-    const domain = data.map(analytics => analytics.species);
-    const subdomain = [...new Set(data.map(analytics => analytics.altitude_grp))].sort().reverse();
+    const domain = this.data.map(analytics => analytics.species);
+    const subdomain = [...new Set(this.data.map(analytics => analytics.altitude_grp))].sort().reverse();
 
     const resultingDomain = [];
     domain.forEach(species => {
@@ -174,7 +189,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
       .rangeRound([0, this.height])
       .padding(0.4);
 
-    data.forEach(analytics => {
+    this.data.forEach(analytics => {
       this.g
         .selectAll('.horizontalLines')
         .data(analytics.values)
