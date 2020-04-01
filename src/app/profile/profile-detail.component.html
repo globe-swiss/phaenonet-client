@@ -7,7 +7,7 @@
       <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
         <h3>{{ 'PROFIL' | translate }}</h3>
       </div>
-      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" *ngIf="detailSubject | async" class="detail-right">
+      <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject | async" class="detail-right">
         <div *ngIf="isOwner()" class="detail-label">{{ 'Hallo' | translate }}</div>
         <div *ngIf="!isOwner()" class="detail-label">{{ 'Öffentliches Profil von' | translate }}</div>
         <div class="title-nickname">

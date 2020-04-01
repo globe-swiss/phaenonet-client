@@ -25,23 +25,30 @@ body {
   padding-right: 2.46875rem;
 }
 
-@media screen and (max-width: 959px) {
-  .detail-left {
-    padding-left: 0.3rem;
-    padding-right: 0.3rem;
-  }
-  .detail-right {
-    padding-right: 0.3rem;
-    padding-left: 0.3rem;
-  }
-}
-
 .detail-content {
   margin-top: 2.625rem;
 }
 
 .detail-content:nth-child(2n - 1) {
   margin-top: 7rem;
+}
+
+@media screen and (max-width: 959px) {
+  .detail-left {
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+  }
+  .detail-right {
+    padding-top: 2.46875rem;
+    padding-right: 0.3rem;
+    padding-left: 0.3rem;
+  }
+  .detail-content {
+    margin-top: 1rem;
+  }
+  .detail-content:nth-child(2n - 1) {
+    margin-top: 2.46875rem;
+  }
 }
 
 .detail-header .map-container {

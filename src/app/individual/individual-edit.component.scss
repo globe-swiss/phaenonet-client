@@ -2,6 +2,12 @@
   width: 70%;
 }
 
+@media screen and (max-width: 959px) {
+  .geopos-width {
+    width: 100%;
+  }
+}
+
 .right-align {
   text-align: right;
 }
@@ -9,6 +15,13 @@
 .gradient-info-img {
   height: 61px;
   padding-left: 2rem;
+}
+
+@media screen and (max-width: 959px) {
+  .gradient-info-img {
+    height: 50px;
+    padding-left: 1rem;
+  }
 }
 
 .image-container {

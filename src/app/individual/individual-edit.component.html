@@ -28,7 +28,7 @@
         <h3 translate>OBJEKT ERFASSEN</h3>
         <img *ngIf="fileToUploadBase64" [src]="fileToUploadBase64" height="200" />
       </div>
-      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" class="detail-right">
+      <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
         <form id="createForm" [formGroup]="createForm" (ngSubmit)="onSubmit()" *ngIf="detailSubject | async">
           <div>
             <mat-form-field class="geopos-width">

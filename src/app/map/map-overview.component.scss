@@ -27,6 +27,23 @@
   }
 }
 
+@media screen and (max-width: 959px) {
+  .map-actions {
+    left: 5%;
+  }
+
+  .extended-fab-button {
+    border-radius: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 50px;
+
+    .mat-icon {
+      margin-right: 5px;
+    }
+  }
+}
+
 .map-info-window {
   cursor: pointer;
 }
@@ -57,8 +74,10 @@
     }
   }
 }
+
 @media screen and (max-width: 959px) {
   .map-filter {
+    top: 6.5rem;
     left: 50%;
     transform: translateX(-50%);
   }

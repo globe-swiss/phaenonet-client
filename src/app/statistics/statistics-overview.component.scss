@@ -10,6 +10,14 @@
     mat-form-field {
       margin: 1rem;
     }
+
+    @media screen and (max-width: 959px) {
+      .mat-form-field {
+        width: 6rem;
+        font-size: 0.8rem;
+        margin-bottom: 0rem;
+      }
+    }
   }
 }
 
@@ -26,10 +34,4 @@
 
 #tooltip.hidden {
   display: none;
-}
-
-@media screen and (max-width: 959px) {
-  .mat-form-field {
-    width: 6rem;
-  }
 }
