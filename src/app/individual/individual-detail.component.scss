@@ -36,6 +36,12 @@ h4 {
   height: 70px;
 }
 
+@media screen and (max-width: 959px) {
+  .detail-header-fab {
+    margin-left: 70%;
+  }
+}
+
 .detail-sub {
   font-style: italic;
   margin-top: -1.25rem;

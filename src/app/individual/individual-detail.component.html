@@ -37,7 +37,7 @@
       </button>
     </div>
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
-      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 5" *ngIf="detailSubject | async" class="detail-left">
+      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject | async" class="detail-left">
         <div class="detail-label">{{ (species | async)?.de | translate }}</div>
         <div class="title-individual">{{ (detailSubject | async).name }}</div>
         <div class="detail-label" *ngIf="(detailSubject | async).last_observation_date">
@@ -81,7 +81,7 @@
           {{ 'Objekt bearbeiten' | translate }}
         </button>
       </div>
-      <div gdColumn="3 / span 4" gdColumn.lt-md="2 / span 5" class="detail-right">
+      <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
         <h3>{{ 'Phänophasen' | translate }}</h3>
         <div *ngFor="let groupedItem of phenophaseObservationsGroups | async" class="phenophase-group">
           <ng-container *ngIf="isOwner() || groupedItem.hasObservations">

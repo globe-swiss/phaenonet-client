@@ -1,5 +1,5 @@
 <div gdColumns="repeat(8, 1fr)">
-  <div gdColumn="2 / span 6" gdColumns="repeat(6, 1fr)" class="detail-view">
+  <div gdColumn="2 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-view">
     <div gdColumn="1 / span 6" class="detail-header">
       <google-map class="map" width="100%" height="302px" [center]="center" [zoom]="zoom" [options]="options">
         <map-marker #marker [position]="geopos" [options]="markerOptions | async"></map-marker>
@@ -24,7 +24,7 @@
       </button>
     </div>
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
-      <div gdColumn="1 / span 2" *ngIf="detailSubject | async" class="detail-left">
+      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject | async" class="detail-left">
         <div class="detail-label detail-label-standort">{{ 'Standort' | translate }}</div>
         <h3>{{ (detailSubject | async).name }}</h3>
         <div>
@@ -36,7 +36,7 @@
           ><span translate> {{ 'M.ü.M.' }}</span>
         </div>
       </div>
-      <div gdColumn="3 / span 4" class="detail-right">
+      <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
         <h3>{{ 'Phänophasen' | translate }}</h3>
         <div *ngFor="let groupedItem of phenophaseObservationsBySpecies | async" class="species-group">
           <h4>{{ groupedItem.species.de | translate }}</h4>
