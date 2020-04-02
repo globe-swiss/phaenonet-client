@@ -38,6 +38,16 @@
               <mat-option *ngFor="let s of species | async" [value]="s.id">{{ s.de | translate }}</mat-option>
             </mat-select>
           </mat-form-field>
+          <button
+            mat-icon-button
+            class="statistics-info-button"
+            matTooltip="{{
+              'Dargestellt sind der Median (mittleres Eintrittsdatum der Phase; Strich in der Box) und das 25% sowie das 75% Quantil, was bedeutet, dass 50% der beobachteten Werte innerhalb der farbigen Box liegen.'
+                | translate
+            }}"
+          >
+            <mat-icon>info</mat-icon>
+          </button>
         </form>
       </div>
     </div>

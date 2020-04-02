@@ -79,6 +79,7 @@
   "Der Nickname muss mindestens 3 Zeichen lang sein.": "La pseudonyme doit comporter au moins 3 caractères.",
   "Registration erfolgreich": "Enregistrement réussie",
   "Sie haben sich erfolgreich bei PhaenoNet registriert.": "Vous vous êtes enregistré avec succès sur PhaenoNet.",
+  "Dargestellt sind der Median (mittleres Eintrittsdatum der Phase; Strich in der Box) und das 25% sowie das 75% Quantil, was bedeutet, dass 50% der beobachteten Werte innerhalb der farbigen Box liegen.": "La médiane (date moyenne d'entrée de la phénophase; ligne dans la boîte) et les quantiles à 25% et 75% sont indiqués, ce qui signifie que 50% des observations se trouvent dans la boîte colorée.",
 
   "BA": "Erable sycomore",
   "BR": "Anémone des bois",
