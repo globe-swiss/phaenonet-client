@@ -43,5 +43,10 @@ export class AppComponent {
       'copylink',
       this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/btn_copyurl_normal.svg')
     );
+
+    this.matIconRegistry.addSvgIcon(
+      'locateMe',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/ico_btn_locateme.svg')
+    );
   }
 }
