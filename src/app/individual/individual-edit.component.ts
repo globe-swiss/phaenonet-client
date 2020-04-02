@@ -128,6 +128,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
 
   private updateGeoposUsing(latLng: google.maps.LatLng) {
     this.geopos = latLng.toJSON();
+    this.center = latLng.toJSON();
     this.updateAltitude(latLng);
   }
 
