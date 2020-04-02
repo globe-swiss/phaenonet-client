@@ -1,3 +1,4 @@
+import { YearValue } from './statistics-overview.component';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -14,16 +15,22 @@ export class StatisticsService extends BaseResourceService<Analytics> {
     super(alertService, afs, 'analytics_result');
   }
 
-  listByYear(year: number, analyticsType: AnalyticsType, source: SourceType, species: string): Observable<Analytics[]> {
+  listByYear(
+    year: YearValue,
+    analyticsType: AnalyticsType,
+    source: SourceType,
+    species: string
+  ): Observable<Analytics[]> {
     return this.afs
       .collection<Analytics>(this.collectionName, ref => {
-        const query = ref
-          .where('year', '==', year)
-          .where('type', '==', analyticsType)
-          .where('source', '==', source);
+        let query = ref.where('type', '==', analyticsType).where('source', '==', source);
 
         if (species !== 'all') {
-          return query.where('species', '==', species);
+          query = query.where('species', '==', species);
+        }
+
+        if (year.id !== 'all') {
+          query = query.where('year', '==', year.value);
         }
 
         return query;
