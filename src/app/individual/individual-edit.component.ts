@@ -123,8 +123,12 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
   }
 
   updateGeopos(event: google.maps.MouseEvent): void {
-    this.geopos = event.latLng.toJSON();
-    this.updateAltitude(event.latLng);
+    this.updateGeoposUsing(event.latLng);
+  }
+
+  private updateGeoposUsing(latLng: google.maps.LatLng) {
+    this.geopos = latLng.toJSON();
+    this.updateAltitude(latLng);
   }
 
   private updateAltitude(latLng: google.maps.LatLng) {
@@ -180,5 +184,15 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
 
   private toIndividualId(individual: Individual): string {
     return individual.year + '_' + individual.individual;
+  }
+
+  locateMe(): void {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.updateGeoposUsing(
+          new google.maps.LatLng({ lat: position.coords.latitude, lng: position.coords.longitude })
+        );
+      });
+    }
   }
 }

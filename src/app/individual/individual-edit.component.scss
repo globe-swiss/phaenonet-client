@@ -47,3 +47,17 @@
 .add-image {
   cursor: pointer;
 }
+
+.detail-header-fab {
+  margin-left: 90%;
+  bottom: 28px;
+
+  width: 70px;
+  height: 70px;
+}
+
+@media screen and (max-width: 959px) {
+  .detail-header-fab {
+    margin-left: 70%;
+  }
+}
