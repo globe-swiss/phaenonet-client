@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
-import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { filter, first, map, shareReplay } from 'rxjs/operators';
+import { combineLatest, Observable, of, ReplaySubject } from 'rxjs';
+import { filter, first, map, mergeMap, shareReplay } from 'rxjs/operators';
 import { Activity } from '../activity/activity';
 import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
@@ -116,7 +116,15 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
         this.center = detail.geopos;
       }
 
-      this.imageUrl = this.individualService.getImageUrl(detail, true);
+      this.imageUrl = this.individualService.getImageUrl(detail, true).pipe(
+        mergeMap(i => {
+          if (i == null) {
+            return this.individualService.getImageUrl(detail).pipe();
+          } else {
+            return of(i);
+          }
+        })
+      );
 
       this.isFollowing = this.currentUser.pipe(
         filter(u => u !== null),
