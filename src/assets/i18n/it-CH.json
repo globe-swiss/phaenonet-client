@@ -71,7 +71,7 @@
   "Möchten Sie uns helfen, mehr Daten zur jahreszeitlichen Entwicklung von Pflanzen zu sammeln, indem Sie Ihre eigenen Beobachtungen melden?": "Vuole aiutarci a raccogliere ancora più dati sullo sviluppo stagionale delle piante comunicandoci le sue osservazioni?",
   "Wir freuen uns, Sie in unsere Community aufzunehmen!": "Ci rallegriamo di accoglierla nella nostra cerchia di osservatori!",
   "Passwort Bestätigung": "Conferma della password",
-  "Noch keinen Account? Jetzt registrieren!": "Non hai ancora un account? Registrati ora gratuitamente.",
+  "Noch keinen Account? Jetzt registrieren!": "Non hai ancora un account? Registrati ora.",
   "Mit der Angabe Ihres PhaenoNet Nicknames und Passworts können Sie eine neue Mailadresse hinterlegen.": "Immettendo nome utente e password è possibile reimpostare un nuovo indirizzo e-mail.",
   "ACCOUNT VERVOLLSTÄNDIGEN": "COMPLETA I DATI DELL'ACCOUNT",
   "Anzeigename bei PhaenoNet (öffentlich)": "Nome su PhaenoNet (pubblico)",
@@ -81,6 +81,8 @@
   "Sie haben sich erfolgreich bei PhaenoNet registriert.": "Ti sei registrato con successo su PhaenoNet",
   "Dargestellt sind der Median (mittleres Eintrittsdatum der Phase; Strich in der Box) und das 25% sowie das 75% Quantil, was bedeutet, dass 50% der beobachteten Werte innerhalb der farbigen Box liegen.": "Sono indicati la mediana (data media di comparsa della fenofase; linea nella casella) e il quantile 25% e 75%, il che significa che il 50% delle osservazioni si trova all'interno della casella colorata.",
   "Speichern": "Salva",
+  "Sprache": "Lingua",
+  "Willkommen": "Benvenuti",
 
   "BA": "Acero di monte",
   "BR": "Anemone bianca",
