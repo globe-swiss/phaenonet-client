@@ -27,6 +27,7 @@ import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
 import { AnalyticsValue } from './analytics-value';
 import { StatisticsService } from './statistics.service';
+import * as moment from 'moment';
 
 export interface Margin {
   top: number;
@@ -45,7 +46,14 @@ export interface GroupedByPhenophaseGroup {
   observations: Observation[];
 }
 
+export interface YearValue {
+  id: string;
+  value: number;
+}
+
 const allSpecies = { id: 'all', de: 'Alle' } as Species;
+
+const allYear = { id: 'all', value: null } as YearValue;
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -55,13 +63,13 @@ const allSpecies = { id: 'all', de: 'Alle' } as Species;
 export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef;
 
-  years = this.masterdataService.availableYears;
+  years = [allYear, ...this.masterdataService.availableYears.map(y => ({ id: '' + y, value: y } as YearValue))];
   datasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
   analyticsTypes: AnalyticsType[] = ['species', 'altitude'];
   species: Subject<Species[]> = new ReplaySubject(1);
 
   filterForm = new FormGroup({
-    year: new FormControl(this.years[0]),
+    year: new FormControl(this.years[1]),
     datasource: new FormControl(this.datasources[0]),
     analyticsType: new FormControl(this.analyticsTypes[0]),
     species: new FormControl(allSpecies.id)
@@ -106,7 +114,6 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.navService.setLocation('Auswertungen');
-
     this.masterdataService
       .getSpecies()
       .pipe(map(species => [allSpecies].concat(species)))
@@ -120,18 +127,26 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
       .pipe(
         startWith(this.filterForm.getRawValue()),
         switchMap(form => {
-          const year = +form.year;
+          const year: YearValue = form.year;
           const datasource: SourceType = form.datasource;
-          const analyticsType: AnalyticsType = form.analyticsType;
+          let analyticsType: AnalyticsType = form.analyticsType;
           let species: string = form.species;
 
+          this.year = year.value;
+
           // set to single species if altitude and all species
-          if (analyticsType === 'altitude' && form.species === allSpecies.id) {
+          if (
+            (analyticsType === 'altitude' && form.species === allSpecies.id) ||
+            (year === allYear && form.species === allSpecies.id)
+          ) {
             species = 'BA';
-            this.filterForm.controls.species.setValue('BA');
+            this.filterForm.controls.species.setValue('BA', { emitEvent: false });
           }
 
-          this.year = year;
+          if (year === allYear) {
+            analyticsType = 'species';
+            this.filterForm.controls.analyticsType.setValue(this.analyticsTypes[0], { emitEvent: false });
+          }
 
           return this.statisticsService.listByYear(year, analyticsType, datasource, species);
         }),
@@ -146,6 +161,8 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   private toKey(analytics: Analytics) {
     if (analytics.altitude_grp) {
       return analytics.species + '-' + analytics.altitude_grp;
+    } else if (this.year === allYear.value) {
+      return analytics.species + '-' + analytics.year;
     } else {
       return analytics.species;
     }
@@ -164,19 +181,22 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     this.g = this.svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
     this.x = d3Scale
-      .scaleTime()
-      .domain([new Date(this.year - 1, 11, 1), new Date(this.year + 1, 0, 31)])
-      .range([0, this.width]);
-    this.x.ticks(d3Time.timeDay.every(1));
+      .scaleLinear()
+      .domain([-30, 395])
+      .range([0, this.width])
+      .nice();
 
     const domain = this.data.map(analytics => analytics.species);
-    const subdomain = [...new Set(this.data.map(analytics => analytics.altitude_grp))].sort().reverse();
+    const subdomain =
+      this.year === allYear.value
+        ? this.masterdataService.availableYears
+        : [...new Set(this.data.map(analytics => analytics.altitude_grp))].sort().reverse();
 
     const resultingDomain = [];
     domain.forEach(species => {
-      subdomain.forEach(altitudeGroup => {
-        if (altitudeGroup) {
-          resultingDomain.push(species + '-' + altitudeGroup);
+      subdomain.forEach(subdomainKey => {
+        if (subdomainKey) {
+          resultingDomain.push(species + '-' + subdomainKey);
         } else {
           resultingDomain.push(species);
         }
@@ -195,8 +215,8 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         .data(analytics.values)
         .enter()
         .append('line')
-        .attr('x1', d => this.x(d.min))
-        .attr('x2', d => this.x(d.max))
+        .attr('x1', d => this.x(this.toX(analytics.year, d.min)))
+        .attr('x2', d => this.x(this.toX(analytics.year, d.max)))
         .attr('y1', d => this.y(this.toKey(analytics)) + this.y.bandwidth() / 2)
         .attr('y2', d => this.y(this.toKey(analytics)) + this.y.bandwidth() / 2)
         .attr('stroke', d => this.colorMap[d.phenophase])
@@ -211,8 +231,11 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         .enter()
         .append('rect')
         .attr('height', this.y.bandwidth())
-        .attr('width', d => this.x(d.quantile_75) - this.x(d.quantile_25))
-        .attr('x', d => this.x(d.quantile_25))
+        .attr(
+          'width',
+          d => this.x(this.toX(analytics.year, d.quantile_75)) - this.x(this.toX(analytics.year, d.quantile_25))
+        )
+        .attr('x', d => this.x(this.toX(analytics.year, d.quantile_25)))
         .attr('y', d => this.y(this.toKey(analytics)))
         .attr('fill', d => this.colorMap[d.phenophase])
         .style('opacity', 0.7)
@@ -254,24 +277,24 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
       this.drawVerticalLines(
         '.median',
         analytics,
-        d => this.x(d.median),
-        d => this.x(d.median),
+        d => this.x(this.toX(analytics.year, d.median)),
+        d => this.x(this.toX(analytics.year, d.median)),
         d => this.colorMap[d.phenophase]
       );
 
       this.drawVerticalLines(
         '.whiskersMin',
         analytics,
-        d => this.x(d.min),
-        d => this.x(d.min),
+        d => this.x(this.toX(analytics.year, d.min)),
+        d => this.x(this.toX(analytics.year, d.min)),
         d => this.colorMap[d.phenophase]
       );
 
       this.drawVerticalLines(
         '.whiskersMax',
         analytics,
-        d => this.x(d.max),
-        d => this.x(d.max),
+        d => this.x(this.toX(analytics.year, d.max)),
+        d => this.x(this.toX(analytics.year, d.max)),
         d => this.colorMap[d.phenophase]
       );
     });
@@ -279,11 +302,22 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     const axisLeft = d3Axis.axisLeft(this.y).tickFormat(t => this.translateLeftAxisTick(t.toString()));
     this.g.append('g').call(axisLeft);
 
+    const tickYear = this.year !== allYear.value ? this.year : new Date().getFullYear();
+    const xTicks = d3Time
+      .timeMonths(new Date(tickYear - 1, 11, 1), new Date(tickYear + 1, 0, 31))
+      .map(d => this.toX(tickYear, d));
+
     const axisBottom = d3Axis.axisBottom(this.x);
     this.g
       .append('g')
       .attr('transform', 'translate(' + 0 + ',' + this.height + ')')
-      .call(axisBottom);
+      .call(
+        axisBottom.tickValues(xTicks).tickFormat(t =>
+          moment()
+            .dayOfYear(+t)
+            .format('MMMM')
+        )
+      );
   }
 
   private drawVerticalLines(
@@ -312,6 +346,21 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
       return this.translateService.instant(input.split('-')[1]);
     } else {
       return this.translateService.instant(input);
+    }
+  }
+
+  private toX(year: number, value: Date) {
+    const m = moment(value);
+    const lastDateOfAnalytics = moment({ year: year }).endOf('year');
+
+    if (m.year() - lastDateOfAnalytics.year() < 0) {
+      // date lies in the past year or beyond
+      return m.dayOfYear() - lastDateOfAnalytics.dayOfYear() + 1;
+    } else if (m.year() - lastDateOfAnalytics.year() > 0) {
+      // date lies in the next year
+      return m.dayOfYear() + lastDateOfAnalytics.dayOfYear();
+    } else {
+      return m.dayOfYear();
     }
   }
 }
