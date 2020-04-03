@@ -29,7 +29,6 @@
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
       <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
         <h3 translate>OBJEKT ERFASSEN</h3>
-        <img *ngIf="fileToUploadBase64" [src]="fileToUploadBase64" height="200" />
       </div>
       <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
         <form id="createForm" [formGroup]="createForm" (ngSubmit)="onSubmit()" *ngIf="detailSubject | async">
@@ -83,9 +82,13 @@
               id="fotos"
               placeholder="{{ 'Foto vom Objekt hinzufügen' | translate }}"
               type="text"
+              value="{{ fileToUpload?.name }}"
               readonly="true"
             />
             <mat-icon class="add-image" matSuffix color="primary" (click)="fileInput.click()">add_circle</mat-icon>
+            <mat-icon *ngIf="fileToUpload" class="add-image" matSuffix color="warn" (click)="removeUploadedFile()"
+              >delete</mat-icon
+            >
             <input
               hidden
               (change)="onFileSelected($event.target.files)"

@@ -43,10 +43,9 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
   };
 
   geopos: google.maps.LatLngLiteral = this.center;
-  altitude: number = 0;
+  altitude = 0;
 
   fileToUpload: File = null;
-  fileToUploadBase64 = null;
 
   imageUrl: Observable<string>;
 
@@ -160,19 +159,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
   }
 
   onFileSelected(files: FileList) {
-    this.updateUploadedImagePreview(files);
-
     this.fileToUpload = files.item(0);
-  }
-
-  updateUploadedImagePreview(files: FileList) {
-    const readerBase64 = new FileReader();
-
-    readerBase64.onload = () => {
-      this.fileToUploadBase64 = readerBase64.result;
-    };
-
-    readerBase64.readAsDataURL(files.item(0));
   }
 
   private uploadImage(individual: Individual, file: File) {
@@ -181,6 +168,10 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
     ref
       .put(file, { contentType: file.type })
       .then(() => this.router.navigate(['individuals', this.toIndividualId(individual)]));
+  }
+
+  removeUploadedFile() {
+    this.fileToUpload = null;
   }
 
   private toIndividualId(individual: Individual): string {
