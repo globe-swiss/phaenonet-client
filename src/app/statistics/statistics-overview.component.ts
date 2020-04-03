@@ -302,7 +302,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     const axisLeft = d3Axis.axisLeft(this.y).tickFormat(t => this.translateLeftAxisTick(t.toString()));
     this.g.append('g').call(axisLeft);
 
-    const tickYear = this.year !== allYear.value ? this.year : new Date().getFullYear();
+    const tickYear = new Date().getFullYear();
     const xTicks = d3Time
       .timeMonths(new Date(tickYear - 1, 11, 1), new Date(tickYear + 1, 0, 31))
       .map(d => this.toX(tickYear, d));
