@@ -89,7 +89,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     if (this.isLoggedIn()) {
       return 'Willkommen';
     } else {
-      return 'Registrieren Sie sich für PhaenoNet';
+      return 'Jetzt registrieren!';
     }
   }
 
