@@ -12,7 +12,7 @@ test:
     - npm ci
     - npx ng build
 
-deploy-phaenonet:
+deploy-phaenonet-test:
   image: node:13-alpine
   stage: deploy
   environment:
@@ -25,7 +25,7 @@ deploy-phaenonet:
   only:
     - master
 
-deploy-phaenonet-test:
+deploy-phaenonet:
   image: node:13-alpine
   stage: deploy
   environment:
@@ -36,4 +36,5 @@ deploy-phaenonet-test:
     - npx ng build --prod
     - npx firebase --project phaenonet --token "$FIREBASE_TOKEN" deploy
   only:
-    - manual
+    - master
+  when: manual
