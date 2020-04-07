@@ -10,7 +10,7 @@ stdenv.mkDerivation {
   name = "medics";
   nativeBuildInputs = [
     python37Full
-    unstable.nodePackages."@angular/cli"
+    nodejs-12_x
   ];
   buildInputs = [
   ];  
