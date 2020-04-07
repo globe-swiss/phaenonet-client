@@ -12,7 +12,7 @@ test:
     - npm ci
     - npx ng build
 
-deploy:
+deploy-phaenonet:
   image: node:13-alpine
   stage: deploy
   environment:
@@ -21,6 +21,19 @@ deploy:
     - apk add --no-cache python3 make g++
     - npm ci
     - npx ng build
-    - npx firebase --project phaenonet --token "$FIREBASE_TOKEN" deploy
+    - npx firebase --project phaenonet-test --token "$FIREBASE_TOKEN" deploy
   only:
     - master
+
+deploy-phaenonet-test:
+  image: node:13-alpine
+  stage: deploy
+  environment:
+    name: test
+  script:
+    - apk add --no-cache python3 make g++
+    - npm ci
+    - npx ng build --prod
+    - npx firebase --project phaenonet --token "$FIREBASE_TOKEN" deploy
+  only:
+    - manual
