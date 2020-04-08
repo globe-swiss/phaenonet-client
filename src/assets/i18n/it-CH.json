@@ -25,7 +25,7 @@
   "Foto": "Foto",
   "Exposition": "Esposizione",
   "Hangneigung": "Pendenza",
-  "Schatten": "Ombra",
+  "Schatten": "Ombraggiatura",
   "Bewässerung": "Irrigazione",
   "Distanz zu Gebäude / Strasse": "Distanza dall'edificio/strada",
   "Habitat": "Habitat",
@@ -275,5 +275,6 @@
   "Entwicklung der Blüte": "Sviluppo del fiore",
   "Triebentwicklung": "Sviluppo dei germogli",
   "Nadelverfärbung an einem südlichen Ast, 4 Langtriebe": "Colorazione di 4 germogli lunghi posizionati anteriormente su un ramo orientato a sud",
-  "Nadelfall": "Caduta degli aghi"
+  "Nadelfall": "Caduta degli aghi",
+  "Abbrechen": "Cancellare"
 }
