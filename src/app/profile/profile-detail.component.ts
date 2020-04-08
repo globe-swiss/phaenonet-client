@@ -101,6 +101,22 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
           combineLatest(
             individuals
               .filter(i => this.isOwner() || i.last_observation_date !== undefined)
+              .sort((l, r) => {
+                const l_hasnt_last_obs = l.last_observation_date ? false : true;
+                const r_hasnt_last_obs = r.last_observation_date ? false : true;
+
+                if (l_hasnt_last_obs && r_hasnt_last_obs) {
+                  return 0;
+                }
+                if (l_hasnt_last_obs) {
+                  return -1;
+                }
+                if (r_hasnt_last_obs) {
+                  return 1;
+                } else {
+                  return (r.last_observation_date as any).toMillis() - (l.last_observation_date as any).toMillis();
+                }
+              })
               .slice(0, limit)
               .map(individual => {
                 return combineLatest(
@@ -177,7 +193,7 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
   }
 
   showMoreIndividuals() {
-    this.limitIndividuals.next(100);
+    this.limitIndividuals.next(1000);
   }
 
   follow(): void {

@@ -84,6 +84,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
   isLoggedIn: boolean;
 
   staticComments = {};
+  year: number;
 
   constructor(
     private navService: NavService,
@@ -134,6 +135,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
       );
 
       this.owner = detail.user;
+      this.year = detail.year;
 
       this.species = this.masterdataService.getSpeciesValue(detail.species);
       this.description = this.masterdataService.getDescriptionValue(detail.description);
@@ -262,7 +264,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
   }
 
   isOwner(): boolean {
-    return this.authService.getUserId() === this.owner;
+    return this.authService.getUserId() === this.owner && this.year === new Date().getFullYear();
   }
 
   private updateLastObservation(individual: Individual, phenophase: Phenophase): void {
