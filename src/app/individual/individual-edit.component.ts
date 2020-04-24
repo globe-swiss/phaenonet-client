@@ -142,7 +142,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
   }
 
   onSubmit(): void {
-    this.detailSubject.subscribe(detail => {
+    this.detailSubject.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
       const individual: Individual = { ...detail, ...this.createForm.value, ...{ source: 'globe' } };
       individual.geopos = this.geopos;

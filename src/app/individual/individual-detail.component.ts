@@ -288,7 +288,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
         this.activityService.insert(activity);
       });
 
-      this.individualService.upsert(updateIndividual);
+      this.individualService.upsert(updateIndividual); // TODO check if this is already done by cloud functions
     }
   }
 }
