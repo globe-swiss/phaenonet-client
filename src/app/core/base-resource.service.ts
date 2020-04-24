@@ -1,6 +1,6 @@
 import { AngularFirestore } from '@angular/fire/firestore';
 import { from, identity, Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, first } from 'rxjs/operators';
 import { AlertService } from '../messaging/alert.service';
 import { BaseService } from './base.service';
 import { ResourceService } from './resource.service';
@@ -27,7 +27,7 @@ export abstract class BaseResourceService<T> extends BaseService implements Reso
         .collection<T>(this.collectionName)
         .doc<T>(id)
         .set(withoutDates, { merge: true })
-        .then(_ => this.get(id))
+        .then(_ => this.get(id).pipe(first()))
     ).pipe(mergeMap(identity));
   }
 
