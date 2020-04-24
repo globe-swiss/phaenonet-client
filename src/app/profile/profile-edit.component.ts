@@ -1,3 +1,4 @@
+import { first } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSelectChange } from '@angular/material';
@@ -48,7 +49,7 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
   }
 
   save() {
-    this.detailSubject.subscribe(detail => {
+    this.detailSubject.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
       const user: User = { ...detail, ...this.editForm.value };
 

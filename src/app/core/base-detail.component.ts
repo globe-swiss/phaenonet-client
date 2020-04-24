@@ -1,10 +1,10 @@
-import { OnInit } from '@angular/core';
+import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, of, ReplaySubject, throwError } from 'rxjs';
 import { flatMap, switchMap } from 'rxjs/operators';
 import { ResourceService } from './resource.service';
 
-export class BaseDetailComponent<T> implements OnInit {
+export class BaseDetailComponent<T> implements OnInit, OnDestroy {
   detailSubject: ReplaySubject<T> = new ReplaySubject<T>(1);
   detailId: string;
 
@@ -18,6 +18,10 @@ export class BaseDetailComponent<T> implements OnInit {
         })
       )
       .subscribe(this.detailSubject);
+  }
+
+  ngOnDestroy(): void {
+    this.detailSubject.unsubscribe();
   }
 
   getRouteParam(param: string): Observable<string> {
