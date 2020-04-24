@@ -11,6 +11,7 @@ export const environment = {
     projectId: 'phaenonet',
     storageBucket: 'phaenonet.appspot.com',
     messagingSenderId: '459982073530',
-    appId: '1:459982073530:web:0fecfe92d5a126508d5c83'
+    appId: '1:459982073530:web:0fecfe92d5a126508d5c83',
+    measurementId: 'G-PFGR5GJNE0'
   }
 };

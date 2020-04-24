@@ -7,6 +7,7 @@ export const environment = {
     projectId: 'phaenonet-test',
     storageBucket: 'phaenonet-test.appspot.com',
     messagingSenderId: '379498871574',
-    appId: '1:379498871574:web:6b33f0fa19cf8e38c3ee37'
+    appId: '1:379498871574:web:6b33f0fa19cf8e38c3ee37',
+    measurementId: 'G-G3YRJD9PZ1'
   }
 };
