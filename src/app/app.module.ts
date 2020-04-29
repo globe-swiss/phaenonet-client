@@ -14,7 +14,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { from, Observable } from 'rxjs';
-import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -46,7 +45,7 @@ registerLocaleData(localeIt, 'it');
         useClass: CustomTranslateLoader
       }
     }),
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
