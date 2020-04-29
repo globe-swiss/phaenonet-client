@@ -11,11 +11,20 @@
     <link rel="icon" type="image/png" href="assets/img/favicon/favicon-16x16.png" sizes="16x16" />
     <link rel="icon" type="image/png" href="assets/img/favicon/favicon-96x96.png" sizes="96x96" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <script
-      type="text/javascript"
-      language="javascript"
-      src="https://maps.google.com/maps/api/js?key=AIzaSyDwdUdw17on_8HiO1ByC5zdfcIbpM5y-go"
-    ></script>
+    <script>
+      let url = '__/firebase/init.json';
+          fetch(url).then(res => res.json()).then((out) => {
+          var script = document.createElement('script');
+          script.setAttribute( 'src', 'https://maps.google.com/maps/api/js?key=' + out['apiKey']);
+          document.head.appendChild(script);
+          })
+          .catch(err => { 
+            var script = document.createElement('script');
+            script.setAttribute( 'src', 'https://maps.google.com/maps/api/js');
+            document.head.appendChild(script);
+           });
+          
+    </script>
   </head>
   <body class="mat-typography" id="phaenonet-body">
     <app-root></app-root>
