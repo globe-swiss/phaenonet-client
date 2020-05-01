@@ -56,6 +56,13 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "local": {
+              "assets": [
+                "src/favicon.ico",
+                "src/assets",
+                { "glob": "init.json", "input": "src/local/", "output": "/__/firebase/"}
+              ]
             }
           }
         },
@@ -67,6 +74,9 @@
           "configurations": {
             "production": {
               "browserTarget": "phaenonet:build:production"
+            },
+            "local": {
+              "browserTarget": "phaenonet:build:local"
             }
           }
         },
