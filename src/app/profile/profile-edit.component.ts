@@ -41,7 +41,7 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.navService.setLocation('Profil');
+    this.navService.setLocation('Profil bearbeiten');
 
     this.detailSubject.subscribe(detail => {
       this.editForm.reset(detail);

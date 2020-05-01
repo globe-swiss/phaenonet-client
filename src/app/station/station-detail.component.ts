@@ -72,7 +72,7 @@ export class StationDetailComponent extends BaseIndividualDetailComponent implem
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.navService.setLocation('Objekt');
+    this.navService.setLocation('Messstation');
 
     this.isLoggedIn = this.authService.isLoggedIn();
 

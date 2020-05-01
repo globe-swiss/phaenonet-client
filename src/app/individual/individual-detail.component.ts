@@ -105,7 +105,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.navService.setLocation('Station');
+    this.navService.setLocation('Objekt');
 
     this.isLoggedIn = this.authService.isLoggedIn();
 
