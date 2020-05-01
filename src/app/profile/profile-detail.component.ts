@@ -210,7 +210,7 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
       .unfollowUser(this.detailId)
       .pipe(first())
       .subscribe(_ => {
-        this.alertService.infoMessage('Aktivitäten gekündigt', 'Sie erhalten keine Aktivitäten mehr dieses Benutzers.');
+        this.alertService.infoMessage('Aktivitäten gekündigt', 'Sie erhalten keine Aktivitäten mehr zu diesem Benutzer.');
       });
   }
 

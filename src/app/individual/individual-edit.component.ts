@@ -85,7 +85,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.navService.setLocation('Objekt');
+    this.navService.setLocation('Objekt bearbeiten');
 
     window.scrollTo(0, 0);
 
