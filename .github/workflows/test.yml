@@ -1,6 +1,6 @@
 # Test build and deploy workflow
 
-name: CI
+name: CI Build and Deploy Test
 
 on:
   push:

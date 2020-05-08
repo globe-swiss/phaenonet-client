@@ -1,0 +1,24 @@
+# Build PRs to master
+
+name: CI PRs
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build
+        run: npx ng build
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: dist-pr-build
+          path: dist
