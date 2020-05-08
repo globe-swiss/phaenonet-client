@@ -1,6 +1,8 @@
 # run locally
 
-`ng serve`
+Make sure `init.json` credential file for local development is placed in the `src/local/` folder.
+
+`ng serve --configuration=local`
 
 `localhost:4200`
 
