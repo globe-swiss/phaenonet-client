@@ -1,3 +1,4 @@
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { Individual } from './../individual/individual';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -37,7 +38,8 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
     private activityService: ActivityService,
     public dialog: MatDialog,
     private authService: AuthService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private analytics: AngularFireAnalytics,
   ) {
     super(publicUserService, route);
   }
@@ -147,6 +149,8 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
         switchMap(limit => this.activityService.listByUser(this.detailId, limit).pipe(take(1)))
       );
     });
+
+    this.analytics.logEvent('profile.view');
   }
 
   protected getDetailId(): Observable<string> {
@@ -190,10 +194,12 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
    */
   showAllActivities() {
     this.limitActivities.next(1000);
+    this.analytics.logEvent('profile.show-more-activities');
   }
 
   showMoreIndividuals() {
     this.limitIndividuals.next(1000);
+    this.analytics.logEvent('profile.show-more-individuals');
   }
 
   follow(): void {
@@ -203,6 +209,8 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
       .subscribe(_ => {
         this.alertService.infoMessage('Aktivitäten abonniert', 'Sie haben die Aktivitäten des Benutzers abonniert.');
       });
+
+      this.analytics.logEvent('follow-user');
   }
 
   unfollow(): void {
@@ -212,6 +220,8 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
       .subscribe(_ => {
         this.alertService.infoMessage('Aktivitäten gekündigt', 'Sie erhalten keine Aktivitäten mehr zu diesem Benutzer.');
       });
+
+      this.analytics.logEvent('unfollow-user');
   }
 
   logout() {

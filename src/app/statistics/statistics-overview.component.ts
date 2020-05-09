@@ -1,3 +1,4 @@
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 import {
   AfterViewInit,
   Component,
@@ -98,7 +99,8 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     private navService: NavService,
     private statisticsService: StatisticsService,
     private masterdataService: MasterdataService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private analytics: AngularFireAnalytics,
   ) {}
 
   availablePhenophases: Observable<Phenophase[]>;
@@ -118,6 +120,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
       .getSpecies()
       .pipe(map(species => [allSpecies].concat(species)))
       .subscribe(this.species);
+      this.analytics.logEvent('statistics.view');
   }
 
   ngAfterViewInit(): void {
@@ -148,6 +151,16 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
             this.filterForm.controls.analyticsType.setValue(this.analyticsTypes[0], { emitEvent: false });
           }
 
+          // only report an event if filter is not the default
+          if (this.year !== new Date().getFullYear() || datasource !== 'all' || species !== 'all') {
+            this.analytics.logEvent('statistics.filter', {
+              year: this.year,
+              source: datasource,
+              species: species,
+              type: analyticsType,
+              current: this.year === new Date().getFullYear()
+            });
+          }
           return this.statisticsService.listByYear(year, analyticsType, datasource, species);
         }),
         map(results => {

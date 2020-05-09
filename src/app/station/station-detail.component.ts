@@ -22,6 +22,8 @@ import { ObservationService } from '../observation/observation.service';
 import { PhenophaseObservation } from './phenophase-observation';
 import { SpeciesPhenophaseObservations } from './species-phenophase-observations';
 import { BaseIndividualDetailComponent } from '../individual/base-individual-detail.component';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { Species } from '../masterdata/species';
 
 @Component({
   templateUrl: './station-detail.component.html',
@@ -65,7 +67,8 @@ export class StationDetailComponent extends BaseIndividualDetailComponent implem
     protected userService: UserService,
     public dialog: MatDialog,
     private authService: AuthService,
-    protected alertService: AlertService
+    protected alertService: AlertService,
+    private analytics: AngularFireAnalytics,
   ) {
     super(route, individualService, userService, alertService);
   }
@@ -133,6 +136,11 @@ export class StationDetailComponent extends BaseIndividualDetailComponent implem
         draggable: false,
         icon: this.masterdataService.individualToIcon(detail)
       } as google.maps.MarkerOptions);
+
+      this.analytics.logEvent('station.view', {
+        current: detail.year === new Date().getFullYear(),
+        year: detail.year
+      });
     });
   }
 }

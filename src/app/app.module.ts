@@ -8,7 +8,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
-import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
+import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService, DEBUG_MODE } from '@angular/fire/analytics';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -57,7 +57,8 @@ registerLocaleData(localeIt, 'it');
   providers: [
     httpInterceptorProviders,
     ScreenTrackingService,
-    UserTrackingService
+    UserTrackingService,
+    // { provide: DEBUG_MODE, useValue: true }
   ],
   bootstrap: [AppComponent]
 })
