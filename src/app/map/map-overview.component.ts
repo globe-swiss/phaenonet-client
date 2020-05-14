@@ -3,6 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, share, startWith, switchMap, first } from 'rxjs/operators';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
+
 import { formatShortDate } from '../core/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
@@ -78,7 +80,8 @@ export class MapOverviewComponent implements OnInit {
     private navService: NavService,
     private individualService: IndividualService,
     private masterDataService: MasterdataService,
-    private authService: AuthService
+    private authService: AuthService,
+    private analytics: AngularFireAnalytics,
   ) {
     this.colorMap = masterDataService.colorMap;
   }
@@ -99,6 +102,16 @@ export class MapOverviewComponent implements OnInit {
         const year = +form.year;
         const datasource: SourceType = form.datasource;
         const species = form.species;
+
+        // only report an event if filter is not the default
+        if (year !== new Date().getFullYear() || datasource !== 'all' || species !== 'ALL') {
+          this.analytics.logEvent('map.filter', {
+            year: year,
+            source: datasource,
+            species: species,
+            current: year === new Date().getFullYear()
+          });
+        }
         return this.individualService.listByYear(year).pipe(
           map(individuals => {
             if (datasource === 'meteoswiss') {
@@ -126,6 +139,8 @@ export class MapOverviewComponent implements OnInit {
       }),
       share()
     );
+
+    this.analytics.logEvent('map.view');
   }
 
   openInfoWindow(marker: MapMarker, pos: google.maps.LatLngLiteral, individual: Individual & IdLike) {
@@ -162,5 +177,12 @@ export class MapOverviewComponent implements OnInit {
     }
 
     this.infoWindow.open(marker);
+
+    this.analytics.logEvent('map.click-pin', {
+      id: individual.id,
+      individual: individual.individual,
+      year: individual.year,
+      source: individual.source
+    });
   }
 }

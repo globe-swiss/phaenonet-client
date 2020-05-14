@@ -1,3 +1,4 @@
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -98,7 +99,8 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
     private activityService: ActivityService,
     public dialog: MatDialog,
     private authService: AuthService,
-    protected alertService: AlertService
+    protected alertService: AlertService,
+    private analytics: AngularFireAnalytics,
   ) {
     super(route, individualService, userService, alertService);
   }
@@ -211,6 +213,13 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
         draggable: false,
         icon: this.masterdataService.individualToIcon(detail)
       } as google.maps.MarkerOptions);
+
+      this.analytics.logEvent('individual.view', {
+        own: this.authService.getUserId() === detail.user,
+        current: detail.year === new Date().getFullYear(),
+        year: detail.year,
+        species: detail.species
+      });
     });
   }
 
@@ -257,6 +266,12 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
               .subscribe(_ => {
                 this.updateLastObservation(detail, result.phenophase);
               });
+
+            this.analytics.logEvent('observation.edit', {
+              action: (observation.created ? 'modify' : 'create'),
+              species: detail.species,
+              phenophase: result.phenophase.id,
+            });
           });
         });
       }

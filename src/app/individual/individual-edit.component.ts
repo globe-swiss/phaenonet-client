@@ -1,3 +1,4 @@
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MapInfoWindow } from '@angular/google-maps';
@@ -59,6 +60,8 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
   selectableDistances: Observable<Distance[]>;
   selectableIrrigations: Observable<Irrigation[]>;
 
+  private createNewIndividual: boolean;
+
   createForm = new FormGroup({
     species: new FormControl(''),
     name: new FormControl(''),
@@ -78,14 +81,23 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
     protected route: ActivatedRoute,
     private individualService: IndividualService,
     private masterdataService: MasterdataService,
-    private afStorage: AngularFireStorage
+    private afStorage: AngularFireStorage,
+    private analytics: AngularFireAnalytics
   ) {
     super(individualService, route);
   }
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.navService.setLocation('Objekt bearbeiten');
+    if (this.route.snapshot.params.id === 'new') {
+      this.navService.setLocation('Objekt erfassen');
+      this.analytics.logEvent('individual-create.view');
+      this.createNewIndividual = true;
+    } else {
+      this.navService.setLocation('Objekt bearbeiten');
+      this.analytics.logEvent('individual-modify.view');
+      this.createNewIndividual = false;
+    }
 
     window.scrollTo(0, 0);
 
@@ -156,6 +168,11 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
         }
       });
     });
+    if (this.createNewIndividual) {
+      this.analytics.logEvent('individual-create.submit');
+    } else {
+      this.analytics.logEvent('individual-modify.submit');
+    }
   }
 
   onFileSelected(files: FileList) {
@@ -168,6 +185,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
     ref
       .put(file, { contentType: file.type })
       .then(() => this.router.navigate(['individuals', this.toIndividualId(individual)]));
+      this.analytics.logEvent('individual.upload-image');
   }
 
   removeUploadedFile() {
@@ -186,5 +204,6 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
         );
       });
     }
+    this.analytics.logEvent('individual.locate-me');
   }
 }
