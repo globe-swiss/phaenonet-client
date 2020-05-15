@@ -121,6 +121,14 @@
                     (click)="editPhenophaseDate(item)"
                     >edit</mat-icon
                   >
+                  <mat-icon
+                  *ngIf="isOwner() && item.observation.isSome()"
+                  matSuffix
+                  color="warn"
+                  class="edit-phenophase"
+                  (click)="deletePhenophaseDate(item)"
+                  >delete</mat-icon
+                >
                 </mat-form-field>
                 <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment">
                   {{ 'Kommentar' }}: {{ staticComments[item.observation.toNullable()?.comment] | translate }}

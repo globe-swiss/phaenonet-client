@@ -15,6 +15,7 @@ import { GravatarModule } from 'ngx-gravatar';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { DisableNotOwnerDirective } from '../auth/disable-not-owner.directive';
 import { CopyClipboardDirective } from './copy-clipboard.directive';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 /**
  * The `SharedModule` is used to group common services and modules like {@link TranslateModule}.
@@ -36,7 +37,8 @@ import { CopyClipboardDirective } from './copy-clipboard.directive';
     DisableNotAuthorizedDirective,
     DisableNotOwnerDirective,
     NotFoundComponent,
-    CopyClipboardDirective
+    CopyClipboardDirective,
+    ConfirmationDialogComponent
   ],
   exports: [
     CommonModule,

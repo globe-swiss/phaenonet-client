@@ -37,4 +37,12 @@ export abstract class BaseResourceService<T> extends BaseService implements Reso
       .doc<T>(id)
       .valueChanges();
   }
+
+  /**
+   * Deletes an document from this collection.
+   * @param id the id of the document to be deleted
+   */
+  delete(id: string): Promise<void> {
+    return this.afs.collection<T>(this.collectionName).doc<T>(id).delete();
+  }
 }

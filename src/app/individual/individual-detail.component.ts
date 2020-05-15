@@ -1,3 +1,4 @@
+import { IdLike } from './../masterdata/masterdata-like';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -36,6 +37,7 @@ import { BaseIndividualDetailComponent } from './base-individual-detail.componen
 import { Individual } from './individual';
 import { IndividualService } from './individual.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
+import { ConfirmationDialogComponent, ConfirmationDialogData } from '../shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   templateUrl: './individual-detail.component.html',
@@ -268,12 +270,33 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
               });
 
             this.analytics.logEvent('observation.edit', {
-              action: (observation.created ? 'modify' : 'create'),
+              action: observation.created ? 'modify' : 'create',
               species: detail.species,
               phenophase: result.phenophase.id,
             });
           });
         });
+      }
+    });
+  }
+
+  deletePhenophaseDate(phenophaseObservation: PhenophaseObservation): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '615px',
+      data: {
+        title: 'Confirm delete observation',
+        content: 'Really delete the selected observation?',
+        yes: 'Delete',
+        no: 'Cancel',
+        yesColor: 'warn'
+      } as ConfirmationDialogData
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result && phenophaseObservation.observation.isSome()) {
+        this.observationService
+          .delete((<IdLike>(<unknown>phenophaseObservation.observation.getOrElse({} as Observation))).id)
+          .then(() => this.analytics.logEvent('observation.delete'));
       }
     });
   }
