@@ -1,3 +1,4 @@
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -37,13 +38,17 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     private alertService: AlertService,
     private router: Router,
     private navService: NavService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private analytics: AngularFireAnalytics,
   ) {}
 
   ngOnInit(): void {
     const equalValidator = equalValidation('password', 'passwordConfirm', 'passwordMissmatch');
     this.registerForm.setValidators(equalValidator);
     this.registerForm.updateValueAndValidity();
+    if (this.showRegisterForm()) {
+      this.analytics.logEvent('register.view');
+    }
   }
 
   ngAfterViewChecked(): void {
@@ -69,6 +74,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
             'Sie haben sich erfolgreich bei PhaenoNet registriert.'
           );
           this.router.navigateByUrl('/');
+          this.analytics.logEvent('register.submit');
         }
       });
   }
