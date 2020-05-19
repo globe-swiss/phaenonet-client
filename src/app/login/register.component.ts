@@ -73,8 +73,8 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
             'Registration erfolgreich',
             'Sie haben sich erfolgreich bei PhaenoNet registriert.'
           );
-          this.router.navigateByUrl('/');
           this.analytics.logEvent('register.submit');
+          this.router.navigateByUrl('/');
         }
       });
   }
