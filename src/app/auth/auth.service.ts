@@ -124,7 +124,6 @@ export class AuthService extends BaseService {
     lastname: string,
     locale: string
   ): Observable<User> {
-    const createDateTime = new Date();
     this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
       .then(firebaseResult => {
@@ -139,8 +138,6 @@ export class AuthService extends BaseService {
             firstname: firstname,
             lastname: lastname,
             locale: locale,
-            create_dt: createDateTime,
-            modify_dt: createDateTime
           })
           .then(_ => this.handleUserLogin(firebaseResult));
       })
