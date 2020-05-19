@@ -58,7 +58,7 @@ registerLocaleData(localeIt, 'it');
     httpInterceptorProviders,
     ScreenTrackingService,
     UserTrackingService,
-    { provide: DEBUG_MODE, useValue: true }
+    // { provide: DEBUG_MODE, useValue: true }
   ],
   bootstrap: [AppComponent]
 })
