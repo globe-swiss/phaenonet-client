@@ -1,9 +1,8 @@
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { AfterViewChecked, Component, OnInit, OnDestroy } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, of, Subscription } from 'rxjs';
-import { debounceTime, map, switchMap, take, takeWhile, single } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
 import { NavService } from '../core/nav/nav.service';
