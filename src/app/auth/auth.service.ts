@@ -1,12 +1,12 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User as FUser } from 'firebase/app';
 import { none, Option, some } from 'fp-ts/lib/Option';
-import { from, Observable, of, identity } from 'rxjs';
-import { switchMap, map, mergeMap, mergeAll, switchAll, first, take } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import { switchMap, mergeAll, switchAll, take } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
@@ -124,7 +124,6 @@ export class AuthService extends BaseService {
     lastname: string,
     locale: string
   ): Observable<User> {
-    const createDateTime = new Date();
     this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
       .then(firebaseResult => {
@@ -139,8 +138,6 @@ export class AuthService extends BaseService {
             firstname: firstname,
             lastname: lastname,
             locale: locale,
-            create_dt: createDateTime,
-            modify_dt: createDateTime
           })
           .then(_ => this.handleUserLogin(firebaseResult));
       })

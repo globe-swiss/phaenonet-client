@@ -1,9 +1,8 @@
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup } from '@angular/forms';
+import { AfterViewChecked, Component, OnInit, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { debounceTime, map, switchMap, take } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
 import { NavService } from '../core/nav/nav.service';
@@ -17,7 +16,7 @@ import { PublicUserService } from '../open/public-user.service';
   selector: 'app-register',
   templateUrl: './register.component.html'
 })
-export class RegisterComponent implements OnInit, AfterViewChecked {
+export class RegisterComponent implements OnInit, OnDestroy, AfterViewChecked {
   registerForm = new FormGroup({
     nickname: new FormControl('', { asyncValidators: this.publicUserService.uniqueNicknameValidator() }),
     firstname: new FormControl(''),
@@ -31,6 +30,8 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
   registerFailed = false;
 
   user: User;
+
+  private subscription: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -46,9 +47,24 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     const equalValidator = equalValidation('password', 'passwordConfirm', 'passwordMissmatch');
     this.registerForm.setValidators(equalValidator);
     this.registerForm.updateValueAndValidity();
+    this.subscription = this.authService.user.subscribe(user => {
+      if (user) {
+        this.user = user;
+        this.alertService.infoMessage(
+          'Registration erfolgreich',
+          'Sie haben sich erfolgreich bei PhaenoNet registriert.'
+        );
+        this.analytics.logEvent('register.submit');
+        this.router.navigateByUrl('/');
+      }
+    });
     if (this.showRegisterForm()) {
       this.analytics.logEvent('register.view');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   ngAfterViewChecked(): void {
@@ -65,18 +81,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
         this.registerForm.controls.firstname.value,
         this.registerForm.controls.lastname.value,
         this.registerForm.controls.locale.value
-      )
-      .subscribe(user => {
-        if (user) {
-          this.user = user;
-          this.alertService.infoMessage(
-            'Registration erfolgreich',
-            'Sie haben sich erfolgreich bei PhaenoNet registriert.'
-          );
-          this.analytics.logEvent('register.submit');
-          this.router.navigateByUrl('/');
-        }
-      });
+      );
   }
 
   showRegisterForm(): boolean {
