@@ -96,13 +96,11 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
       }
 
       // combine the list of individuals with their phenophase
-      // if the profile is of a foreign user, display only those with an observation
       this.latestIndividualObservations = combineLatest(
         [this.limitIndividuals, this.individualService.listByUser(this.detailId)],
         (limit, individuals) =>
           combineLatest(
             individuals
-              .filter(i => this.isOwner() || i.last_observation_date !== undefined)
               .sort((l, r) => {
                 const l_hasnt_last_obs = l.last_observation_date ? false : true;
                 const r_hasnt_last_obs = r.last_observation_date ? false : true;
