@@ -1,5 +1,12 @@
 {
-  "login-unknown-failure": "Der Benutzername oder das Passwort ist falsch.",
+  "auth/user-not-found.title":"Anmeldung fehlgeschlagen",
+  "auth/user-not-found.message": "Der Benutzername oder das Passwort ist falsch.",
+  "auth/wrong-password.title":"Anmeldung fehlgeschlagen",
+  "auth/wrong-password.message":"Der Benutzername oder das Passwort ist falsch.",
+  "auth/invalid-email.title":"Ungültige Email Adresse",
+  "auth/invalid-email.message":"Die eingegebene Email Adresse ist keine gültige Email Adresse.",
+  "auth/email-already-in-use.title":"Email bereits verwendet",
+  "auth/email-already-in-use.message":"Die Email Adresse wird bereits verwendet.",
   "all": "Alle",
   "globe": "PhaenoNet",
   "meteoswiss": "MeteoSchweiz",

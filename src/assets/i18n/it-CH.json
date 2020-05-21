@@ -1,4 +1,12 @@
 {
+  "auth/user-not-found.title":"Registrazione fallita",
+  "auth/user-not-found.message": "Il nome utente o password non sono corretti.",
+  "auth/wrong-password.title":"Registrazione fallita",
+  "auth/wrong-password.message":"Il nome utente o password non sono corretti.",
+  "auth/invalid-email.title":"auth/invalid-email.title.it",
+  "auth/invalid-email.message":"auth/invalid-email.message.it",
+  "auth/email-already-in-use.title":"auth/email-already-in-use.title.it",
+  "auth/email-already-in-use.message":"auth/email-already-in-use.message.it",
   "Profil": "Profilo",
   "Karte": "Carta",
   "Auswertung": "Risultati",
@@ -8,7 +16,6 @@
   "Beobachtung hinzufügen":"Aggiungi un'osservazione",
   "Die Passwörter stimmen nicht überein.":"Le password non corrispondono.",
   "Das Passwort muss mindestens 6 Zeichen lang sein.": "La password deve essere composta da almeno 6 caratteri.",
-  "login-unknown-failure": "Il nome utente o password non sono corretti.",
   "all": "Tutte",
   "Alle": "Tutte",
   "globe": "PhaenoNet",
@@ -292,6 +299,5 @@
   "Sie haben die Aktivitäten des Benutzers abonniert.":"Sei iscritto alle attività dell'utente.",
   "Sie erhalten keine Aktivitäten mehr zu diesem Benutzer.":"Non riceverai più alcuna attività per questo utente.",
   "Nickname":"Nome utente",
-  "Vervollständigen":"Completa",
-  "Anmeldung fehlgeschlagen":"Registrazione fallita"
+  "Vervollständigen":"Completa"
 }

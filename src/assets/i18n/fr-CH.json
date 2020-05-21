@@ -1,4 +1,12 @@
 {
+  "auth/user-not-found.title":"Échec de la connexion",
+  "auth/user-not-found.message": "Le nom d'utilisateur ou le mot de passe est incorrect.",
+  "auth/wrong-password.title":"Échec de la connexion",
+  "auth/wrong-password.message":"Le nom d'utilisateur ou le mot de passe est incorrect.",
+  "auth/invalid-email.title":"auth/invalid-email.title.fr",
+  "auth/invalid-email.message":"auth/invalid-email.message.fr",
+  "auth/email-already-in-use.title":"auth/email-already-in-use.title.fr",
+  "auth/email-already-in-use.message":"auth/email-already-in-use.message.fr",
   "Profil": "Profil",
   "Karte": "Carte",
   "Auswertung": "Résultats",
@@ -6,7 +14,6 @@
   "Objekt": "Objet",
   "Beobachtung hinzufügen":"Ajouter une observation",
   "Messstation":"Station de mesure",
-  "login-unknown-failure": "Le nom d'utilisateur ou le mot de passe est incorrect.",
   "all": "Toutes",
   "Alle": "Toutes",
   "globe": "PhaenoNet",
@@ -293,6 +300,5 @@
   "Sie haben die Aktivitäten des Benutzers abonniert.":"Vous êtes abonné-e aux activités de cet-te observateur-trice.",
   "Sie erhalten keine Aktivitäten mehr zu diesem Benutzer.":"Vous ne suivez plus les activités de cet-te observateur-trice.",
   "Nickname":"Pseudo",
-  "Vervollständigen":"Compléter",
-  "Anmeldung fehlgeschlagen":"Échec de la connexion"
+  "Vervollständigen":"Compléter"
 }
