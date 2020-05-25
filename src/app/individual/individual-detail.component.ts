@@ -293,10 +293,12 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
     });
 
     dialogRef.afterClosed().subscribe((result: boolean) => {
-      if (result && phenophaseObservation.observation.isSome()) {
-        this.observationService
-          .delete((<IdLike>(<unknown>phenophaseObservation.observation.getOrElse({} as Observation))).id)
-          .then(() => this.analytics.logEvent('observation.delete'));
+      if (result) {
+        phenophaseObservation.observation.map(po =>
+          this.observationService
+            .delete((<IdLike><unknown>po).id)
+            .then(() => this.analytics.logEvent('observation.delete'))
+        );
       }
     });
   }
