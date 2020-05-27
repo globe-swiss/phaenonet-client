@@ -11,6 +11,7 @@ import { ObservationModule } from '../observation/observation.module';
 import { ActivityModule } from '../activity/activity.module';
 import { OpenModule } from '../open/open.module';
 import { StorageModule } from '../core/storage/storage.module';
+import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   imports: [
@@ -25,6 +26,6 @@ import { StorageModule } from '../core/storage/storage.module';
   declarations: [IndividualEditComponent, IndividualDetailComponent, PhenophaseDialogComponent],
   providers: [IndividualService],
   exports: [],
-  entryComponents: [PhenophaseDialogComponent]
+  entryComponents: [PhenophaseDialogComponent, ConfirmationDialogComponent]
 })
 export class IndividualModule {}
