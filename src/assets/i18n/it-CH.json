@@ -291,7 +291,7 @@
   "Triebentwicklung": "Sviluppo dei germogli",
   "Nadelverfärbung an einem südlichen Ast, 4 Langtriebe": "Colorazione di 4 germogli lunghi posizionati anteriormente su un ramo orientato a sud",
   "Nadelfall": "Caduta degli aghi",
-  "Abbrechen": "Cancellare",
+  "Abbrechen": "Annulla",
   "Öffentliches Profil von":"Profilo pubblico di",
   "Jetzt registrieren":"Registrati ora",
   "Profil-Link":"Link del profilo",
@@ -299,5 +299,9 @@
   "Sie haben die Aktivitäten des Benutzers abonniert.":"Sei iscritto alle attività dell'utente.",
   "Sie erhalten keine Aktivitäten mehr zu diesem Benutzer.":"Non riceverai più alcuna attività per questo utente.",
   "Nickname":"Nome utente",
-  "Vervollständigen":"Completa"
+  "Vervollständigen":"Completa",
+  "Anmeldung fehlgeschlagen":"Registrazione fallita",
+  "Löschen bestätigen":"Confermare la cancellazione",
+  "Möchten Sie diese Beobachtung wirklich löschen?":"Vuole davvero cancellare questa osservazione?",
+  "Löschen":"Cancella"
 }

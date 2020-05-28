@@ -300,5 +300,9 @@
   "Sie haben die Aktivitäten des Benutzers abonniert.":"Vous êtes abonné-e aux activités de cet-te observateur-trice.",
   "Sie erhalten keine Aktivitäten mehr zu diesem Benutzer.":"Vous ne suivez plus les activités de cet-te observateur-trice.",
   "Nickname":"Pseudo",
-  "Vervollständigen":"Compléter"
+  "Vervollständigen":"Compléter",
+  "Anmeldung fehlgeschlagen":"Échec de la connexion",
+  "Löschen bestätigen":"Confirmer la suppression",
+  "Möchten Sie diese Beobachtung wirklich löschen?":"Souhaitez-vous vraiment supprimer cette observation ?",
+  "Löschen":"Supprimer"
 }

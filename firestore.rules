@@ -76,6 +76,8 @@ service cloud.firestore {
                       && request.resource.data.phenophase == resource.data.phenophase
                       && request.resource.data.species == resource.data.species  
                     );
+      allow delete: if request.auth.uid == resource.data.user
+      							&& resource.data.year == phenoyear();
     }
 
     match /users/{user_id} {
