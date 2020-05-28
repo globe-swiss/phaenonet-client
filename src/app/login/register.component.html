@@ -23,6 +23,7 @@
               placeholder="{{ 'Nickname' | translate }}"
               minlength="3"
               required
+              autofocus
             />
             <mat-error *ngIf="registerForm.get('nickname').hasError('existingNickname')">
               {{ 'Dieser Nickname ist bereits vergeben.' | translate }}
@@ -57,10 +58,10 @@
               matInput
               type="text"
               formControlName="email"
-              autofocus
               id="email"
               placeholder="{{ 'E-Mail' | translate }}"
               required
+              email
             />
           </mat-form-field>
           <mat-form-field>

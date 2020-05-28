@@ -227,8 +227,8 @@ export class AuthService extends BaseService {
 
   private errorHandling(error: any) {
     this.alertService.alertMessage({
-      title: 'Anmeldung fehlgeschlagen',
-      message: 'login-unknown-failure',
+      title: error.code + '.title',
+      message: error.code + '.message',
       level: Level.ERROR,
       messageParams: {
         error: error
