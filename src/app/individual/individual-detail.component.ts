@@ -269,8 +269,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
                 this.updateLastObservation(detail, result.phenophase);
               });
 
-            this.analytics.logEvent('observation.edit', {
-              action: observation.created ? 'modify' : 'create',
+            this.analytics.logEvent(observation.created ? 'observation.modify' : 'observation.create', {
               species: detail.species,
               phenophase: result.phenophase.id,
             });
