@@ -63,6 +63,9 @@
               required
               email
             />
+            <mat-error *ngIf="registerForm.get('email').hasError">
+              {{ 'auth/invalid-email.message' | translate }}
+            </mat-error>
           </mat-form-field>
           <mat-form-field>
             <mat-label>{{ 'Passwort' | translate }} </mat-label>
