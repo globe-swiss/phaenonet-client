@@ -98,7 +98,6 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
     private masterdataService: MasterdataService,
     protected userService: UserService,
     private publicUserService: PublicUserService,
-    private activityService: ActivityService,
     public dialog: MatDialog,
     private authService: AuthService,
     protected alertService: AlertService,
@@ -312,20 +311,6 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
         ...individual,
         ...{ last_observation_date: this.lastObservation.date, last_phenophase: this.lastObservation.phenophase }
       };
-
-      this.individualCreatorNickname.pipe(first()).subscribe(creator => {
-        const activity: Activity = {
-          user: individual.user,
-          user_nickname: creator,
-          date: new Date(),
-          individual: individual.individual,
-          individual_id: this.detailId,
-          text: phenophase.name_de,
-          name: individual.name
-        };
-
-        this.activityService.insert(activity);
-      });
 
       this.individualService.upsert(updateIndividual); // TODO check if this is already done by cloud functions
     }

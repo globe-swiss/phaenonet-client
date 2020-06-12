@@ -304,5 +304,9 @@
   "Anmeldung fehlgeschlagen":"Échec de la connexion",
   "Löschen bestätigen":"Confirmer la suppression",
   "Möchten Sie diese Beobachtung wirklich löschen?":"Souhaitez-vous vraiment supprimer cette observation ?",
-  "Löschen":"Supprimer"
+  "Löschen":"Supprimer",
+
+  "activity.action.create": "ajouté",
+  "activity.action.modify": "modifié",
+  "activity.action.delete": "supprimé"
 }

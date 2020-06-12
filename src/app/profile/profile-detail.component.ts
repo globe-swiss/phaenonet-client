@@ -1,8 +1,7 @@
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { Individual } from './../individual/individual';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { catchError, first, map, mergeAll, switchMap, take, filter } from 'rxjs/operators';
@@ -17,7 +16,6 @@ import { IndividualPhenophase } from '../individual/individual-phenophase';
 import { IndividualService } from '../individual/individual.service';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
-import { ObservationService } from '../observation/observation.service';
 import { PublicUser } from '../open/public-user';
 import { PublicUserService } from '../open/public-user.service';
 
@@ -28,10 +26,8 @@ import { PublicUserService } from '../open/public-user.service';
 export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> implements OnInit {
   constructor(
     private navService: NavService,
-    private router: Router,
     protected route: ActivatedRoute,
     private individualService: IndividualService,
-    private observationService: ObservationService,
     private masterdataService: MasterdataService,
     private userService: UserService,
     private publicUserService: PublicUserService,

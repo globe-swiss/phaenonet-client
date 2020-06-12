@@ -6,10 +6,11 @@ import { ProfileDetailComponent } from './profile-detail.component';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileEditComponent } from './profile-edit.component';
 import { ChangePasswordDialogComponent } from './change-password-dialog.component';
+import { ActivityItemComponent } from './activity-item/activity-item.component';
 
 @NgModule({
   imports: [SharedModule, ProfileRoutingModule, IndividualModule, ActivityModule],
-  declarations: [ProfileDetailComponent, ProfileEditComponent, ChangePasswordDialogComponent],
+  declarations: [ProfileDetailComponent, ProfileEditComponent, ChangePasswordDialogComponent, ActivityItemComponent],
   providers: [],
   exports: [],
   entryComponents: [ChangePasswordDialogComponent]

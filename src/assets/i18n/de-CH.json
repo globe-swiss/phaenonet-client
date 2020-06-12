@@ -42,5 +42,9 @@
   "alt2": "500 - 799m",
   "alt3": "800 - 999m",
   "alt4": "1000 - 1199m",
-  "alt5": "ab 1200m"
+  "alt5": "ab 1200m",
+
+  "activity.action.create": "hinzugefügt",
+  "activity.action.modify": "bearbeitet",
+  "activity.action.delete": "geöscht"
 }

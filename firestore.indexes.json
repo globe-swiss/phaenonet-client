@@ -9,7 +9,7 @@
           "arrayConfig": "CONTAINS"
         },
         {
-          "fieldPath": "date",
+          "fieldPath": "activity_date",
           "order": "DESCENDING"
         }
       ]

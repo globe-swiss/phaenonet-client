@@ -71,20 +71,29 @@ export class MasterdataService extends BaseService {
 
   public availableYears = [2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011];
 
-  individualToIcon(individual: Individual): google.maps.Icon {
+  getIndividualIconPath(species: string, source: string, phenophase: string): string {
     let phaenoIndex = 1;
-    if (individual.last_phenophase) {
-      phaenoIndex = this.phenophaseIndex[individual.last_phenophase];
+    if (phenophase) {
+      phaenoIndex = this.phenophaseIndex[phenophase];
     }
+    if (source === 'meteoswiss') {
+        return '/assets/img/map_pins/map_pin_meteoschweiz.png';
+    } else {
+        return '/assets/img/map_pins/map_pin_' + species.toLowerCase() + '_' + phaenoIndex + '.png';
+    }
+  }
+
+  individualToIcon(individual: Individual): google.maps.Icon {
     let icon: google.maps.Icon;
+    const icon_path = this.getIndividualIconPath(individual.species, individual.source, individual.last_phenophase)
     if (individual.source === 'meteoswiss') {
       icon = {
-        url: '/assets/img/map_pins/map_pin_meteoschweiz.png',
+        url: icon_path,
         scaledSize: new google.maps.Size(60, 60)
       };
     } else {
       icon = {
-        url: '/assets/img/map_pins/map_pin_' + individual.species.toLowerCase() + '_' + phaenoIndex + '.png',
+        url: icon_path,
         scaledSize: new google.maps.Size(55, 60)
       };
     }

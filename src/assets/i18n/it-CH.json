@@ -303,5 +303,9 @@
   "Anmeldung fehlgeschlagen":"Registrazione fallita",
   "Löschen bestätigen":"Confermare la cancellazione",
   "Möchten Sie diese Beobachtung wirklich löschen?":"Vuole davvero cancellare questa osservazione?",
-  "Löschen":"Cancella"
+  "Löschen":"Cancella",
+
+  "activity.action.create": "aggiunto",
+  "activity.action.modify": "modificato",
+  "activity.action.delete": "cancellato"
 }
