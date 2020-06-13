@@ -91,27 +91,11 @@
         </button>
       </div>
     </div>
-    <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
-      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left" *ngIf="isOwner()">
-        <h3>
-          <span *ngIf="isOwner()">{{ 'AKTIVITÄTEN' | translate }}</span>
-        </h3>
-      </div>
-      <div
-        gdColumn="3 / span 4"
-        gdColumn.lt-md="1 / span 6"
-        *ngIf="isOwner() && detailSubject | async"
-        class="detail-right"
-      >
-        <app-activity-item
-          *ngFor="let activity of activities | async"
-          [activity]="activity"></app-activity-item>
-        <button
-          mat-flat-button color="accent"
-          (click)="showAllActivities()">
-          <span>{{ 'Mehr anzeigen' | translate }}</span>
-        </button>
-      </div>
-    </div>
+    <app-activity-list
+      gdColumn="1 / span 6"
+      gdColumns="repeat(6, 1fr)"
+      class="detail-content"
+      *ngIf="isOwner()"
+      [userId]="detailId"></app-activity-list>
   </div>
 </div>

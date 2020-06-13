@@ -5,8 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { catchError, first, map, mergeAll, switchMap, take, filter } from 'rxjs/operators';
-import { Activity } from '../activity/activity';
-import { ActivityService } from '../activity/activity.service';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../auth/user.service';
 import { BaseDetailComponent } from '../core/base-detail.component';
@@ -31,7 +29,6 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
     private masterdataService: MasterdataService,
     private userService: UserService,
     private publicUserService: PublicUserService,
-    private activityService: ActivityService,
     public dialog: MatDialog,
     private authService: AuthService,
     private alertService: AlertService,
@@ -47,10 +44,7 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
 
   latestIndividualObservations: Observable<IndividualPhenophase[]>;
 
-  limitActivities = new BehaviorSubject<number>(8);
   limitIndividuals = new BehaviorSubject<number>(4);
-
-  activities: Observable<Activity[]>;
 
   firstname: Observable<string>;
   lastname: Observable<string>;
@@ -138,10 +132,6 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
         filter(u => u !== null),
         map(u => (u.following_users ? u.following_users.find(id => id === this.detailId) !== undefined : false))
       );
-
-      this.activities = this.limitActivities.pipe(
-        switchMap(limit => this.activityService.listByUser(this.detailId, limit).pipe(take(1)))
-      );
     });
 
     this.analytics.logEvent('profile.view');
@@ -183,14 +173,6 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
     } as UntranslatedAlertMessage);
   }
 
-  /**
-   * show 1000 for now
-   */
-  showAllActivities() {
-    this.limitActivities.next(1000);
-    this.analytics.logEvent('profile.show-more-activities');
-  }
-
   showMoreIndividuals() {
     this.limitIndividuals.next(1000);
     this.analytics.logEvent('profile.show-more-individuals');
@@ -219,7 +201,6 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
   }
 
   logout() {
-    this.limitActivities.unsubscribe();
     this.limitIndividuals.unsubscribe();
     this.detailSubject.unsubscribe();
     this.authService.logout();

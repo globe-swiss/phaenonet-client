@@ -7,10 +7,11 @@ import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileEditComponent } from './profile-edit.component';
 import { ChangePasswordDialogComponent } from './change-password-dialog.component';
 import { ActivityItemComponent } from './activity-item/activity-item.component';
+import { ActivityListComponent } from './activity-list/activity-list.component';
 
 @NgModule({
   imports: [SharedModule, ProfileRoutingModule, IndividualModule, ActivityModule],
-  declarations: [ProfileDetailComponent, ProfileEditComponent, ChangePasswordDialogComponent, ActivityItemComponent],
+  declarations: [ProfileDetailComponent, ProfileEditComponent, ChangePasswordDialogComponent, ActivityItemComponent, ActivityListComponent],
   providers: [],
   exports: [],
   entryComponents: [ChangePasswordDialogComponent]
