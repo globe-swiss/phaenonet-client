@@ -37,8 +37,6 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
     super(publicUserService, route);
   }
 
-  // temporary solution
-  colorMap = {};
 
   profileLink: Observable<string>;
 
@@ -61,8 +59,6 @@ export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> impl
   ngOnInit(): void {
     super.ngOnInit();
     this.navService.setLocation('Profil');
-
-    this.colorMap = this.masterdataService.colorMap;
 
     this.isLoggedIn = this.authService.isLoggedIn();
 

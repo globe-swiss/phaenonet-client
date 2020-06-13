@@ -263,10 +263,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
 
             this.observationService
               .upsert(observation, observationId)
-              .pipe(first())
-              .subscribe(_ => {
-                this.updateLastObservation(detail, result.phenophase);
-              });
+              .pipe(first());
 
             this.analytics.logEvent(observation.created ? 'observation.modify' : 'observation.create', {
               species: detail.species,
@@ -303,16 +300,5 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
 
   isOwner(): boolean {
     return this.authService.getUserId() === this.owner && this.year === new Date().getFullYear();
-  }
-
-  private updateLastObservation(individual: Individual, phenophase: Phenophase): void {
-    if (this.lastObservation) {
-      const updateIndividual: Individual = {
-        ...individual,
-        ...{ last_observation_date: this.lastObservation.date, last_phenophase: this.lastObservation.phenophase }
-      };
-
-      this.individualService.upsert(updateIndividual); // TODO check if this is already done by cloud functions
-    }
   }
 }

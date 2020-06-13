@@ -1,3 +1,6 @@
+import {firestore} from 'firebase/app';
+import Timestamp = firestore.Timestamp;
+
 export class Individual {
   name: string;
   geopos: google.maps.LatLngLiteral;
@@ -16,10 +19,10 @@ export class Individual {
   user: string;
   watering: string;
   year: number;
-  last_observation_date: Date | null;
-  last_phenophase: string | null;
-  created: Date;
-  modified: Date;
+  last_observation_date?: Timestamp;
+  last_phenophase?: string;
+  created: Timestamp;
+  modified: Timestamp;
   type: 'individual' | 'station';
   image_urls: string[];
 }
