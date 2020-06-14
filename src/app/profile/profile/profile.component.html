@@ -3,31 +3,33 @@
     <div gdColumn="1 / span 6" class="detail-header">
       <!-- There is no header -->
     </div>
-    <app-profile-details
-      gdColumn="1 / span 6"
-      gdColumns="repeat(6, 1fr)"
-      class="detail-content"
-      *ngIf="isOwner()"
-      [user]="detailSubject"
-      [userId]="detailId"></app-profile-details>
-    <app-profile-public
-      gdColumn="1 / span 6"
-      gdColumns="repeat(6, 1fr)"
-      class="detail-content"
-      *ngIf="!isOwner()"
-      [user]="detailSubject"
-      [userId]="detailId"></app-profile-public>
-    <app-observation-list 
-      gdColumn="1 / span 6"
-      gdColumn.lt-md="1 / span 6"
-      gdColumns="repeat(6, 1fr)"
-      class="detail-content"
-      [userId]="detailId"></app-observation-list>
-    <app-activity-list
-      gdColumn="1 / span 6"
-      gdColumns="repeat(6, 1fr)"
-      class="detail-content"
-      *ngIf="isOwner()"
-      [userId]="detailId"></app-activity-list>
+    <ng-container *ngIf="detailId">
+      <app-profile-details
+        gdColumn="1 / span 6"
+        gdColumns="repeat(6, 1fr)"
+        class="detail-content"
+        *ngIf="isOwner()"
+        [user]="detailSubject"
+        [userId]="detailId"></app-profile-details>
+      <app-profile-public
+        gdColumn="1 / span 6"
+        gdColumns="repeat(6, 1fr)"
+        class="detail-content"
+        *ngIf="!isOwner()"
+        [user]="detailSubject"
+        [userId]="detailId"></app-profile-public>
+      <app-observation-list
+        gdColumn="1 / span 6"
+        gdColumn.lt-md="1 / span 6"
+        gdColumns="repeat(6, 1fr)"
+        class="detail-content"
+        [userId]="detailId"></app-observation-list>
+      <app-activity-list
+        gdColumn="1 / span 6"
+        gdColumns="repeat(6, 1fr)"
+        class="detail-content"
+        *ngIf="isOwner()"
+        [userId]="detailId"></app-activity-list>
+    </ng-container>
   </div>
 </div>
