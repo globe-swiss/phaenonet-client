@@ -3,49 +3,20 @@
     <div gdColumn="1 / span 6" class="detail-header">
       <!-- There is no header -->
     </div>
-    <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
-      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
-        <h3>{{ 'PROFIL' | translate }}</h3>
-      </div>
-      <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject | async" class="detail-right">
-        <div *ngIf="isOwner()" class="detail-label">{{ 'Hallo' | translate }}</div>
-        <div *ngIf="!isOwner()" class="detail-label">{{ 'Öffentliches Profil von' | translate }}</div>
-        <div class="title-nickname">
-          {{ (detailSubject | async).nickname }}
-          <button mat-icon-button [app-copy-clipboard]="profileLink | async" (copied)="notifyCopied()">
-            <mat-icon svgIcon="copylink"></mat-icon>
-          </button>
-          <button
-            *ngIf="isLoggedIn && !isOwner() && isFollowing | async"
-            mat-fab
-            color="primary"
-            class="a100"
-            (click)="unfollow()"
-          >
-            <mat-icon svgIcon="subscribe-active"></mat-icon>
-          </button>
-          <button *ngIf="isLoggedIn && !isOwner() && !(isFollowing | async)" mat-fab color="primary" (click)="follow()">
-            <mat-icon svgIcon="subscribe"></mat-icon>
-          </button>
-        </div>
-        <ng-container *ngIf="isOwner()">
-          <div class="detail-label">{{ 'Vorname' | translate }}</div>
-          <div class="detail-value">{{ firstname | async }}</div>
-          <div class="detail-label">{{ 'Nachname' | translate }}</div>
-          <div class="detail-value">{{ lastname | async }}</div>
-          <div class="detail-label">{{ 'E-Mail' | translate }}</div>
-          <div class="detail-value">{{ email }}</div>
-          <div class="detail-label">{{ 'Sprache' | translate }}</div>
-          <div class="detail-value">{{ locale | async | translate }}</div>
-          <button mat-flat-button type="submit" id="edit-button" [routerLink]="['/profile', detailId, 'edit']">
-            {{ 'Profil bearbeiten' | translate }}
-          </button>
-          <button mat-flat-button color="accent" type="submit" id="logout-button" (click)="logout()">
-            {{ 'Logout' | translate }}
-          </button>
-        </ng-container>
-      </div>
-    </div>
+    <app-profile-details
+      gdColumn="1 / span 6"
+      gdColumns="repeat(6, 1fr)"
+      class="detail-content"
+      *ngIf="isOwner()"
+      [user]="detailSubject"
+      [userId]="detailId"></app-profile-details>
+    <app-profile-public
+      gdColumn="1 / span 6"
+      gdColumns="repeat(6, 1fr)"
+      class="detail-content"
+      *ngIf="!isOwner()"
+      [user]="detailSubject"
+      [userId]="detailId"></app-profile-public>
     <app-observation-list 
       gdColumn="1 / span 6"
       gdColumn.lt-md="1 / span 6"

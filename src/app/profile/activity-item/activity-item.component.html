@@ -4,7 +4,7 @@
     class="activity">
 
     <img 
-        [alt]="activity.species" 
+        [alt]="activity.species"
         [src]="getIcon()"
         width="55"
         height="60"
@@ -20,9 +20,9 @@
         style="padding-bottom: 0;">{{ activity.individual_name }} - {{ activity.phenophase_name | translate }}</div>
         <div 
             class="detail-label" 
-            style="margin-top: 0" *ngIf="activity.action">
-            <span class="creator">{{ 'activity.action.' + activity.action | translate }}</span>
+            style="margin-top: 0"
+            *ngIf="activity.action">
+            <span>{{ 'activity.action.' + activity.action | translate }}</span>
         </div>
     </div>
-    
 </div>
