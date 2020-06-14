@@ -9,10 +9,11 @@ import { ChangePasswordDialogComponent } from './change-password-dialog.componen
 import { ActivityItemComponent } from './activity-item/activity-item.component';
 import { ActivityListComponent } from './activity-list/activity-list.component';
 import { ObservationItemComponent } from './observation-item/observation-item.component';
+import { ObservationListComponent } from './observation-list/observation-list.component';
 
 @NgModule({
   imports: [SharedModule, ProfileRoutingModule, IndividualModule, ActivityModule],
-  declarations: [ProfileDetailComponent, ProfileEditComponent, ChangePasswordDialogComponent, ActivityItemComponent, ActivityListComponent, ObservationItemComponent],
+  declarations: [ProfileDetailComponent, ProfileEditComponent, ChangePasswordDialogComponent, ActivityItemComponent, ActivityListComponent, ObservationItemComponent, ObservationListComponent],
   providers: [],
   exports: [],
   entryComponents: [ChangePasswordDialogComponent]

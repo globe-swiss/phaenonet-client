@@ -46,26 +46,12 @@
         </ng-container>
       </div>
     </div>
-    <div gdColumn="1 / span 6" gdColumn.lt-md="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
-      <div gdColumn="1 / span 2" class="detail-left">
-        <h3>
-          <span *ngIf="isOwner()">{{ 'MEINE BEOBACHTUNGEN' | translate }}</span
-          ><span *ngIf="!isOwner()">{{ 'BEOBACHTUNGEN' | translate }}</span>
-        </h3>
-      </div>
-      <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject | async" class="detail-right">
-        <app-observation-item
-          *ngFor="let item of latestIndividualObservations | async"
-          [item]="item"></app-observation-item>
-        <button *ngIf="isOwner()" mat-flat-button color="primary" [routerLink]="'/individuals/new/edit'">
-          <mat-icon>add</mat-icon>
-          <span>{{ 'Objekt hinzufügen' | translate }}</span>
-        </button>
-        <button mat-flat-button color="accent" (click)="showMoreIndividuals()">
-          <span>{{ 'Mehr anzeigen' | translate }}</span>
-        </button>
-      </div>
-    </div>
+    <app-observation-list 
+      gdColumn="1 / span 6"
+      gdColumn.lt-md="1 / span 6"
+      gdColumns="repeat(6, 1fr)"
+      class="detail-content"
+      [userId]="detailId"></app-observation-list>
     <app-activity-list
       gdColumn="1 / span 6"
       gdColumns="repeat(6, 1fr)"
