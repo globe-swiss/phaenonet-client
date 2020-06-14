@@ -15,10 +15,10 @@ import { PublicUser } from '../open/public-user';
 import { PublicUserService } from '../open/public-user.service';
 
 @Component({
-  templateUrl: './profile-detail.component.html',
-  styleUrls: ['./profile-detail.component.scss']
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss']
 })
-export class ProfileDetailComponent extends BaseDetailComponent<PublicUser> implements OnInit {
+export class ProfileComponent extends BaseDetailComponent<PublicUser> implements OnInit {
   constructor(
     private navService: NavService,
     protected route: ActivatedRoute,
