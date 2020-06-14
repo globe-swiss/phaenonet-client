@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { ActivityService } from '../../activity/activity.service';
-import { Activity } from '../../activity/activity';
+import { ActivityService } from '../../../activity/activity.service';
+import { Activity } from '../../../activity/activity';
 import { switchMap, take } from 'rxjs/operators';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 

@@ -1,6 +1,6 @@
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { UserService } from './../../auth/user.service';
-import { AlertService, Level, UntranslatedAlertMessage } from './../../messaging/alert.service';
+import { UserService } from '../../../auth/user.service';
+import { AlertService, Level, UntranslatedAlertMessage } from '../../../messaging/alert.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';

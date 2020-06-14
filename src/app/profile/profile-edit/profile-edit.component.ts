@@ -4,15 +4,15 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatSelectChange } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
-import { User } from '../auth/user';
-import { UserService } from '../auth/user.service';
-import { BaseDetailComponent } from '../core/base-detail.component';
-import { LanguageService } from '../core/language.service';
-import { NavService } from '../core/nav/nav.service';
-import { PublicUserService } from '../open/public-user.service';
-import { ChangePasswordData } from './change-password-data';
-import { ChangePasswordDialogComponent } from './change-password-dialog.component';
+import { AuthService } from '../../auth/auth.service';
+import { User } from '../../auth/user';
+import { UserService } from '../../auth/user.service';
+import { BaseDetailComponent } from '../../core/base-detail.component';
+import { LanguageService } from '../../core/language.service';
+import { NavService } from '../../core/nav/nav.service';
+import { PublicUserService } from '../../open/public-user.service';
+import { ChangePasswordData } from '../change-password-dialog/change-password-data';
+import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
 
 @Component({
   templateUrl: './profile-edit.component.html',

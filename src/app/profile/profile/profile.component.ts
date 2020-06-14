@@ -4,11 +4,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, first, map } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
-import { BaseDetailComponent } from '../core/base-detail.component';
-import { NavService } from '../core/nav/nav.service';
-import { PublicUser } from '../open/public-user';
-import { PublicUserService } from '../open/public-user.service';
+import { AuthService } from '../../auth/auth.service';
+import { BaseDetailComponent } from '../../core/base-detail.component';
+import { NavService } from '../../core/nav/nav.service';
+import { PublicUser } from '../../open/public-user';
+import { PublicUserService } from '../../open/public-user.service';
 
 @Component({
   templateUrl: './profile.component.html',

@@ -1,10 +1,10 @@
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
-import { IndividualService } from './../../individual/individual.service';
+import { IndividualService } from '../../../individual/individual.service';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { IndividualPhenophase } from '../../individual/individual-phenophase';
+import { IndividualPhenophase } from '../../../individual/individual-phenophase';
 import { first, map, mergeAll } from 'rxjs/operators';
 
 @Component({

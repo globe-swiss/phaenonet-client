@@ -1,5 +1,5 @@
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { UserService } from './../../auth/user.service';
+import { UserService } from '../../../auth/user.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';

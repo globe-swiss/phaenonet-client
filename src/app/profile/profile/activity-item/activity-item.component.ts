@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { formatShortDateTime } from 'src/app/core/formatDate';
-import { Activity } from './../../activity/activity';
-import { MasterdataService } from './../../masterdata/masterdata.service';
+import { Activity } from '../../../activity/activity';
+import { MasterdataService } from '../../../masterdata/masterdata.service';
 
 @Component({
   selector: 'app-activity-item',
