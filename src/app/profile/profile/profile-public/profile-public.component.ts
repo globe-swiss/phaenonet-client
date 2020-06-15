@@ -18,7 +18,7 @@ export class ProfilePublicComponent implements OnInit {
   @Input() userId: string;
   @Input() user: ReplaySubject<PublicUser>;
 
-  isLoggedin: boolean;
+  isLoggedIn: boolean;
   isFollowing: Observable<boolean>;
   nickname: Observable<string>;
 
@@ -30,7 +30,7 @@ export class ProfilePublicComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isLoggedin = this.authService.isLoggedIn();
+    this.isLoggedIn = this.authService.isLoggedIn();
 
     this.nickname = this.user.pipe(first(), map(u => u.nickname));
 
