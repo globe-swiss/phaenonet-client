@@ -1,0 +1,28 @@
+<div
+    fxLayout="row"
+    [routerLink]="['/individuals', activity.individual_id]"
+    class="activity">
+
+    <img 
+        [alt]="activity.species"
+        [src]="getIcon()"
+        width="55"
+        height="60"
+        style="vertical-align: center">
+    <div>
+        <div class="detail-label" style="margin-top: 0">
+            <span>{{ activity.user_name }}</span>
+            <span> | </span>
+            <span> {{ getDate() }}</span>
+        </div>
+    <div 
+        class="activity-title" 
+        style="padding-bottom: 0;">{{ activity.individual_name }} - {{ activity.phenophase_name | translate }}</div>
+        <div 
+            class="detail-label" 
+            style="margin-top: 0"
+            *ngIf="activity.action">
+            <span>{{ 'activity.action.' + activity.action | translate }}</span>
+        </div>
+    </div>
+</div>

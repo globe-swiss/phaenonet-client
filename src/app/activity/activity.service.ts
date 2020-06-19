@@ -16,13 +16,9 @@ export class ActivityService extends BaseResourceService<Activity> {
       .collection<Activity>('activities', ref =>
         ref
           .where('followers', 'array-contains', userId)
-          .orderBy('date', 'desc')
+          .orderBy('activity_date', 'desc')
           .limit(limit)
       )
       .valueChanges();
-  }
-
-  insert(activity: Activity): Observable<Activity> {
-    return this.upsert(activity, this.afs.createId());
   }
 }

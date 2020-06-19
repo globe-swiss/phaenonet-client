@@ -1,15 +1,15 @@
 import { AuthGuard } from './../auth/auth-guard.service';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProfileDetailComponent } from './profile-detail.component';
-import { ProfileEditComponent } from './profile-edit.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileEditComponent } from './profile-edit/profile-edit.component';
 
 const routes: Routes = [
   {
     path: '',
     children: [
-      { path: ':id', component: ProfileDetailComponent },
-      { path: '', component: ProfileDetailComponent },
+      { path: ':id', component: ProfileComponent },
+      { path: '', component: ProfileComponent },
       { path: ':id/edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
       { path: '', redirectTo: '', pathMatch: 'full' }
     ]
