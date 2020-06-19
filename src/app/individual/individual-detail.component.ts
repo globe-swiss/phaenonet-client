@@ -262,8 +262,7 @@ export class IndividualDetailComponent extends BaseIndividualDetailComponent imp
             ].join('_');
 
             this.observationService
-              .upsert(observation, observationId)
-              .pipe(first());
+              .upsert(observation, observationId);
 
             this.analytics.logEvent(observation.created ? 'observation.modify' : 'observation.create', {
               species: detail.species,

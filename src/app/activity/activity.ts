@@ -10,10 +10,10 @@ export class Activity {
   observation_id?: string;
   phenophase: string;
   phenophase_name: string;
-  source: string;
+  source: 'globe' | 'meteoswiss';
   species: string;
   species_name: string;
-  type: string;
+  type: 'observation';
   user: string;
   user_name: string;
 }
