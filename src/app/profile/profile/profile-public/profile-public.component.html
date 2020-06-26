@@ -3,8 +3,6 @@
 </div>
 <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" *ngIf="user | async" class="detail-right">
     <div class="detail-label">{{ 'Öffentliches Profil von' | translate }}</div>
-    <div class="detail-label">X {{ isLoggedIn }}</div>
-    <div class="detail-label">Y {{ isFollowing }}</div>
         <div class="title-nickname">
             {{ nickname | async }}
         <button mat-icon-button [app-copy-clipboard]="profileLink" (copied)="notifyCopied()">
