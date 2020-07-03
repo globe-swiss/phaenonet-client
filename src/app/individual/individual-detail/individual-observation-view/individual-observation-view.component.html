@@ -1,0 +1,46 @@
+<h3>{{ 'Phänophasen' | translate }}</h3>
+<div *ngFor="let groupedItem of phenophaseObservationsGroups | async" class="phenophase-group">
+  <ng-container *ngIf="(isEditable | async) || groupedItem.hasObservations">
+    <h4>{{ groupedItem.phenophaseGroup.name_de | translate }}</h4>
+    <div *ngFor="let item of groupedItem.phenophaseObservations">
+      <ng-container *ngIf="(isEditable | async) || item.observation.isSome()">
+        <div class="detail-label">{{ item.phenophase.name_de | translate }}</div>
+        <mat-form-field class="full-width detail-observation-date">
+          <input
+            matInput
+            [matDatepicker]="fakePicker"
+            [id]="item.id"
+            placeholder="{{ item.phenophase.description_de | translate }}"
+            [value]="item.observation.toNullable()?.date"
+            readonly="true"/>
+          <mat-icon
+            *ngIf="(isEditable | async) && item.observation.isNone() && item.limits.isEditable"
+            matSuffix
+            class="add-phenophase"
+            color="primary"
+            (click)="editPhenophaseDate(item)">add_circle</mat-icon>
+          <mat-icon
+            *ngIf="(isEditable | async) && item.observation.isNone() && !item.limits.isEditable"
+            matSuffix
+            class="add-phenophase-disabled"
+            color="accent">add_circle</mat-icon>
+          <mat-icon
+            *ngIf="(isEditable | async) && item.observation.isSome()"
+            matSuffix
+            color="primary"
+            class="edit-phenophase"
+            (click)="editPhenophaseDate(item)">edit</mat-icon>
+          <mat-icon
+            *ngIf="(isEditable | async) && item.observation.isSome()"
+            matSuffix
+            color="warn"
+            class="edit-phenophase"
+            (click)="deletePhenophaseDate(item)">delete</mat-icon>
+        </mat-form-field>
+        <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment">
+          {{ 'Kommentar' }}: {{ staticComments[item.observation.toNullable()?.comment] | translate }}
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</div>

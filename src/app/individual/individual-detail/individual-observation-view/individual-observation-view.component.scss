@@ -1,0 +1,26 @@
+.phenophase-group {
+  margin-top: 2.5625rem;
+}
+
+h4 {
+  color: #868072;
+}
+
+.detail-sub {
+  font-style: italic;
+  margin-top: -1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.add-phenophase {
+  cursor: pointer;
+}
+
+.add-phenophase-disabled {
+  cursor: not-allowed;
+  color: #f7f5f2;
+}
+
+.edit-phenophase {
+  cursor: pointer;
+}

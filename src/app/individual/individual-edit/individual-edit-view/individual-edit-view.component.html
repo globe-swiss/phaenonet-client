@@ -1,0 +1,151 @@
+<form id="createForm" [formGroup]="createForm" (ngSubmit)="onSubmit()" *ngIf="individual | async">
+  <div>
+    <mat-form-field class="geopos-width">
+      <input
+        matInput
+        name="geopos"
+        [value]="(geopos | async).lat + ', ' + (geopos | async).lng"
+        placeholder="{{ 'Standort (Geo-Koordinaten)' | translate }}"
+        type="text"
+        disabled
+        required/>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        name="altitude"
+        [value]="altitude | async"
+        placeholder="{{ 'Höhe M.ü.M.' | translate }}"
+        type="text"
+        disabled/>
+    </mat-form-field>
+  </div>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'Pflanzenart' | translate }}</mat-label>
+    <mat-select formControlName="species" required>
+      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+      <mat-option *ngFor="let element of selectableSpecies | async" [value]="element.id">
+        {{ element.de | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'Name / Kennzeichnung' | translate }} </mat-label>
+    <input
+      matInput
+      formControlName="name"
+      id="name"
+      placeholder="{{ 'Name / Kennzeichnung' | translate }}"
+      type="text"
+      required/>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'Foto' | translate }} </mat-label>
+    <input
+      matInput
+      id="fotos"
+      placeholder="{{ 'Foto vom Objekt hinzufügen' | translate }}"
+      type="text"
+      value="{{ fileToUpload?.name }}"
+      readonly="true"/>
+    <mat-icon class="add-image" matSuffix color="primary" (click)="fileInput.click()">add_circle</mat-icon>
+    <mat-icon *ngIf="fileToUpload" class="add-image" matSuffix color="warn" (click)="removeUploadedFile()"
+      >delete</mat-icon>
+    <input
+      hidden
+      (change)="onFileSelected($event.target.files)"
+      #fileInput
+      type="file"
+      id="file"
+      accept=".jpg,.jpeg,.png,"/>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'Umgebung' | translate }}</mat-label>
+    <mat-select formControlName="description" required>
+      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+      <mat-option *ngFor="let element of selectableDescriptions | async" [value]="element.id">
+        {{ element.de | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'Exposition' | translate }}</mat-label>
+    <mat-select formControlName="exposition" required>
+      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+      <mat-option *ngFor="let element of selectableExpositions | async" [value]="element.id">
+        {{ element.de | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div>
+    <mat-form-field>
+      <mat-label>{{ 'Hangneigung' | translate }}</mat-label>
+      <input
+        matInput
+        formControlName="gradient"
+        type="number"
+        min="0"
+        max="100"
+        step="1"
+        placeholder="{{ 'Hangneigung in %' | translate }}"
+        class="right-align"
+        required/>
+      <span matSuffix>%</span>
+    </mat-form-field>
+    <img class="gradient-info-img" src="assets/img/info_gradient.png" />
+  </div>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'Schatten' | translate }}</mat-label>
+    <mat-select formControlName="shade" required>
+      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+      <mat-option *ngFor="let element of selectableShades | async" [value]="element.id">
+        {{ element.de | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'Bewässerung' | translate }}</mat-label>
+    <mat-select formControlName="watering" required>
+      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+      <mat-option *ngFor="let element of selectableIrrigations | async" [value]="element.id">
+        {{ element.de | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'Distanz zu Gebäude / Strasse' | translate }}</mat-label>
+    <mat-select formControlName="less100" required>
+      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+      <mat-option *ngFor="let element of selectableDistances | async" [value]="element.id">
+        {{ element.de | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'Habitat' | translate }}</mat-label>
+    <mat-select formControlName="habitat" required>
+      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+      <mat-option *ngFor="let element of selectableHabitats | async" [value]="element.id">
+        {{ element.de | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'Waldtyp' | translate }}</mat-label>
+    <mat-select formControlName="forest" required>
+      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+      <mat-option *ngFor="let element of selectableForests | async" [value]="element.id">
+        {{ element.de | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button
+    mat-flat-button
+    color="primary"
+    type="submit"
+    id="create-button"
+    [disabled]="createForm.invalid"
+    [appDisableNotOwner]="(individual | async)?.user">
+    {{ 'Objekt speichern' | translate }}
+  </button>
+</form>

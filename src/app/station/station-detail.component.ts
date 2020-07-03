@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import * as _ from 'lodash';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { first, map, mergeAll, filter } from 'rxjs/operators';
+import { filter, map, mergeAll } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
-import { UserService } from '../auth/user.service';
 import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
@@ -16,20 +16,16 @@ import { Comment } from '../masterdata/comment';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
 import { PhenophaseGroup } from '../masterdata/phaenophase-group';
-import { AlertService } from '../messaging/alert.service';
 import { Observation } from '../observation/observation';
 import { ObservationService } from '../observation/observation.service';
 import { PhenophaseObservation } from './phenophase-observation';
 import { SpeciesPhenophaseObservations } from './species-phenophase-observations';
-import { BaseIndividualDetailComponent } from '../individual/base-individual-detail.component';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { Species } from '../masterdata/species';
 
 @Component({
   templateUrl: './station-detail.component.html',
   styleUrls: ['./station-detail.component.scss']
 })
-export class StationDetailComponent extends BaseIndividualDetailComponent implements OnInit {
+export class StationDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
   center = { lat: 46.818188, lng: 8.227512 };
   zoom = 13;
   options: google.maps.MapOptions = {
@@ -64,13 +60,11 @@ export class StationDetailComponent extends BaseIndividualDetailComponent implem
     protected individualService: IndividualService,
     private observationService: ObservationService,
     private masterdataService: MasterdataService,
-    protected userService: UserService,
     public dialog: MatDialog,
     private authService: AuthService,
-    protected alertService: AlertService,
     private analytics: AngularFireAnalytics,
   ) {
-    super(route, individualService, userService, alertService);
+    super(individualService, route);
   }
 
   ngOnInit(): void {
