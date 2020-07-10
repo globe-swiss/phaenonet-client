@@ -307,5 +307,16 @@
 
   "activity.action.create": "aggiunto",
   "activity.action.modify": "modificato",
-  "activity.action.delete": "cancellato"
+  "activity.action.delete": "cancellato",
+
+  "OBJEKT LÖSCHEN": "ELIMINARE L'OGGETTO",
+  "Objekt löschen": "Eliminare l'oggetto",
+  "LÖSCHEN NICHT MÖGLICH": "ELIMINAZIONE IMPOSSIBILE",
+  "zurück zum Objekt": "indietro all'oggetto",
+  "Löschen fehlgeschlagen": "Eliminazione non riuscita",
+  "Das Objekt konnte nicht gelöscht werden.": "Non è stato possibile eliminare l'oggetto.",
+  "Löschen erfolgreich": "Oggetto eliminato con successo",
+  "Das Objekt wurde gelöscht.": "L'oggetto è stato eliminato.",
+  "Möchten Sie das Objekt definitiv löschen? In Zukunft können Sie keine Daten mehr zu diesem Objekt eingeben. Daten zu diesem Objekt aus vergangenen Jahren bleiben erhalten.": "Si vuole eliminare definitivamente l'oggetto? In futuro non sarà più possibile inserire dati riguardanti questo oggetto. I dati degli anni precedenti saranno comunque conservati.",
+  "Das Objekt kann nicht gelöscht werden, weil im aktuellen Jahr Beobachtungen erfasst wurden. Löschen Sie zuerst die Beobachtungen, um das Objekt löschen zu können.<br /><br />Wenn Sie die Beobachtungen im aktuellen Jahr behalten wollen, löschen Sie das Objekt erst im kommenden Jahr.": "L'oggetto non può essere eliminato perché sono ancora registrate osservazioni dell'anno in corso. Cancellare le osservazioni prima di eliminare l'oggetto.<br /><br />Se si vogliono conservare le osservazioni dell'anno in corso, attendere il prossimo anno per eliminare l'oggetto."
 }

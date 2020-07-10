@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
-import { map, mergeAll } from 'rxjs/operators';
+import { map, mergeAll, filter } from 'rxjs/operators';
 import { MasterdataService } from '../../../masterdata/masterdata.service';
 import { Individual } from '../../individual';
 import { IndividualService } from '../../individual.service';
@@ -34,12 +34,13 @@ export class DetailHeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.geopos = this.individual.pipe(map(i => i.geopos ));
-    this.center = this.individual.pipe(map(i => i.geopos ));
-    this.imageUrl = this.individual.pipe(map(individual =>
-      this.individualService.getImageUrl(individual, true)
-      ), mergeAll());
-    this.markerOptions = this.individual.pipe(map(i => ({
+    this.geopos = this.individual.pipe(filter(i => i !== undefined), map(i => i.geopos ));
+    this.center = this.individual.pipe(filter(i => i !== undefined), map(i => i.geopos ));
+    this.imageUrl = this.individual.pipe(
+      filter(i => i !== undefined), map(i => this.individualService.getImageUrl(i, true)), mergeAll());
+    this.markerOptions = this.individual.pipe(
+      filter(i => i !== undefined),
+      map(i => ({
         draggable: false,
         icon: this.masterdataService.individualToIcon(i)
       } as google.maps.MarkerOptions)

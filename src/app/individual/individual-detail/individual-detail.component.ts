@@ -3,7 +3,7 @@ import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { first, map, filter } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
 import { BaseDetailComponent } from '../../core/base-detail.component';
 import { NavService } from '../../core/nav/nav.service';
@@ -37,9 +37,10 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
 
     this.isLoggedIn = this.authService.isLoggedIn();
 
-    this.isEditable = this.detailSubject.pipe(map(
-      individual => (this.authService.getUserId() === individual.user && individual.year === new Date().getFullYear())
-    ));
+    this.isEditable = this.detailSubject.pipe(
+      filter(individual => individual !== undefined),
+      map(individual => (this.authService.getUserId() === individual.user && individual.year === new Date().getFullYear()))
+      );
 
     this.detailSubject.pipe(first()).subscribe(detail => {
       this.analytics.logEvent('individual.view', {

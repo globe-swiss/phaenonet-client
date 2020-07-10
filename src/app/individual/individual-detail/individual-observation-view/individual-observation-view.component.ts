@@ -5,7 +5,7 @@ import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { MatDialog } from '@angular/material/dialog';
 import { some } from 'fp-ts/lib/Option';
 import { Observable, combineLatest } from 'rxjs';
-import { first, map, mergeAll } from 'rxjs/operators';
+import { first, map, mergeAll, filter } from 'rxjs/operators';
 import { IdLike } from '../../../masterdata/masterdata-like';
 import { ObservationService } from '../../../observation/observation.service';
 import { PhenophaseObservation } from '../../../observation/phenophase-observation';
@@ -37,8 +37,10 @@ export class ObservationViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const availablePhenophases = this.individual.pipe(map(i => this.masterdataService.getPhenophases(i.species)), mergeAll());
-    const availablePhenophaseGroups = this.individual.pipe(map(i => this.masterdataService.getPhenophaseGroups(i.species)), mergeAll());
+    const availablePhenophases = this.individual.pipe(
+      filter(i => i !== undefined), map(i => this.masterdataService.getPhenophases(i.species)), mergeAll());
+    const availablePhenophaseGroups = this.individual.pipe(
+      filter(i => i !== undefined), map(i => this.masterdataService.getPhenophaseGroups(i.species)), mergeAll());
     const individualObservations = this.observationService.listByIndividual(this.individualId);
     const availableComments = this.masterdataService.getComments();
 
@@ -50,6 +52,7 @@ export class ObservationViewComponent implements OnInit {
       individualObservations,
       availableComments
     ]).pipe(
+      filter(o => o[0] !== undefined),
       map(([individual, phenophaseGroups, phenophases, observations, comments]) => {
 
         comments.forEach(element => {

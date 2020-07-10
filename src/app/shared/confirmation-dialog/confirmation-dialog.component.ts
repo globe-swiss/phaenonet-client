@@ -6,7 +6,7 @@ export interface ConfirmationDialogData {
   title: string;
   content: string;
   yes: string;
-  no: string;
+  no?: string;
   yesColor?: 'primary' | 'warn' | 'accent';
   noColor?: 'primary' | 'warn' | 'accent';
 }
