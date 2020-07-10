@@ -4,12 +4,12 @@
     [gdColumn]="(imageUrl | async) ? '1 / span 4' : '1 / span 6'"
     width="100%"
     height="402px"
-    [center]="initialGeopos"
+    [center]="geopos | async"
     [zoom]="zoom"
     [options]="options">
     <map-marker
       #marker
-      [position]="initialGeopos"
+      [position]="geopos | async"
       [options]="markerOptions"
       (mapDragend)="updateGeopos($event)"></map-marker>
   </google-map>

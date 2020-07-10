@@ -14,7 +14,7 @@ import { GeoposService } from './geopos.service';
 export class EditHeaderComponent implements OnInit {
   @Input() individual: ReplaySubject<Individual>;
 
-  initialGeopos = this.geoposService.initialGeopos;
+  geopos: Observable<google.maps.LatLngLiteral>;
   zoom = 9;
   options: google.maps.MapOptions = {
     mapTypeId: google.maps.MapTypeId.HYBRID,
@@ -42,6 +42,7 @@ export class EditHeaderComponent implements OnInit {
         this.geoposService.update(new google.maps.LatLng(i.geopos));
       }
     });
+    this.geopos = this.geoposService.geopos;
     this.imageUrl = this.individual.pipe(map(individual =>
       this.individualService.getImageUrl(individual, true)
       ), mergeAll());
