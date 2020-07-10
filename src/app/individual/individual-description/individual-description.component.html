@@ -36,12 +36,25 @@
 <div class="detail-label">{{ 'Waldtyp' | translate }}</div>
 <div class="detail-info-value">{{ (forest | async)?.de | translate }}</div>
 
-<button
-	mat-flat-button
-	color="primary"
-	type="submit"
-	id="edit-button"
-	[routerLink]="['/individuals', individualId, 'edit']"
-	*ngIf="isEditable | async">
-  {{ 'Objekt bearbeiten' | translate }}
-</button>
+<div>
+	<button
+		mat-flat-button
+		color="primary"
+		type="button"
+		id="edit-button"
+		[routerLink]="['/individuals', individualId, 'edit']"
+		*ngIf="isEditable | async">
+	{{ 'Objekt bearbeiten' | translate }}
+	</button>
+</div>
+<div>
+	<button
+		mat-flat-button
+		color="accent"
+		type="button"
+		id="delete-button"
+		(click)="deleteIndividual()"
+		*ngIf="isEditable | async">
+	{{ 'Objekt löschen' | translate }}
+	</button>
+</div>

@@ -308,5 +308,16 @@
 
   "activity.action.create": "ajouté",
   "activity.action.modify": "modifié",
-  "activity.action.delete": "supprimé"
+  "activity.action.delete": "supprimé",
+
+  "OBJEKT LÖSCHEN": "SUPPRIMER L’OBJET",
+  "Objekt löschen": "Supprimer l’objet",
+  "LÖSCHEN NICHT MÖGLICH": "SUPPRESSION IMPOSSIBLE",
+  "zurück zum Objekt": "retour",
+  "Löschen fehlgeschlagen": "Échec de la suppression",
+  "Das Objekt konnte nicht gelöscht werden.": "L’objet n’a pas pu être supprimé.",
+  "Löschen erfolgreich": "Objet supprimé",
+  "Das Objekt wurde gelöscht.": "L’objet a été supprimé.",
+  "Möchten Sie das Objekt definitiv löschen? In Zukunft können Sie keine Daten mehr zu diesem Objekt eingeben. Daten zu diesem Objekt aus vergangenen Jahren bleiben erhalten.": "Souhaitez-vous vraiment supprimer l’objet ? Vous ne pourrez ensuite plus saisir d’observation pour cet objet. Celles des années précédentes seront par contre conservées.",
+  "Das Objekt kann nicht gelöscht werden, weil im aktuellen Jahr Beobachtungen erfasst wurden. Löschen Sie zuerst die Beobachtungen, um das Objekt löschen zu können.<br /><br />Wenn Sie die Beobachtungen im aktuellen Jahr behalten wollen, löschen Sie das Objekt erst im kommenden Jahr.": "L'objet ne peut être supprimé car des observations de l'année en cours sont encore enregistrées. Supprimez d'abord les observations puis supprimez l'objet.<br /><br />Pour conserver les données de l'année en cours, attendez l'année prochaine pour supprimer l’objet."
 }

@@ -7,6 +7,7 @@ import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { IdLike } from '../masterdata/masterdata-like';
 import { AlertService } from '../messaging/alert.service';
+import { Observation } from '../observation/observation';
 import { Individual } from './individual';
 
 @Injectable()
@@ -81,5 +82,18 @@ export class IndividualService extends BaseResourceService<Individual> {
         .toPromise()
         .catch(_ => null)
     );
+  }
+
+  hasObservations(individualId: string) {
+    return this.afs.collection<Observation>('observations', ref =>
+      ref.where('individual_id', '==', individualId).limit(1)
+    ).valueChanges().pipe(map(observations => {
+      return observations.length > 0;
+    }));
+  }
+
+  deleteImages(individual: Individual) {
+    this.afStorage.storage.ref(this.getImagePath(individual, true)).delete().catch(reason => console.log(reason));
+    this.afStorage.storage.ref(this.getImagePath(individual, false)).delete().catch(reason => console.log(reason));
   }
 }

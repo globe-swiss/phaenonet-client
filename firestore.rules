@@ -50,7 +50,8 @@ service cloud.firestore {
                       && request.resource.data.type == resource.data.type
                       && request.resource.data.individual == resource.data.individual
                     );
-      // no delete allowed: not sure how to check for ref integrity (observations)
+      allow delete: if request.auth.uid == resource.data.user // if you own them
+                    && resource.data.year == phenoyear();
     }
 
     match /observations/{observation_id} {

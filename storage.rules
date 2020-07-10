@@ -2,16 +2,17 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
     match /images {
-     // Cascade read to any image type at any path
-     match /{allImages=**} {
-       allow read;
-     }
+      // Cascade read to any image type at any path
+      match /{allImages=**} {
+        allow read;
+      }
 
-     match /{user_id}/{allImages=**} {
-       allow write: if request.resource.size < 10 * 1024 * 1024
-                    && request.resource.contentType.matches('image/.*')
-                    && request.auth.uid == user_id
-     }
-   }
+    match /{user_id}/{allImages=**} {
+      allow create, update: if request.resource.size < 10 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*')
+                   && request.auth.uid == user_id;
+      allow delete: if request.auth.uid == user_id;
+      }
+    }
   }
 }
