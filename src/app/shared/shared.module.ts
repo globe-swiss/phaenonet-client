@@ -16,6 +16,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { DisableNotOwnerDirective } from '../auth/disable-not-owner.directive';
 import { CopyClipboardDirective } from './copy-clipboard.directive';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { RoundPipe } from './round.pipe';
 
 /**
  * The `SharedModule` is used to group common services and modules like {@link TranslateModule}.
@@ -38,7 +39,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     DisableNotOwnerDirective,
     NotFoundComponent,
     CopyClipboardDirective,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    RoundPipe
   ],
   exports: [
     CommonModule,
@@ -53,7 +55,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     TranslateModule,
     FlexLayoutModule,
     GravatarModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    RoundPipe
   ],
   providers: []
 })

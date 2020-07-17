@@ -48,7 +48,6 @@ export class IndividualDescriptionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.species = this.individual.pipe(map(i => this.masterdataService.getSpeciesValue(i.species)), mergeAll());
     this.description = this.individual.pipe(map(i => this.masterdataService.getDescriptionValue(i.description)), mergeAll());
     this.exposition = this.individual.pipe(map(i => this.masterdataService.getExpositionValue(i.exposition)), mergeAll());
