@@ -14,8 +14,8 @@
       <input
         matInput
         name="altitude"
-        [value]="altitude | async"
-        placeholder="{{ 'Höhe M.ü.M.' | translate }}"
+        [value]="altitude | async | round"
+        placeholder="{{ 'Höhe m ü. M.' | translate }}"
         type="text"
         disabled/>
     </mat-form-field>
