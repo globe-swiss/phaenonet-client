@@ -64,7 +64,7 @@ export class IndividualDescriptionComponent implements OnInit {
     );
 
     this.lastPhenophase = this.individual.pipe(map(i => this.getPhenophase(i)), mergeAll());
-    this.lastPhenophaseColor = this.lastPhenophase.pipe(map(p => this.masterdataService.colorMap[p.id]));
+    this.lastPhenophaseColor = this.lastPhenophase.pipe(map(p => this.masterdataService.getColor(p.id)));
     this.lastObservationDate = this.individual.pipe(map(i => formatShortDate(i.last_observation_date.toDate())));
   }
 

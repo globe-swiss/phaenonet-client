@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, publishReplay, refCount, mergeAll } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseService } from '../core/base.service';
@@ -18,6 +17,7 @@ import { Phenophase } from './phaenophase';
 import { PhenophaseGroup } from './phaenophase-group';
 import { Shade } from './shade';
 import { Species } from './species';
+import * as config from '../../assets/config_static.json';
 
 export type MasterdataType =
   | 'species'
@@ -30,51 +30,25 @@ export type MasterdataType =
   | 'watering'
   | 'comments';
 
-export type ReferenceType = 'individuals' | 'observations';
+export type MasterdataCollection = { [index: string]: Object };
 
 @Injectable()
 export class MasterdataService extends BaseService {
-  constructor(alertService: AlertService, private authService: AuthService, private afs: AngularFirestore) {
+  constructor(alertService: AlertService, private authService: AuthService) {
     super(alertService);
   }
 
-  // temporary solution
-  public colorMap = {
-    KNS: '#4b9f6f',
-    KNV: '#4b9f6f',
-    BEA: '#7bb53b',
-    BES: '#7bb53b',
-    BLA: '#e8d439',
-    BLB: '#e8d439',
-    BLE: '#e8d439',
-    FRA: '#e8b658',
-    FRB: '#e8b658',
-    BVA: '#b29976',
-    BVS: '#b29976',
-    BFA: '#868072'
-  };
-
-  public phenophaseIndex = {
-    KNS: 1,
-    KNV: 1,
-    BEA: 2,
-    BES: 2,
-    BLA: 3,
-    BLB: 3,
-    BLE: 3,
-    FRA: 4,
-    FRB: 4,
-    BVA: 5,
-    BVS: 5,
-    BFA: 6
-  };
-
+  //todo fixme
   public availableYears = [2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011];
+
+  public getColor(phenophase: string) {
+    return config.phenophases[phenophase].color;
+  }
 
   getIndividualIconPath(species: string, source: string, phenophase: string): string {
     let phaenoIndex = 1;
     if (phenophase) {
-      phaenoIndex = this.phenophaseIndex[phenophase];
+      phaenoIndex = config.phenophases[phenophase].icon_index;
     }
     if (source === 'meteoswiss') {
         return '/assets/img/map_pins/map_pin_meteoschweiz.png';
@@ -106,86 +80,88 @@ export class MasterdataService extends BaseService {
    */
 
   getSpecies(): Observable<Species[]> {
-    return this.getMasterdataFor('individuals', 'species');
+    return this.getMasterdataFor('species');
   }
 
+  /**
+   * Species that can be selected for creating new individuals.
+   */
   getSelectableSpecies(): Observable<Species[]> {
-    return this.getSpecies().pipe(map(species => species.filter(s => s.tenant === 'ALL' || s.tenant === 'GLOBE_CH')));
+    return this.getSpecies().pipe(map(species => species.filter(s => s.tenant === 'all' || s.tenant === 'globe')));
   }
 
   getHabitats(): Observable<Habitat[]> {
-    return this.getMasterdataFor('individuals', 'habitat');
+    return this.getMasterdataFor('habitat');
   }
 
   getDescriptions(): Observable<Description[]> {
-    return this.getMasterdataFor('individuals', 'description');
+    return this.getMasterdataFor('description');
   }
 
   getExpositions(): Observable<Exposition[]> {
-    return this.getMasterdataFor('individuals', 'exposition');
+    return this.getMasterdataFor('exposition');
   }
 
   getForests(): Observable<Forest[]> {
-    return this.getMasterdataFor('individuals', 'forest');
+    return this.getMasterdataFor('forest');
   }
 
   getShades(): Observable<Shade[]> {
-    return this.getMasterdataFor('individuals', 'shade');
+    return this.getMasterdataFor('shade');
   }
 
   getDistances(): Observable<Distance[]> {
-    return this.getMasterdataFor('individuals', 'less100');
+    return this.getMasterdataFor('less100');
   }
 
   getIrrigations(): Observable<Irrigation[]> {
-    return this.getMasterdataFor('individuals', 'watering');
+    return this.getMasterdataFor('watering');
   }
 
   getComments(): Observable<Comment[]> {
-    return this.getMasterdataFor('observations', 'comments');
+    return this.getMasterdataFor('comments');
   }
 
   getSpeciesValue(id: string): Observable<Species> {
-    return this.getMasterdataValueFor('individuals', 'species', id);
+    return this.getMasterdataValueFor('species', id);
   }
 
   getHabitatValue(id: string): Observable<Habitat> {
-    return this.getMasterdataValueFor('individuals', 'habitat', id);
+    return this.getMasterdataValueFor('habitat', id);
   }
 
   getDescriptionValue(id: string): Observable<Description> {
-    return this.getMasterdataValueFor('individuals', 'description', id);
+    return this.getMasterdataValueFor('description', id);
   }
 
   getExpositionValue(id: string): Observable<Exposition> {
-    return this.getMasterdataValueFor('individuals', 'exposition', id);
+    return this.getMasterdataValueFor('exposition', id);
   }
 
   getForestValue(id: string): Observable<Forest> {
-    return this.getMasterdataValueFor('individuals', 'forest', id);
+    return this.getMasterdataValueFor('forest', id);
   }
 
   getShadeValue(id: string): Observable<Shade> {
-    return this.getMasterdataValueFor('individuals', 'shade', id);
+    return this.getMasterdataValueFor('shade', id);
   }
 
   getDistanceValue(id: string): Observable<Distance> {
-    return this.getMasterdataValueFor('individuals', 'less100', id);
+    return this.getMasterdataValueFor('less100', id);
   }
 
   getIrrigationValue(id: string): Observable<Irrigation> {
-    return this.getMasterdataValueFor('individuals', 'watering', id);
+    return this.getMasterdataValueFor('watering', id);
   }
 
   getCommentValue(id: string): Observable<Comment> {
-    return this.getMasterdataValueFor('observations', 'comments', id);
+    return this.getMasterdataValueFor('comments', id);
   }
 
   getPhenophases(speciesId: string): Observable<Phenophase[]> {
     return this.getPhenoDataFor(speciesId, 'phenophases');
   }
 
-  // todo: add more methods to provide masterdata for observables directly
   getPhenophasesFromIndividual(individual: Observable<Individual>) {
     return individual.pipe(map(i => this.getPhenophases(i.species)), mergeAll());
   }
@@ -198,21 +174,19 @@ export class MasterdataService extends BaseService {
     return this.getPhenoDataFor(speciesId, 'groups');
   }
 
-  private getMasterdataFor<T extends MasterdataLike>(reference: ReferenceType, name: MasterdataType): Observable<T[]> {
-    return this.afs
-      .collection('definitions')
-      .doc(reference)
-      .collection<T>(name)
-      .valueChanges({ idField: 'id' })
-      .pipe(publishReplay(1), refCount());
+  private getMasterdataFor<T extends MasterdataLike>(name: MasterdataType): Observable<T[]> {
+    return of(this.toMasterdatalikeList<T>(config[name]));
+  }
+
+  private toMasterdatalikeList<T extends MasterdataLike>(masterdataLikeObjects: MasterdataCollection): T[] {
+    return Object.entries(masterdataLikeObjects).map(([key, value]) => ({ 'id': key, ...value} as T));
   }
 
   private getMasterdataValueFor<T extends MasterdataLike>(
-    reference: ReferenceType,
     name: MasterdataType,
     id: string
   ): Observable<T> {
-    return this.getMasterdataFor<T>(reference, name).pipe(
+    return this.getMasterdataFor<T>(name).pipe(
       map(elements => elements.find(element => element.id === id)),
       publishReplay(1),
       refCount()
@@ -220,14 +194,15 @@ export class MasterdataService extends BaseService {
   }
 
   private getPhenoDataFor<T extends PhenophasesdataLike>(speciesId: string, name: string): Observable<T[]> {
-    return this.afs
-      .collection('definitions')
-      .doc('individuals')
-      .collection('species')
-      .doc(speciesId)
-      .collection<T>(name, ref => ref.orderBy('seq'))
-      .valueChanges({ idField: 'id' })
-      .pipe(publishReplay(1), refCount());
+    return of(this.toMasterdatalikeList<T>(config.species[speciesId][name]).sort((n1, n2) => {
+      if (n1.seq > n2.seq) {
+          return 1;
+      }
+      if (n1.seq < n2.seq) {
+          return -1;
+      }
+      return 0;
+    }));
   }
 
   private getPhenoDataValueFor<T extends PhenophasesdataLike>(

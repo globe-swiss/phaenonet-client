@@ -28,7 +28,7 @@
           <h4>{{ groupedItem.species.de | translate }}</h4>
           <div *ngFor="let item of groupedItem.phenophaseObservations">
             <ng-container *ngIf="item.observation.isSome()">
-              <div class="detail-label">{{ item.phenophase.name_de | translate }}</div>
+              <div class="detail-label">{{ item.phenophase.de | translate }}</div>
               <mat-form-field class="full-width detail-observation-date">
                 <input
                   matInput

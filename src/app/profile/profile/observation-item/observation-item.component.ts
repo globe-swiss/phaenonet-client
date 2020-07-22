@@ -19,6 +19,10 @@ export class ObservationItemComponent implements OnInit {
   ngOnInit() {
   }
 
+  getColor(phenophase: string) {
+    return this.masterdataService.getColor(phenophase);
+  }
+
   getLastObservationDate() {
     return formatShortDate(this.item.individual.last_observation_date.toDate());
   }

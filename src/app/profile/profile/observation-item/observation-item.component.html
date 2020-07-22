@@ -23,8 +23,8 @@
         <div class="phenophase-title" *ngIf="item.lastPhenophase">
             <span
                 class="phenophase-circle"
-                [ngStyle]="{ 'background-color': masterdataService.colorMap[item.individual.last_phenophase] }"></span>
-            {{ item.lastPhenophase.name_de | translate }}
+                [ngStyle]="{ 'background-color': getColor(item.individual.last_phenophase) }"></span>
+            {{ item.lastPhenophase.de | translate }}
         </div>
     </div>
 </div>
