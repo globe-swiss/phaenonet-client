@@ -59,7 +59,7 @@ export class MapOverviewComponent implements OnInit {
   meteoswissInfoWindowData = new ReplaySubject<MeteoswissInfoWindowData>(1);
   infoWindowType = new ReplaySubject<'globe' | 'meteoswiss'>(1);
 
-  // TODO how to get the avaiable years?
+  // TODO how to get the available years?
   years = this.masterDataService.availableYears;
 
   datasources: SourceType[] = ['all', 'globe', 'meteoswiss'];

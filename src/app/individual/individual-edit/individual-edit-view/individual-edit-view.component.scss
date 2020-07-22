@@ -1,0 +1,29 @@
+.geopos-width {
+  width: 70%;
+}
+
+@media screen and (max-width: 959px) {
+  .geopos-width {
+    width: 100%;
+  }
+}
+
+.gradient-info-img {
+  height: 61px;
+  padding-left: 2rem;
+}
+
+@media screen and (max-width: 959px) {
+  .gradient-info-img {
+    height: 50px;
+    padding-left: 1rem;
+  }
+}
+
+.right-align {
+  text-align: right;
+}
+
+.add-image {
+  cursor: pointer;
+}

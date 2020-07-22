@@ -1,0 +1,22 @@
+<div gdColumns="repeat(6, 1fr)">
+  <google-map
+    [class]="(imageUrl | async) ? 'individual-map-with-image' : 'individual-map'"
+    [gdColumn]="(imageUrl | async) ? '1 / span 4' : '1 / span 6'"
+    width="100%"
+    height="402px"
+    [center]="geopos | async"
+    [zoom]="zoom"
+    [options]="options">
+    <map-marker
+      #marker
+      [position]="geopos | async"
+      [options]="markerOptions"
+      (mapDragend)="updateGeopos($event)"></map-marker>
+  </google-map>
+  <div gdColumn="5 / span 2" class="image-container" *ngIf="imageUrl | async; let url">
+    <img class="individual-image" [src]="url" width="100%" />
+  </div>
+</div>
+<button mat-fab class="detail-header-fab" color="accent" (click)="locateMe()">
+  <mat-icon svgIcon="locateMe"></mat-icon>
+</button>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { map, publishReplay, refCount } from 'rxjs/operators';
+import { map, publishReplay, refCount, mergeAll } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseService } from '../core/base.service';
 import { Individual } from '../individual/individual';
@@ -183,6 +183,11 @@ export class MasterdataService extends BaseService {
 
   getPhenophases(speciesId: string): Observable<Phenophase[]> {
     return this.getPhenoDataFor(speciesId, 'phenophases');
+  }
+
+  // todo: add more methods to provide masterdata for observables directly
+  getPhenophasesFromIndividual(individual: Observable<Individual>) {
+    return individual.pipe(map(i => this.getPhenophases(i.species)), mergeAll());
   }
 
   getPhenophaseValue(speciesId: string, phenophase: string): Observable<Phenophase> {
