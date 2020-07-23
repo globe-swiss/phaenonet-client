@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
-import { map, share, startWith, switchMap, first } from 'rxjs/operators';
+import { map, share, startWith, switchMap, first, tap } from 'rxjs/operators';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 import { formatShortDate } from '../core/formatDate';
@@ -145,6 +145,7 @@ export class MapOverviewComponent implements OnInit {
   }
 
   openInfoWindow(marker: MapMarker, pos: google.maps.LatLngLiteral, individual: Individual & IdLike) {
+    console.log('openwindowinfo: ' + individual);
     const baseUrl = individual.source === 'meteoswiss' ? '/stations' : '/individuals';
     const url = { url: [baseUrl, individual.id] };
 
@@ -157,7 +158,7 @@ export class MapOverviewComponent implements OnInit {
         this.masterdataService.getSpeciesValue(individual.species),
         this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase)
       ])
-        .pipe(
+        .pipe(first(),
           map(([species, phenophase]) => {
             return {
               ...{
@@ -173,7 +174,7 @@ export class MapOverviewComponent implements OnInit {
             } as GlobeInfoWindowData;
           })
         )
-        .subscribe(this.globeInfoWindowData);
+        .subscribe(i => this.globeInfoWindowData.next(i));
       this.infoWindowType.next('globe');
     }
 
