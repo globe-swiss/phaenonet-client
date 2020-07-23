@@ -19,18 +19,8 @@ import { Shade } from './shade';
 import { Species } from './species';
 import * as config from '../../assets/config_static.json';
 
-export type MasterdataType =
-  | 'species'
-  | 'habitat'
-  | 'description'
-  | 'exposition'
-  | 'forest'
-  | 'shade'
-  | 'less100'
-  | 'watering'
-  | 'comments';
 
-export type MasterdataCollection = { [index: string]: Object };
+export interface MasterdataCollection { [index: string]: Object; }
 
 @Injectable()
 export class MasterdataService extends BaseService {
@@ -80,7 +70,7 @@ export class MasterdataService extends BaseService {
    */
 
   getSpecies(): Observable<Species[]> {
-    return this.getMasterdataFor('species');
+    return this.getMasterdataFor(config.species);
   }
 
   /**
@@ -91,71 +81,71 @@ export class MasterdataService extends BaseService {
   }
 
   getHabitats(): Observable<Habitat[]> {
-    return this.getMasterdataFor('habitat');
+    return this.getMasterdataFor(config.habitat);
   }
 
   getDescriptions(): Observable<Description[]> {
-    return this.getMasterdataFor('description');
+    return this.getMasterdataFor(config.description);
   }
 
   getExpositions(): Observable<Exposition[]> {
-    return this.getMasterdataFor('exposition');
+    return this.getMasterdataFor(config.exposition);
   }
 
   getForests(): Observable<Forest[]> {
-    return this.getMasterdataFor('forest');
+    return this.getMasterdataFor(config.forest);
   }
 
   getShades(): Observable<Shade[]> {
-    return this.getMasterdataFor('shade');
+    return this.getMasterdataFor(config.shade);
   }
 
   getDistances(): Observable<Distance[]> {
-    return this.getMasterdataFor('less100');
+    return this.getMasterdataFor(config.less100);
   }
 
   getIrrigations(): Observable<Irrigation[]> {
-    return this.getMasterdataFor('watering');
+    return this.getMasterdataFor(config.watering);
   }
 
   getComments(): Observable<Comment[]> {
-    return this.getMasterdataFor('comments');
+    return this.getMasterdataFor(config.comments);
   }
 
   getSpeciesValue(id: string): Observable<Species> {
-    return this.getMasterdataValueFor('species', id);
+    return this.getMasterdataValueFor(config.species, id);
   }
 
   getHabitatValue(id: string): Observable<Habitat> {
-    return this.getMasterdataValueFor('habitat', id);
+    return this.getMasterdataValueFor(config.habitat, id);
   }
 
   getDescriptionValue(id: string): Observable<Description> {
-    return this.getMasterdataValueFor('description', id);
+    return this.getMasterdataValueFor(config.description, id);
   }
 
   getExpositionValue(id: string): Observable<Exposition> {
-    return this.getMasterdataValueFor('exposition', id);
+    return this.getMasterdataValueFor(config.exposition, id);
   }
 
   getForestValue(id: string): Observable<Forest> {
-    return this.getMasterdataValueFor('forest', id);
+    return this.getMasterdataValueFor(config.forest, id);
   }
 
   getShadeValue(id: string): Observable<Shade> {
-    return this.getMasterdataValueFor('shade', id);
+    return this.getMasterdataValueFor(config.shade, id);
   }
 
   getDistanceValue(id: string): Observable<Distance> {
-    return this.getMasterdataValueFor('less100', id);
+    return this.getMasterdataValueFor(config.less100, id);
   }
 
   getIrrigationValue(id: string): Observable<Irrigation> {
-    return this.getMasterdataValueFor('watering', id);
+    return this.getMasterdataValueFor(config.watering, id);
   }
 
   getCommentValue(id: string): Observable<Comment> {
-    return this.getMasterdataValueFor('comments', id);
+    return this.getMasterdataValueFor(config.comments, id);
   }
 
   getPhenophases(speciesId: string): Observable<Phenophase[]> {
@@ -174,8 +164,8 @@ export class MasterdataService extends BaseService {
     return this.getPhenoDataFor(speciesId, 'groups');
   }
 
-  private getMasterdataFor<T extends MasterdataLike>(name: MasterdataType): Observable<T[]> {
-    return of(this.toMasterdatalikeList<T>(config[name]));
+  private getMasterdataFor<T extends MasterdataLike>(data: MasterdataCollection): Observable<T[]> {
+    return of(this.toMasterdatalikeList<T>(data));
   }
 
   private toMasterdatalikeList<T extends MasterdataLike>(masterdataLikeObjects: MasterdataCollection): T[] {
@@ -183,10 +173,10 @@ export class MasterdataService extends BaseService {
   }
 
   private getMasterdataValueFor<T extends MasterdataLike>(
-    name: MasterdataType,
+    data: MasterdataCollection,
     id: string
   ): Observable<T> {
-    return this.getMasterdataFor<T>(name).pipe(
+    return this.getMasterdataFor<T>(data).pipe(
       map(elements => elements.find(element => element.id === id)),
       publishReplay(1),
       refCount()
