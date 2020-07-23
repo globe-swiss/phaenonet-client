@@ -19,16 +19,6 @@ import { Shade } from './shade';
 import { Species } from './species';
 import * as config from '../../assets/config_static.json';
 
-export type MasterdataType =
-  | 'species'
-  | 'habitat'
-  | 'description'
-  | 'exposition'
-  | 'forest'
-  | 'shade'
-  | 'less100'
-  | 'watering'
-  | 'comments';
 
 export interface MasterdataCollection { [index: string]: Object; }
 
