@@ -5,7 +5,8 @@ export interface MasterdataLike {
 
 export interface PhenophasesdataLike {
   id: string;
-  name_de: string;
+  de: string;
+  seq?: number;
 }
 
 export interface IdLike {

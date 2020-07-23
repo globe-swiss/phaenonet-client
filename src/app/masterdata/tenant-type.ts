@@ -1,1 +1,1 @@
-export type TenantType = 'ALL' | 'GLOBE_CH' | 'METEO_CH';
+export type TenantType = 'all' | 'globe' | 'meteoswiss';

@@ -6,7 +6,7 @@
 </div>
 <div class="phenophase-title" *ngIf="lastPhenophase | async">
     <span class="phenophase-circle" [ngStyle]="{ 'background-color': lastPhenophaseColor | async }"></span>
-    <span>{{ (lastPhenophase | async)?.name_de | translate }}</span>
+    <span>{{ (lastPhenophase | async)?.de | translate }}</span>
 </div>
 <div>
     <span>{{ 'Von' | translate }} </span

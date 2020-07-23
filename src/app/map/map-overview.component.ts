@@ -60,7 +60,7 @@ export class MapOverviewComponent implements OnInit {
   infoWindowType = new ReplaySubject<'globe' | 'meteoswiss'>(1);
 
   // TODO how to get the available years?
-  years = this.masterDataService.availableYears;
+  years = this.masterdataService.availableYears;
 
   datasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
   species: Subject<Species[]> = new ReplaySubject(1);
@@ -70,8 +70,6 @@ export class MapOverviewComponent implements OnInit {
     species: new FormControl(allSpecies.id)
   });
 
-  colorMap = {};
-
   isLoggedIn: boolean;
 
   formatShortDate = formatShortDate;
@@ -79,11 +77,14 @@ export class MapOverviewComponent implements OnInit {
   constructor(
     private navService: NavService,
     private individualService: IndividualService,
-    private masterDataService: MasterdataService,
+    private masterdataService: MasterdataService,
     private authService: AuthService,
     private analytics: AngularFireAnalytics,
   ) {
-    this.colorMap = masterDataService.colorMap;
+  }
+
+  getColor(phenophase: string) {
+    return this.masterdataService.getColor(phenophase);
   }
 
   ngOnInit() {
@@ -91,7 +92,7 @@ export class MapOverviewComponent implements OnInit {
 
     this.isLoggedIn = this.authService.isLoggedIn();
 
-    this.masterDataService
+    this.masterdataService
       .getSpecies()
       .pipe(map(species => [allSpecies].concat(species)))
       .subscribe(this.species);
@@ -131,7 +132,7 @@ export class MapOverviewComponent implements OnInit {
       }),
       map(individuals => {
         const ret = individuals.map(individual => {
-          const icon = this.masterDataService.individualToIcon(individual);
+          const icon = this.masterdataService.individualToIcon(individual);
           const markerOptions: google.maps.MarkerOptions = { draggable: false, icon: icon };
           return { individual: individual, markerOptions: markerOptions } as IndividualWithMarkerOpt;
         });
@@ -153,8 +154,8 @@ export class MapOverviewComponent implements OnInit {
       this.infoWindowType.next('meteoswiss');
     } else {
       combineLatest([
-        this.masterDataService.getSpeciesValue(individual.species),
-        this.masterDataService.getPhenophaseValue(individual.species, individual.last_phenophase)
+        this.masterdataService.getSpeciesValue(individual.species),
+        this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase)
       ])
         .pipe(
           map(([species, phenophase]) => {

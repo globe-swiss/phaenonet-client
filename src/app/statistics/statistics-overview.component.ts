@@ -93,8 +93,6 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   private year: number;
   private data: Analytics[];
 
-  private colorMap = {};
-
   constructor(
     private navService: NavService,
     private statisticsService: StatisticsService,
@@ -114,6 +112,10 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     this.drawChart();
   }
 
+  getColor(phenophase: string) {
+    return this.masterdataService.getColor(phenophase);
+  }
+
   ngOnInit() {
     this.navService.setLocation('Auswertungen');
     this.masterdataService
@@ -124,8 +126,6 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.colorMap = this.masterdataService.colorMap;
-
     this.filterForm.valueChanges
       .pipe(
         startWith(this.filterForm.getRawValue()),
@@ -232,7 +232,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         .attr('x2', d => this.x(this.toX(analytics.year, d.max)))
         .attr('y1', d => this.y(this.toKey(analytics)) + this.y.bandwidth() / 2)
         .attr('y2', d => this.y(this.toKey(analytics)) + this.y.bandwidth() / 2)
-        .attr('stroke', d => this.colorMap[d.phenophase])
+        .attr('stroke', d => this.getColor(d.phenophase))
         .attr('stroke-width', 1)
         .style('opacity', 0.7)
         .attr('fill', 'none');
@@ -250,7 +250,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         )
         .attr('x', d => this.x(this.toX(analytics.year, d.quantile_25)))
         .attr('y', d => this.y(this.toKey(analytics)))
-        .attr('fill', d => this.colorMap[d.phenophase])
+        .attr('fill', d => this.getColor(d.phenophase))
         .style('opacity', 0.7)
         .attr('stroke', '#262626')
         .attr('stroke-width', 0.5)
@@ -276,7 +276,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
               map(phenophase => {
                 d3.select('#tooltip')
                   .select('#title')
-                  .text(self.translateService.instant(phenophase.name_de));
+                  .text(self.translateService.instant(phenophase.de));
 
                 d3.select('#tooltip').classed('hidden', false);
               })
@@ -292,7 +292,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         analytics,
         d => this.x(this.toX(analytics.year, d.median)),
         d => this.x(this.toX(analytics.year, d.median)),
-        d => this.colorMap[d.phenophase]
+        d => this.getColor(d.phenophase)
       );
 
       this.drawVerticalLines(
@@ -300,7 +300,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         analytics,
         d => this.x(this.toX(analytics.year, d.min)),
         d => this.x(this.toX(analytics.year, d.min)),
-        d => this.colorMap[d.phenophase]
+        d => this.getColor(d.phenophase)
       );
 
       this.drawVerticalLines(
@@ -308,7 +308,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         analytics,
         d => this.x(this.toX(analytics.year, d.max)),
         d => this.x(this.toX(analytics.year, d.max)),
-        d => this.colorMap[d.phenophase]
+        d => this.getColor(d.phenophase)
       );
     });
 
