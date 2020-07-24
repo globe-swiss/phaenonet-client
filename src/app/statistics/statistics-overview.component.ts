@@ -1,4 +1,3 @@
-import { AngularFireAnalytics } from '@angular/fire/analytics';
 import {
   AfterViewInit,
   Component,
@@ -8,19 +7,19 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import * as d3 from 'd3-selection';
 import * as d3Time from 'd3-time';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { first, map, startWith, switchMap } from 'rxjs/operators';
+import * as moment from 'moment';
+import { Observable } from 'rxjs';
+import { filter, first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { formatShortDate } from '../core/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { MasterdataService } from '../masterdata/masterdata.service';
-import { Phenophase } from '../masterdata/phaenophase';
-import { PhenophaseGroup } from '../masterdata/phaenophase-group';
 import { SourceType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 import { Observation } from '../observation/observation';
@@ -28,7 +27,6 @@ import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
 import { AnalyticsValue } from './analytics-value';
 import { StatisticsService } from './statistics.service';
-import * as moment from 'moment';
 
 export interface Margin {
   top: number;
@@ -53,7 +51,6 @@ export interface YearValue {
 }
 
 const allSpecies = { id: 'all', de: 'Alle' } as Species;
-
 const allYear = { id: 'all', value: null } as YearValue;
 
 @Component({
@@ -64,15 +61,17 @@ const allYear = { id: 'all', value: null } as YearValue;
 export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef;
 
-  years = [allYear, ...this.masterdataService.availableYears.map(y => ({ id: '' + y, value: y } as YearValue))];
-  datasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
-  analyticsTypes: AnalyticsType[] = ['species', 'altitude'];
-  species: Subject<Species[]> = new ReplaySubject(1);
+  availableYears: number[];
+  selectableYears: Observable<YearValue[]>;
+  selectableDatasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
+  selectableAnalyticsTypes: AnalyticsType[] = ['species', 'altitude'];
+  selectableSpecies: Observable<Species[]>;
 
+  selectedYear = new FormControl();
   filterForm = new FormGroup({
-    year: new FormControl(this.years[1]),
-    datasource: new FormControl(this.datasources[0]),
-    analyticsType: new FormControl(this.analyticsTypes[0]),
+    year: this.selectedYear,
+    datasource: new FormControl(this.selectableDatasources[0]),
+    analyticsType: new FormControl(this.selectableAnalyticsTypes[0]),
     species: new FormControl(allSpecies.id)
   });
 
@@ -101,11 +100,6 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     private analytics: AngularFireAnalytics,
   ) {}
 
-  availablePhenophases: Observable<Phenophase[]>;
-  availablePhenophaseGroups: Observable<PhenophaseGroup[]>;
-  observations: Observable<Observation[]>;
-  phenophaseObservationsGroups: Observable<ObservationData[]>;
-
   @HostListener('window:resize', ['$event'])
   onResize(event: UIEvent) {
     // re-render the svg on window resize
@@ -118,17 +112,23 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.navService.setLocation('Auswertungen');
-    this.masterdataService
+    this.selectableSpecies = this.masterdataService
       .getSpecies()
-      .pipe(map(species => [allSpecies].concat(species)))
-      .subscribe(this.species);
+      .pipe(map(species => [allSpecies].concat(species)));
       this.analytics.logEvent('statistics.view');
+
+    this.selectableYears = this.masterdataService.availableYears.pipe(
+      tap(years => this.availableYears = years),
+      map(years => [allYear, ...years.map(year => ({ id: '' + year, value: year } as YearValue))]),
+      tap(years => this.selectedYear.patchValue(years[1])),
+    );
   }
 
   ngAfterViewInit(): void {
     this.filterForm.valueChanges
       .pipe(
         startWith(this.filterForm.getRawValue()),
+        filter(form => form.year),
         switchMap(form => {
           const year: YearValue = form.year;
           const datasource: SourceType = form.datasource;
@@ -148,7 +148,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
           if (year === allYear) {
             analyticsType = 'species';
-            this.filterForm.controls.analyticsType.setValue(this.analyticsTypes[0], { emitEvent: false });
+            this.filterForm.controls.analyticsType.setValue(this.selectableAnalyticsTypes[0], { emitEvent: false });
           }
 
           // only report an event if filter is not the default
@@ -202,7 +202,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     const domain = this.data.map(analytics => analytics.species);
     const subdomain =
       this.year === allYear.value
-        ? this.masterdataService.availableYears
+        ? this.availableYears
         : [...new Set(this.data.map(analytics => analytics.altitude_grp))].sort().reverse();
 
     const resultingDomain = [];

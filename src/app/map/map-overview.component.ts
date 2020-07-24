@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
-import { map, share, startWith, switchMap, first, tap } from 'rxjs/operators';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
-
+import { first, map, share, startWith, switchMap, tap } from 'rxjs/operators';
 import { formatShortDate } from '../core/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
@@ -15,6 +14,7 @@ import { Phenophase } from '../masterdata/phaenophase';
 import { SourceType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 import { AuthService } from './../auth/auth.service';
+
 
 class GlobeInfoWindowData {
   individual: Individual;
@@ -59,16 +59,16 @@ export class MapOverviewComponent implements OnInit {
   meteoswissInfoWindowData = new ReplaySubject<MeteoswissInfoWindowData>(1);
   infoWindowType = new ReplaySubject<'globe' | 'meteoswiss'>(1);
 
-  // TODO how to get the available years?
-  years = this.masterdataService.availableYears;
-
   datasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
   species: Subject<Species[]> = new ReplaySubject(1);
+  selectedYear = new FormControl();
   mapFormGroup = new FormGroup({
-    year: new FormControl(this.years[0]),
+    year: this.selectedYear,
     datasource: new FormControl(this.datasources[0]),
     species: new FormControl(allSpecies.id)
   });
+
+  years = this.masterdataService.availableYears.pipe(tap(years => this.selectedYear.patchValue(years[0])));
 
   isLoggedIn: boolean;
 
