@@ -29,24 +29,24 @@ import Timestamp = firestore.Timestamp;
   styleUrls: ['./individual-description.component.scss']
 })
 export class IndividualDescriptionComponent implements OnInit {
-  @Input() individual: ReplaySubject<Individual>;
-  @Input() isEditable: Observable<boolean>;
+  @Input() individual$: ReplaySubject<Individual>;
+  @Input() isEditable$: Observable<boolean>;
   @Input() individualId: string; // should be added to the individual by the resource service
 
-  species: Observable<Species>;
-  description: Observable<Description>;
-  exposition: Observable<Exposition>;
-  shade: Observable<Shade>;
-  habitat: Observable<Habitat>;
-  forest: Observable<Forest>;
-  distance: Observable<Distance>;
-  irrigation: Observable<Irrigation>;
+  species$: Observable<Species>;
+  description$: Observable<Description>;
+  exposition$: Observable<Exposition>;
+  shade$: Observable<Shade>;
+  habitat$: Observable<Habitat>;
+  forest$: Observable<Forest>;
+  distance$: Observable<Distance>;
+  irrigation$: Observable<Irrigation>;
 
-  individualCreatorNickname: Observable<string>;
+  individualCreatorNickname$: Observable<string>;
 
-  lastPhenophase: Observable<Phenophase>;
-  lastPhenophaseColor: Observable<string>;
-  lastObservationDate: Observable<string>;
+  lastPhenophase$: Observable<Phenophase>;
+  lastPhenophaseColor$: Observable<string>;
+  lastObservationDate$: Observable<string>;
 
   constructor(
     private router: Router,
@@ -63,30 +63,30 @@ export class IndividualDescriptionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.species = this.individual.pipe(
+    this.species$ = this.individual$.pipe(
       filter(i => i !== undefined), map(i => this.masterdataService.getSpeciesValue(i.species)), mergeAll());
-    this.description = this.individual.pipe(
+    this.description$ = this.individual$.pipe(
       filter(i => i !== undefined), map(i => this.masterdataService.getDescriptionValue(i.description)), mergeAll());
-    this.exposition = this.individual.pipe(
+    this.exposition$ = this.individual$.pipe(
       filter(i => i !== undefined), map(i => this.masterdataService.getExpositionValue(i.exposition)), mergeAll());
-    this.shade = this.individual.pipe(
+    this.shade$ = this.individual$.pipe(
       filter(i => i !== undefined), map(i => this.masterdataService.getShadeValue(i.shade)), mergeAll());
-    this.habitat = this.individual.pipe(
+    this.habitat$ = this.individual$.pipe(
       filter(i => i !== undefined), map(i => this.masterdataService.getHabitatValue(i.habitat)), mergeAll());
-    this.forest = this.individual.pipe(
+    this.forest$ = this.individual$.pipe(
       filter(i => i !== undefined), map(i => this.masterdataService.getForestValue(i.forest)), mergeAll());
-    this.distance = this.individual.pipe(
+    this.distance$ = this.individual$.pipe(
       filter(i => i !== undefined), map(i => this.masterdataService.getDistanceValue(i.less100)), mergeAll());
-    this.irrigation = this.individual.pipe(
+    this.irrigation$ = this.individual$.pipe(
       filter(i => i !== undefined), map(i => this.masterdataService.getIrrigationValue(i.watering)), mergeAll());
 
-    this.individualCreatorNickname = this.individual.pipe(
+    this.individualCreatorNickname$ = this.individual$.pipe(
       filter(i => i !== undefined), map(i => this.getUserName(i)), mergeAll());
 
-    this.lastPhenophase = this.individual.pipe(
+    this.lastPhenophase$ = this.individual$.pipe(
       filter(i => i !== undefined), map(i => this.getPhenophase(i)), mergeAll());
-    this.lastPhenophaseColor = this.lastPhenophase.pipe(map(p => this.masterdataService.getColor(p.id))); // cannot be undefined
-    this.lastObservationDate = this.individual.pipe(
+    this.lastPhenophaseColor$ = this.lastPhenophase$.pipe(map(p => this.masterdataService.getColor(p.id))); // cannot be undefined
+    this.lastObservationDate$ = this.individual$.pipe(
       filter(i => i !== undefined), map(i => formatShortDate(i.last_observation_date.toDate())));
   }
 
@@ -128,7 +128,7 @@ export class IndividualDescriptionComponent implements OnInit {
       } as ConfirmationDialogData
     });
 
-    combineLatest([dialogRef.afterClosed(), this.individual]).pipe(first()).subscribe(
+    combineLatest([dialogRef.afterClosed(), this.individual$]).pipe(first()).subscribe(
       ([confirmed, individual]) => {
       if (confirmed) {
           this.individualService.deleteImages(individual);

@@ -12,9 +12,9 @@ import { GeoposService } from './geopos.service';
   styleUrls: ['./individual-edit-header.component.scss']
 })
 export class EditHeaderComponent implements OnInit {
-  @Input() individual: ReplaySubject<Individual>;
+  @Input() individual$: ReplaySubject<Individual>;
 
-  geopos: Observable<google.maps.LatLngLiteral>;
+  geopos$: Observable<google.maps.LatLngLiteral>;
   zoom = 9;
   options: google.maps.MapOptions = {
     mapTypeId: google.maps.MapTypeId.HYBRID,
@@ -28,7 +28,7 @@ export class EditHeaderComponent implements OnInit {
     icon: { url: '/assets/img/map_pins/map_pin_generic.png', scaledSize: new google.maps.Size(55, 60) }
   };
 
-  imageUrl: Observable<string>;
+  imageUrl$: Observable<string>;
 
   constructor(
     private geoposService: GeoposService,
@@ -37,13 +37,13 @@ export class EditHeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.individual.pipe(first()).subscribe(i => {
+    this.individual$.pipe(first()).subscribe(i => {
       if (i.geopos) {
         this.geoposService.update(new google.maps.LatLng(i.geopos));
       }
     });
-    this.geopos = this.geoposService.geopos;
-    this.imageUrl = this.individual.pipe(map(individual =>
+    this.geopos$ = this.geoposService.geopos$;
+    this.imageUrl$ = this.individual$.pipe(map(individual =>
       this.individualService.getImageUrl(individual, true)
       ), mergeAll());
   }

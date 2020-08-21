@@ -23,23 +23,24 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export interface MasterdataCollection { [index: string]: Object; }
 export interface ConfigDynamic {
   current_year: number;
-  first_year: number; }
+  first_year: number;
+}
 
 @Injectable()
 export class MasterdataService extends BaseService {
 
-  public availableYears: Observable<number[]>;
-  public currentYear: Observable<number>;
+  public availableYears$: Observable<number[]>;
+  public currentYear$: Observable<number>;
 
   constructor(alertService: AlertService, private afs: AngularFirestore) {
     super(alertService);
     // do not expose as an observable to reduce subscriptions
-    this.availableYears = this.afs
+    this.availableYears$ = this.afs
       .collection<any>('definitions')
       .doc<ConfigDynamic>('config_dynamic')
       .valueChanges()
       .pipe(map(config => this.range(config.current_year, config.first_year - 1, -1)));
-    this.currentYear = this.availableYears.pipe(map(years => years[0]));
+    this.currentYear$ = this.availableYears$.pipe(map(years => years[0]));
   }
 
   public getColor(phenophase: string) {

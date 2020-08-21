@@ -8,7 +8,7 @@
         gdColumn.lt-md="1 / span 6"
         class="detail-right">
         <app-activity-item
-            *ngFor="let activity of activities | async"
+            *ngFor="let activity of activities$ | async"
             [activity]="activity"></app-activity-item>
         <button
             mat-flat-button color="accent"

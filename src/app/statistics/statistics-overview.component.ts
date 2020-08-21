@@ -62,10 +62,10 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef;
 
   availableYears: number[];
-  selectableYears: Observable<YearValue[]>;
+  selectableYears$: Observable<YearValue[]>;
   selectableDatasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
   selectableAnalyticsTypes: AnalyticsType[] = ['species', 'altitude'];
-  selectableSpecies: Observable<Species[]>;
+  selectableSpecies$: Observable<Species[]>;
 
   selectedYear = new FormControl();
   filterForm = new FormGroup({
@@ -112,12 +112,12 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.navService.setLocation('Auswertungen');
-    this.selectableSpecies = this.masterdataService
+    this.selectableSpecies$ = this.masterdataService
       .getSpecies()
       .pipe(map(species => [allSpecies].concat(species)));
       this.analytics.logEvent('statistics.view');
 
-    this.selectableYears = this.masterdataService.availableYears.pipe(
+    this.selectableYears$ = this.masterdataService.availableYears$.pipe(
       tap(years => this.availableYears = years),
       map(years => [allYear, ...years.map(year => ({ id: '' + year, value: year } as YearValue))]),
       tap(years => this.selectedYear.patchValue(years[1])),

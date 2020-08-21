@@ -13,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
     return next.handle(request).pipe(
       catchError((error, caught) => {
-        if (error.status == 401) {
+        if (error.status === 401) {
           this.authService.resetClientSession();
           let currentRef = this.dialog.openDialogs.find(x => x.componentInstance instanceof LoginDialogComponent);
           if (!currentRef) {

@@ -43,13 +43,13 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
     super.ngOnInit();
     this.navService.setLocation('Profil bearbeiten');
 
-    this.detailSubject.subscribe(detail => {
+    this.detailSubject$.subscribe(detail => {
       this.editForm.reset(detail);
     });
   }
 
   save() {
-    this.detailSubject.pipe(first()).subscribe(detail => {
+    this.detailSubject$.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
       const user: User = { ...detail, ...this.editForm.value };
 

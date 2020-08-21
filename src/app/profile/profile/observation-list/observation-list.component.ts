@@ -15,8 +15,8 @@ import { first, map, mergeAll } from 'rxjs/operators';
 export class ObservationListComponent implements OnInit, OnDestroy {
   @Input() userId: string;
 
-  latestIndividualObservations: Observable<IndividualPhenophase[]>;
-  limitIndividuals = new BehaviorSubject<number>(4);
+  latestIndividualObservations$: Observable<IndividualPhenophase[]>;
+  limitIndividuals$ = new BehaviorSubject<number>(4);
 
   constructor(
     private authService: AuthService,
@@ -27,8 +27,8 @@ export class ObservationListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // combine the list of individuals with their phenophase
-    this.latestIndividualObservations = combineLatest(
-      [this.limitIndividuals, this.individualService.listByUser(this.userId)],
+    this.latestIndividualObservations$ = combineLatest(
+      [this.limitIndividuals$, this.individualService.listByUser(this.userId)],
       (limit, individuals) =>
         combineLatest(
           individuals
@@ -58,7 +58,7 @@ export class ObservationListComponent implements OnInit, OnDestroy {
                     individual: individual,
                     species: species,
                     lastPhenophase: phenophase,
-                    imgUrl: this.individualService.getImageUrl(individual, true).pipe(
+                    imgUrl$: this.individualService.getImageUrl(individual, true).pipe(
                       first(),
                       map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
                     )
@@ -75,11 +75,11 @@ export class ObservationListComponent implements OnInit, OnDestroy {
   }
 
   showMoreIndividuals() {
-    this.limitIndividuals.next(1000);
+    this.limitIndividuals$.next(1000);
     this.analytics.logEvent('profile.show-more-individuals');
   }
 
   ngOnDestroy() {
-    this.limitIndividuals.unsubscribe();
+    this.limitIndividuals$.unsubscribe();
   }
 }

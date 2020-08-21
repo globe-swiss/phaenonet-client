@@ -16,13 +16,13 @@ import { PublicUser } from 'src/app/open/public-user';
 })
 export class ProfileDetailsComponent implements OnInit {
   @Input() userId: string;
-  @Input() user: ReplaySubject<PublicUser>;
+  @Input() user$: ReplaySubject<PublicUser>;
 
-  nickname: Observable<string>;
-  firstname: Observable<string>;
-  lastname: Observable<string>;
+  nickname$: Observable<string>;
+  firstname$: Observable<string>;
+  lastname$: Observable<string>;
   email: string;
-  locale: Observable<string>;
+  locale$: Observable<string>;
 
 
   constructor(
@@ -34,11 +34,11 @@ export class ProfileDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.email = this.authService.getUserEmail();
-    const user = this.userService.get(this.userId).pipe(first());
-    this.nickname = user.pipe(map(u => u.nickname));
-    this.firstname = user.pipe(map(u => u.firstname));
-    this.lastname = user.pipe(map(u => u.lastname));
-    this.locale = user.pipe(map(u => u.locale));
+    const user$ = this.userService.get(this.userId).pipe(first());
+    this.nickname$ = user$.pipe(map(u => u.nickname));
+    this.firstname$ = user$.pipe(map(u => u.firstname));
+    this.lastname$ = user$.pipe(map(u => u.lastname));
+    this.locale$ = user$.pipe(map(u => u.locale));
 
     this.analytics.logEvent('profile.details.view');
   }

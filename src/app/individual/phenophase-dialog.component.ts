@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
   templateUrl: 'phenophase-dialog.component.html'
 })
 export class PhenophaseDialogComponent {
-  showTouchCalendar: Observable<boolean> = this.breakpointObserver
+  showTouchCalendar$: Observable<boolean> = this.breakpointObserver
     .observe('(max-height: 700px)')
     .pipe(map(result => result.matches));
 

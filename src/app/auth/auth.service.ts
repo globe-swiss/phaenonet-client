@@ -23,7 +23,7 @@ const LOCALSTORAGE_LOGIN_RESULT_KEY = 'loginResult';
 export class AuthService extends BaseService {
   browserIdHeaders: HttpHeaders;
 
-  user: Observable<User>;
+  user$: Observable<User>;
   firebaseUser: FUser;
 
   constructor(
@@ -36,7 +36,7 @@ export class AuthService extends BaseService {
     super(alertService);
 
     const self = this;
-    this.user = this.afAuth.authState.pipe(
+    this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
           self.firebaseUser = user;
@@ -46,7 +46,7 @@ export class AuthService extends BaseService {
         }
       })
     );
-    this.user.subscribe();
+    this.user$.subscribe();
   }
 
   // store the URL so we can redirect after logging in
@@ -66,11 +66,11 @@ export class AuthService extends BaseService {
   private handleUserLogin(firebaseResult: any): Observable<User> {
     if (firebaseResult) {
       this.firebaseUser = firebaseResult.user;
-      this.user.pipe(take(1)).subscribe(u => {
+      this.user$.pipe(take(1)).subscribe(u => {
         this.handleLoginResult(new LoginResult('LOGIN_OK', this.firebaseUser, u));
       });
 
-      return this.user;
+      return this.user$;
     } else {
       return of(null);
     }
@@ -143,7 +143,7 @@ export class AuthService extends BaseService {
       })
       .catch(this.errorHandling.bind(this));
 
-    return this.user;
+    return this.user$;
   }
 
   /**
@@ -206,7 +206,7 @@ export class AuthService extends BaseService {
   }
 
   getUserObservable(): Observable<User> {
-    return this.user;
+    return this.user$;
   }
 
   getUserId(): string {

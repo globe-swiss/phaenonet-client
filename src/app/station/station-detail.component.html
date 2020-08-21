@@ -3,28 +3,28 @@
     <app-individual-detail-header
       gdColumn="1 / span 6"
       class="detail-header"
-      [individual]="detailSubject"></app-individual-detail-header>
+      [individual$]="detailSubject$"></app-individual-detail-header>
     <app-individual-subscription
       *ngIf="isLoggedIn"
       gdColumn="1 / span 6"
       class="detail-header"
-      [individual]="detailSubject"></app-individual-subscription>
+      [individual$]="detailSubject$"></app-individual-subscription>
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
-      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject | async" class="detail-left">
+      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject$ | async" class="detail-left">
         <div class="detail-label detail-label-standort">{{ 'Standort' | translate }}</div>
-        <h3>{{ (detailSubject | async).name }}</h3>
+        <h3>{{ (detailSubject$ | async).name }}</h3>
         <div>
           <span>{{ 'Von' | translate }} </span><span class="creator">{{ 'MeteoSchweiz' | translate }}</span>
         </div>
         <div class="detail-label">{{ 'Höhe' | translate }}</div>
         <div>
-          <span>{{ (detailSubject | async)?.altitude }}</span
+          <span>{{ (detailSubject$ | async)?.altitude }}</span
           ><span translate> {{ 'm ü. M.' }}</span>
         </div>
       </div>
       <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
         <h3>{{ 'Phänophasen' | translate }}</h3>
-        <div *ngFor="let groupedItem of phenophaseObservationsBySpecies | async" class="species-group">
+        <div *ngFor="let groupedItem of phenophaseObservationsBySpecies$ | async" class="species-group">
           <h4>{{ groupedItem.species.de | translate }}</h4>
           <div *ngFor="let item of groupedItem.phenophaseObservations">
             <ng-container *ngIf="item.observation.isSome()">

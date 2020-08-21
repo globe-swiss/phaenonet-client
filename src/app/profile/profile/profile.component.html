@@ -9,14 +9,14 @@
         gdColumns="repeat(6, 1fr)"
         class="detail-content"
         *ngIf="isOwner()"
-        [user]="detailSubject"
+        [user$]="detailSubject$"
         [userId]="detailId"></app-profile-details>
       <app-profile-public
         gdColumn="1 / span 6"
         gdColumns="repeat(6, 1fr)"
         class="detail-content"
         *ngIf="!isOwner()"
-        [user]="detailSubject"
+        [user$]="detailSubject$"
         [userId]="detailId"></app-profile-public>
       <app-observation-list
         gdColumn="1 / span 6"

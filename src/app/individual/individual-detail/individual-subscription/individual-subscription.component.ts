@@ -12,8 +12,8 @@ import { Individual } from '../../individual';
   styleUrls: ['./individual-subscription.component.scss']
 })
 export class SubscriptionBarComponent implements OnInit {
-  @Input() individual: ReplaySubject<Individual>;
-  isFollowing: Observable<boolean>;
+  @Input() individual$: ReplaySubject<Individual>;
+  isFollowing$: Observable<boolean>;
 
   constructor(
     private authService: AuthService,
@@ -23,7 +23,7 @@ export class SubscriptionBarComponent implements OnInit {
 
   ngOnInit() {
     const currentUser = this.authService.getUserObservable();
-    this.isFollowing = combineLatest([currentUser, this.individual]).pipe(
+    this.isFollowing$ = combineLatest([currentUser, this.individual$]).pipe(
       map(([u, i]) => u.following_individuals
                           ? u.following_individuals.find(id => id === i.individual) !== undefined
                           : false
@@ -59,7 +59,7 @@ export class SubscriptionBarComponent implements OnInit {
   }
 
   private individualToFollow(): Observable<string> {
-    return this.individual.pipe(
+    return this.individual$.pipe(
       first(),
       map(i => i.individual)
     );

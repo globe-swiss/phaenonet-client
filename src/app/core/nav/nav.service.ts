@@ -8,7 +8,7 @@ import { Router, RouterEvent, NavigationStart, RoutesRecognized, ResolveEnd } fr
 @Injectable()
 export class NavService {
   private DEFAULT_LOCATION = 'PhaenoNet';
-  readonly location: Subject<string> = new Subject();
+  readonly location$: Subject<string> = new Subject();
   private untranslatedLocation: string;
   private params: Object;
 
@@ -16,7 +16,7 @@ export class NavService {
     routerService.events.subscribe((event: RouterEvent) => {
       if (event instanceof ResolveEnd && event.urlAfterRedirects != window.location.href) {
         // in case the endpoint of this route does not call setLocation, we use the following default.
-        this.location.next(this.DEFAULT_LOCATION);
+        this.location$.next(this.DEFAULT_LOCATION);
       }
     });
     translateService.onLangChange.subscribe(() => {
@@ -41,7 +41,7 @@ export class NavService {
       .get(untranslatedString, params)
       .pipe(first())
       .subscribe(translatedString => {
-        this.location.next(translatedString);
+        this.location$.next(translatedString);
         this.titleService.setTitle(translatedString);
       });
   }

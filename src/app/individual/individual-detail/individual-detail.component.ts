@@ -15,7 +15,7 @@ import { IndividualService } from '../individual.service';
   styleUrls: ['./individual-detail.component.scss']
 })
 export class IndividualDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
-  isEditable: Observable<boolean>;
+  isEditable$: Observable<boolean>;
   isLoggedIn: boolean;
 
   constructor(
@@ -37,12 +37,12 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
 
     this.isLoggedIn = this.authService.isLoggedIn();
 
-    this.isEditable = this.detailSubject.pipe(
+    this.isEditable$ = this.detailSubject$.pipe(
       filter(individual => individual !== undefined),
       map(individual => (this.authService.getUserId() === individual.user && individual.year === new Date().getFullYear()))
       );
 
-    this.detailSubject.pipe(first()).subscribe(detail => {
+    this.detailSubject$.pipe(first()).subscribe(detail => {
       this.analytics.logEvent('individual.view', {
         own: this.authService.getUserId() === detail.user,
         current: detail.year === new Date().getFullYear(),

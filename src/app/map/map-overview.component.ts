@@ -21,7 +21,7 @@ class GlobeInfoWindowData {
   species: Species;
   phenophase?: Phenophase;
   url: string[];
-  imgUrl: Observable<string>;
+  imgUrl$: Observable<string>;
 }
 
 class MeteoswissInfoWindowData {
@@ -52,23 +52,23 @@ export class MapOverviewComponent implements OnInit {
     streetViewControl: false,
     minZoom: 8
   };
-  individualsWithMarkerOpts: Observable<IndividualWithMarkerOpt[]>;
-  infoWindowDatas: Observable<GlobeInfoWindowData[]>;
+  individualsWithMarkerOpts$: Observable<IndividualWithMarkerOpt[]>;
+  infoWindowDatas$: Observable<GlobeInfoWindowData[]>;
 
-  globeInfoWindowData = new ReplaySubject<GlobeInfoWindowData>(1);
-  meteoswissInfoWindowData = new ReplaySubject<MeteoswissInfoWindowData>(1);
-  infoWindowType = new ReplaySubject<'globe' | 'meteoswiss'>(1);
+  globeInfoWindowData$ = new ReplaySubject<GlobeInfoWindowData>(1);
+  meteoswissInfoWindowData$ = new ReplaySubject<MeteoswissInfoWindowData>(1);
+  infoWindowType$ = new ReplaySubject<'globe' | 'meteoswiss'>(1);
 
+  years$ = this.masterdataService.availableYears$.pipe(tap(years => this.selectedYear.patchValue(years[0])));
+  species$: Subject<Species[]> = new ReplaySubject(1);
   datasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
-  species: Subject<Species[]> = new ReplaySubject(1);
+
   selectedYear = new FormControl();
   mapFormGroup = new FormGroup({
     year: this.selectedYear,
     datasource: new FormControl(this.datasources[0]),
     species: new FormControl(allSpecies.id)
   });
-
-  years = this.masterdataService.availableYears.pipe(tap(years => this.selectedYear.patchValue(years[0])));
 
   isLoggedIn: boolean;
 
@@ -95,9 +95,9 @@ export class MapOverviewComponent implements OnInit {
     this.masterdataService
       .getSpecies()
       .pipe(map(species => [allSpecies].concat(species)))
-      .subscribe(this.species);
+      .subscribe(this.species$);
 
-    this.individualsWithMarkerOpts = this.mapFormGroup.valueChanges.pipe(
+    this.individualsWithMarkerOpts$ = this.mapFormGroup.valueChanges.pipe(
       startWith(this.mapFormGroup.getRawValue()),
       switchMap(form => {
         const year = +form.year;
@@ -150,9 +150,9 @@ export class MapOverviewComponent implements OnInit {
     const url = { url: [baseUrl, individual.id] };
 
     if (individual.source === 'meteoswiss') {
-      this.meteoswissInfoWindowData.next({ ...{ individual: individual }, ...url } as MeteoswissInfoWindowData);
+      this.meteoswissInfoWindowData$.next({ ...{ individual: individual }, ...url } as MeteoswissInfoWindowData);
 
-      this.infoWindowType.next('meteoswiss');
+      this.infoWindowType$.next('meteoswiss');
     } else {
       combineLatest([
         this.masterdataService.getSpeciesValue(individual.species),
@@ -165,7 +165,7 @@ export class MapOverviewComponent implements OnInit {
                 individual: individual,
                 species: species,
                 phenophase: phenophase,
-                imgUrl: this.individualService.getImageUrl(individual, true).pipe(
+                imgUrl$: this.individualService.getImageUrl(individual, true).pipe(
                   first(),
                   map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
                 )
@@ -174,8 +174,8 @@ export class MapOverviewComponent implements OnInit {
             } as GlobeInfoWindowData;
           })
         )
-        .subscribe(i => this.globeInfoWindowData.next(i));
-      this.infoWindowType.next('globe');
+        .subscribe(i => this.globeInfoWindowData$.next(i));
+      this.infoWindowType$.next('globe');
     }
 
     this.infoWindow.open(marker);

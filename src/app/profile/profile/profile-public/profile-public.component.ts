@@ -16,11 +16,11 @@ import { PublicUser } from 'src/app/open/public-user';
 })
 export class ProfilePublicComponent implements OnInit {
   @Input() userId: string;
-  @Input() user: ReplaySubject<PublicUser>;
+  @Input() user$: ReplaySubject<PublicUser>;
 
   isLoggedIn: boolean;
-  isFollowing: Observable<boolean>;
-  nickname: Observable<string>;
+  isFollowing$: Observable<boolean>;
+  nickname$: Observable<string>;
 
   constructor(
     protected authService: AuthService,
@@ -32,9 +32,9 @@ export class ProfilePublicComponent implements OnInit {
   ngOnInit() {
     this.isLoggedIn = this.authService.isLoggedIn();
 
-    this.nickname = this.user.pipe(first(), map(u => u.nickname));
+    this.nickname$ = this.user$.pipe(first(), map(u => u.nickname));
 
-    this.isFollowing = this.authService.getUserObservable().pipe(
+    this.isFollowing$ = this.authService.getUserObservable().pipe(
       filter(u => u !== null),
       map(u => (u.following_users ? u.following_users.find(id => id === this.userId) !== undefined : false))
     );
@@ -77,5 +77,4 @@ export class ProfilePublicComponent implements OnInit {
       duration: none
     } as UntranslatedAlertMessage);
   }
-
 }
