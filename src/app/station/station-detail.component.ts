@@ -132,7 +132,7 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
       } as google.maps.MarkerOptions);
 
       this.analytics.logEvent('station.view', {
-        current: detail.year === new Date().getFullYear(),
+        current: detail.year === this.masterdataService.getPhenoYear(),
         year: detail.year
       });
     });

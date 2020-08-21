@@ -1,3 +1,4 @@
+import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
@@ -16,7 +17,8 @@ export class IndividualService extends BaseResourceService<Individual> {
     alertService: AlertService,
     protected afs: AngularFirestore,
     private authService: AuthService,
-    private afStorage: AngularFireStorage
+    private afStorage: AngularFireStorage,
+    private masterdataService: MasterdataService
   ) {
     super(alertService, afs, 'individuals');
   }
@@ -28,7 +30,7 @@ export class IndividualService extends BaseResourceService<Individual> {
     }
 
     if (individual.year === undefined) {
-      individual.year = new Date().getFullYear();
+      individual.year = this.masterdataService.getPhenoYear();
     }
 
     return super.upsert(individual, individual.year + '_' + individual.individual);

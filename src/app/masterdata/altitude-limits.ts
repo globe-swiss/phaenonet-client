@@ -19,7 +19,7 @@ export interface AltitudeLimit {
   isEditable: boolean;
 }
 
-export function altitudeLimits(altitude: number, limits: AltitudeLimits): AltitudeLimit {
+export function altitudeLimits(altitude: number, limits: AltitudeLimits, phenoyear: number): AltitudeLimit {
   let start: number;
   let end: number;
 
@@ -40,9 +40,12 @@ export function altitudeLimits(altitude: number, limits: AltitudeLimits): Altitu
     end = limits.altitude_grp_5_end_day;
   }
 
+  // start day is the limits start day in the current pheno year
   const start_day = moment()
+    .year(phenoyear)
     .dayOfYear(start)
     .toDate();
+  // end day is the minimum of today and the limit's end day in the current pheno year
   const end_day = new Date(
     Math.min(
       moment()
@@ -50,6 +53,7 @@ export function altitudeLimits(altitude: number, limits: AltitudeLimits): Altitu
         .toDate()
         .getTime(),
       moment()
+        .year(phenoyear)
         .dayOfYear(end)
         .toDate()
         .getTime()

@@ -105,12 +105,12 @@ export class MapOverviewComponent implements OnInit {
         const species = form.species;
 
         // only report an event if filter is not the default
-        if (year !== new Date().getFullYear() || datasource !== 'all' || species !== 'ALL') {
+        if (year !== this.masterdataService.getPhenoYear() || datasource !== 'all' || species !== 'ALL') {
           this.analytics.logEvent('map.filter', {
             year: year,
             source: datasource,
             species: species,
-            current: year === new Date().getFullYear()
+            current: year === this.masterdataService.getPhenoYear()
           });
         }
         return this.individualService.listByYear(year).pipe(
@@ -145,7 +145,6 @@ export class MapOverviewComponent implements OnInit {
   }
 
   openInfoWindow(marker: MapMarker, pos: google.maps.LatLngLiteral, individual: Individual & IdLike) {
-    console.log('openwindowinfo: ' + individual);
     const baseUrl = individual.source === 'meteoswiss' ? '/stations' : '/individuals';
     const url = { url: [baseUrl, individual.id] };
 

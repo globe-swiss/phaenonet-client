@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
-import { map, publishReplay, refCount, mergeAll } from 'rxjs/operators';
+import { map, publishReplay, refCount, mergeAll, tap, share } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { Individual } from '../individual/individual';
 import { AlertService } from '../messaging/alert.service';
@@ -22,29 +22,40 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 export interface MasterdataCollection { [index: string]: Object; }
 export interface ConfigDynamic {
-  current_year: number;
+  phenoyear: number;
   first_year: number;
 }
 
 @Injectable()
-export class MasterdataService extends BaseService {
+export class MasterdataService extends BaseService implements OnDestroy {
 
+  public subscription: Subscription;
   public availableYears$: Observable<number[]>;
-  public currentYear$: Observable<number>;
+  public phenoYear$: Observable<number>;
+  private phenoYear: number;
 
   constructor(alertService: AlertService, private afs: AngularFirestore) {
     super(alertService);
-    // do not expose as an observable to reduce subscriptions
     this.availableYears$ = this.afs
       .collection<any>('definitions')
       .doc<ConfigDynamic>('config_dynamic')
       .valueChanges()
-      .pipe(map(config => this.range(config.current_year, config.first_year - 1, -1)));
-    this.currentYear$ = this.availableYears$.pipe(map(years => years[0]));
+      .pipe(map(config => this.range(config.phenoyear, config.first_year - 1, -1)));
+  this.phenoYear$ = this.availableYears$.pipe(map(years => years[0]));
+
+  this.subscription = this.phenoYear$.subscribe(year => this.phenoYear = year);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   public getColor(phenophase: string) {
     return configStatic.phenophases[phenophase].color;
+  }
+
+  public getPhenoYear() {
+    return this.phenoYear;
   }
 
   getIndividualIconPath(species: string, source: string, phenophase: string): string {

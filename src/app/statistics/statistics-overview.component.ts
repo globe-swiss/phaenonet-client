@@ -152,13 +152,13 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
           }
 
           // only report an event if filter is not the default
-          if (this.year !== new Date().getFullYear() || datasource !== 'all' || species !== 'all') {
+          if (this.year !== this.masterdataService.getPhenoYear() || datasource !== 'all' || species !== 'all') {
             this.analytics.logEvent('statistics.filter', {
               year: this.year,
               source: datasource,
               species: species,
               type: analyticsType,
-              current: this.year === new Date().getFullYear()
+              current: this.year === this.masterdataService.getPhenoYear()
             });
           }
           return this.statisticsService.listByYear(year, analyticsType, datasource, species);
@@ -315,7 +315,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     const axisLeft = d3Axis.axisLeft(this.y).tickFormat(t => this.translateLeftAxisTick(t.toString()));
     this.g.append('g').call(axisLeft);
 
-    const tickYear = new Date().getFullYear();
+    const tickYear = this.masterdataService.getPhenoYear();
     const xTicks = d3Time
       .timeMonths(new Date(tickYear - 1, 11, 1), new Date(tickYear + 1, 0, 31))
       .map(d => this.toX(tickYear, d));
