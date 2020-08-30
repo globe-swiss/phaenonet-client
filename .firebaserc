@@ -1,0 +1,22 @@
+{
+  "projects": {},
+  "targets": {
+    "phaenonet-test": {
+      "hosting": {
+        "test": [
+          "phaenonet-test"
+        ],
+        "dev": [
+          "phaenonet-dev"
+        ]
+      }
+    },
+    "phaenonet": {
+      "hosting": {
+        "prod": [
+          "phaenonet"
+        ]
+      }
+    }
+  }
+}
