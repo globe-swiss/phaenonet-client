@@ -33,7 +33,6 @@ Thumbs.db
 
 # firebase
 .firebase
-.firebaserc
 
 # local development
 /src/local
