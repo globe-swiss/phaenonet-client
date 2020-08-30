@@ -1,57 +1,107 @@
-# run locally
+# Phaenonet Client
+
+This project is the web-client application for the phenology oberservation offer [PhaenoNet](https://www.phaenonet.ch) by [GLOBE Switzerland](https://www.globe-swiss.ch).
+
+## Environment
+
+Phaenonet is set up with two Firebase projects instances. These projects have a separate Firestore and storage instance as well as access rules.
+
+* [phaenonet](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the production instance
+* [phaenonet-test](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the test instance
+
+On `phaenonet-test` project two web application are hostet:
+
+* The `dev` application <https://phaenonet-dev.web.app/> which is deployed manually
+* The `test` application <https://phaenonet-test.web.app/> which is deployed automatically on code merge to master
+
+The `phenonet` project only hosts the productive web application <https://app.phaenonet.ch/>.
+
+### Server side setup
+
+1. Create the project in GCP or Firebase
+    * <https://console.firebase.google.com/u/0/>
+1. Enable Maps and Elevation API
+    * <https://console.cloud.google.com/marketplace/details/google/maps-backend.googleapis.com>
+    * <https://console.cloud.google.com/marketplace/details/google/elevation-backend.googleapis.com>
+1. Enable username/password authentication in Firebase
+    * <https://console.firebase.google.com/u/0/project/[project_name]/authentication/providers>
+1. (optional) set outgoing email address
+    * <https://console.firebase.google.com/u/0/project/[project_name]/authentication/emails>
+1. Install cloud functions and setup configuration data
+    * <https://github.com/globe-swiss/phaenonet-functions>
+
+#### Configure deployment targets
+
+Deployment targets only need to be confiugured once as they are saved server side.
+To check if the targets are configured use `firebase target --project [phaenonet|phaenonet-test]`.
+
+Configure targets using firebase CLI:
+
+```commandline
+firebase target:apply hosting dev phaenonet-dev --project phaenonet-test
+firebase target:apply hosting test phaenonet-test --project phaenonet-test
+firebase target:apply hosting prod phaenonet --project phaenonet
+```
+
+### Local setup
+
+#### Configure Firebase
+
+Install Node.js and npm see: <https://www.npmjs.com/get-npm>
+
+Install the firebase console and login:
+
+```commandline
+npm install -g firebase-tools
+firebase login`
+```
+
+Consult the official documentation for the [Firebase CLI](https://firebase.google.com/docs/cli) for further information.
+
+#### Configure local credentials
+
+Copy [init.json](https://phaenonet-test.web.app/__/firebase/init.json) credential file for local development in the `src/local/` folder.
+
+## Development Deployment
+
+The application will be using the database and rules of the `phaenonet-test` project for all use-cases described in this section.
+
+### Serve locally
 
 Make sure `init.json` credential file for local development is placed in the `src/local/` folder.
 
-`ng serve --configuration=local`
+Run `ng serve --c=local --aot` for a dev server. Navigate to <http://localhost:4200/>. The app will automatically reload if you change any of the source files.
 
-`localhost:4200`
+### Deploy development applications
 
-# documentation to google maps api
+Deploy the development application to <https://phaenonet-dev.web.app/> by building and deploying the current workspace:
 
-https://github.com/angular/components
+```commandline
+ng build --aot
+firebase deploy --only hosting:dev --project phaenonet-test --config=firebase-dev.json
+```
 
-# fireconsole
+Rules and indexes for Firestore and Storage will need to be deployed manually if needed.
+Be aware that the rules are shared between the `dev` and `test` applicaton.
 
-`npm install -g firebase-tools`
+```commandline
+firebase deploy --only storage,firestore --project phaenonet-test --config=firebase-dev.json
+```
 
-`firebase login`
+### Deploy application for acceptance test
 
-# Import and rename pngs
+Code merged to the `master` branch will be deployed to <https://phaenonet-test.web.app/> for final acceptance. This deployment will also include all rules and indexes.
 
-in src/assets/img/map_pins:
+To manually deploy a test version:
 
-`mmv 'map_pin_*_*_*@3x.png' 'map_pin_#1_#2.png'`
+```commandline
+ng build --aot
+firebase deploy --project phaenonet-test --config=firebase-test.json
+```
 
-`mv map_pin_meteoschweiz@3x.png map_pin_meteoschweiz_1.png` <- temporär
+## Production Deployment
 
-`find . -regex ".*[^0-9]\.png" -type f -delete`
-
-`mv map_pin_meteoschweiz_1.png map_pin_meteoschweiz.png` <- temporär
-
-# Phaenonet
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```commandline
+ng build --prod --aot
+firebase deploy --project phaenonet --config=firebase-prod.json
+```
