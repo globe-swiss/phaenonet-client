@@ -36,3 +36,4 @@ Thumbs.db
 
 # local development
 /src/local
+/.devcontainer
