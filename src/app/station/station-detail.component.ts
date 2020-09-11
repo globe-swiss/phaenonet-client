@@ -35,20 +35,20 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
     streetViewControl: false,
     draggable: false
   };
-  markerOptions = new ReplaySubject<google.maps.MarkerOptions>(1);
+  markerOptions$ = new ReplaySubject<google.maps.MarkerOptions>(1);
   geopos: google.maps.LatLngLiteral = { lat: 46.818188, lng: 8.227512 };
 
-  availablePhenophases: Observable<Phenophase[]>;
-  availablePhenophaseGroups: Observable<PhenophaseGroup[]>;
-  availableComments: Observable<Comment[]>;
-  individualObservations: Observable<Observation[]>;
-  phenophaseObservationsBySpecies: Observable<SpeciesPhenophaseObservations[]>;
+  availablePhenophases$: Observable<Phenophase[]>;
+  availablePhenophaseGroups$: Observable<PhenophaseGroup[]>;
+  availableComments$: Observable<Comment[]>;
+  individualObservations$: Observable<Observation[]>;
+  phenophaseObservationsBySpecies$: Observable<SpeciesPhenophaseObservations[]>;
   lastObservation: Observation;
 
   owner: string;
 
-  currentUser: Observable<User>;
-  isFollowing: Observable<boolean>;
+  currentUser$: Observable<User>;
+  isFollowing$: Observable<boolean>;
 
   isLoggedIn: boolean;
 
@@ -73,15 +73,15 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
 
     this.isLoggedIn = this.authService.isLoggedIn();
 
-    this.currentUser = this.authService.getUserObservable();
+    this.currentUser$ = this.authService.getUserObservable();
 
-    this.detailSubject.subscribe(detail => {
+    this.detailSubject$.subscribe(detail => {
       if (detail.geopos) {
         this.geopos = detail.geopos;
         this.center = detail.geopos;
       }
 
-      this.isFollowing = this.currentUser.pipe(
+      this.isFollowing$ = this.currentUser$.pipe(
         filter(u => u !== null),
         map(u =>
           u.following_individuals ? u.following_individuals.find(id => id === detail.individual) !== undefined : false
@@ -90,11 +90,11 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
 
       this.owner = detail.user;
 
-      this.individualObservations = this.observationService.listByIndividual(this.detailId);
-      this.availableComments = this.masterdataService.getComments();
+      this.individualObservations$ = this.observationService.listByIndividual(this.detailId);
+      this.availableComments$ = this.masterdataService.getComments();
 
       // combine the available phenophases with the existing observations
-      this.phenophaseObservationsBySpecies = combineLatest([this.individualObservations, this.availableComments]).pipe(
+      this.phenophaseObservationsBySpecies$ = combineLatest([this.individualObservations$, this.availableComments$]).pipe(
         map(([observations, comments]) => {
           comments.forEach(element => {
             this.staticComments[element.id] = element.de;
@@ -126,13 +126,13 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
         mergeAll()
       );
 
-      this.markerOptions.next({
+      this.markerOptions$.next({
         draggable: false,
         icon: this.masterdataService.individualToIcon(detail)
       } as google.maps.MarkerOptions);
 
       this.analytics.logEvent('station.view', {
-        current: detail.year === new Date().getFullYear(),
+        current: detail.year === this.masterdataService.getPhenoYear(),
         year: detail.year
       });
     });

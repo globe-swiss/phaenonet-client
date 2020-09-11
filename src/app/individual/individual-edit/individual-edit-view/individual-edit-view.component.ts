@@ -24,21 +24,21 @@ import { GeoposService } from './../individual-edit-header/geopos.service';
   styleUrls: ['./individual-edit-view.component.scss']
 })
 export class IndividualEditViewComponent implements OnInit {
-  @Input() individual: ReplaySubject<Individual>;
+  @Input() individual$: ReplaySubject<Individual>;
   @Input() createNewIndividual: boolean;
   fileToUpload: File = null;
 
-  selectableSpecies: Observable<Species[]>;
+  selectableSpecies$: Observable<Species[]>;
 
-  selectableDescriptions: Observable<Description[]>;
-  selectableExpositions: Observable<Exposition[]>;
-  selectableShades: Observable<Shade[]>;
-  selectableHabitats: Observable<Habitat[]>;
-  selectableForests: Observable<Forest[]>;
-  selectableDistances: Observable<Distance[]>;
-  selectableIrrigations: Observable<Irrigation[]>;
-  geopos: BehaviorSubject<google.maps.LatLngLiteral>;
-  altitude: BehaviorSubject<number>;
+  selectableDescriptions$: Observable<Description[]>;
+  selectableExpositions$: Observable<Exposition[]>;
+  selectableShades$: Observable<Shade[]>;
+  selectableHabitats$: Observable<Habitat[]>;
+  selectableForests$: Observable<Forest[]>;
+  selectableDistances$: Observable<Distance[]>;
+  selectableIrrigations$: Observable<Irrigation[]>;
+  geopos$: BehaviorSubject<google.maps.LatLngLiteral>;
+  altitude$: BehaviorSubject<number>;
 
   createForm = new FormGroup({
     species: new FormControl(''),
@@ -63,19 +63,19 @@ export class IndividualEditViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.geopos = this.geoposService.geopos;
-    this.altitude = this.geoposService.altitude;
+    this.geopos$ = this.geoposService.geopos$;
+    this.altitude$ = this.geoposService.altitude$;
 
-    this.selectableSpecies = this.masterdataService.getSelectableSpecies();
-    this.selectableDescriptions = this.masterdataService.getDescriptions();
-    this.selectableExpositions = this.masterdataService.getExpositions();
-    this.selectableShades = this.masterdataService.getShades();
-    this.selectableHabitats = this.masterdataService.getHabitats();
-    this.selectableForests = this.masterdataService.getForests();
-    this.selectableDistances = this.masterdataService.getDistances();
-    this.selectableIrrigations = this.masterdataService.getIrrigations();
+    this.selectableSpecies$ = this.masterdataService.getSelectableSpecies();
+    this.selectableDescriptions$ = this.masterdataService.getDescriptions();
+    this.selectableExpositions$ = this.masterdataService.getExpositions();
+    this.selectableShades$ = this.masterdataService.getShades();
+    this.selectableHabitats$ = this.masterdataService.getHabitats();
+    this.selectableForests$ = this.masterdataService.getForests();
+    this.selectableDistances$ = this.masterdataService.getDistances();
+    this.selectableIrrigations$ = this.masterdataService.getIrrigations();
 
-    this.individual.pipe(first()).subscribe(detail => {
+    this.individual$.pipe(first()).subscribe(detail => {
       if (this.createNewIndividual) {
         detail.gradient = 0;
         detail.type = 'individual';
@@ -86,11 +86,11 @@ export class IndividualEditViewComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.individual.pipe(first()).subscribe(detail => {
+    this.individual$.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
       const individual: Individual = { ...detail, ...this.createForm.value };
-      individual.geopos = this.geopos.value;
-      individual.altitude = this.altitude.value;
+      individual.geopos = this.geopos$.value;
+      individual.altitude = this.altitude$.value;
 
       this.individualService.upsert(individual).subscribe(result => {
         if (this.fileToUpload) {

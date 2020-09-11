@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map, publishReplay, refCount, mergeAll } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, of, Subscription } from 'rxjs';
+import { map, publishReplay, refCount, mergeAll, tap, share } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { Individual } from '../individual/individual';
 import { AlertService } from '../messaging/alert.service';
@@ -17,28 +16,52 @@ import { Phenophase } from './phaenophase';
 import { PhenophaseGroup } from './phaenophase-group';
 import { Shade } from './shade';
 import { Species } from './species';
-import * as config from '../../assets/config_static.json';
+import * as configStatic from '../../assets/config_static.json';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 
 export interface MasterdataCollection { [index: string]: Object; }
+export interface ConfigDynamic {
+  phenoyear: number;
+  first_year: number;
+}
 
 @Injectable()
-export class MasterdataService extends BaseService {
-  constructor(alertService: AlertService, private authService: AuthService) {
+export class MasterdataService extends BaseService implements OnDestroy {
+
+  public subscription: Subscription;
+  public availableYears$: Observable<number[]>;
+  public phenoYear$: Observable<number>;
+  private phenoYear: number;
+
+  constructor(alertService: AlertService, private afs: AngularFirestore) {
     super(alertService);
+    this.availableYears$ = this.afs
+      .collection<any>('definitions')
+      .doc<ConfigDynamic>('config_dynamic')
+      .valueChanges()
+      .pipe(map(config => this.range(config.phenoyear, config.first_year - 1, -1)));
+  this.phenoYear$ = this.availableYears$.pipe(map(years => years[0]));
+
+  this.subscription = this.phenoYear$.subscribe(year => this.phenoYear = year);
   }
 
-  //todo fixme
-  public availableYears = [2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011];
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   public getColor(phenophase: string) {
-    return config.phenophases[phenophase].color;
+    return configStatic.phenophases[phenophase].color;
+  }
+
+  public getPhenoYear() {
+    return this.phenoYear;
   }
 
   getIndividualIconPath(species: string, source: string, phenophase: string): string {
     let phaenoIndex = 1;
     if (phenophase) {
-      phaenoIndex = config.phenophases[phenophase].icon_index;
+      phaenoIndex = configStatic.phenophases[phenophase].icon_index;
     }
     if (source === 'meteoswiss') {
         return '/assets/img/map_pins/map_pin_meteoschweiz.png';
@@ -49,7 +72,7 @@ export class MasterdataService extends BaseService {
 
   individualToIcon(individual: Individual): google.maps.Icon {
     let icon: google.maps.Icon;
-    const icon_path = this.getIndividualIconPath(individual.species, individual.source, individual.last_phenophase)
+    const icon_path = this.getIndividualIconPath(individual.species, individual.source, individual.last_phenophase);
     if (individual.source === 'meteoswiss') {
       icon = {
         url: icon_path,
@@ -70,7 +93,7 @@ export class MasterdataService extends BaseService {
    */
 
   getSpecies(): Observable<Species[]> {
-    return this.getMasterdataFor(config.species);
+    return this.getMasterdataFor(configStatic.species);
   }
 
   /**
@@ -81,71 +104,71 @@ export class MasterdataService extends BaseService {
   }
 
   getHabitats(): Observable<Habitat[]> {
-    return this.getMasterdataFor(config.habitat);
+    return this.getMasterdataFor(configStatic.habitat);
   }
 
   getDescriptions(): Observable<Description[]> {
-    return this.getMasterdataFor(config.description);
+    return this.getMasterdataFor(configStatic.description);
   }
 
   getExpositions(): Observable<Exposition[]> {
-    return this.getMasterdataFor(config.exposition);
+    return this.getMasterdataFor(configStatic.exposition);
   }
 
   getForests(): Observable<Forest[]> {
-    return this.getMasterdataFor(config.forest);
+    return this.getMasterdataFor(configStatic.forest);
   }
 
   getShades(): Observable<Shade[]> {
-    return this.getMasterdataFor(config.shade);
+    return this.getMasterdataFor(configStatic.shade);
   }
 
   getDistances(): Observable<Distance[]> {
-    return this.getMasterdataFor(config.less100);
+    return this.getMasterdataFor(configStatic.less100);
   }
 
   getIrrigations(): Observable<Irrigation[]> {
-    return this.getMasterdataFor(config.watering);
+    return this.getMasterdataFor(configStatic.watering);
   }
 
   getComments(): Observable<Comment[]> {
-    return this.getMasterdataFor(config.comments);
+    return this.getMasterdataFor(configStatic.comments);
   }
 
   getSpeciesValue(id: string): Observable<Species> {
-    return this.getMasterdataValueFor(config.species, id);
+    return this.getMasterdataValueFor(configStatic.species, id);
   }
 
   getHabitatValue(id: string): Observable<Habitat> {
-    return this.getMasterdataValueFor(config.habitat, id);
+    return this.getMasterdataValueFor(configStatic.habitat, id);
   }
 
   getDescriptionValue(id: string): Observable<Description> {
-    return this.getMasterdataValueFor(config.description, id);
+    return this.getMasterdataValueFor(configStatic.description, id);
   }
 
   getExpositionValue(id: string): Observable<Exposition> {
-    return this.getMasterdataValueFor(config.exposition, id);
+    return this.getMasterdataValueFor(configStatic.exposition, id);
   }
 
   getForestValue(id: string): Observable<Forest> {
-    return this.getMasterdataValueFor(config.forest, id);
+    return this.getMasterdataValueFor(configStatic.forest, id);
   }
 
   getShadeValue(id: string): Observable<Shade> {
-    return this.getMasterdataValueFor(config.shade, id);
+    return this.getMasterdataValueFor(configStatic.shade, id);
   }
 
   getDistanceValue(id: string): Observable<Distance> {
-    return this.getMasterdataValueFor(config.less100, id);
+    return this.getMasterdataValueFor(configStatic.less100, id);
   }
 
   getIrrigationValue(id: string): Observable<Irrigation> {
-    return this.getMasterdataValueFor(config.watering, id);
+    return this.getMasterdataValueFor(configStatic.watering, id);
   }
 
   getCommentValue(id: string): Observable<Comment> {
-    return this.getMasterdataValueFor(config.comments, id);
+    return this.getMasterdataValueFor(configStatic.comments, id);
   }
 
   getPhenophases(speciesId: string): Observable<Phenophase[]> {
@@ -184,7 +207,7 @@ export class MasterdataService extends BaseService {
   }
 
   private getPhenoDataFor<T extends PhenophasesdataLike>(speciesId: string, name: string): Observable<T[]> {
-    return of(this.toMasterdatalikeList<T>(config.species[speciesId][name]).sort((n1, n2) => {
+    return of(this.toMasterdatalikeList<T>(configStatic.species[speciesId][name]).sort((n1, n2) => {
       if (n1.seq > n2.seq) {
           return 1;
       }
@@ -201,5 +224,24 @@ export class MasterdataService extends BaseService {
     id: string
   ): Observable<T> {
     return this.getPhenoDataFor<T>(speciesId, name).pipe(map(elements => elements.find(element => element.id === id)));
+  }
+
+  private range(start: number, stop: number, step = 1) {
+    if (typeof stop === 'undefined') {
+        // one param defined
+        stop = start;
+        start = 0;
+    }
+
+    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
+        return [];
+    }
+
+    const result = [];
+    for (let i = start; step > 0 ? i < stop : i > stop; i += step) {
+        result.push(i);
+    }
+
+    return result;
   }
 }

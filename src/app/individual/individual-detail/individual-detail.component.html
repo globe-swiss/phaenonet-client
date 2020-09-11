@@ -3,28 +3,28 @@
     <app-individual-detail-header
       gdColumn="1 / span 6"
       class="detail-header"
-      [individual]="detailSubject"></app-individual-detail-header>
+      [individual$]="detailSubject$"></app-individual-detail-header>
     <app-individual-subscription
-      *ngIf="isLoggedIn && !(isEditable | async)"
+      *ngIf="isLoggedIn && !(isEditable$ | async)"
       gdColumn="1 / span 6"
       class="detail-header"
-      [individual]="detailSubject"></app-individual-subscription>
+      [individual$]="detailSubject$"></app-individual-subscription>
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
       <app-individual-description
-        *ngIf="detailSubject | async"
+        *ngIf="detailSubject$ | async"
         gdColumn="1 / span 2"
         gdColumn.lt-md="1 / span 6"
         class="detail-left"
-        [individual]="detailSubject"
+        [individual$]="detailSubject$"
         [individualId]="detailId"
-        [isEditable]="isEditable"></app-individual-description>
+        [isEditable$]="isEditable$"></app-individual-description>
       <app-individual-observation-view
         gdColumn="3 / span 4"
         gdColumn.lt-md="1 / span 6"
         class="detail-right"
-        [individual]="detailSubject"
+        [individual$]="detailSubject$"
         [individualId]="detailId"
-        [isEditable]="isEditable"></app-individual-observation-view>
+        [isEditable$]="isEditable$"></app-individual-observation-view>
     </div>
   </div>
 </div>

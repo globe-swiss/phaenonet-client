@@ -22,11 +22,11 @@ import { altitudeLimits } from 'src/app/masterdata/altitude-limits';
   styleUrls: ['./individual-observation-view.component.scss']
 })
 export class ObservationViewComponent implements OnInit {
-  @Input() individual: Observable<Individual>;
+  @Input() individual$: Observable<Individual>;
   @Input() individualId: string;
-  @Input() isEditable: Observable<boolean>;
+  @Input() isEditable$: Observable<boolean>;
 
-  phenophaseObservationsGroups: Observable<PhenophaseObservationsGroup[]>;
+  phenophaseObservationsGroups$: Observable<PhenophaseObservationsGroup[]>;
   staticComments = {};
 
   constructor(
@@ -37,16 +37,16 @@ export class ObservationViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const availablePhenophases = this.individual.pipe(
+    const availablePhenophases = this.individual$.pipe(
       filter(i => i !== undefined), map(i => this.masterdataService.getPhenophases(i.species)), mergeAll());
-    const availablePhenophaseGroups = this.individual.pipe(
+    const availablePhenophaseGroups = this.individual$.pipe(
       filter(i => i !== undefined), map(i => this.masterdataService.getPhenophaseGroups(i.species)), mergeAll());
     const individualObservations = this.observationService.listByIndividual(this.individualId);
     const availableComments = this.masterdataService.getComments();
 
     // combine the available phenophases with the existing observations
-    this.phenophaseObservationsGroups = combineLatest([
-      this.individual,
+    this.phenophaseObservationsGroups$ = combineLatest([
+      this.individual$,
       availablePhenophaseGroups,
       availablePhenophases,
       individualObservations,
@@ -65,7 +65,7 @@ export class ObservationViewComponent implements OnInit {
             .map(p => {
               return {
                 phenophase: p,
-                limits: altitudeLimits(individual.altitude, p.limits),
+                limits: altitudeLimits(individual.altitude, p.limits, this.masterdataService.getPhenoYear()),
                 observation: findFirst((o: Observation) => o.phenophase === p.id)(observations),
                 availableComments: comments.filter(a => p.comments.find(commentId => commentId === a.id))
               };
@@ -96,7 +96,7 @@ export class ObservationViewComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: PhenophaseObservation) => {
       if (result) {
-        this.individual.pipe(first()).subscribe(detail => {
+        this.individual$.pipe(first()).subscribe(detail => {
           result.observation.map(observation => {
             // if this is a new observation the created date is not set
             if (!observation.created) {

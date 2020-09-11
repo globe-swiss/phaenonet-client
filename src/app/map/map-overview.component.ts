@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
-import { map, share, startWith, switchMap, first, tap } from 'rxjs/operators';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
-
+import { first, map, share, startWith, switchMap, tap } from 'rxjs/operators';
 import { formatShortDate } from '../core/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
@@ -16,12 +15,13 @@ import { SourceType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 import { AuthService } from './../auth/auth.service';
 
+
 class GlobeInfoWindowData {
   individual: Individual;
   species: Species;
   phenophase?: Phenophase;
   url: string[];
-  imgUrl: Observable<string>;
+  imgUrl$: Observable<string>;
 }
 
 class MeteoswissInfoWindowData {
@@ -52,20 +52,20 @@ export class MapOverviewComponent implements OnInit {
     streetViewControl: false,
     minZoom: 8
   };
-  individualsWithMarkerOpts: Observable<IndividualWithMarkerOpt[]>;
-  infoWindowDatas: Observable<GlobeInfoWindowData[]>;
+  individualsWithMarkerOpts$: Observable<IndividualWithMarkerOpt[]>;
+  infoWindowDatas$: Observable<GlobeInfoWindowData[]>;
 
-  globeInfoWindowData = new ReplaySubject<GlobeInfoWindowData>(1);
-  meteoswissInfoWindowData = new ReplaySubject<MeteoswissInfoWindowData>(1);
-  infoWindowType = new ReplaySubject<'globe' | 'meteoswiss'>(1);
+  globeInfoWindowData$ = new ReplaySubject<GlobeInfoWindowData>(1);
+  meteoswissInfoWindowData$ = new ReplaySubject<MeteoswissInfoWindowData>(1);
+  infoWindowType$ = new ReplaySubject<'globe' | 'meteoswiss'>(1);
 
-  // TODO how to get the available years?
-  years = this.masterdataService.availableYears;
-
+  years$ = this.masterdataService.availableYears$.pipe(tap(years => this.selectedYear.patchValue(years[0])));
+  species$: Subject<Species[]> = new ReplaySubject(1);
   datasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
-  species: Subject<Species[]> = new ReplaySubject(1);
+
+  selectedYear = new FormControl();
   mapFormGroup = new FormGroup({
-    year: new FormControl(this.years[0]),
+    year: this.selectedYear,
     datasource: new FormControl(this.datasources[0]),
     species: new FormControl(allSpecies.id)
   });
@@ -95,9 +95,9 @@ export class MapOverviewComponent implements OnInit {
     this.masterdataService
       .getSpecies()
       .pipe(map(species => [allSpecies].concat(species)))
-      .subscribe(this.species);
+      .subscribe(this.species$);
 
-    this.individualsWithMarkerOpts = this.mapFormGroup.valueChanges.pipe(
+    this.individualsWithMarkerOpts$ = this.mapFormGroup.valueChanges.pipe(
       startWith(this.mapFormGroup.getRawValue()),
       switchMap(form => {
         const year = +form.year;
@@ -105,12 +105,12 @@ export class MapOverviewComponent implements OnInit {
         const species = form.species;
 
         // only report an event if filter is not the default
-        if (year !== new Date().getFullYear() || datasource !== 'all' || species !== 'ALL') {
+        if (year !== this.masterdataService.getPhenoYear() || datasource !== 'all' || species !== 'ALL') {
           this.analytics.logEvent('map.filter', {
             year: year,
             source: datasource,
             species: species,
-            current: year === new Date().getFullYear()
+            current: year === this.masterdataService.getPhenoYear()
           });
         }
         return this.individualService.listByYear(year).pipe(
@@ -145,14 +145,13 @@ export class MapOverviewComponent implements OnInit {
   }
 
   openInfoWindow(marker: MapMarker, pos: google.maps.LatLngLiteral, individual: Individual & IdLike) {
-    console.log('openwindowinfo: ' + individual);
     const baseUrl = individual.source === 'meteoswiss' ? '/stations' : '/individuals';
     const url = { url: [baseUrl, individual.id] };
 
     if (individual.source === 'meteoswiss') {
-      this.meteoswissInfoWindowData.next({ ...{ individual: individual }, ...url } as MeteoswissInfoWindowData);
+      this.meteoswissInfoWindowData$.next({ ...{ individual: individual }, ...url } as MeteoswissInfoWindowData);
 
-      this.infoWindowType.next('meteoswiss');
+      this.infoWindowType$.next('meteoswiss');
     } else {
       combineLatest([
         this.masterdataService.getSpeciesValue(individual.species),
@@ -165,7 +164,7 @@ export class MapOverviewComponent implements OnInit {
                 individual: individual,
                 species: species,
                 phenophase: phenophase,
-                imgUrl: this.individualService.getImageUrl(individual, true).pipe(
+                imgUrl$: this.individualService.getImageUrl(individual, true).pipe(
                   first(),
                   map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
                 )
@@ -174,8 +173,8 @@ export class MapOverviewComponent implements OnInit {
             } as GlobeInfoWindowData;
           })
         )
-        .subscribe(i => this.globeInfoWindowData.next(i));
-      this.infoWindowType.next('globe');
+        .subscribe(i => this.globeInfoWindowData$.next(i));
+      this.infoWindowType$.next('globe');
     }
 
     this.infoWindow.open(marker);

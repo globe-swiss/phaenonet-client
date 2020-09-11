@@ -14,7 +14,7 @@
       readonly
     />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker [touchUi]="showTouchCalendar | async"></mat-datepicker>
+    <mat-datepicker #picker [touchUi]="showTouchCalendar$ | async"></mat-datepicker>
   </mat-form-field>
   <mat-form-field class="full-width" *ngIf="data.availableComments.length > 0">
     <mat-label>{{ 'Kommentar' | translate }}</mat-label>

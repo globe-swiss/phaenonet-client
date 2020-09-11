@@ -6,7 +6,7 @@
 </div>
 <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" *ngIf="userId" class="detail-right">
     <app-observation-item
-        *ngFor="let item of latestIndividualObservations | async"
+        *ngFor="let item of latestIndividualObservations$ | async"
         [item]="item"></app-observation-item>
     <button *ngIf="isOwner()" mat-flat-button color="primary" [routerLink]="'/individuals/new/edit'">
         <mat-icon>add</mat-icon>

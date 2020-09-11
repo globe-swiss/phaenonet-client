@@ -9,13 +9,14 @@ import { BaseDetailComponent } from '../../core/base-detail.component';
 import { NavService } from '../../core/nav/nav.service';
 import { Individual } from '../individual';
 import { IndividualService } from '../individual.service';
+import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 
 @Component({
   templateUrl: './individual-detail.component.html',
   styleUrls: ['./individual-detail.component.scss']
 })
 export class IndividualDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
-  isEditable: Observable<boolean>;
+  isEditable$: Observable<boolean>;
   isLoggedIn: boolean;
 
   constructor(
@@ -25,6 +26,7 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     public dialog: MatDialog,
     private authService: AuthService,
     private analytics: AngularFireAnalytics,
+    private masterdataService: MasterdataService,
   ) {
     super(individualService, route);
   }
@@ -37,15 +39,15 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
 
     this.isLoggedIn = this.authService.isLoggedIn();
 
-    this.isEditable = this.detailSubject.pipe(
+    this.isEditable$ = this.detailSubject$.pipe(
       filter(individual => individual !== undefined),
-      map(individual => (this.authService.getUserId() === individual.user && individual.year === new Date().getFullYear()))
+      map(individual => (this.authService.getUserId() === individual.user && individual.year === this.masterdataService.getPhenoYear()))
       );
 
-    this.detailSubject.pipe(first()).subscribe(detail => {
+    this.detailSubject$.pipe(first()).subscribe(detail => {
       this.analytics.logEvent('individual.view', {
         own: this.authService.getUserId() === detail.user,
-        current: detail.year === new Date().getFullYear(),
+        current: detail.year === this.masterdataService.getPhenoYear(),
         year: detail.year,
         species: detail.species
       });

@@ -5,7 +5,7 @@ import { flatMap, switchMap } from 'rxjs/operators';
 import { ResourceService } from './resource.service';
 
 export class BaseDetailComponent<T> implements OnInit, OnDestroy {
-  detailSubject: ReplaySubject<T> = new ReplaySubject<T>(1);
+  detailSubject$: ReplaySubject<T> = new ReplaySubject<T>(1);
   detailId: string;
 
   constructor(protected resourceService: ResourceService<T>, protected route: ActivatedRoute) {}
@@ -17,11 +17,11 @@ export class BaseDetailComponent<T> implements OnInit, OnDestroy {
           return this.getDetailSubject(id);
         })
       )
-      .subscribe(this.detailSubject);
+      .subscribe(this.detailSubject$);
   }
 
   ngOnDestroy(): void {
-    this.detailSubject.unsubscribe();
+    this.detailSubject$.unsubscribe();
   }
 
   getRouteParam(param: string): Observable<string> {

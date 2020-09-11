@@ -8,5 +8,5 @@ export class IndividualPhenophase {
   individual: Individual & IdLike;
   species: Species;
   lastPhenophase: Phenophase;
-  imgUrl: Observable<string>;
+  imgUrl$: Observable<string>;
 }

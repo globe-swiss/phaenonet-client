@@ -14,8 +14,8 @@ import { AngularFireAnalytics } from '@angular/fire/analytics';
 export class ActivityListComponent implements OnInit, OnDestroy {
   @Input() userId: string;
 
-  limitActivities = new BehaviorSubject<number>(8);
-  activities: Observable<Activity[]>;
+  limitActivities$ = new BehaviorSubject<number>(8);
+  activities$: Observable<Activity[]>;
 
   constructor(
     private activityService: ActivityService,
@@ -23,7 +23,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
-    this.activities = this.limitActivities.pipe(
+    this.activities$ = this.limitActivities$.pipe(
       switchMap(limit => this.activityService.listByUser(this.userId, limit).pipe(take(1)))
     );
   }
@@ -32,12 +32,12 @@ export class ActivityListComponent implements OnInit, OnDestroy {
    * show 1000 for now
    */
   showAllActivities() {
-    this.limitActivities.next(1000);
+    this.limitActivities$.next(1000);
     this.analytics.logEvent('profile.show-more-activities');
   }
 
   ngOnDestroy() {
-    this.limitActivities.unsubscribe();
+    this.limitActivities$.unsubscribe();
   }
 
 }

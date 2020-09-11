@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
   
     function phenoyear() {
-      return 2020
+      return get(/databases/$(database)/documents/definitions/config_dynamic).data.phenoyear
     }
   
     match /{document=**} {
