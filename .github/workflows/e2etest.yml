@@ -1,0 +1,24 @@
+name: Run end-to-end tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master, e2e-test ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  e2e-tests:
+    name: E2E-tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@master
+    - name: e2e-test
+      run: docker-compose up --exit-code-from e2e-test
+    - uses: actions/upload-artifact@v2
+      with:
+        name: e2e-test-report
+        path: e2e/output
+      if: ${{ always() }}
+ 

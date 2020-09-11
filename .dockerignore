@@ -1,5 +1,9 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+.git
+.gitignore
+/e2e
 
+# from gitignore
+# --------------
 # e2e tests
 /e2e/output
 
@@ -10,7 +14,7 @@ tmp
 protractorFailuresReport/
 
 # dependencies
-node_modules
+/node_modules
 
 # IDE
 .vscode
