@@ -32,6 +32,7 @@
     "@ngx-translate/http-loader": "^4.0.0",
     "@ngx-translate/i18n-polyfill": "^1.0.0",
     "browser-update": "3.2.5",
+    "codeceptjs": "^2.6.10",
     "core-js": "^2.6.5",
     "d3": "^5.15.0",
     "firebase": "^7.14.2",
@@ -39,6 +40,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "ngx-gravatar": "^8.1.0",
+    "playwright": "^1.4.0",
     "rxjs": "~6.5.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
@@ -53,6 +55,7 @@
     "@types/jasminewd2": "^2.0.6",
     "@types/lodash": "^4.14.149",
     "@types/node": "~8.9.4",
+    "codeceptjs-chai": "^2.2.0",
     "codelyzer": "^5.0.1",
     "firebase-tools": ">=8.7.0",
     "jasmine-core": "^3.3.0",
