@@ -2,7 +2,8 @@
 <div class="title-individual">{{ (individual$ | async).name }}</div>
 <div class="detail-label" *ngIf="(individual$ | async).last_observation_date">
   <span translate>Letzte Beobachtung</span>
-  <span>, {{ lastObservationDate$ | async }}</span>
+  <span>, </span>
+  <span>{{ lastObservationDate$ | async }}</span>
 </div>
 <div class="phenophase-title" *ngIf="lastPhenophase$ | async">
   <span class="phenophase-circle" [ngStyle]="{ 'background-color': lastPhenophaseColor$ | async }"></span>

@@ -12,6 +12,10 @@ export class GeoposService {
 
   constructor() {}
 
+  public init() {
+    this.update(new google.maps.LatLng(this.initialGeopos));
+  }
+
   public update(latLng: google.maps.LatLng) {
     this.geopos$.next(latLng.toJSON());
     this.center$.next(latLng.toJSON());

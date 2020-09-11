@@ -32,19 +32,6 @@ The `phenonet` project only hosts the productive web application <https://app.ph
 1. Install cloud functions and setup configuration data
    - <https://github.com/globe-swiss/phaenonet-functions>
 
-#### Configure deployment targets
-
-Deployment targets only need to be confiugured once as they are saved server side.
-To check if the targets are configured use `firebase target --project [phaenonet|phaenonet-test]`.
-
-Configure targets using firebase CLI:
-
-```commandline
-firebase target:apply hosting dev phaenonet-dev --project phaenonet-test
-firebase target:apply hosting test phaenonet-test --project phaenonet-test
-firebase target:apply hosting prod phaenonet --project phaenonet
-```
-
 ### Local setup
 
 #### Configure Firebase
@@ -54,11 +41,24 @@ Install Node.js and npm see: <https://www.npmjs.com/get-npm>
 Install the firebase console and login:
 
 ```commandline
-npm install -g firebase-tools
-firebase login
+npm install
+npx firebase login
 ```
 
 Consult the official documentation for the [Firebase CLI](https://firebase.google.com/docs/cli) for further information.
+
+#### Configure deployment targets
+
+Deployment targets only need to be confiugured once as they are saved server side.
+To check if the targets are configured use `npx firebase target --project [phaenonet|phaenonet-test]`.
+
+Configure targets using firebase CLI:
+
+```commandline
+npx firebase target:apply hosting dev phaenonet-dev --project phaenonet-test
+npx firebase target:apply hosting test phaenonet-test --project phaenonet-test
+npx firebase target:apply hosting prod phaenonet --project phaenonet
+```
 
 #### Configure local credentials
 
@@ -72,21 +72,46 @@ The application will be using the database and rules of the `phaenonet-test` pro
 
 Make sure `init.json` credential file for local development is placed in the `src/local/` folder.
 
-Run `ng serve --c=local --aot` for a dev server. Navigate to <http://localhost:4200/>. The app will automatically reload if you change any of the source files.
+Run a dev server.
+
+```commandline
+npx ng serve --c=local --aot
+```
+
+Navigate to <http://localhost:4200/>. The app will automatically reload if you change any of the source files.
+
+### Run end-to-end tests
+
+To run e2e-test first run a local server as described in the previous chapter.
+
+Install the required dependencies
+
+```commandline
+cd e2e
+npm install
+```
+
+and run the tests with `codeceptjs`
+
+```commandline
+codeceptjs run --reporter mochawesome
+```
+
+Test output will be located in `/e2e/output`.
 
 ### Deploy development applications
 
 Deploy the development application to <https://phaenonet-dev.web.app/> by building and deploying the current workspace:
 
 ```commandline
-ng build --aot && firebase deploy --only hosting:dev --project phaenonet-test --config=firebase-dev.json
+npx ng build --aot && npx firebase deploy --only hosting:dev --project phaenonet-test --config=firebase-dev.json
 ```
 
 Rules and indexes for Firestore and Storage will need to be deployed manually if needed.
 Be aware that the rules are shared between the `dev` and `test` applicaton.
 
 ```commandline
-firebase deploy --only storage,firestore --project phaenonet-test --config=firebase-dev.json
+npx firebase deploy --only storage,firestore --project phaenonet-test --config=firebase-dev.json
 ```
 
 ### Deploy application for acceptance test
@@ -96,11 +121,11 @@ Code merged to the `master` branch will be deployed to <https://phaenonet-test.w
 To manually deploy a test version:
 
 ```commandline
-ng build --aot && firebase deploy --project phaenonet-test --config=firebase-test.json
+npx ng build --aot && npx firebase deploy --project phaenonet-test --config=firebase-test.json
 ```
 
 ## Production Deployment
 
 ```commandline
-ng build --prod --aot && firebase deploy --project phaenonet --config=firebase-prod.json
+npx ng build --prod && npx firebase deploy --project phaenonet --config=firebase-prod.json
 ```

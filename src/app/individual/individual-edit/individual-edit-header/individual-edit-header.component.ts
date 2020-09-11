@@ -40,6 +40,8 @@ export class EditHeaderComponent implements OnInit {
     this.individual$.pipe(first()).subscribe(i => {
       if (i.geopos) {
         this.geoposService.update(new google.maps.LatLng(i.geopos));
+      } else {
+        this.geoposService.init();
       }
     });
     this.geopos$ = this.geoposService.geopos$;

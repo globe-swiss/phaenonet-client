@@ -14,7 +14,7 @@
             <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
             <mat-select formControlName="year">
               <mat-option *ngFor="let year of selectableYears$ | async" [value]="year">{{
-                year.id | translate
+                year | translate
               }}</mat-option>
             </mat-select>
           </mat-form-field>
