@@ -10,11 +10,7 @@ module.exports = {
   },
   filter: {
     phenoyear: {
-      dropdown: { css: '.map-filter mat-select[formcontrolname=year]' },
-      select(year) {
-        I.click(this.dropdown);
-        I.click({ css: "mat-option[ng-reflect-value='" + year + "']" });
-      }
+      dropdown: { css: '.map-filter mat-select[formcontrolname=year]' }
     },
     source: {
       dropdown: { css: '.map-filter mat-select[formcontrolname="datasource"]' },
@@ -22,21 +18,13 @@ module.exports = {
         all: 'all',
         phenonet: 'globe',
         meteoswiss: 'meteoswiss'
-      },
-      select(source) {
-        I.click(this.dropdown);
-        I.click({ css: "mat-option[ng-reflect-value='" + source + "']" });
       }
     },
     species: {
       dropdown: { css: '.map-filter mat-select[formcontrolname="species"]' },
       options: {
-        sycamore: 'BA' // Bergahorn
+        sycamore: 'BA'
         // add more if needed
-      },
-      select(species) {
-        I.click(this.dropdown);
-        I.click({ css: "mat-option[ng-reflect-value='" + species + "']" });
       }
     }
   },

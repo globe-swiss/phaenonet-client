@@ -2,6 +2,9 @@
 
 module.exports = function () {
   return actor({
+    ss: function () {
+      this.saveScreenshot('debug.png', true);
+    },
     login: function () {
       const { loginPage, e2eTestUser } = inject();
       this.amOnPage(loginPage.url);
@@ -17,6 +20,10 @@ module.exports = function () {
     amLoggedOut: function () {
       const { navbarComponent } = inject();
       this.see('Anmelden', navbarComponent.registerProfileButton); // fixme: better way to check if logged in
+    },
+    selectDropdownValue(dropdownLocator, value) {
+      this.click(dropdownLocator);
+      this.click({ css: "mat-option[ng-reflect-value='" + value + "']" });
     }
   });
 };

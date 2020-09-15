@@ -1,7 +1,6 @@
 Feature('Login');
 
 Scenario('test login component present', (I, loginPage) => {
-  I.login();
   I.amOnPage(loginPage.url);
   for (component of Object.values(loginPage.components)) {
     I.seeElement(component);
