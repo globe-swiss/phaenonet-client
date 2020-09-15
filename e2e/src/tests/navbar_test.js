@@ -1,4 +1,4 @@
-Feature('navbar component');
+Feature('Navigation Bar Component');
 
 Scenario('test navbar content present', (I, navbarComponent) => {
   I.amOnPage('/');

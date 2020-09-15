@@ -5,27 +5,25 @@ const { setHeadlessWhen } = require('@codeceptjs/configure');
 setHeadlessWhen(process.env.HEADLESS);
 
 exports.config = {
-  tests: 'e2e-tests/*_test.js',
-  output: './e2e-tests/output',
+  tests: 'e2e/src/tests/*_test.js',
+  output: './e2e/output',
   helpers: {
     Playwright: {
       url: 'http://localhost:4200',
       show: false,
-      browser: 'chromium'
-    },
-    ChaiWrapper: {
-      require: 'codeceptjs-chai'
+      browser: 'chromium',
+      waitForTimeout: 5000
     }
   },
   include: {
-    I: './steps_file.js',
-    loginPage: './e2e-tests/pages/login.js',
-    mapPage: './e2e-tests/pages/map.js',
-    privateProfilePage: './e2e-tests/pages/private_profile.js',
-    profileEditPage: './e2e-tests/pages/profile_edit.js',
-    individualsEditPage: './e2e-tests/pages/individuals_edit.js',
-    navbarComponent: './e2e-tests/components/navbar.js',
-    e2eTestUser: './e2e-tests/users/e2e_test.js'
+    I: './e2e/src/steps_file.js',
+    loginPage: './e2e/src/pages/login.js',
+    mapPage: './e2e/src/pages/map.js',
+    privateProfilePage: './e2e/src/pages/private_profile.js',
+    profileEditPage: './e2e/src/pages/profile_edit.js',
+    individualsEditPage: './e2e/src/pages/individuals_edit.js',
+    navbarComponent: './e2e/src/components/navbar.js',
+    e2eTestUser: './e2e/src/users/e2e_test.js'
   },
   bootstrap: null,
   mocha: {},

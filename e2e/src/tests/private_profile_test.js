@@ -1,4 +1,4 @@
-Feature('private profile');
+Feature('Private Profile');
 
 Scenario('test component present', (I, privateProfilePage) => {
   I.login();
