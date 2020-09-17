@@ -2,7 +2,7 @@ Feature('Map');
 
 Scenario('test map component present logged-out', (I, mapPage) => {
   I.amOnPage(mapPage.url);
-  for (component of Object.values(mapPage.components)) {
+  for (let component of Object.values(mapPage.components)) {
     I.seeElement(component);
   }
   I.dontSeeElement(mapPage.addObjectButton);
@@ -11,7 +11,7 @@ Scenario('test map component present logged-out', (I, mapPage) => {
 Scenario('test map component present logged-in', (I, mapPage) => {
   I.login();
   I.amOnPage(mapPage.url);
-  for (component of Object.values(mapPage.components)) {
+  for (let component of Object.values(mapPage.components)) {
     I.seeElement(component);
   }
   I.seeElement(mapPage.addObjectButton);
@@ -32,6 +32,8 @@ Scenario('test add object navigation', async (I, mapPage, individualsEditPage) =
 });
 
 Scenario('test map markers for 2018', async (I, mapPage) => {
+  // fixme: fails if no api key (or limit exceeded)
+  // pssible solution https://github.com/codeceptjs/CodeceptJS/issues/648#issuecomment-368607630
   mapPage.visit();
   I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
   I.seeNumberOfElements(mapPage.mapMarker, 378); // 2018, all, all

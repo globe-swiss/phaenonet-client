@@ -2,6 +2,10 @@ const { I } = inject();
 
 module.exports = {
   newIndividualUrl: '/individuals/new/edit',
+  visit(individualId) {
+    I.amOnPage('/individuals/' + individualId + '/edit');
+    I.waitForElement(this.species.dropdown, 5);
+  },
   components: {
     navigation: { css: 'app-nav' },
     header: { css: 'app-individual-edit-header' },
@@ -10,7 +14,7 @@ module.exports = {
   species: {
     dropdown: { css: 'mat-select[formcontrolname="species"]' },
     options: {
-      sycamore: 'BA'
+      hazel: 'HS'
       // add more if needed
     }
   },
@@ -71,7 +75,7 @@ module.exports = {
     }
   },
   fillForm() {
-    I.selectDropdownValue(this.species.dropdown, this.species.options.sycamore);
+    I.selectDropdownValue(this.species.dropdown, this.species.options.hazel);
     I.fillField(this.name.field, 'e2e-test-obj');
     I.selectDropdownValue(this.environment.dropdown, this.environment.options.city);
     I.selectDropdownValue(this.exposition.dropdown, this.exposition.options.north);

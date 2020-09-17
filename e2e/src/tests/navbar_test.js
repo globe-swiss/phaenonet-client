@@ -2,7 +2,7 @@ Feature('Navigation Bar Component');
 
 Scenario('test navbar content present', (I, navbarComponent) => {
   I.amOnPage('/');
-  for (component of Object.values(navbarComponent)) {
+  for (let component of Object.values(navbarComponent)) {
     I.seeElement(component);
   }
 });

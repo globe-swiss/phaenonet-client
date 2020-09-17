@@ -5,7 +5,7 @@ const { setHeadlessWhen } = require('@codeceptjs/configure');
 setHeadlessWhen(process.env.HEADLESS);
 
 exports.config = {
-  tests: 'e2e/src/tests/*_test.js',
+  tests: './e2e/src/tests/*_test.js',
   output: './e2e/output',
   helpers: {
     Playwright: {
@@ -21,6 +21,7 @@ exports.config = {
     mapPage: './e2e/src/pages/map.js',
     privateProfilePage: './e2e/src/pages/private_profile.js',
     profileEditPage: './e2e/src/pages/profile_edit.js',
+    individualsPage: './e2e/src/pages/individuals.js',
     individualsEditPage: './e2e/src/pages/individuals_edit.js',
     navbarComponent: './e2e/src/components/navbar.js',
     e2eTestUser: './e2e/src/users/e2e_test.js'

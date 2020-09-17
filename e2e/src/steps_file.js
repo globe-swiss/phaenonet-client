@@ -1,3 +1,5 @@
+const { navbarComponent, individualsEditPage, individualsPage } = inject();
+
 // in this file you can append custom step methods to 'I' object
 
 module.exports = function () {
@@ -14,16 +16,28 @@ module.exports = function () {
       this.waitUrlEquals('/map', 5);
     },
     amLoggedIn: function () {
-      const { navbarComponent } = inject();
       this.see('Profil', navbarComponent.registerProfileButton); // fixme: better way to check if logged in
     },
     amLoggedOut: function () {
-      const { navbarComponent } = inject();
       this.see('Anmelden', navbarComponent.registerProfileButton); // fixme: better way to check if logged in
     },
     selectDropdownValue(dropdownLocator, value) {
       this.click(dropdownLocator);
       this.click({ css: "mat-option[ng-reflect-value='" + value + "']" });
+    },
+    async createDefaultIndividual() {
+      individualsEditPage.visit('new');
+      individualsEditPage.fillForm();
+      this.click(individualsEditPage.saveButton);
+      this.waitForElement(individualsPage.components.header);
+      const url = await this.grabCurrentUrl();
+      this.say('Created Individual at ' + url);
+      return url;
+    },
+    deleteIndividual(url) {
+      this.amOnPage(url);
+      //delete all observations
+      individualsPage.deleteIndividual();
     }
   });
 };

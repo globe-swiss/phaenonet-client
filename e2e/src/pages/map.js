@@ -23,6 +23,7 @@ module.exports = {
     species: {
       dropdown: { css: '.map-filter mat-select[formcontrolname="species"]' },
       options: {
+        hazel: 'HS',
         sycamore: 'BA'
         // add more if needed
       }
