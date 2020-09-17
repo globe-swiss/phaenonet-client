@@ -6,7 +6,7 @@ import localeIt from '@angular/common/locales/it';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import {
   AngularFireAnalyticsModule,
@@ -62,7 +62,9 @@ registerLocaleData(localeIt, 'it');
   providers: [
     httpInterceptorProviders,
     ScreenTrackingService,
-    UserTrackingService
+    UserTrackingService,
+    // workaround for https://github.com/firebase/firebase-js-sdk/issues/1674 remove when fixed in the SDK
+    { provide: FirestoreSettingsToken, useValue: { experimentalForceLongPolling: true } }
     // { provide: DEBUG_MODE, useValue: true }
   ],
   bootstrap: [AppComponent]
