@@ -17,10 +17,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   limitActivities$ = new BehaviorSubject<number>(8);
   activities$: Observable<Activity[]>;
 
-  constructor(
-    private activityService: ActivityService,
-    private analytics: AngularFireAnalytics,
-    ) { }
+  constructor(private activityService: ActivityService, private analytics: AngularFireAnalytics) {}
 
   ngOnInit() {
     this.activities$ = this.limitActivities$.pipe(
@@ -28,7 +25,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     );
   }
 
-   /**
+  /**
    * show 1000 for now
    */
   showAllActivities() {
@@ -39,5 +36,4 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.limitActivities$.unsubscribe();
   }
-
 }

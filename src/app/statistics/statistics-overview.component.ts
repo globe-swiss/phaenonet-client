@@ -97,7 +97,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     private statisticsService: StatisticsService,
     private masterdataService: MasterdataService,
     private translateService: TranslateService,
-    private analytics: AngularFireAnalytics,
+    private analytics: AngularFireAnalytics
   ) {}
 
   @HostListener('window:resize', ['$event'])
@@ -112,15 +112,13 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.navService.setLocation('Auswertungen');
-    this.selectableSpecies$ = this.masterdataService
-      .getSpecies()
-      .pipe(map(species => [allSpecies].concat(species)));
-      this.analytics.logEvent('statistics.view');
+    this.selectableSpecies$ = this.masterdataService.getSpecies().pipe(map(species => [allSpecies].concat(species)));
+    this.analytics.logEvent('statistics.view');
 
     this.selectableYears$ = this.masterdataService.availableYears$.pipe(
-      tap(years => this.availableYears = years),
+      tap(years => (this.availableYears = years)),
       map(years => [allYear, ...years.map(year => ({ id: '' + year, value: year } as YearValue))]),
-      tap(years => this.selectedYear.patchValue(years[1])),
+      tap(years => this.selectedYear.patchValue(years[1]))
     );
   }
 
@@ -193,11 +191,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     this.height = this.statisticsContainer.nativeElement.offsetHeight - this.margin.top - this.margin.bottom;
     this.g = this.svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
-    this.x = d3Scale
-      .scaleLinear()
-      .domain([-30, 395])
-      .range([0, this.width])
-      .nice();
+    this.x = d3Scale.scaleLinear().domain([-30, 395]).range([0, this.width]).nice();
 
     const domain = this.data.map(analytics => analytics.species);
     const subdomain =
@@ -216,11 +210,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
       });
     });
 
-    this.y = d3Scale
-      .scaleBand()
-      .domain(resultingDomain)
-      .rangeRound([0, this.height])
-      .padding(0.4);
+    this.y = d3Scale.scaleBand().domain(resultingDomain).rangeRound([0, this.height]).padding(0.4);
 
     this.data.forEach(analytics => {
       this.g
@@ -254,7 +244,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         .style('opacity', 0.7)
         .attr('stroke', '#262626')
         .attr('stroke-width', 0.5)
-        .on('mouseover', function(d) {
+        .on('mouseover', function (d) {
           const xPosition =
             parseFloat(d3.select(this).attr('x')) +
             self.margin.left +
@@ -274,9 +264,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
             .pipe(
               first(),
               map(phenophase => {
-                d3.select('#tooltip')
-                  .select('#title')
-                  .text(self.translateService.instant(phenophase.de));
+                d3.select('#tooltip').select('#title').text(self.translateService.instant(phenophase.de));
 
                 d3.select('#tooltip').classed('hidden', false);
               })

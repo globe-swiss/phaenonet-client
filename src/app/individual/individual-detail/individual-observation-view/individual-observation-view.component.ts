@@ -10,7 +10,10 @@ import { IdLike } from '../../../masterdata/masterdata-like';
 import { ObservationService } from '../../../observation/observation.service';
 import { PhenophaseObservation } from '../../../observation/phenophase-observation';
 import { PhenophaseObservationsGroup } from '../../../observation/phenophase-observations-group';
-import { ConfirmationDialogComponent, ConfirmationDialogData } from '../../../shared/confirmation-dialog/confirmation-dialog.component';
+import {
+  ConfirmationDialogComponent,
+  ConfirmationDialogData
+} from '../../../shared/confirmation-dialog/confirmation-dialog.component';
 import { Individual } from '../../individual';
 import { PhenophaseDialogComponent } from '../../phenophase-dialog.component';
 import { findFirst } from 'fp-ts/lib/Array';
@@ -34,13 +37,19 @@ export class ObservationViewComponent implements OnInit {
     private observationService: ObservationService,
     private masterdataService: MasterdataService,
     private analytics: AngularFireAnalytics
-  ) { }
+  ) {}
 
   ngOnInit() {
     const availablePhenophases = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.masterdataService.getPhenophases(i.species)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.masterdataService.getPhenophases(i.species)),
+      mergeAll()
+    );
     const availablePhenophaseGroups = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.masterdataService.getPhenophaseGroups(i.species)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.masterdataService.getPhenophaseGroups(i.species)),
+      mergeAll()
+    );
     const individualObservations = this.observationService.listByIndividual(this.individualId);
     const availableComments = this.masterdataService.getComments();
 
@@ -54,7 +63,6 @@ export class ObservationViewComponent implements OnInit {
     ]).pipe(
       filter(o => o[0] !== undefined),
       map(([individual, phenophaseGroups, phenophases, observations, comments]) => {
-
         comments.forEach(element => {
           this.staticComments[element.id] = element.de;
         });
@@ -116,12 +124,11 @@ export class ObservationViewComponent implements OnInit {
               observation.phenophase
             ].join('_');
 
-            this.observationService
-              .upsert(observation, observationId);
+            this.observationService.upsert(observation, observationId);
 
             this.analytics.logEvent(observation.created ? 'observation.modify' : 'observation.create', {
               species: detail.species,
-              phenophase: result.phenophase.id,
+              phenophase: result.phenophase.id
             });
           });
         });
@@ -145,7 +152,7 @@ export class ObservationViewComponent implements OnInit {
       if (result) {
         phenophaseObservation.observation.map(po =>
           this.observationService
-            .delete((<IdLike><unknown>po).id)
+            .delete((<IdLike>(<unknown>po)).id)
             .then(() => this.analytics.logEvent('observation.delete'))
         );
       }

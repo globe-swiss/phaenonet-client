@@ -10,14 +10,13 @@ if (environment.production) {
 }
 
 function loadConfig() {
-  return fetch('/__/firebase/init.json')
-          .then(response => response.json());
+  return fetch('/__/firebase/init.json').then(response => response.json());
 }
 
 (async () => {
   const config = await loadConfig();
 
   platformBrowserDynamic([{ provide: FirebaseOptionsToken, useValue: config }])
-     .bootstrapModule(AppModule)
-     .catch(err => console.error(err));
+    .bootstrapModule(AppModule)
+    .catch(err => console.error(err));
 })();

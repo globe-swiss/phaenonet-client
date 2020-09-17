@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 set -e
-npx prettier --write  "src/**/*.{ts,scss,json,html}"
+npx prettier --write  "src/**/*.{js,ts,scss,json,html}"

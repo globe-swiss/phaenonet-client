@@ -24,12 +24,11 @@ export class ProfileDetailsComponent implements OnInit {
   email: string;
   locale$: Observable<string>;
 
-
   constructor(
     protected authService: AuthService,
     protected alertService: AlertService,
     private userService: UserService,
-    private analytics: AngularFireAnalytics,
+    private analytics: AngularFireAnalytics
   ) {}
 
   ngOnInit() {

@@ -62,7 +62,7 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
     private masterdataService: MasterdataService,
     public dialog: MatDialog,
     private authService: AuthService,
-    private analytics: AngularFireAnalytics,
+    private analytics: AngularFireAnalytics
   ) {
     super(individualService, route);
   }
@@ -94,7 +94,10 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
       this.availableComments$ = this.masterdataService.getComments();
 
       // combine the available phenophases with the existing observations
-      this.phenophaseObservationsBySpecies$ = combineLatest([this.individualObservations$, this.availableComments$]).pipe(
+      this.phenophaseObservationsBySpecies$ = combineLatest([
+        this.individualObservations$,
+        this.availableComments$
+      ]).pipe(
         map(([observations, comments]) => {
           comments.forEach(element => {
             this.staticComments[element.id] = element.de;

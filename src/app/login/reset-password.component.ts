@@ -19,7 +19,7 @@ export class ResetPasswordComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private navService: NavService,
-    private analytics: AngularFireAnalytics,
+    private analytics: AngularFireAnalytics
   ) {}
 
   ngOnInit(): void {

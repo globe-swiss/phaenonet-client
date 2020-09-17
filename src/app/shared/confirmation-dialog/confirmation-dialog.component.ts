@@ -16,14 +16,12 @@ export interface ConfirmationDialogData {
   templateUrl: './confirmation-dialog.component.html'
 })
 export class ConfirmationDialogComponent {
-
   constructor(
     public dialogRef: MatDialogRef<ConfirmationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmationDialogData,
+    @Inject(MAT_DIALOG_DATA) public data: ConfirmationDialogData
   ) {}
 
   close(): void {
     this.dialogRef.close();
   }
-
 }

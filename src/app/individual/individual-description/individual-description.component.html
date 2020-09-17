@@ -1,25 +1,25 @@
 <div class="detail-label">{{ (species$ | async)?.de | translate }}</div>
 <div class="title-individual">{{ (individual$ | async).name }}</div>
 <div class="detail-label" *ngIf="(individual$ | async).last_observation_date">
-    <span translate>Letzte Beobachtung</span>
-    <span>, {{ lastObservationDate$ | async }}</span>
+  <span translate>Letzte Beobachtung</span>
+  <span>, {{ lastObservationDate$ | async }}</span>
 </div>
 <div class="phenophase-title" *ngIf="lastPhenophase$ | async">
-    <span class="phenophase-circle" [ngStyle]="{ 'background-color': lastPhenophaseColor$ | async }"></span>
-    <span>{{ (lastPhenophase$ | async)?.de | translate }}</span>
+  <span class="phenophase-circle" [ngStyle]="{ 'background-color': lastPhenophaseColor$ | async }"></span>
+  <span>{{ (lastPhenophase$ | async)?.de | translate }}</span>
 </div>
 <div>
-    <span>{{ 'Von' | translate }} </span
-    ><a mat-button [routerLink]="['/profile', (individual$ | async).user]" class="creator">{{
+  <span>{{ 'Von' | translate }} </span
+  ><a mat-button [routerLink]="['/profile', (individual$ | async).user]" class="creator">{{
     individualCreatorNickname$ | async
-    }}</a>
+  }}</a>
 </div>
 <div class="detail-label">{{ 'Umgebung' | translate }}</div>
 <div class="detail-info-value">{{ (description$ | async)?.de | translate }}</div>
 <div class="detail-label">{{ 'Höhe' | translate }}</div>
 <div>
-	<span class="detail-info-value">{{ (individual$ | async)?.altitude | round }}</span>
-	<span translate> {{ 'm ü. M.' }}</span>
+  <span class="detail-info-value">{{ (individual$ | async)?.altitude | round }}</span>
+  <span translate> {{ 'm ü. M.' }}</span>
 </div>
 <div class="detail-label">{{ 'Exposition' | translate }}</div>
 <div class="detail-info-value">{{ (exposition$ | async)?.de | translate }}</div>
@@ -37,24 +37,26 @@
 <div class="detail-info-value">{{ (forest$ | async)?.de | translate }}</div>
 
 <div>
-	<button
-		mat-flat-button
-		color="primary"
-		type="button"
-		id="edit-button"
-		[routerLink]="['/individuals', individualId, 'edit']"
-		*ngIf="isEditable$ | async">
-	{{ 'Objekt bearbeiten' | translate }}
-	</button>
+  <button
+    mat-flat-button
+    color="primary"
+    type="button"
+    id="edit-button"
+    [routerLink]="['/individuals', individualId, 'edit']"
+    *ngIf="isEditable$ | async"
+  >
+    {{ 'Objekt bearbeiten' | translate }}
+  </button>
 </div>
 <div>
-	<button
-		mat-flat-button
-		color="accent"
-		type="button"
-		id="delete-button"
-		(click)="deleteIndividual()"
-		*ngIf="isEditable$ | async">
-	{{ 'Objekt löschen' | translate }}
-	</button>
+  <button
+    mat-flat-button
+    color="accent"
+    type="button"
+    id="delete-button"
+    (click)="deleteIndividual()"
+    *ngIf="isEditable$ | async"
+  >
+    {{ 'Objekt löschen' | translate }}
+  </button>
 </div>

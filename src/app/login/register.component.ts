@@ -40,7 +40,7 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewChecked {
     private router: Router,
     private navService: NavService,
     private languageService: LanguageService,
-    private analytics: AngularFireAnalytics,
+    private analytics: AngularFireAnalytics
   ) {}
 
   ngOnInit(): void {
@@ -73,15 +73,14 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   register(): void {
     this.registerFailed = false;
-    this.authService
-      .register(
-        this.registerForm.controls.email.value,
-        this.registerForm.controls.password.value,
-        this.registerForm.controls.nickname.value,
-        this.registerForm.controls.firstname.value,
-        this.registerForm.controls.lastname.value,
-        this.registerForm.controls.locale.value
-      );
+    this.authService.register(
+      this.registerForm.controls.email.value,
+      this.registerForm.controls.password.value,
+      this.registerForm.controls.nickname.value,
+      this.registerForm.controls.firstname.value,
+      this.registerForm.controls.lastname.value,
+      this.registerForm.controls.locale.value
+    );
   }
 
   showRegisterForm(): boolean {

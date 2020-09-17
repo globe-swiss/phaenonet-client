@@ -12,30 +12,39 @@
             [id]="item.id"
             placeholder="{{ item.phenophase.description_de | translate }}"
             [value]="item.observation.toNullable()?.date"
-            readonly="true"/>
+            readonly="true"
+          />
           <mat-icon
             *ngIf="(isEditable$ | async) && item.observation.isNone() && item.limits.isEditable"
             matSuffix
             class="add-phenophase"
             color="primary"
-            (click)="editPhenophaseDate(item)">add_circle</mat-icon>
+            (click)="editPhenophaseDate(item)"
+            >add_circle</mat-icon
+          >
           <mat-icon
             *ngIf="(isEditable$ | async) && item.observation.isNone() && !item.limits.isEditable"
             matSuffix
             class="add-phenophase-disabled"
-            color="accent">add_circle</mat-icon>
+            color="accent"
+            >add_circle</mat-icon
+          >
           <mat-icon
             *ngIf="(isEditable$ | async) && item.observation.isSome()"
             matSuffix
             color="primary"
             class="edit-phenophase"
-            (click)="editPhenophaseDate(item)">edit</mat-icon>
+            (click)="editPhenophaseDate(item)"
+            >edit</mat-icon
+          >
           <mat-icon
             *ngIf="(isEditable$ | async) && item.observation.isSome()"
             matSuffix
             color="warn"
             class="edit-phenophase"
-            (click)="deletePhenophaseDate(item)">delete</mat-icon>
+            (click)="deletePhenophaseDate(item)"
+            >delete</mat-icon
+          >
         </mat-form-field>
         <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment">
           {{ 'Kommentar' }}: {{ staticComments[item.observation.toNullable()?.comment] | translate }}

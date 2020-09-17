@@ -43,9 +43,10 @@ export class EditHeaderComponent implements OnInit {
       }
     });
     this.geopos$ = this.geoposService.geopos$;
-    this.imageUrl$ = this.individual$.pipe(map(individual =>
-      this.individualService.getImageUrl(individual, true)
-      ), mergeAll());
+    this.imageUrl$ = this.individual$.pipe(
+      map(individual => this.individualService.getImageUrl(individual, true)),
+      mergeAll()
+    );
   }
 
   updateGeopos(event: google.maps.MouseEvent): void {

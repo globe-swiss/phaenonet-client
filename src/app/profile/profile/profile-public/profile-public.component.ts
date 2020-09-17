@@ -26,13 +26,16 @@ export class ProfilePublicComponent implements OnInit {
     protected authService: AuthService,
     protected alertService: AlertService,
     private userService: UserService,
-    private analytics: AngularFireAnalytics,
+    private analytics: AngularFireAnalytics
   ) {}
 
   ngOnInit() {
     this.isLoggedIn = this.authService.isLoggedIn();
 
-    this.nickname$ = this.user$.pipe(first(), map(u => u.nickname));
+    this.nickname$ = this.user$.pipe(
+      first(),
+      map(u => u.nickname)
+    );
 
     this.isFollowing$ = this.authService.getUserObservable().pipe(
       filter(u => u !== null),
@@ -49,7 +52,7 @@ export class ProfilePublicComponent implements OnInit {
         this.alertService.infoMessage('Aktivitäten abonniert', 'Sie haben die Aktivitäten des Benutzers abonniert.');
       });
 
-      this.analytics.logEvent('follow-user');
+    this.analytics.logEvent('follow-user');
   }
 
   unfollow(): void {
@@ -57,10 +60,13 @@ export class ProfilePublicComponent implements OnInit {
       .unfollowUser(this.userId)
       .pipe(first())
       .subscribe(_ => {
-        this.alertService.infoMessage('Aktivitäten gekündigt', 'Sie erhalten keine Aktivitäten mehr zu diesem Benutzer.');
+        this.alertService.infoMessage(
+          'Aktivitäten gekündigt',
+          'Sie erhalten keine Aktivitäten mehr zu diesem Benutzer.'
+        );
       });
 
-      this.analytics.logEvent('unfollow-user');
+    this.analytics.logEvent('unfollow-user');
   }
 
   get profileLink() {

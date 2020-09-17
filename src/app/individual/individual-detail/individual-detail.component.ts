@@ -26,7 +26,7 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     public dialog: MatDialog,
     private authService: AuthService,
     private analytics: AngularFireAnalytics,
-    private masterdataService: MasterdataService,
+    private masterdataService: MasterdataService
   ) {
     super(individualService, route);
   }
@@ -41,8 +41,11 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
 
     this.isEditable$ = this.detailSubject$.pipe(
       filter(individual => individual !== undefined),
-      map(individual => (this.authService.getUserId() === individual.user && individual.year === this.masterdataService.getPhenoYear()))
-      );
+      map(
+        individual =>
+          this.authService.getUserId() === individual.user && individual.year === this.masterdataService.getPhenoYear()
+      )
+    );
 
     this.detailSubject$.pipe(first()).subscribe(detail => {
       this.analytics.logEvent('individual.view', {

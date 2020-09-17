@@ -20,11 +20,10 @@ export class ProfileComponent extends BaseDetailComponent<PublicUser> implements
     protected route: ActivatedRoute,
     private publicUserService: PublicUserService,
     public dialog: MatDialog,
-    private authService: AuthService,
+    private authService: AuthService
   ) {
     super(publicUserService, route);
   }
-
 
   ngOnInit(): void {
     super.ngOnInit();

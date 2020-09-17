@@ -41,23 +41,10 @@ export function altitudeLimits(altitude: number, limits: AltitudeLimits, phenoye
   }
 
   // start day is the limits start day in the current pheno year
-  const start_day = moment()
-    .year(phenoyear)
-    .dayOfYear(start)
-    .toDate();
+  const start_day = moment().year(phenoyear).dayOfYear(start).toDate();
   // end day is the minimum of today and the limit's end day in the current pheno year
   const end_day = new Date(
-    Math.min(
-      moment()
-        .endOf('day')
-        .toDate()
-        .getTime(),
-      moment()
-        .year(phenoyear)
-        .dayOfYear(end)
-        .toDate()
-        .getTime()
-    )
+    Math.min(moment().endOf('day').toDate().getTime(), moment().year(phenoyear).dayOfYear(end).toDate().getTime())
   );
 
   return {

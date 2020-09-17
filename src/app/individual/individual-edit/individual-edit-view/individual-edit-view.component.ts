@@ -60,7 +60,7 @@ export class IndividualEditViewComponent implements OnInit {
     private individualService: IndividualService,
     private geoposService: GeoposService,
     private analytics: AngularFireAnalytics
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.geopos$ = this.geoposService.geopos$;
@@ -117,7 +117,7 @@ export class IndividualEditViewComponent implements OnInit {
     ref
       .put(file, { contentType: file.type })
       .then(() => this.router.navigate(['individuals', this.toIndividualId(individual)])); // fixme: navigating in this subscription is causing ObjectUnsubscribedError
-      this.analytics.logEvent('individual.upload-image');
+    this.analytics.logEvent('individual.upload-image');
   }
 
   removeUploadedFile() {

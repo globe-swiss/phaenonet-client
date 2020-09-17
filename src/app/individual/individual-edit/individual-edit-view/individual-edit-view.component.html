@@ -8,7 +8,8 @@
         placeholder="{{ 'Standort (Geo-Koordinaten)' | translate }}"
         type="text"
         disabled
-        required/>
+        required
+      />
     </mat-form-field>
     <mat-form-field>
       <input
@@ -17,7 +18,8 @@
         [value]="altitude$ | async | round"
         placeholder="{{ 'Höhe m ü. M.' | translate }}"
         type="text"
-        disabled/>
+        disabled
+      />
     </mat-form-field>
   </div>
   <mat-form-field class="full-width">
@@ -37,7 +39,8 @@
       id="name"
       placeholder="{{ 'Name / Kennzeichnung' | translate }}"
       type="text"
-      required/>
+      required
+    />
   </mat-form-field>
   <mat-form-field class="full-width">
     <mat-label>{{ 'Foto' | translate }} </mat-label>
@@ -47,17 +50,20 @@
       placeholder="{{ 'Foto vom Objekt hinzufügen' | translate }}"
       type="text"
       value="{{ fileToUpload?.name }}"
-      readonly="true"/>
+      readonly="true"
+    />
     <mat-icon class="add-image" matSuffix color="primary" (click)="fileInput.click()">add_circle</mat-icon>
     <mat-icon *ngIf="fileToUpload" class="add-image" matSuffix color="warn" (click)="removeUploadedFile()"
-      >delete</mat-icon>
+      >delete</mat-icon
+    >
     <input
       hidden
       (change)="onFileSelected($event.target.files)"
       #fileInput
       type="file"
       id="file"
-      accept=".jpg,.jpeg,.png,"/>
+      accept=".jpg,.jpeg,.png,"
+    />
   </mat-form-field>
   <mat-form-field class="full-width">
     <mat-label>{{ 'Umgebung' | translate }}</mat-label>
@@ -89,7 +95,8 @@
         step="1"
         placeholder="{{ 'Hangneigung in %' | translate }}"
         class="right-align"
-        required/>
+        required
+      />
       <span matSuffix>%</span>
     </mat-form-field>
     <img class="gradient-info-img" src="assets/img/info_gradient.png" />
@@ -145,7 +152,8 @@
     type="submit"
     id="create-button"
     [disabled]="createForm.invalid"
-    [appDisableNotOwner]="(individual$ | async)?.user">
+    [appDisableNotOwner]="(individual$ | async)?.user"
+  >
     {{ 'Objekt speichern' | translate }}
   </button>
 </form>

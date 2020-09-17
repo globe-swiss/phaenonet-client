@@ -6,7 +6,10 @@ import { firestore } from 'firebase/app';
 import { Observable, ReplaySubject, combineLatest } from 'rxjs';
 import { first, map, mergeAll, shareReplay, filter } from 'rxjs/operators';
 import { formatShortDate } from 'src/app/core/formatDate';
-import { ConfirmationDialogComponent, ConfirmationDialogData } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
+import {
+  ConfirmationDialogComponent,
+  ConfirmationDialogData
+} from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { Species } from '../..//masterdata/species';
 import { Description } from '../../masterdata/description';
 import { Distance } from '../../masterdata/distance';
@@ -56,7 +59,7 @@ export class IndividualDescriptionComponent implements OnInit {
     private individualService: IndividualService,
     private alertService: AlertService,
     private analytics: AngularFireAnalytics
-  ) { }
+  ) {}
 
   exclude_undefined() {
     return filter(i => i !== undefined);
@@ -64,30 +67,62 @@ export class IndividualDescriptionComponent implements OnInit {
 
   ngOnInit() {
     this.species$ = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.masterdataService.getSpeciesValue(i.species)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.masterdataService.getSpeciesValue(i.species)),
+      mergeAll()
+    );
     this.description$ = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.masterdataService.getDescriptionValue(i.description)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.masterdataService.getDescriptionValue(i.description)),
+      mergeAll()
+    );
     this.exposition$ = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.masterdataService.getExpositionValue(i.exposition)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.masterdataService.getExpositionValue(i.exposition)),
+      mergeAll()
+    );
     this.shade$ = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.masterdataService.getShadeValue(i.shade)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.masterdataService.getShadeValue(i.shade)),
+      mergeAll()
+    );
     this.habitat$ = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.masterdataService.getHabitatValue(i.habitat)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.masterdataService.getHabitatValue(i.habitat)),
+      mergeAll()
+    );
     this.forest$ = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.masterdataService.getForestValue(i.forest)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.masterdataService.getForestValue(i.forest)),
+      mergeAll()
+    );
     this.distance$ = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.masterdataService.getDistanceValue(i.less100)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.masterdataService.getDistanceValue(i.less100)),
+      mergeAll()
+    );
     this.irrigation$ = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.masterdataService.getIrrigationValue(i.watering)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.masterdataService.getIrrigationValue(i.watering)),
+      mergeAll()
+    );
 
     this.individualCreatorNickname$ = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.getUserName(i)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.getUserName(i)),
+      mergeAll()
+    );
 
     this.lastPhenophase$ = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.getPhenophase(i)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.getPhenophase(i)),
+      mergeAll()
+    );
     this.lastPhenophaseColor$ = this.lastPhenophase$.pipe(map(p => this.masterdataService.getColor(p.id))); // cannot be undefined
     this.lastObservationDate$ = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => formatShortDate(i.last_observation_date.toDate())));
+      filter(i => i !== undefined),
+      map(i => formatShortDate(i.last_observation_date.toDate()))
+    );
   }
 
   private getUserName(individual: Individual) {
@@ -106,13 +141,16 @@ export class IndividualDescriptionComponent implements OnInit {
   }
 
   deleteIndividual() {
-    this.individualService.hasObservations(this.individualId).pipe(first()).subscribe(hasObservations => {
-      if (hasObservations) {
-        this.deleteNotPossibleDialog();
-      } else {
-        this.confirmDeleteDialog();
-      }
-    });
+    this.individualService
+      .hasObservations(this.individualId)
+      .pipe(first())
+      .subscribe(hasObservations => {
+        if (hasObservations) {
+          this.deleteNotPossibleDialog();
+        } else {
+          this.confirmDeleteDialog();
+        }
+      });
   }
 
   private confirmDeleteDialog() {
@@ -121,32 +159,31 @@ export class IndividualDescriptionComponent implements OnInit {
       data: {
         title: 'OBJEKT LÖSCHEN',
         // tslint:disable-next-line: max-line-length
-        content: 'Möchten Sie das Objekt definitiv löschen? In Zukunft können Sie keine Daten mehr zu diesem Objekt eingeben. Daten zu diesem Objekt aus vergangenen Jahren bleiben erhalten.',
+        content:
+          'Möchten Sie das Objekt definitiv löschen? In Zukunft können Sie keine Daten mehr zu diesem Objekt eingeben. Daten zu diesem Objekt aus vergangenen Jahren bleiben erhalten.',
         yes: 'Objekt löschen',
         no: 'Abbrechen',
         yesColor: 'warn'
       } as ConfirmationDialogData
     });
 
-    combineLatest([dialogRef.afterClosed(), this.individual$]).pipe(first()).subscribe(
-      ([confirmed, individual]) => {
-      if (confirmed) {
+    combineLatest([dialogRef.afterClosed(), this.individual$])
+      .pipe(first())
+      .subscribe(([confirmed, individual]) => {
+        if (confirmed) {
           this.individualService.deleteImages(individual);
-          this.individualService.delete(this.individualId)
+          this.individualService
+            .delete(this.individualId)
             .then(() => {
-                this.analytics.logEvent('individual.delete');
-                this.alertService.infoMessage(
-                  'Löschen erfolgreich',
-                  'Das Objekt wurde gelöscht.');
-                this.router.navigate(['/profile']);
+              this.analytics.logEvent('individual.delete');
+              this.alertService.infoMessage('Löschen erfolgreich', 'Das Objekt wurde gelöscht.');
+              this.router.navigate(['/profile']);
             })
             .catch(() => {
-              this.alertService.infoMessage(
-                'Löschen fehlgeschlagen',
-                'Das Objekt konnte nicht gelöscht werden.');
+              this.alertService.infoMessage('Löschen fehlgeschlagen', 'Das Objekt konnte nicht gelöscht werden.');
             });
-      }
-    });
+        }
+      });
   }
 
   private deleteNotPossibleDialog() {
@@ -155,7 +192,8 @@ export class IndividualDescriptionComponent implements OnInit {
       data: {
         title: 'LÖSCHEN NICHT MÖGLICH',
         // tslint:disable-next-line: max-line-length
-        content: 'Das Objekt kann nicht gelöscht werden, weil im aktuellen Jahr Beobachtungen erfasst wurden. Löschen Sie zuerst die Beobachtungen, um das Objekt löschen zu können.<br /><br />Wenn Sie die Beobachtungen im aktuellen Jahr behalten wollen, löschen Sie das Objekt erst im kommenden Jahr.',
+        content:
+          'Das Objekt kann nicht gelöscht werden, weil im aktuellen Jahr Beobachtungen erfasst wurden. Löschen Sie zuerst die Beobachtungen, um das Objekt löschen zu können.<br /><br />Wenn Sie die Beobachtungen im aktuellen Jahr behalten wollen, löschen Sie das Objekt erst im kommenden Jahr.',
         yes: 'zurück zum Objekt',
         yesColor: 'accent'
       } as ConfirmationDialogData

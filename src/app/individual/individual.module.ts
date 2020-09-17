@@ -19,7 +19,6 @@ import { SubscriptionBarComponent } from './individual-detail/individual-subscri
 import { IndividualService } from './individual.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
 
-
 @NgModule({
   imports: [
     SharedModule,
@@ -30,8 +29,17 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
     OpenModule,
     StorageModule
   ],
-  declarations: [IndividualEditComponent, IndividualDetailComponent, PhenophaseDialogComponent, DetailHeaderComponent,
-    SubscriptionBarComponent, IndividualDescriptionComponent, ObservationViewComponent, EditHeaderComponent, IndividualEditViewComponent],
+  declarations: [
+    IndividualEditComponent,
+    IndividualDetailComponent,
+    PhenophaseDialogComponent,
+    DetailHeaderComponent,
+    SubscriptionBarComponent,
+    IndividualDescriptionComponent,
+    ObservationViewComponent,
+    EditHeaderComponent,
+    IndividualEditViewComponent
+  ],
   providers: [IndividualService, GeoposService],
   exports: [DetailHeaderComponent, SubscriptionBarComponent],
   entryComponents: [PhenophaseDialogComponent, ConfirmationDialogComponent]

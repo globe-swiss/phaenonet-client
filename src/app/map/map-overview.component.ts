@@ -15,7 +15,6 @@ import { SourceType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 import { AuthService } from './../auth/auth.service';
 
-
 class GlobeInfoWindowData {
   individual: Individual;
   species: Species;
@@ -79,9 +78,8 @@ export class MapOverviewComponent implements OnInit {
     private individualService: IndividualService,
     private masterdataService: MasterdataService,
     private authService: AuthService,
-    private analytics: AngularFireAnalytics,
-  ) {
-  }
+    private analytics: AngularFireAnalytics
+  ) {}
 
   getColor(phenophase: string) {
     return this.masterdataService.getColor(phenophase);
@@ -157,7 +155,8 @@ export class MapOverviewComponent implements OnInit {
         this.masterdataService.getSpeciesValue(individual.species),
         this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase)
       ])
-        .pipe(first(),
+        .pipe(
+          first(),
           map(([species, phenophase]) => {
             return {
               ...{

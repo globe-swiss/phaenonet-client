@@ -19,8 +19,9 @@ import { Species } from './species';
 import * as configStatic from '../../assets/config_static.json';
 import { AngularFirestore } from '@angular/fire/firestore';
 
-
-export interface MasterdataCollection { [index: string]: Object; }
+export interface MasterdataCollection {
+  [index: string]: Object;
+}
 export interface ConfigDynamic {
   phenoyear: number;
   first_year: number;
@@ -28,7 +29,6 @@ export interface ConfigDynamic {
 
 @Injectable()
 export class MasterdataService extends BaseService implements OnDestroy {
-
   public subscription: Subscription;
   public availableYears$: Observable<number[]>;
   public phenoYear$: Observable<number>;
@@ -41,9 +41,9 @@ export class MasterdataService extends BaseService implements OnDestroy {
       .doc<ConfigDynamic>('config_dynamic')
       .valueChanges()
       .pipe(map(config => this.range(config.phenoyear, config.first_year - 1, -1)));
-  this.phenoYear$ = this.availableYears$.pipe(map(years => years[0]));
+    this.phenoYear$ = this.availableYears$.pipe(map(years => years[0]));
 
-  this.subscription = this.phenoYear$.subscribe(year => this.phenoYear = year);
+    this.subscription = this.phenoYear$.subscribe(year => (this.phenoYear = year));
   }
 
   ngOnDestroy() {
@@ -64,9 +64,9 @@ export class MasterdataService extends BaseService implements OnDestroy {
       phaenoIndex = configStatic.phenophases[phenophase].icon_index;
     }
     if (source === 'meteoswiss') {
-        return '/assets/img/map_pins/map_pin_meteoschweiz.png';
+      return '/assets/img/map_pins/map_pin_meteoschweiz.png';
     } else {
-        return '/assets/img/map_pins/map_pin_' + species.toLowerCase() + '_' + phaenoIndex + '.png';
+      return '/assets/img/map_pins/map_pin_' + species.toLowerCase() + '_' + phaenoIndex + '.png';
     }
   }
 
@@ -176,7 +176,10 @@ export class MasterdataService extends BaseService implements OnDestroy {
   }
 
   getPhenophasesFromIndividual(individual: Observable<Individual>) {
-    return individual.pipe(map(i => this.getPhenophases(i.species)), mergeAll());
+    return individual.pipe(
+      map(i => this.getPhenophases(i.species)),
+      mergeAll()
+    );
   }
 
   getPhenophaseValue(speciesId: string, phenophase: string): Observable<Phenophase> {
@@ -192,13 +195,10 @@ export class MasterdataService extends BaseService implements OnDestroy {
   }
 
   private toMasterdatalikeList<T extends MasterdataLike>(masterdataLikeObjects: MasterdataCollection): T[] {
-    return Object.entries(masterdataLikeObjects).map(([key, value]) => ({ 'id': key, ...value} as T));
+    return Object.entries(masterdataLikeObjects).map(([key, value]) => ({ id: key, ...value } as T));
   }
 
-  private getMasterdataValueFor<T extends MasterdataLike>(
-    data: MasterdataCollection,
-    id: string
-  ): Observable<T> {
+  private getMasterdataValueFor<T extends MasterdataLike>(data: MasterdataCollection, id: string): Observable<T> {
     return this.getMasterdataFor<T>(data).pipe(
       map(elements => elements.find(element => element.id === id)),
       publishReplay(1),
@@ -207,15 +207,17 @@ export class MasterdataService extends BaseService implements OnDestroy {
   }
 
   private getPhenoDataFor<T extends PhenophasesdataLike>(speciesId: string, name: string): Observable<T[]> {
-    return of(this.toMasterdatalikeList<T>(configStatic.species[speciesId][name]).sort((n1, n2) => {
-      if (n1.seq > n2.seq) {
+    return of(
+      this.toMasterdatalikeList<T>(configStatic.species[speciesId][name]).sort((n1, n2) => {
+        if (n1.seq > n2.seq) {
           return 1;
-      }
-      if (n1.seq < n2.seq) {
+        }
+        if (n1.seq < n2.seq) {
           return -1;
-      }
-      return 0;
-    }));
+        }
+        return 0;
+      })
+    );
   }
 
   private getPhenoDataValueFor<T extends PhenophasesdataLike>(
@@ -228,18 +230,18 @@ export class MasterdataService extends BaseService implements OnDestroy {
 
   private range(start: number, stop: number, step = 1) {
     if (typeof stop === 'undefined') {
-        // one param defined
-        stop = start;
-        start = 0;
+      // one param defined
+      stop = start;
+      start = 0;
     }
 
     if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
-        return [];
+      return [];
     }
 
     const result = [];
     for (let i = start; step > 0 ? i < stop : i > stop; i += step) {
-        result.push(i);
+      result.push(i);
     }
 
     return result;

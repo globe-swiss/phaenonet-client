@@ -15,18 +15,13 @@ export class SubscriptionBarComponent implements OnInit {
   @Input() individual$: ReplaySubject<Individual>;
   isFollowing$: Observable<boolean>;
 
-  constructor(
-    private authService: AuthService,
-    private userService: UserService,
-    private alertService: AlertService
-    ) { }
+  constructor(private authService: AuthService, private userService: UserService, private alertService: AlertService) {}
 
   ngOnInit() {
     const currentUser = this.authService.getUserObservable();
     this.isFollowing$ = combineLatest([currentUser, this.individual$]).pipe(
-      map(([u, i]) => u.following_individuals
-                          ? u.following_individuals.find(id => id === i.individual) !== undefined
-                          : false
+      map(([u, i]) =>
+        u.following_individuals ? u.following_individuals.find(id => id === i.individual) !== undefined : false
       )
     );
   }
@@ -37,9 +32,7 @@ export class SubscriptionBarComponent implements OnInit {
         .followIndividual(f)
         .pipe(first())
         .subscribe(_ => {
-          this.alertService.infoMessage(
-            'Aktivitäten abonniert',
-            'Sie haben die Aktivitäten des Objekts abonniert.');
+          this.alertService.infoMessage('Aktivitäten abonniert', 'Sie haben die Aktivitäten des Objekts abonniert.');
         })
     );
   }

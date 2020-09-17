@@ -137,7 +137,7 @@ export class AuthService extends BaseService {
             nickname: nickname,
             firstname: firstname,
             lastname: lastname,
-            locale: locale,
+            locale: locale
           })
           .then(_ => this.handleUserLogin(firebaseResult));
       })

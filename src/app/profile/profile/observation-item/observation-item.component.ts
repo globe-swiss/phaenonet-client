@@ -9,15 +9,11 @@ import { IndividualPhenophase } from '../../../individual/individual-phenophase'
   styleUrls: ['./observation-item.component.scss']
 })
 export class ObservationItemComponent implements OnInit {
-
   @Input() item: IndividualPhenophase;
 
-  constructor(
-    private masterdataService: MasterdataService
-  ) { }
+  constructor(private masterdataService: MasterdataService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   getColor(phenophase: string) {
     return this.masterdataService.getColor(phenophase);
@@ -26,5 +22,4 @@ export class ObservationItemComponent implements OnInit {
   getLastObservationDate() {
     return formatShortDate(this.item.individual.last_observation_date.toDate());
   }
-
 }

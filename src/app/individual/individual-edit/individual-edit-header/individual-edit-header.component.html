@@ -6,12 +6,14 @@
     height="402px"
     [center]="geopos$ | async"
     [zoom]="zoom"
-    [options]="options">
+    [options]="options"
+  >
     <map-marker
       #marker
       [position]="geopos$ | async"
       [options]="markerOptions"
-      (mapDragend)="updateGeopos($event)"></map-marker>
+      (mapDragend)="updateGeopos($event)"
+    ></map-marker>
   </google-map>
   <div gdColumn="5 / span 2" class="image-container" *ngIf="imageUrl$ | async; let url">
     <img class="individual-image" [src]="url" width="100%" />

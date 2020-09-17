@@ -28,22 +28,31 @@ export class DetailHeaderComponent implements OnInit {
 
   imageUrl$: Observable<string | void>;
 
-  constructor(
-    private individualService: IndividualService,
-    private masterdataService: MasterdataService
-  ) { }
+  constructor(private individualService: IndividualService, private masterdataService: MasterdataService) {}
 
   ngOnInit() {
-    this.geopos$ = this.individual$.pipe(filter(i => i !== undefined), map(i => i.geopos ));
-    this.center$ = this.individual$.pipe(filter(i => i !== undefined), map(i => i.geopos ));
+    this.geopos$ = this.individual$.pipe(
+      filter(i => i !== undefined),
+      map(i => i.geopos)
+    );
+    this.center$ = this.individual$.pipe(
+      filter(i => i !== undefined),
+      map(i => i.geopos)
+    );
     this.imageUrl$ = this.individual$.pipe(
-      filter(i => i !== undefined), map(i => this.individualService.getImageUrl(i, true)), mergeAll());
+      filter(i => i !== undefined),
+      map(i => this.individualService.getImageUrl(i, true)),
+      mergeAll()
+    );
     this.markerOptions$ = this.individual$.pipe(
       filter(i => i !== undefined),
-      map(i => ({
-        draggable: false,
-        icon: this.masterdataService.individualToIcon(i)
-      } as google.maps.MarkerOptions)
-    ));
+      map(
+        i =>
+          ({
+            draggable: false,
+            icon: this.masterdataService.individualToIcon(i)
+          } as google.maps.MarkerOptions)
+      )
+    );
   }
 }

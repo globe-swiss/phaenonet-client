@@ -62,10 +62,7 @@ export class IndividualService extends BaseResourceService<Individual> {
   listByUser(userId: string, limit: number = 100): Observable<(Individual & IdLike)[]> {
     return this.afs
       .collection<Individual>(this.collectionName, ref =>
-        ref
-          .where('user', '==', userId)
-          .orderBy('modified', 'desc')
-          .limit(limit)
+        ref.where('user', '==', userId).orderBy('modified', 'desc').limit(limit)
       )
       .valueChanges({ idField: 'id' });
   }
@@ -87,23 +84,32 @@ export class IndividualService extends BaseResourceService<Individual> {
   }
 
   hasObservations(individualId: string) {
-    return this.afs.collection<Observation>('observations', ref =>
-      ref.where('individual_id', '==', individualId).limit(1)
-    ).valueChanges().pipe(map(observations => {
-      return observations.length > 0;
-    }));
+    return this.afs
+      .collection<Observation>('observations', ref => ref.where('individual_id', '==', individualId).limit(1))
+      .valueChanges()
+      .pipe(
+        map(observations => {
+          return observations.length > 0;
+        })
+      );
   }
 
   deleteImages(individual: Individual) {
-    this.afStorage.storage.ref(this.getImagePath(individual, true)).delete().catch(reason => {
-      if (reason.code !== 'storage/object-not-found') {
-        console.log(reason);
-      }
-    });
-    this.afStorage.storage.ref(this.getImagePath(individual, false)).delete().catch(reason => {
-      if (reason.code !== 'storage/object-not-found') {
-        console.log(reason);
-      }
-    });
+    this.afStorage.storage
+      .ref(this.getImagePath(individual, true))
+      .delete()
+      .catch(reason => {
+        if (reason.code !== 'storage/object-not-found') {
+          console.log(reason);
+        }
+      });
+    this.afStorage.storage
+      .ref(this.getImagePath(individual, false))
+      .delete()
+      .catch(reason => {
+        if (reason.code !== 'storage/object-not-found') {
+          console.log(reason);
+        }
+      });
   }
 }

@@ -12,14 +12,16 @@ export class ActivityItemComponent implements OnInit {
   @Input() activity: Activity;
   formatShortDateTime = formatShortDateTime;
 
+  constructor(private masterdataService: MasterdataService) {}
 
-  constructor(private masterdataService: MasterdataService) { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   getIcon() {
-    return this.masterdataService.getIndividualIconPath(this.activity.species, this.activity.source, this.activity.phenophase);
+    return this.masterdataService.getIndividualIconPath(
+      this.activity.species,
+      this.activity.source,
+      this.activity.phenophase
+    );
   }
 
   getDate() {

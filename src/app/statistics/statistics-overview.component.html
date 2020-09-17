@@ -13,7 +13,9 @@
           <mat-form-field>
             <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
             <mat-select formControlName="year">
-              <mat-option *ngFor="let year of selectableYears$ | async" [value]="year">{{ year.id | translate }}</mat-option>
+              <mat-option *ngFor="let year of selectableYears$ | async" [value]="year">{{
+                year.id | translate
+              }}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field>
@@ -35,7 +37,9 @@
           <mat-form-field>
             <mat-label>{{ 'Art' | translate }}</mat-label>
             <mat-select formControlName="species">
-              <mat-option *ngFor="let s of selectableSpecies$ | async" [value]="s.id">{{ s.de | translate }}</mat-option>
+              <mat-option *ngFor="let s of selectableSpecies$ | async" [value]="s.id">{{
+                s.de | translate
+              }}</mat-option>
             </mat-select>
           </mat-form-field>
           <button

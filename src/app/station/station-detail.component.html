@@ -3,12 +3,14 @@
     <app-individual-detail-header
       gdColumn="1 / span 6"
       class="detail-header"
-      [individual$]="detailSubject$"></app-individual-detail-header>
+      [individual$]="detailSubject$"
+    ></app-individual-detail-header>
     <app-individual-subscription
       *ngIf="isLoggedIn"
       gdColumn="1 / span 6"
       class="detail-header"
-      [individual$]="detailSubject$"></app-individual-subscription>
+      [individual$]="detailSubject$"
+    ></app-individual-subscription>
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
       <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject$ | async" class="detail-left">
         <div class="detail-label detail-label-standort">{{ 'Standort' | translate }}</div>

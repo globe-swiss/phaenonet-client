@@ -6,13 +6,13 @@ This project is the web-client application for the phenology oberservation offer
 
 Phaenonet is set up with two Firebase projects instances. These projects have a separate Firestore and storage instance as well as access rules.
 
-* [phaenonet](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the production instance
-* [phaenonet-test](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the test instance
+- [phaenonet](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the production instance
+- [phaenonet-test](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the test instance
 
 On `phaenonet-test` project two web application are hostet:
 
-* The `dev` application <https://phaenonet-dev.web.app/> which is deployed manually
-* The `test` application <https://phaenonet-test.web.app/> which is deployed automatically on code merge to master
+- The `dev` application <https://phaenonet-dev.web.app/> which is deployed manually
+- The `test` application <https://phaenonet-test.web.app/> which is deployed automatically on code merge to master
 
 The `phenonet` project only hosts the productive web application <https://app.phaenonet.ch/>.
 
@@ -21,16 +21,16 @@ The `phenonet` project only hosts the productive web application <https://app.ph
 #### Creating a project from scratch
 
 1. Create the project in GCP or Firebase
-    * <https://console.firebase.google.com/u/0/>
+   - <https://console.firebase.google.com/u/0/>
 1. Enable Maps and Elevation API
-    * <https://console.cloud.google.com/marketplace/details/google/maps-backend.googleapis.com>
-    * <https://console.cloud.google.com/marketplace/details/google/elevation-backend.googleapis.com>
+   - <https://console.cloud.google.com/marketplace/details/google/maps-backend.googleapis.com>
+   - <https://console.cloud.google.com/marketplace/details/google/elevation-backend.googleapis.com>
 1. Enable username/password authentication in Firebase
-    * <https://console.firebase.google.com/u/0/project/[project_name]/authentication/providers>
+   - <https://console.firebase.google.com/u/0/project/[project_name]/authentication/providers>
 1. (optional) set outgoing email address
-    * <https://console.firebase.google.com/u/0/project/[project_name]/authentication/emails>
+   - <https://console.firebase.google.com/u/0/project/[project_name]/authentication/emails>
 1. Install cloud functions and setup configuration data
-    * <https://github.com/globe-swiss/phaenonet-functions>
+   - <https://github.com/globe-swiss/phaenonet-functions>
 
 #### Configure deployment targets
 

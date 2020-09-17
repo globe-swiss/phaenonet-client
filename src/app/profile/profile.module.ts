@@ -15,9 +15,17 @@ import { ProfilePublicComponent } from './profile/profile-public/profile-public.
 
 @NgModule({
   imports: [SharedModule, ProfileRoutingModule, IndividualModule, ActivityModule],
-  declarations: [ProfileComponent, ProfileEditComponent, ChangePasswordDialogComponent,
-    ActivityItemComponent, ActivityListComponent, ObservationItemComponent,
-    ObservationListComponent, ProfileDetailsComponent, ProfilePublicComponent],
+  declarations: [
+    ProfileComponent,
+    ProfileEditComponent,
+    ChangePasswordDialogComponent,
+    ActivityItemComponent,
+    ActivityListComponent,
+    ObservationItemComponent,
+    ObservationListComponent,
+    ProfileDetailsComponent,
+    ProfilePublicComponent
+  ],
   providers: [],
   exports: [],
   entryComponents: [ChangePasswordDialogComponent]

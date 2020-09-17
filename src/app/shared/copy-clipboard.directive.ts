@@ -12,7 +12,9 @@ export class CopyClipboardDirective {
   public onClick(event: MouseEvent): void {
     event.preventDefault();
 
-    if (!this.payload) { return; }
+    if (!this.payload) {
+      return;
+    }
     this.copyClipboard(this.payload);
     this.copied.emit(this.payload);
   }
@@ -31,10 +33,10 @@ export class CopyClipboardDirective {
       selection.removeAllRanges();
       selection.addRange(range);
       textArea.setSelectionRange(0, 999999);
-  } else {
+    } else {
       textArea.select();
-  }
-  document.execCommand('copy');
-  document.body.removeChild(textArea);
+    }
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
   }
 }
