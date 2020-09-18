@@ -119,9 +119,11 @@ export class MapOverviewComponent implements OnInit {
               if (datasource === 'globe') {
                 individuals = individuals.filter(i => i.source === 'globe');
               }
-              if (species !== allSpecies.id) {
-                individuals = individuals.filter(i => i.species === species);
-              }
+            }
+            if (species !== allSpecies.id) {
+              individuals = individuals.filter(i => {
+                return (i.station_species && i.station_species.indexOf(species) !== -1) || species === i.species;
+              });
             }
 
             return individuals;
