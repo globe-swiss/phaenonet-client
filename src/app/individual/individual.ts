@@ -16,6 +16,7 @@ export class Individual {
   shade: string;
   source: 'globe' | 'meteoswiss';
   species: string;
+  station_species: string[];
   user: string;
   watering: string;
   year: number;
