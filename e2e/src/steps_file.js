@@ -29,7 +29,7 @@ module.exports = function () {
       individualsEditPage.visit('new');
       individualsEditPage.fillForm();
       this.click(individualsEditPage.saveButton);
-      this.waitForElement(individualsPage.components.header);
+      this.waitForElement(individualsPage.components.header, 5);
       const url = await this.grabCurrentUrl();
       this.say('Created Individual at ' + url);
       return url;

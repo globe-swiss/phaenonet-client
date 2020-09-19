@@ -36,16 +36,21 @@ Scenario('test map markers for 2018', async (I, mapPage) => {
   // pssible solution https://github.com/codeceptjs/CodeceptJS/issues/648#issuecomment-368607630
   mapPage.visit();
   I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
+  I.wait(2);
   I.seeNumberOfElements(mapPage.mapMarker, 378); // 2018, all, all
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.options.phenonet);
+  I.wait(2);
   I.seeNumberOfElements(mapPage.mapMarker, 231); // 2018, phenonet, all
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.options.meteoswiss);
+  I.wait(2);
   I.seeNumberOfElements(mapPage.mapMarker, 147); // 2018, meteoswiss, all
   I.selectDropdownValue(mapPage.filter.species.dropdown, mapPage.filter.species.options.sycamore);
-  I.seeNumberOfElements(mapPage.mapMarker, 147); // 2018, meteoswiss, sycamore
+  I.wait(2);
+  I.seeNumberOfElements(mapPage.mapMarker, 122); // 2018, meteoswiss, sycamore
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.options.phenonet);
+  I.wait(2);
   I.seeNumberOfElements(mapPage.mapMarker, 30); // 2018, phenonet, sycamore
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.options.all);
-  // fixme -> this is a bug and should return approx 177 results
-  //I.seeNumberOfElements(mapPage.mapMarker, 177); // 2011, all, sycamore
+  I.wait(2);
+  I.seeNumberOfElements(mapPage.mapMarker, 152); // 2018, all, sycamore
 });

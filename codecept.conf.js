@@ -10,6 +10,7 @@ exports.config = {
   helpers: {
     Playwright: {
       url: 'http://localhost:4200',
+      //url: 'https://phaenonet-test.web.app',
       show: false,
       browser: 'chromium',
       waitForTimeout: 5000
