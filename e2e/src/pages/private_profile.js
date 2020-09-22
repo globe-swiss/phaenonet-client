@@ -1,5 +1,3 @@
-const { I } = inject();
-
 module.exports = {
   url: '/profile',
   components: {
@@ -18,5 +16,16 @@ module.exports = {
     profileLinkButton: { css: 'app-profile-details .detail-right .title-nickname button' },
     profileEditButton: { css: 'app-profile-details .detail-right #edit-button' },
     logoutButton: { css: 'app-profile-details .detail-right #logout-button' }
+  },
+  observations: {
+    listItems: locate({ css: '.latest-individual-observation' }),
+    getItem(num) {
+      return locate(this.listItems).at(num);
+    },
+    withinItem: {
+      image: { css: '.individual-image' },
+      species: locate({ css: '.detail-label' }).at(1),
+      name: { css: 'h3' }
+    }
   }
 };

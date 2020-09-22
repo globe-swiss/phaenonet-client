@@ -31,9 +31,9 @@ Scenario('test add object navigation', async (I, mapPage, individualsEditPage) =
   I.waitUrlEquals(individualsEditPage.newIndividualUrl);
 });
 
-Scenario('test map markers for 2018', async (I, mapPage) => {
+Scenario('test regression on map markers for 2018', async (I, mapPage) => {
   // fixme: fails if no api key (or limit exceeded)
-  // pssible solution https://github.com/codeceptjs/CodeceptJS/issues/648#issuecomment-368607630
+  // possible solution https://github.com/codeceptjs/CodeceptJS/issues/648#issuecomment-368607630
   mapPage.visit();
   I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
   I.wait(2);
@@ -54,3 +54,6 @@ Scenario('test map markers for 2018', async (I, mapPage) => {
   I.wait(2);
   I.seeNumberOfElements(mapPage.mapMarker, 152); // 2018, all, sycamore
 });
+
+// missing tests
+// - click pin and navigate to individual page

@@ -24,6 +24,7 @@ exports.config = {
     profileEditPage: './e2e/src/pages/profile_edit.js',
     individualsPage: './e2e/src/pages/individuals.js',
     individualsEditPage: './e2e/src/pages/individuals_edit.js',
+    statisticsPage: './e2e/src/pages/statistics.js',
     navbarComponent: './e2e/src/components/navbar.js',
     e2eTestUser: './e2e/src/users/e2e_test.js'
   },
@@ -36,6 +37,11 @@ exports.config = {
     },
     screenshotOnFail: {
       enabled: true
+    }
+  },
+  multiple: {
+    basic: {
+      browsers: ['chrome', 'firefox', 'safari']
     }
   }
 };

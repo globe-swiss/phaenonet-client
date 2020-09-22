@@ -6,6 +6,7 @@ type privateProfilePage = typeof import('./pages/private_profile.js');
 type profileEditPage = typeof import('./pages/profile_edit.js');
 type individualsPage = typeof import('./pages/individuals.js');
 type individualsEditPage = typeof import('./pages/individuals_edit.js');
+type statisticsPage = typeof import('./pages/statistics.js');
 type navbarComponent = typeof import('./components/navbar.js');
 type e2eTestUser = typeof import('./users/e2e_test.js');
 
@@ -18,6 +19,7 @@ declare namespace CodeceptJS {
     profileEditPage: profileEditPage;
     individualsPage: individualsPage;
     individualsEditPage: individualsEditPage;
+    statisticsPage: statisticsPage;
     navbarComponent: navbarComponent;
     e2eTestUser: e2eTestUser;
   }
@@ -29,8 +31,9 @@ declare namespace CodeceptJS {
     [4]: profileEditPage;
     [5]: individualsPage;
     [6]: individualsEditPage;
-    [7]: navbarComponent;
-    [8]: e2eTestUser;
+    [7]: statisticsPage;
+    [8]: navbarComponent;
+    [9]: e2eTestUser;
   }
   interface Methods extends CodeceptJS.Playwright {}
   interface I extends ReturnType<steps_file> {}

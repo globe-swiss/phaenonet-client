@@ -8,9 +8,11 @@ Scenario('test component present editing individuals', (I, individualsEditPage) 
   }
 });
 
-Scenario('create individual', (I, individualsEditPage) => {
+Scenario('create individual', async (I, individualsEditPage, individualsPage) => {
   I.login();
   individualsEditPage.visit('new');
   individualsEditPage.fillForm();
   I.click(individualsEditPage.saveButton);
+  I.waitForElement(individualsPage.components.header, 5);
+  I.deleteIndividual(await I.grabCurrentUrl());
 });

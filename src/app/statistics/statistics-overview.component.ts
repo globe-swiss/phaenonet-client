@@ -45,13 +45,8 @@ export interface GroupedByPhenophaseGroup {
   observations: Observation[];
 }
 
-export interface YearValue {
-  id: string;
-  value: number;
-}
-
 const allSpecies = { id: 'all', de: 'Alle' } as Species;
-const allYear = { id: 'all', value: null } as YearValue;
+const allYear = 'all';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -62,7 +57,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef;
 
   availableYears: number[];
-  selectableYears$: Observable<YearValue[]>;
+  selectableYears$: Observable<string[]>;
   selectableDatasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
   selectableAnalyticsTypes: AnalyticsType[] = ['species', 'altitude'];
   selectableSpecies$: Observable<Species[]>;
@@ -117,7 +112,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
     this.selectableYears$ = this.masterdataService.availableYears$.pipe(
       tap(years => (this.availableYears = years)),
-      map(years => [allYear, ...years.map(year => ({ id: '' + year, value: year } as YearValue))]),
+      map(years => [allYear, ...years.map(year => '' + year)]),
       tap(years => this.selectedYear.patchValue(years[1]))
     );
   }
@@ -128,12 +123,12 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         startWith(this.filterForm.getRawValue()),
         filter(form => form.year),
         switchMap(form => {
-          const year: YearValue = form.year;
+          const year: string = form.year;
           const datasource: SourceType = form.datasource;
           let analyticsType: AnalyticsType = form.analyticsType;
           let species: string = form.species;
 
-          this.year = year.value;
+          this.year = year === allYear ? null : parseInt(year, 10);
 
           // set to single species if altitude and all species
           if (
@@ -172,7 +167,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   private toKey(analytics: Analytics) {
     if (analytics.altitude_grp) {
       return analytics.species + '-' + analytics.altitude_grp;
-    } else if (this.year === allYear.value) {
+    } else if (!this.year) {
       return analytics.species + '-' + analytics.year;
     } else {
       return analytics.species;
@@ -194,10 +189,9 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     this.x = d3Scale.scaleLinear().domain([-30, 395]).range([0, this.width]).nice();
 
     const domain = this.data.map(analytics => analytics.species);
-    const subdomain =
-      this.year === allYear.value
-        ? this.availableYears
-        : [...new Set(this.data.map(analytics => analytics.altitude_grp))].sort().reverse();
+    const subdomain = !this.year
+      ? this.availableYears
+      : [...new Set(this.data.map(analytics => analytics.altitude_grp))].sort().reverse();
 
     const resultingDomain = [];
     domain.forEach(species => {
