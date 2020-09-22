@@ -1,4 +1,4 @@
-const { navbarComponent, individualsEditPage, individualsPage } = inject();
+const { navbarComponent, individualsEditPage, individualsPage, mapPage } = inject();
 
 // in this file you can append custom step methods to 'I' object
 
@@ -13,7 +13,8 @@ module.exports = function () {
       this.fillField(loginPage.fields.email, e2eTestUser.email);
       this.fillField(loginPage.fields.password, e2eTestUser.password);
       this.click(loginPage.loginButton);
-      this.waitUrlEquals('/map', 5);
+      this.waitUrlEquals('/map');
+      this.seeElement(mapPage.components.map);
     },
     amLoggedIn: function () {
       this.see('Profil', navbarComponent.registerProfileButton); // fixme: better way to check if logged in
@@ -29,7 +30,7 @@ module.exports = function () {
       individualsEditPage.visit('new');
       individualsEditPage.fillForm();
       this.click(individualsEditPage.saveButton);
-      this.waitForElement(individualsPage.components.header, 5);
+      this.waitForElement(individualsPage.components.header, 10);
       const url = await this.grabCurrentUrl();
       this.say('Created Individual at ' + url);
       return url;

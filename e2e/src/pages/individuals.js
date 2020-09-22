@@ -33,6 +33,6 @@ module.exports = {
   deleteIndividual() {
     I.click(this.description.deleteButton);
     I.click(this.description.deleteConfirmationButton);
-    I.waitUrlEquals(privateProfilePage.url);
+    I.seeElement(privateProfilePage.components.profile);
   }
 };

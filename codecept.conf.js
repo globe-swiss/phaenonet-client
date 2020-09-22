@@ -10,7 +10,6 @@ exports.config = {
   helpers: {
     Playwright: {
       url: 'http://localhost:4200',
-      //url: 'https://phaenonet-test.web.app',
       show: false,
       browser: 'chromium',
       waitForTimeout: 5000
@@ -41,7 +40,7 @@ exports.config = {
   },
   multiple: {
     basic: {
-      browsers: ['chrome', 'firefox', 'safari']
+      browsers: ['chromium', 'firefox', 'webkit']
     }
   }
 };

@@ -54,7 +54,6 @@ Scenario('test new individual shown on profile', async (I, privateProfilePage) =
   let individualUrl = await I.createDefaultIndividual();
   I.amOnPage(privateProfilePage.url);
   I.waitForElement(privateProfilePage.observations.listItems);
-  I.say(privateProfilePage.observations.getItem(1));
   within(privateProfilePage.observations.getItem(1), () => {
     I.seeElement(privateProfilePage.observations.withinItem.image);
     I.see('Hasel', privateProfilePage.observations.withinItem.species);

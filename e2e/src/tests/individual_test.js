@@ -1,6 +1,6 @@
 Feature('Individual View');
 
-let individualUrl;
+var individualUrl;
 
 Before(async I => {
   I.login();

@@ -14,6 +14,7 @@ Scenario('test login from home screen', (I, loginPage, mapPage, e2eTestUser, nav
   loginPage.login(e2eTestUser.email, e2eTestUser.password);
   I.seeElement(mapPage.components.map);
   I.waitUrlEquals(mapPage.url);
+  I.seeElement(mapPage.components.map);
   I.amLoggedIn();
 });
 
