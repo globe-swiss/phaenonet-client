@@ -40,3 +40,13 @@ jobs:
           args: deploy --project phaenonet-test --config=firebase-test.json
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+  e2e-tests:
+    name: E2E-tests
+    needs: deploy-test
+    runs-on: ubuntu-latest
+    container: globeswiss/codeceptjs-playwright
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@master
+    - name: Build
+      run: npx codeceptjs run --override { "helpers": {"Playwright": {"url": "https://phaenonet-test.web.app"}}}
