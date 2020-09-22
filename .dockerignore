@@ -1,0 +1,46 @@
+.git
+.gitignore
+/e2e
+
+# from gitignore
+# --------------
+# e2e tests
+/e2e/output
+
+# compiled output
+/dist
+tmp
+/out-tsc
+protractorFailuresReport/
+
+# dependencies
+/node_modules
+
+# IDE
+.vscode
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.metals
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# firebase
+.firebase
+
+# local development
+/src/local
+/.devcontainer

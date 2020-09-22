@@ -1,6 +1,6 @@
 # Build PRs to master
 
-name: CI PRs
+name: Build PR
 
 on:
   pull_request:
