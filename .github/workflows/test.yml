@@ -49,4 +49,4 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@master
     - name: Build
-      run: npx codeceptjs run --override { "helpers": {"Playwright": {"url": "https://phaenonet-test.web.app"}}}
+      run: npx codeceptjs run --config codecept-ci.conf.js
