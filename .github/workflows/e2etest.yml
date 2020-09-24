@@ -1,0 +1,17 @@
+# Test build and deploy workflow
+
+name: CI Build and Deploy Test
+
+on:
+  push:
+    branches: [ e2e-action-test ]
+
+jobs:
+  e2e-tests:
+    name: E2E-tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@master
+    - name: Test
+      run: docker-compose up --exit-code-from e2e-test
