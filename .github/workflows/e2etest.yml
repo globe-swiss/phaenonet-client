@@ -17,4 +17,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@master
     - name: e2e-test
-      run: docker-compose up --exit-code-from e2e-test
+      run: docker-compose -f docker-compose.yml -f docker-compose.ci.yml up --exit-code-from e2e-test
+    - uses: actions/upload-artifact@v2
+      with:
+        name: e2e-test-report
+        path: e2e/output
+      if: ${{ always() }}
+ 

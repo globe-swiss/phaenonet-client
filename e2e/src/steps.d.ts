@@ -8,7 +8,8 @@ type individualsPage = typeof import('./pages/individuals.js');
 type individualsEditPage = typeof import('./pages/individuals_edit.js');
 type statisticsPage = typeof import('./pages/statistics.js');
 type navbarComponent = typeof import('./components/navbar.js');
-type e2eTestUser = typeof import('./users/e2e_test.js');
+type e2eTestUser = typeof import('./users_test.js');
+type customHelper = import('./helpers/clickIfVisible.js');
 
 declare namespace CodeceptJS {
   interface SupportObject {
@@ -35,7 +36,7 @@ declare namespace CodeceptJS {
     [8]: navbarComponent;
     [9]: e2eTestUser;
   }
-  interface Methods extends CodeceptJS.Playwright {}
+  interface Methods extends CodeceptJS.Playwright, CodeceptJS.Mochawesome, customHelper {}
   interface I extends ReturnType<steps_file> {}
   namespace Translation {
     interface Actions {}

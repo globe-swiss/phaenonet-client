@@ -2,10 +2,11 @@ Feature('Individual View');
 
 var individualUrl;
 
+// fixme: fails if api limit reached
 Before(async I => {
   I.login();
   individualUrl = await I.createDefaultIndividual();
-  I.amOnPage(individualUrl);
+  I.visit(individualUrl);
 });
 
 After(I => {

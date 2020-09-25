@@ -1,24 +1,22 @@
+const { isEqualWith } = require("lodash");
+
 Feature('Map');
 
 Scenario('test map component present logged-out', (I, mapPage) => {
-  I.amOnPage(mapPage.url);
-  for (let component of Object.values(mapPage.components)) {
-    I.seeElement(component);
-  }
+  I.visit(mapPage.url);
+  I.checkElementsPresent(mapPage.components);
   I.dontSeeElement(mapPage.addObjectButton);
 });
 
 Scenario('test map component present logged-in', (I, mapPage) => {
   I.login();
-  I.amOnPage(mapPage.url);
-  for (let component of Object.values(mapPage.components)) {
-    I.seeElement(component);
-  }
+  I.visit(mapPage.url);
+  I.checkElementsPresent(mapPage.components);
   I.seeElement(mapPage.addObjectButton);
 });
 
 Scenario('test initial filter', (I, mapPage) => {
-  I.amOnPage(mapPage.url);
+  I.visit(mapPage.url);
   I.waitForText('Alle', mapPage.filter.source.dropdown);
   I.waitForText('Alle', mapPage.filter.species.dropdown);
   I.waitForText('2020', 2, mapPage.filter.phenoyear.dropdown);
@@ -26,15 +24,13 @@ Scenario('test initial filter', (I, mapPage) => {
 
 Scenario('test add object navigation', async (I, mapPage, individualsEditPage) => {
   I.login();
-  I.amOnPage(mapPage.url);
+  I.visit(mapPage.url);
   I.click(mapPage.addObjectButton);
   I.waitUrlEquals(individualsEditPage.newIndividualUrl);
 });
 
 Scenario('test regression on map markers for 2018', async (I, mapPage) => {
-  // fixme: fails if no api key (or limit exceeded)
-  // possible solution https://github.com/codeceptjs/CodeceptJS/issues/648#issuecomment-368607630
-  mapPage.visit();
+  I.visit(mapPage.url);
   I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
   I.wait(2);
   I.seeNumberOfElements(mapPage.mapMarker, 378); // 2018, all, all

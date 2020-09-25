@@ -9,7 +9,8 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY ./package.json ./package-lock.json /app/
-RUN npm ci
+RUN npm ci --only=prod
+RUN npm install @angular/cli --no-save
 
 # add app
 COPY ./angular.json ./tsconfig.json /app/

@@ -1,14 +1,12 @@
 Feature('Login');
 
 Scenario('test login component present', (I, loginPage) => {
-  I.amOnPage(loginPage.url);
-  for (let component of Object.values(loginPage.components)) {
-    I.seeElement(component);
-  }
+  I.visit(loginPage.url);
+  I.checkElementsPresent(loginPage.components);
 });
 
 Scenario('test login from home screen', (I, loginPage, mapPage, e2eTestUser, navbarComponent) => {
-  I.amOnPage('/');
+  I.visit('/');
   I.click(navbarComponent.registerProfileButton);
 
   loginPage.login(e2eTestUser.email, e2eTestUser.password);
@@ -19,7 +17,7 @@ Scenario('test login from home screen', (I, loginPage, mapPage, e2eTestUser, nav
 });
 
 Scenario('test login failure', (I, loginPage, e2eTestUser) => {
-  I.amOnPage(loginPage.url);
+  I.visit(loginPage.url);
   loginPage.login(e2eTestUser.email, 'wrong');
   I.waitForText('Anmeldung fehlgeschlagen');
   I.waitUrlEquals(loginPage.url);

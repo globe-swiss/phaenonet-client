@@ -31,8 +31,5 @@ module.exports = {
   },
   mapMarker: { css: 'google-map map-marker' },
   addObjectButton: { css: '.map-actions button' },
-  visit() {
-    I.amOnPage(this.url);
-    I.waitForText('2020', 5, this.filter.phenoyear.dropdown); // wait for page to load
-  }
+  dismissButton: { css: 'button.dismissButton'}
 };

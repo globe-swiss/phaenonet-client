@@ -2,15 +2,13 @@ Feature('Edit Individual');
 
 Scenario('test component present editing individuals', (I, individualsEditPage) => {
   I.login();
-  individualsEditPage.visit('new');
-  for (let component of Object.values(individualsEditPage.components)) {
-    I.seeElement(component);
-  }
+  I.visit(individualsEditPage.newIndividualUrl);
+  I.checkElementsPresent(individualsEditPage.components);
 });
 
 Scenario('create individual', async (I, individualsEditPage, individualsPage) => {
   I.login();
-  individualsEditPage.visit('new');
+  I.visit(individualsEditPage.newIndividualUrl);
   individualsEditPage.fillForm();
   I.click(individualsEditPage.saveButton);
   I.waitForElement(individualsPage.components.header, 5);

@@ -26,8 +26,8 @@ module.exports = function () {
       this.click(dropdownLocator);
       this.click({ css: "mat-option[ng-reflect-value='" + value + "']" });
     },
-    async createDefaultIndividual() {
-      individualsEditPage.visit('new');
+    async createDefaultIndividual() { // fixme: fails if api limit reached
+      this.visit(individualsEditPage.newIndividualUrl);
       individualsEditPage.fillForm();
       this.click(individualsEditPage.saveButton);
       this.waitForElement(individualsPage.components.header, 10);
@@ -39,6 +39,19 @@ module.exports = function () {
       this.amOnPage(url);
       //delete all observations
       individualsPage.deleteIndividual();
+    },
+    checkElementsPresent(elementList) {
+      Object.values(elementList).forEach( el => {
+        this.seeElement(el);
+      });
+    },
+    visit(url) {
+      this.amOnPage(url);
+      this.dismissMapPopup();
+    },
+    dismissMapPopup() {
+      this.wait(3); // dismissbutton to appear
+      this.clickIfVisible(mapPage.dismissButton);
     }
   });
 };

@@ -2,10 +2,6 @@ const { I } = inject();
 
 module.exports = {
   newIndividualUrl: '/individuals/new/edit',
-  visit(individualId) {
-    I.amOnPage('/individuals/' + individualId + '/edit');
-    I.waitForElement(this.species.dropdown, 5);
-  },
   components: {
     navigation: { css: 'app-nav' },
     header: { css: 'app-individual-edit-header' },

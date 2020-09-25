@@ -1,14 +1,12 @@
 Feature('Navigation Bar Component');
 
 Scenario('test navbar content present', (I, navbarComponent) => {
-  I.amOnPage('/');
-  for (let component of Object.values(navbarComponent)) {
-    I.seeElement(component);
-  }
+  I.visit('/');
+  I.checkElementsPresent(navbarComponent);
 });
 
 Scenario('test register/profile', (I, navbarComponent) => {
-  I.amOnPage('/');
+  I.visit('/');
   I.see('Anmelden', navbarComponent.registerProfileButton);
   I.login();
   I.see('Profil', navbarComponent.registerProfileButton);
