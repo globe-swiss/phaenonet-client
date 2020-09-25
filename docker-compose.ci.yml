@@ -16,7 +16,6 @@ services:
     command: [
       'run', 
       '--override', '{ "helpers": { "Playwright": { "url": "http://phaenonet-app:4200" }}}', 
-      "--reporter", "mochawesome",
-      "--grep", "Individual View"]
+      "--reporter", "mochawesome"]
     stdin_open: false
     tty: false
