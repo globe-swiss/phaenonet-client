@@ -31,5 +31,5 @@ module.exports = {
   },
   mapMarker: { css: 'google-map map-marker' },
   addObjectButton: { css: '.map-actions button' },
-  dismissButton: { css: 'button.dismissButton'}
+  dismissButton: { css: 'button.dismissButton' }
 };

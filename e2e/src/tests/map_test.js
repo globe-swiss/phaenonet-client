@@ -1,4 +1,4 @@
-const { isEqualWith } = require("lodash");
+const { isEqualWith } = require('lodash');
 
 Feature('Map');
 

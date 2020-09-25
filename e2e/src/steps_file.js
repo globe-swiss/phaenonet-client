@@ -26,7 +26,8 @@ module.exports = function () {
       this.click(dropdownLocator);
       this.click({ css: "mat-option[ng-reflect-value='" + value + "']" });
     },
-    async createDefaultIndividual() { // fixme: fails if api limit reached
+    async createDefaultIndividual() {
+      // fixme: fails if api limit reached
       this.visit(individualsEditPage.newIndividualUrl);
       individualsEditPage.fillForm();
       this.click(individualsEditPage.saveButton);
@@ -41,7 +42,7 @@ module.exports = function () {
       individualsPage.deleteIndividual();
     },
     checkElementsPresent(elementList) {
-      Object.values(elementList).forEach( el => {
+      Object.values(elementList).forEach(el => {
         this.seeElement(el);
       });
     },
