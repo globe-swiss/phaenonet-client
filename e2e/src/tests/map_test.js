@@ -1,5 +1,3 @@
-const { isEqualWith } = require('lodash');
-
 Feature('Map');
 
 Scenario('test map component present logged-out', (I, mapPage) => {
