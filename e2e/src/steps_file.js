@@ -48,10 +48,9 @@ module.exports = function () {
     },
     visit(url) {
       this.amOnPage(url);
-      this.dismissMapPopup();
     },
     dismissMapPopup() {
-      this.wait(3); // dismissbutton to appear
+      this.wait(3); // dismissbutton to appear, unsafe
       this.clickIfVisible(mapPage.dismissButton);
     }
   });

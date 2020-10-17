@@ -72,7 +72,32 @@ The application will be using the database and rules of the `phaenonet-test` pro
 
 Make sure `init.json` credential file for local development is placed in the `src/local/` folder.
 
-Run `npx ng serve --c=local --aot` for a dev server. Navigate to <http://localhost:4200/>. The app will automatically reload if you change any of the source files.
+Run a dev server.
+
+```commandline
+npx ng serve --c=local --aot
+```
+
+Navigate to <http://localhost:4200/>. The app will automatically reload if you change any of the source files.
+
+### Run end-to-end tests
+
+To run e2e-test first run a local server as described in the previous chapter.
+
+Install the required dependencies
+
+```commandline
+cd e2e
+npm install
+```
+
+and run the tests with `codeceptjs`
+
+```commandline
+codeceptjs run --reporter mochawesome
+```
+
+Test output will be located in `/e2e/output`.
 
 ### Deploy development applications
 

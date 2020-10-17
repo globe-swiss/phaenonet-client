@@ -1,5 +1,3 @@
-# Test build and deploy workflow
-
 name: Run end-to-end tests
 
 on:
