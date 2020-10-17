@@ -7,13 +7,4 @@ services:
   e2e-test:
     depends_on:
       - phaenonet-app
-    image: globeswiss/codeceptjs-playwright
-    volumes:
-       - "./e2e:/tests:rw"
-    entrypoint: [
-      'wait-for-it', 'phaenonet-app:4200', '-t', '120', '--', 
-      'codeceptjs']
-    command: [
-      'run', 
-      '--override', '{ "helpers": { "Playwright": { "url": "http://phaenonet-app:4200" }}}', 
-      "--reporter", "mochawesome"]
+    build: ./e2e
