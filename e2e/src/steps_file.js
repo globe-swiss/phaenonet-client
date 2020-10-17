@@ -9,7 +9,7 @@ module.exports = function () {
     },
     login: function () {
       const { loginPage, e2eTestUser } = inject();
-      this.amOnPage(loginPage.url);
+      this.visit(loginPage.url);
       this.fillField(loginPage.fields.email, e2eTestUser.email);
       this.fillField(loginPage.fields.password, e2eTestUser.password);
       this.click(loginPage.loginButton);
@@ -37,7 +37,7 @@ module.exports = function () {
       return url;
     },
     deleteIndividual(url) {
-      this.amOnPage(url);
+      this.visit(url);
       //delete all observations
       individualsPage.deleteIndividual();
     },
@@ -48,6 +48,7 @@ module.exports = function () {
     },
     visit(url) {
       this.amOnPage(url);
+      this.wait(5); // make it slow but reliable
     },
     dismissMapPopup() {
       this.wait(3); // dismissbutton to appear, unsafe
