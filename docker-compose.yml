@@ -8,3 +8,5 @@ services:
     depends_on:
       - phaenonet-app
     build: ./e2e
+    volumes:
+    - "./e2e/output:/tests/output:rw"
