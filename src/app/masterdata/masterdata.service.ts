@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
-import { map, publishReplay, refCount, mergeAll, tap, share } from 'rxjs/operators';
+import { map, publishReplay, refCount, mergeAll, shareReplay } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { Individual } from '../individual/individual';
 import { AlertService } from '../messaging/alert.service';
@@ -25,6 +25,7 @@ export interface MasterdataCollection {
 export interface ConfigDynamic {
   phenoyear: number;
   first_year: number;
+  limits: { [phenophase: string]: Phenophase };
 }
 
 @Injectable()
@@ -33,15 +34,22 @@ export class MasterdataService extends BaseService implements OnDestroy {
   public availableYears$: Observable<number[]>;
   public phenoYear$: Observable<number>;
   private phenoYear: number;
+  private configDynamic$: Observable<ConfigDynamic>;
 
   constructor(alertService: AlertService, private afs: AngularFirestore) {
     super(alertService);
-    this.availableYears$ = this.afs
+    this.configDynamic$ = this.afs
       .collection<any>('definitions')
       .doc<ConfigDynamic>('config_dynamic')
       .valueChanges()
-      .pipe(map(config => this.range(config.phenoyear, config.first_year - 1, -1)));
-    this.phenoYear$ = this.availableYears$.pipe(map(years => years[0]));
+      .pipe(shareReplay(1));
+    this.availableYears$ = this.configDynamic$.pipe(
+      map(config => this.range(config.phenoyear, config.first_year - 1, -1))
+    );
+    this.phenoYear$ = this.availableYears$.pipe(
+      map(years => years[0]),
+      shareReplay(1)
+    );
 
     this.subscription = this.phenoYear$.subscribe(year => (this.phenoYear = year));
   }
