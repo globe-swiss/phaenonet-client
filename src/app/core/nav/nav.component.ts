@@ -2,7 +2,8 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../auth/auth.service';
 import { LanguageService } from '../language.service';
-import { MatMenuTrigger, MatSelectChange } from '@angular/material';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-nav',
