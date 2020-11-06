@@ -1,6 +1,6 @@
 # Phaenonet Client
 
-This project is the web-client application for the phenology oberservation offer [PhaenoNet](https://www.phaenonet.ch) by [GLOBE Switzerland](https://www.globe-swiss.ch).
+This project is the web-client application for the phenology observation offer [PhaenoNet](https://www.phaenonet.ch) by [GLOBE Switzerland](https://www.globe-swiss.ch).
 
 ## Environment
 
