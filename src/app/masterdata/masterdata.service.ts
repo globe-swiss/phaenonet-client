@@ -18,23 +18,29 @@ import { Shade } from './shade';
 import { Species } from './species';
 import * as configStatic from '../../assets/config_static.json';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AltitudeLimits } from './altitude-limits';
 
 export interface MasterdataCollection {
   [index: string]: Object;
 }
+
+export interface AltitudeLimitsConfig {
+  [species: string]: { [phenophase: string]: AltitudeLimits };
+}
 export interface ConfigDynamic {
   phenoyear: number;
   first_year: number;
-  limits: { [phenophase: string]: Phenophase };
+  limits: AltitudeLimitsConfig;
 }
 
 @Injectable()
 export class MasterdataService extends BaseService implements OnDestroy {
-  public subscription: Subscription;
+  private subscriptions = new Subscription();
   public availableYears$: Observable<number[]>;
   public phenoYear$: Observable<number>;
   private phenoYear: number;
   private configDynamic$: Observable<ConfigDynamic>;
+  private configDynamic: ConfigDynamic;
 
   constructor(alertService: AlertService, private afs: AngularFirestore) {
     super(alertService);
@@ -51,11 +57,12 @@ export class MasterdataService extends BaseService implements OnDestroy {
       shareReplay(1)
     );
 
-    this.subscription = this.phenoYear$.subscribe(year => (this.phenoYear = year));
+    this.subscriptions.add(this.phenoYear$.subscribe(year => (this.phenoYear = year)));
+    this.subscriptions.add(this.configDynamic$.subscribe(config => (this.configDynamic = config)));
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   public getColor(phenophase: string) {
@@ -64,6 +71,10 @@ export class MasterdataService extends BaseService implements OnDestroy {
 
   public getPhenoYear() {
     return this.phenoYear;
+  }
+
+  public getLimits(species: string, phenophase: string) {
+    return this.configDynamic.limits[species][phenophase];
   }
 
   getIndividualIconPath(species: string, source: string, phenophase: string): string {

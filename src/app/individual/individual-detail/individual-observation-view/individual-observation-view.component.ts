@@ -73,7 +73,11 @@ export class ObservationViewComponent implements OnInit {
             .map(p => {
               return {
                 phenophase: p,
-                limits: altitudeLimits(individual.altitude, p.limits, this.masterdataService.getPhenoYear()),
+                limits: altitudeLimits(
+                  individual.altitude,
+                  this.masterdataService.getLimits(individual.species, p.id),
+                  this.masterdataService.getPhenoYear()
+                ),
                 observation: findFirst((o: Observation) => o.phenophase === p.id)(observations),
                 availableComments: comments.filter(a => p.comments.find(commentId => commentId === a.id))
               };
