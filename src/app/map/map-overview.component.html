@@ -9,7 +9,7 @@
     [options]="options"
   >
     <map-marker
-      #marker
+      #marker="mapMarker"
       *ngFor="let individualWithMarkerOpts of individualsWithMarkerOpts$ | async"
       [position]="individualWithMarkerOpts.individual.geopos"
       [options]="individualWithMarkerOpts.markerOptions"
