@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import { Injectable, Inject, Optional } from '@angular/core';
-import { MAT_DATE_LOCALE, DateAdapter } from '@angular/material';
+import { MAT_DATE_LOCALE, DateAdapter } from '@angular/material/core';
 import {
   MomentDateAdapter,
   MatMomentDateAdapterOptions,
