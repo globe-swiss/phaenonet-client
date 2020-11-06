@@ -40,26 +40,26 @@ export class ObservationViewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const availablePhenophases = this.individual$.pipe(
+    const availablePhenophases$ = this.individual$.pipe(
       filter(i => i !== undefined),
       map(i => this.masterdataService.getPhenophases(i.species)),
       mergeAll()
     );
-    const availablePhenophaseGroups = this.individual$.pipe(
+    const availablePhenophaseGroups$ = this.individual$.pipe(
       filter(i => i !== undefined),
       map(i => this.masterdataService.getPhenophaseGroups(i.species)),
       mergeAll()
     );
-    const individualObservations = this.observationService.listByIndividual(this.individualId);
-    const availableComments = this.masterdataService.getComments();
+    const individualObservations$ = this.observationService.listByIndividual(this.individualId);
+    const availableComments$ = this.masterdataService.getComments();
 
     // combine the available phenophases with the existing observations
     this.phenophaseObservationsGroups$ = combineLatest([
       this.individual$,
-      availablePhenophaseGroups,
-      availablePhenophases,
-      individualObservations,
-      availableComments
+      availablePhenophaseGroups$,
+      availablePhenophases$,
+      individualObservations$,
+      availableComments$
     ]).pipe(
       filter(o => o[0] !== undefined),
       map(([individual, phenophaseGroups, phenophases, observations, comments]) => {
@@ -73,7 +73,11 @@ export class ObservationViewComponent implements OnInit {
             .map(p => {
               return {
                 phenophase: p,
-                limits: altitudeLimits(individual.altitude, p.limits, this.masterdataService.getPhenoYear()),
+                limits: altitudeLimits(
+                  individual.altitude,
+                  this.masterdataService.getLimits(individual.species, p.id),
+                  this.masterdataService.getPhenoYear()
+                ),
                 observation: findFirst((o: Observation) => o.phenophase === p.id)(observations),
                 availableComments: comments.filter(a => p.comments.find(commentId => commentId === a.id))
               };

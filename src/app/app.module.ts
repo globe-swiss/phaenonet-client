@@ -25,6 +25,7 @@ import { CoreModule } from './core/core.module';
 import { httpInterceptorProviders } from './http-interceptors';
 import { LoginModule } from './login/login.module';
 import { SharedModule } from './shared/shared.module';
+import { MasterdataService } from './masterdata/masterdata.service';
 
 export class CustomTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<any> {
@@ -63,6 +64,7 @@ registerLocaleData(localeIt, 'it');
     httpInterceptorProviders,
     ScreenTrackingService,
     UserTrackingService,
+    MasterdataService,
     // workaround for https://github.com/firebase/firebase-js-sdk/issues/1674 remove when fixed in the SDK
     { provide: FirestoreSettingsToken, useValue: { experimentalForceLongPolling: true } }
     // { provide: DEBUG_MODE, useValue: true }

@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
-import { map, publishReplay, refCount, mergeAll, tap, share } from 'rxjs/operators';
+import { map, publishReplay, refCount, mergeAll, shareReplay } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { Individual } from '../individual/individual';
 import { AlertService } from '../messaging/alert.service';
@@ -18,36 +18,51 @@ import { Shade } from './shade';
 import { Species } from './species';
 import * as configStatic from '../../assets/config_static.json';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AltitudeLimits } from './altitude-limits';
 
 export interface MasterdataCollection {
   [index: string]: Object;
 }
+
+export interface AltitudeLimitsConfig {
+  [species: string]: { [phenophase: string]: AltitudeLimits };
+}
 export interface ConfigDynamic {
   phenoyear: number;
   first_year: number;
+  limits: AltitudeLimitsConfig;
 }
 
 @Injectable()
 export class MasterdataService extends BaseService implements OnDestroy {
-  public subscription: Subscription;
+  private subscriptions = new Subscription();
   public availableYears$: Observable<number[]>;
   public phenoYear$: Observable<number>;
   private phenoYear: number;
+  private configDynamic$: Observable<ConfigDynamic>;
+  private configDynamic: ConfigDynamic;
 
   constructor(alertService: AlertService, private afs: AngularFirestore) {
     super(alertService);
-    this.availableYears$ = this.afs
+    this.configDynamic$ = this.afs
       .collection<any>('definitions')
       .doc<ConfigDynamic>('config_dynamic')
       .valueChanges()
-      .pipe(map(config => this.range(config.phenoyear, config.first_year - 1, -1)));
-    this.phenoYear$ = this.availableYears$.pipe(map(years => years[0]));
+      .pipe(shareReplay(1));
+    this.availableYears$ = this.configDynamic$.pipe(
+      map(config => this.range(config.phenoyear, config.first_year - 1, -1))
+    );
+    this.phenoYear$ = this.availableYears$.pipe(
+      map(years => years[0]),
+      shareReplay(1)
+    );
 
-    this.subscription = this.phenoYear$.subscribe(year => (this.phenoYear = year));
+    this.subscriptions.add(this.phenoYear$.subscribe(year => (this.phenoYear = year)));
+    this.subscriptions.add(this.configDynamic$.subscribe(config => (this.configDynamic = config)));
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   public getColor(phenophase: string) {
@@ -56,6 +71,10 @@ export class MasterdataService extends BaseService implements OnDestroy {
 
   public getPhenoYear() {
     return this.phenoYear;
+  }
+
+  public getLimits(species: string, phenophase: string) {
+    return this.configDynamic.limits[species][phenophase];
   }
 
   getIndividualIconPath(species: string, source: string, phenophase: string): string {

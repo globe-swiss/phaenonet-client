@@ -7,5 +7,4 @@ export class Phenophase {
   group_id: string;
   seq: number;
   comments: string[];
-  limits: AltitudeLimits;
 }
