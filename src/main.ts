@@ -3,7 +3,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
-import { FirebaseOptionsToken } from '@angular/fire';
+import { FIREBASE_OPTIONS } from '@angular/fire';
 
 if (environment.production) {
   enableProdMode();
@@ -16,7 +16,7 @@ function loadConfig() {
 (async () => {
   const config = await loadConfig();
 
-  platformBrowserDynamic([{ provide: FirebaseOptionsToken, useValue: config }])
+  platformBrowserDynamic([{ provide: FIREBASE_OPTIONS, useValue: config }])
     .bootstrapModule(AppModule)
     .catch(err => console.error(err));
 })();

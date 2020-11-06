@@ -1,5 +1,5 @@
-import { firestore } from 'firebase/app';
-import Timestamp = firestore.Timestamp;
+import firebase from 'firebase/app';
+import Timestamp = firebase.firestore.Timestamp;
 
 export class Activity {
   action?: string;
