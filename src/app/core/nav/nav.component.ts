@@ -10,8 +10,8 @@ import { MatMenuTrigger, MatSelectChange } from '@angular/material';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent {
-  @ViewChild(MatMenuTrigger, { static: false }) searchMenuTrigger: MatMenuTrigger;
-  @ViewChild('searchField', { static: false }) searchField: ElementRef;
+  @ViewChild(MatMenuTrigger) searchMenuTrigger: MatMenuTrigger;
+  @ViewChild('searchField') searchField: ElementRef;
 
   constructor(
     private languageService: LanguageService,
