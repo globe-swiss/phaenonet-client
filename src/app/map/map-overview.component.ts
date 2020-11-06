@@ -40,7 +40,7 @@ const allSpecies = { id: 'ALL', de: 'Alle' } as Species;
   styleUrls: ['./map-overview.component.scss']
 })
 export class MapOverviewComponent implements OnInit {
-  @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow;
+  @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
 
   center = { lat: 46.818188, lng: 8.227512 };
   zoom = 9;
