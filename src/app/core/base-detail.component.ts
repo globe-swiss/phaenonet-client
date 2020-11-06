@@ -1,9 +1,10 @@
-import { OnInit, OnDestroy } from '@angular/core';
+import { OnInit, OnDestroy, Directive } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, of, ReplaySubject, throwError } from 'rxjs';
 import { flatMap, switchMap } from 'rxjs/operators';
 import { ResourceService } from './resource.service';
 
+@Directive()
 export class BaseDetailComponent<T> implements OnInit, OnDestroy {
   detailSubject$: ReplaySubject<T> = new ReplaySubject<T>(1);
   detailId: string;
