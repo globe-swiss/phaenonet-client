@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { firestore } from 'firebase/app';
 import { Observable, ReplaySubject, combineLatest } from 'rxjs';
 import { first, map, mergeAll, shareReplay, filter } from 'rxjs/operators';
 import { formatShortDate } from 'src/app/core/formatDate';
@@ -24,7 +23,6 @@ import { PublicUserService } from '../../open/public-user.service';
 import { Individual } from '../individual';
 import { AlertService } from './../../messaging/alert.service';
 import { IndividualService } from './../individual.service';
-import Timestamp = firestore.Timestamp;
 
 @Component({
   selector: 'app-individual-description',

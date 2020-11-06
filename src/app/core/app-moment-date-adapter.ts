@@ -28,7 +28,8 @@ export class AppMomentDateAdapter extends MomentDateAdapter {
 @Injectable()
 export class AppMomentDatetimeAdapter extends MomentDatetimeAdapter {
   constructor(@Optional() @Inject(MAT_DATE_LOCALE) matDateLocale: string, _delegate: DateAdapter<Moment>) {
-    super(matDateLocale, _delegate);
+    // constructor(matDateLocale: string, matMomentAdapterOptions: MatMomentDateAdapterOptions, _delegate: DateAdapter<Moment>);
+    super(matDateLocale, {}, _delegate);
     this.setLocale(moment.locale());
     _delegate.setLocale(moment.locale());
   }
