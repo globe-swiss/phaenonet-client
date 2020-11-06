@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { User as FUser } from 'firebase/app';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import { from, Observable, of } from 'rxjs';
 import { switchMap, mergeAll, switchAll, take } from 'rxjs/operators';
@@ -12,7 +11,7 @@ import { LanguageService } from '../core/language.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { LoginResult } from './login-result';
 import { User } from './user';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 
 export const LOGIN_URL = '/auth/login';
 export const LOGGED_OUT_URL = '/auth/logged-out';
@@ -24,7 +23,7 @@ export class AuthService extends BaseService {
   browserIdHeaders: HttpHeaders;
 
   user$: Observable<User>;
-  firebaseUser: FUser;
+  firebaseUser: firebase.User;
 
   constructor(
     alertService: AlertService,
@@ -54,7 +53,7 @@ export class AuthService extends BaseService {
 
   login(email: string, password: string): Observable<User> {
     return from(
-      this.afAuth.auth
+      this.afAuth
         .signInWithEmailAndPassword(email, password)
         .then(firebaseResult => {
           return this.handleUserLogin(firebaseResult);
@@ -83,7 +82,7 @@ export class AuthService extends BaseService {
   }
 
   logout(): void {
-    this.afAuth.auth.signOut().then(() => {
+    this.afAuth.signOut().then(() => {
       this.resetClientSession();
       this.router.navigate([LOGGED_OUT_URL]);
     });
@@ -95,7 +94,7 @@ export class AuthService extends BaseService {
 
   resetPassword(email: string): Observable<void> {
     return from(
-      this.afAuth.auth.sendPasswordResetEmail(email).catch(error => {
+      this.afAuth.sendPasswordResetEmail(email).catch(error => {
         // silently ignore errors
       })
     );
@@ -104,16 +103,20 @@ export class AuthService extends BaseService {
   changePassword(currentPassword: string, password: string) {
     const credentials = firebase.auth.EmailAuthProvider.credential(this.getUserEmail(), currentPassword);
 
-    this.afAuth.auth.currentUser.reauthenticateWithCredential(credentials).then(
-      _ => {
-        this.afAuth.auth.currentUser.updatePassword(password).then(_ => {
-          this.alertService.infoMessage('Passwort geändert', 'Das Passwort wurde erfolgreich geändert.');
-        });
-      },
-      _ => {
-        this.alertService.errorMessage('Passwort falsch', 'Das eingegebene aktuelle Passwort ist falsch.');
-      }
-    );
+    this.afAuth.currentUser.then(user => {
+      return user.reauthenticateWithCredential(credentials).then(
+        _ => {
+          this.afAuth.currentUser.then(user => {
+            return user.updatePassword(password).then(_ => {
+              this.alertService.infoMessage('Passwort geändert', 'Das Passwort wurde erfolgreich geändert.');
+            });
+          });
+        },
+        _ => {
+          this.alertService.errorMessage('Passwort falsch', 'Das eingegebene aktuelle Passwort ist falsch.');
+        }
+      );
+    });
   }
 
   register(
@@ -124,7 +127,7 @@ export class AuthService extends BaseService {
     lastname: string,
     locale: string
   ): Observable<User> {
-    this.afAuth.auth
+    this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then(firebaseResult => {
         firebaseResult.user.updateProfile({ displayName: nickname });
@@ -154,9 +157,9 @@ export class AuthService extends BaseService {
    * @param password existing password
    * @param email the new email address
    */
-  completeAccount(nickname: string, password: string, email: string): Observable<User> {
+  completeAccount(nickname: string, password: string, email: string): Observable<any> {
     return from(
-      this.afAuth.auth
+      this.afAuth
         .signInWithEmailAndPassword(this.nicknameAsEmail(nickname), password)
         .then(firebaseResult => {
           if (firebaseResult) {
