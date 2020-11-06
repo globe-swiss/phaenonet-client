@@ -8,7 +8,7 @@ import { User } from '../auth/user';
 import { NavService } from '../core/nav/nav.service';
 import { AlertService } from '../messaging/alert.service';
 import { equalValidation } from '../shared/validation';
-import { MatSelectChange } from '@angular/material';
+import { MatSelectChange } from '@angular/material/select';
 import { LanguageService } from '../core/language.service';
 import { PublicUserService } from '../open/public-user.service';
 
