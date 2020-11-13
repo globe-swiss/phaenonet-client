@@ -14,5 +14,9 @@ service firebase.storage {
       allow delete: if request.auth.uid == user_id;
       }
     }
+
+    match /public/{document=**} {
+      allow read;
+    }
   }
 }
