@@ -11,7 +11,6 @@ import { DisableNotAuthorizedDirective } from '../auth/disable-not-authorized.di
 import { RemoveNotAuthorizedDirective } from '../auth/remove-not-authorized.directive';
 import { NotFoundComponent } from '../core/not-found.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { GravatarModule } from 'ngx-gravatar';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { DisableNotOwnerDirective } from '../auth/disable-not-owner.directive';
 import { CopyClipboardDirective } from './copy-clipboard.directive';
@@ -31,7 +30,6 @@ import { LoadingGuard } from './LoadingGuard';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    GravatarModule,
     GoogleMapsModule
   ],
   declarations: [
@@ -55,7 +53,6 @@ import { LoadingGuard } from './LoadingGuard';
     RouterModule,
     TranslateModule,
     FlexLayoutModule,
-    GravatarModule,
     GoogleMapsModule,
     RoundPipe
   ],
