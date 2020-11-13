@@ -34,7 +34,6 @@
     "@ngx-translate/http-loader": "^6.0.0",
     "@ngx-translate/i18n-polyfill": "^1.0.0",
     "browser-update": "^3.3.23",
-    "core-js": "^2.6.5",
     "d3": "^5.16.0",
     "firebase": "^8.0.1",
     "fp-ts": "^1.17.1",
