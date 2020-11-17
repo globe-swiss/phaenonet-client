@@ -17,6 +17,7 @@ import { DisableNotOwnerDirective } from '../auth/disable-not-owner.directive';
 import { CopyClipboardDirective } from './copy-clipboard.directive';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { RoundPipe } from './round.pipe';
+import { LoadingGuard } from './LoadingGuard';
 
 /**
  * The `SharedModule` is used to group common services and modules like {@link TranslateModule}.
@@ -58,6 +59,6 @@ import { RoundPipe } from './round.pipe';
     GoogleMapsModule,
     RoundPipe
   ],
-  providers: []
+  providers: [LoadingGuard]
 })
 export class SharedModule {}
