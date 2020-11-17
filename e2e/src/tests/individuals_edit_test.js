@@ -1,12 +1,12 @@
 Feature('Edit Individual');
 
-Scenario('test component present editing individuals', (I, individualsEditPage) => {
+Scenario('test component present editing individuals', ({ I, individualsEditPage }) => {
   I.login();
   I.visit(individualsEditPage.newIndividualUrl);
   I.checkElementsPresent(individualsEditPage.components);
 });
 
-Scenario('create individual', async (I, individualsEditPage, individualsPage) => {
+Scenario('create individual', async ({ I, individualsEditPage, individualsPage }) => {
   I.login();
   I.visit(individualsEditPage.newIndividualUrl);
   individualsEditPage.fillForm();

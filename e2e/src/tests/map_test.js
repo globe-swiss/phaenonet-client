@@ -1,33 +1,33 @@
 Feature('Map');
 
-Scenario('test map component present logged-out', (I, mapPage) => {
+Scenario('test map component present logged-out', ({ I, mapPage }) => {
   I.visit(mapPage.url);
   I.checkElementsPresent(mapPage.components);
   I.dontSeeElement(mapPage.addObjectButton);
 });
 
-Scenario('test map component present logged-in', (I, mapPage) => {
+Scenario('test map component present logged-in', ({ I, mapPage }) => {
   I.login();
   I.visit(mapPage.url);
   I.checkElementsPresent(mapPage.components);
   I.seeElement(mapPage.addObjectButton);
 });
 
-Scenario('test initial filter', (I, mapPage) => {
+Scenario('test initial filter', ({ I, mapPage }) => {
   I.visit(mapPage.url);
   I.waitForText('Alle', mapPage.filter.source.dropdown);
   I.waitForText('Alle', mapPage.filter.species.dropdown);
   I.waitForText('2020', 2, mapPage.filter.phenoyear.dropdown);
 });
 
-Scenario('test add object navigation', async (I, mapPage, individualsEditPage) => {
+Scenario('test add object navigation', async ({ I, mapPage, individualsEditPage }) => {
   I.login();
   I.visit(mapPage.url);
   I.click(mapPage.addObjectButton);
   I.waitUrlEquals(individualsEditPage.newIndividualUrl);
 });
 
-Scenario('test regression on map markers for 2018', async (I, mapPage) => {
+Scenario('test regression on map markers for 2018', async ({ I, mapPage }) => {
   I.visit(mapPage.url);
   I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
   I.wait(2);

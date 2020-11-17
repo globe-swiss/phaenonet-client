@@ -3,19 +3,19 @@ Feature('Individual View');
 var individualUrl;
 
 // fixme: fails if api limit reached
-Before(async I => {
+Before(async ({ I }) => {
   I.login();
   individualUrl = await I.createDefaultIndividual();
   I.visit(individualUrl);
 });
 
-After(I => {
+After(({ I }) => {
   I.deleteIndividual(individualUrl);
 });
 
 Scenario('test create/delete individual', () => {});
 
-Scenario('test individual details', (I, individualsPage, e2eTestUser) => {
+Scenario('test individual details', ({ I, individualsPage, e2eTestUser }) => {
   I.see('Hasel', individualsPage.description.species);
   I.see('e2e-test-obj', individualsPage.description.name);
   I.see(e2eTestUser.nickname, individualsPage.description.owner);
@@ -31,7 +31,7 @@ Scenario('test individual details', (I, individualsPage, e2eTestUser) => {
   I.see('Mischwald', individualsPage.description.descriptionFields.forestType);
 });
 
-Scenario('test edit individual button', (I, individualsPage) => {
+Scenario('test edit individual button', ({ I, individualsPage }) => {
   I.click(individualsPage.description.editButton);
   I.waitUrlEquals(individualUrl + '/edit');
 });

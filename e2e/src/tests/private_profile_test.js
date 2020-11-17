@@ -1,12 +1,12 @@
 Feature('Private Profile');
 
-Scenario('test component present', (I, privateProfilePage) => {
+Scenario('test component present', ({ I, privateProfilePage }) => {
   I.login();
   I.visit(privateProfilePage.url);
   I.checkElementsPresent(privateProfilePage.components);
 });
 
-Scenario('profile values', (I, privateProfilePage, e2eTestUser) => {
+Scenario('profile values', ({ I, privateProfilePage, e2eTestUser }) => {
   I.login();
   I.visit(privateProfilePage.url);
   I.see(e2eTestUser.nickname, privateProfilePage.profile.nickname);
@@ -16,7 +16,7 @@ Scenario('profile values', (I, privateProfilePage, e2eTestUser) => {
   I.see(e2eTestUser.language, privateProfilePage.profile.language);
 });
 
-Scenario('test profile buttons', (I, privateProfilePage) => {
+Scenario('test profile buttons', ({ I, privateProfilePage }) => {
   I.login();
   I.visit(privateProfilePage.url);
 
@@ -25,7 +25,7 @@ Scenario('test profile buttons', (I, privateProfilePage) => {
   I.seeElement(privateProfilePage.profile.profileEditButton);
 });
 
-Scenario('test logout', (I, privateProfilePage) => {
+Scenario('test logout', ({ I, privateProfilePage }) => {
   I.login();
   I.visit(privateProfilePage.url);
 
@@ -34,7 +34,7 @@ Scenario('test logout', (I, privateProfilePage) => {
   I.amLoggedOut();
 });
 
-Scenario('test edit profile link', (I, privateProfilePage, profileEditPage, e2eTestUser) => {
+Scenario('test edit profile link', ({ I, privateProfilePage, profileEditPage, e2eTestUser }) => {
   I.login(); // uses e2eTestUser
   I.visit(privateProfilePage.url);
 
@@ -42,7 +42,7 @@ Scenario('test edit profile link', (I, privateProfilePage, profileEditPage, e2eT
   I.waitUrlEquals(profileEditPage.url(e2eTestUser));
 });
 
-Scenario('test new individual shown on profile', async (I, privateProfilePage) => {
+Scenario('test new individual shown on profile', async ({ I, privateProfilePage }) => {
   I.login();
   I.visit(privateProfilePage.url);
   I.wait(2);
