@@ -35,10 +35,9 @@ exports.config = {
     navbarComponent: './src/components/navbar.js',
     e2eTestUser: './src/users/e2e_test.js'
   },
-  bootstrap: async done => {
-    console.log('within bootstrap');
+  bootstrap: async () => {
+    console.log('clear individuals for e2e user');
     await fetch('https://europe-west1-phaenonet-test.cloudfunctions.net/e2e_clear_individuals');
-    done();
   },
   mocha: {
     reporterOptions: {

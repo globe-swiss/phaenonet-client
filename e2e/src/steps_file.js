@@ -48,7 +48,7 @@ module.exports = function () {
     },
     visit(url) {
       this.amOnPage(url);
-      this.wait(5); // make it slow but reliable
+      this.wait(1); // make it slow but reliable
     },
     dismissMapPopup() {
       this.wait(3); // dismissbutton to appear, unsafe
