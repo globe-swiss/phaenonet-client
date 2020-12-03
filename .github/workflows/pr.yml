@@ -17,8 +17,7 @@ jobs:
         uses: actions/checkout@master
       - name: Install Dependencies
         run: | 
-          npm install @angular/cli --no-save
-          npm ci --unsafe-perm
+          npm ci
       - name: Build
         run: npx ng build
       - name: Archive PR Artifact
