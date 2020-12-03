@@ -11,23 +11,22 @@
     <link rel="icon" type="image/png" href="assets/img/favicon/favicon-16x16.png" sizes="16x16" />
     <link rel="icon" type="image/png" href="assets/img/favicon/favicon-96x96.png" sizes="96x96" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  </head>
+  <body class="mat-typography" id="phaenonet-body">
     <script>
       let url = '__/firebase/init.json';
       fetch(url)
         .then(res => res.json())
         .then(out => {
           var script = document.createElement('script');
-          script.setAttribute('src', 'https://maps.google.com/maps/api/js?key=' + out['apiKey']);
+          script.src = 'https://maps.google.com/maps/api/js?key=' + out['apiKey'];
+          script.type = 'text/javascript';
           document.head.appendChild(script);
         })
         .catch(err => {
-          var script = document.createElement('script');
-          script.setAttribute('src', 'https://maps.google.com/maps/api/js');
-          document.head.appendChild(script);
+          console.log('ERROR: Api-Key not found');
         });
     </script>
-  </head>
-  <body class="mat-typography" id="phaenonet-body">
     <app-root></app-root>
   </body>
 </html>

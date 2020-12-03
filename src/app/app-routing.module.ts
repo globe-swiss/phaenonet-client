@@ -3,10 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './auth/auth-guard.service';
 import { LOGIN_URL } from './auth/auth.service';
 import { NotFoundComponent } from './core/not-found.component';
+import { LoadingGuard } from './shared/LoadingGuard';
 
 const routes: Routes = [
   {
     path: '',
+    canActivate: [LoadingGuard],
     data: {},
     children: [
       {
@@ -61,7 +63,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

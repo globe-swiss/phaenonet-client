@@ -13,6 +13,7 @@
     "codeceptjs": "^3.0.2",
     "mocha": "^8.2.1",
     "mochawesome": "^6.2.1",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "playwright": "^1.6.2"
   }
 }
