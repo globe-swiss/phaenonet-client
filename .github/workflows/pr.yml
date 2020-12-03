@@ -18,7 +18,7 @@ jobs:
       - name: Install Dependencies
         run: | 
           npm install @angular/cli --no-save
-          npm ci --only=prod --unsafe-perm
+          npm ci --unsafe-perm
       - name: Build
         run: npx ng build
       - name: Archive PR Artifact
