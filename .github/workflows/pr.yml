@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ master ]
   push:
-    branches: [ build_pr ]
+    branches: [ test-pr ]
 
 jobs:
   build:

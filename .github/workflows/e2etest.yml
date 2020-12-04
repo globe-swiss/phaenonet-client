@@ -3,7 +3,7 @@ name: Run end-to-end tests
 on:
   workflow_dispatch:
   push:
-    branches: [ master, e2e-test ]
+    branches: [ master, test-e2e ]
   pull_request:
     branches: [ master ]
 

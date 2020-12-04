@@ -1,1 +1,26 @@
-Remove this file if this issue is fixed: https://github.com/firebase/firebase-tools/issues/2583
+{
+  "hosting": {
+    "public": "dist/phaenonet",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "!/@(assets)/**",
+        "destination": "/index.html"
+      }
+    ],
+    "ignore": [
+      "firebase.json",
+      "**/node_modules/**"
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}
