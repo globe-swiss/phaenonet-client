@@ -9,16 +9,7 @@ Phaenonet is set up with two Firebase projects instances. These projects have a 
 - [phaenonet](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the production instance
 - [phaenonet-test](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the test instance
 
-On `phaenonet-test` project two web application are hostet:
-
-- The `dev` application <https://phaenonet-dev.web.app/> which is deployed manually
-- The `test` application <https://phaenonet-test.web.app/> which is deployed automatically on code merge to master
-
-The `phenonet` project only hosts the productive web application <https://app.phaenonet.ch/>.
-
 ### Server side setup
-
-#### Creating a project from scratch
 
 1. Create the project in GCP or Firebase
    - <https://console.firebase.google.com/u/0/>
@@ -34,8 +25,6 @@ The `phenonet` project only hosts the productive web application <https://app.ph
 
 ### Local setup
 
-#### Configure Firebase
-
 Install Node.js and npm see: <https://www.npmjs.com/get-npm>
 
 Install the firebase console and login:
@@ -47,35 +36,18 @@ npx firebase login
 
 Consult the official documentation for the [Firebase CLI](https://firebase.google.com/docs/cli) for further information.
 
-#### Configure deployment targets
+## Development
 
-Deployment targets only need to be confiugured once as they are saved server side.
-To check if the targets are configured use `npx firebase target --project [phaenonet|phaenonet-test]`.
-
-Configure targets using firebase CLI:
-
-```commandline
-npx firebase target:apply hosting dev phaenonet-dev --project phaenonet-test
-npx firebase target:apply hosting test phaenonet-test --project phaenonet-test
-npx firebase target:apply hosting prod phaenonet --project phaenonet
-```
-
-#### Configure local credentials
-
-Copy [init.json](https://phaenonet-test.web.app/__/firebase/init.json) credential file for local development in the `src/local/` folder.
-
-## Development Deployment
-
-The application will be using the database and rules of the `phaenonet-test` project for all use-cases described in this section.
+The application will be using the database and access rules of the `phaenonet-test` project for all use-cases described in this section.
 
 ### Serve locally
 
-Make sure `init.json` credential file for local development is placed in the `src/local/` folder.
+Initially copy [init.json](https://phaenonet-test.web.app/__/firebase/init.json) credential file for local development in the `src/local/` folder.
 
 Run a dev server.
 
 ```commandline
-npx ng serve --c=local --aot
+npx ng serve --c=local
 ```
 
 Navigate to <http://localhost:4200/>. The app will automatically reload if you change any of the source files.
@@ -91,7 +63,7 @@ cd e2e
 npm install
 ```
 
-and run the tests with `codeceptjs`
+and run the tests with `codeceptjs` e.g.
 
 ```commandline
 codeceptjs run --reporter mochawesome
@@ -99,19 +71,21 @@ codeceptjs run --reporter mochawesome
 
 Test output will be located in `/e2e/output`.
 
-### Deploy development applications
+## Deploy to Firebase
 
-Deploy the development application to <https://phaenonet-dev.web.app/> by building and deploying the current workspace:
+### Deploy applications in development
+
+Intermediate development states of the application can be deployed to [hosting channels](https://firebase.google.com/docs/hosting/manage-hosting-resources).
 
 ```commandline
-npx ng build --aot && npx firebase deploy --only hosting:dev --project phaenonet-test --config=firebase-dev.json
+npx ng build && npx firebase hosting:channel:deploy my_channel_name --project phaenonet-test
 ```
 
 Rules and indexes for Firestore and Storage will need to be deployed manually if needed.
-Be aware that the rules are shared between the `dev` and `test` applicaton.
+Be aware that the rules are shared between the hosting channel and the `test` applicaton.
 
 ```commandline
-npx firebase deploy --only storage,firestore --project phaenonet-test --config=firebase-dev.json
+npx firebase deploy --only storage,firestore --project phaenonet-test
 ```
 
 ### Deploy application for acceptance test
@@ -121,11 +95,11 @@ Code merged to the `master` branch will be deployed to <https://phaenonet-test.w
 To manually deploy a test version:
 
 ```commandline
-npx ng build --aot && npx firebase deploy --project phaenonet-test --config=firebase-test.json
+npx ng build && npx firebase deploy --project phaenonet-test
 ```
 
-## Production Deployment
+### Production Deployment
 
 ```commandline
-npx ng build --prod && npx firebase deploy --project phaenonet --config=firebase-prod.json
+npx ng build --prod && npx firebase deploy --project phaenonet
 ```
