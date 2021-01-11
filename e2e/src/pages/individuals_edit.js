@@ -75,7 +75,7 @@ module.exports = {
     I.fillField(this.name.field, 'e2e-test-obj');
     I.selectDropdownValue(this.environment.dropdown, this.environment.options.city);
     I.selectDropdownValue(this.exposition.dropdown, this.exposition.options.north);
-    I.fillField(this.gradient.field, 42);
+    I.fillField(this.gradient.field, '42');
     I.selectDropdownValue(this.shade.dropdown, this.shade.options.shadow);
     I.selectDropdownValue(this.watering.dropdown, this.watering.options.watered);
     I.selectDropdownValue(this.distance.dropdown, this.distance.options.bigger100m);
