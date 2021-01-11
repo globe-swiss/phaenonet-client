@@ -15,9 +15,9 @@ Scenario('test map component present logged-in', ({ I, mapPage }) => {
 
 Scenario('test initial filter', ({ I, mapPage }) => {
   I.visit(mapPage.url);
-  I.waitForText('Alle', mapPage.filter.source.dropdown);
-  I.waitForText('Alle', mapPage.filter.species.dropdown);
-  I.waitForText('2020', 2, mapPage.filter.phenoyear.dropdown);
+  I.waitForText('Alle', 1, mapPage.filter.source.dropdown);
+  I.waitForText('Alle', 1, mapPage.filter.species.dropdown);
+  I.waitForText('2021', 2, mapPage.filter.phenoyear.dropdown); // fixme: will fail on phenoyear rollover
 });
 
 Scenario('test add object navigation', async ({ I, mapPage, individualsEditPage }) => {

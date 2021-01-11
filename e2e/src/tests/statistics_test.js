@@ -33,9 +33,9 @@ Scenario('test quantil regression on 2018', ({ I, statisticsPage }) => {
 });
 
 Scenario('test all year view', ({ I, statisticsPage }) => {
-  // test will fail after phenoyear rollover -> based on 2020
+  // fixme: test will fail after phenoyear rollover -> based on 2021
   I.visit(statisticsPage.url);
   I.wait(2);
   I.selectDropdownValue(statisticsPage.filter.phenoyear.dropdown, 'all');
-  I.seeNumberOfElements(statisticsPage.label, 24);
+  I.seeNumberOfElements(statisticsPage.label, 25);
 });
