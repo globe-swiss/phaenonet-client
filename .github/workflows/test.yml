@@ -3,8 +3,15 @@
 name: CI Build and Deploy Test
 
 on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: "Which project to target? [phaenonet/phaenonet-test]"
+        required: true
+        default: phaenonet-test
   push:
     branches: [ master, test-master ]
+
 
 jobs:
   build-test:
@@ -37,6 +44,6 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --project phaenonet-test
+          args: deploy --project ${{ github.event.inputs.project || 'phaenonet-test'}}
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
