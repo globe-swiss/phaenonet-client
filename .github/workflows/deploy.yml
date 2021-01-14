@@ -1,6 +1,7 @@
-# Test build and deploy workflow
+# Build and deploy workflow
+# Builds development version by default or production version if the project is 'phaenonet'
 
-name: CI Build and Deploy Test
+name: CI Build and Deploy
 
 on:
   workflow_dispatch:
@@ -12,10 +13,12 @@ on:
   push:
     branches: [ master, test-master ]
 
+env:
+  PROJECT: ${{ github.event.inputs.project || 'phaenonet-test' }}
 
 jobs:
-  build-test:
-    name: Build Test
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -23,15 +26,15 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Build
-        run: npx ng build
+        run: npx ng build "${{ github.event.inputs.project == 'phaenonet' && '--prod' || '' }}"
       - name: Archive Test Artifact
         uses: actions/upload-artifact@master
         with:
-          name: dist-test
+          name: ${{ env.PROJECT }}
           path: dist
   deploy-test:
-    name: Deploy Test
-    needs: build-test
+    name: Deploy
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -39,11 +42,11 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@master
         with:
-          name: dist-test
+          name: ${{ env.PROJECT }}
           path: dist
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --project ${{ github.event.inputs.project || 'phaenonet-test'}}
+          args: deploy --project ${{ env.PROJECT }}
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
