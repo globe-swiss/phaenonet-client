@@ -27,7 +27,7 @@ export class LoginFormComponent {
   login(): void {
     this.loginFailed = false;
     this.authService
-      .login(this.loginForm.controls.email.value, this.loginForm.controls.password.value)
+      .login(this.loginForm.controls.email.value.trim(), this.loginForm.controls.password.value)
       .subscribe(user => {
         if (user) {
           this.user = user;
