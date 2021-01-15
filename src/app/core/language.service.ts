@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 
@@ -6,13 +7,15 @@ import * as moment from 'moment';
 export class LanguageService {
   private LOCALSTORAGE_KEY = 'lang';
 
-  constructor(private translateService: TranslateService) {}
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private translateService: TranslateService
+    ) {}
   init(): any {
     this.translateService.addLangs(['de-CH', 'fr-CH', 'it-CH']);
     const currentLang = this.determineCurrentLang();
     this.translateService.setDefaultLang('de-CH');
-    this.translateService.use(currentLang);
-    moment.locale(currentLang);
+    this.changeLocale(currentLang)
   }
 
   changeLocale(newLocale: string): any {
@@ -23,6 +26,7 @@ export class LanguageService {
     moment.locale(locale);
     this.translateService.use(locale);
     localStorage.setItem(this.LOCALSTORAGE_KEY, locale);
+    this.document.documentElement.lang = locale;
   }
 
   determineCurrentLang(): string {
