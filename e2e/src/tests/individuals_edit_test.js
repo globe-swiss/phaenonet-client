@@ -1,4 +1,4 @@
-Feature('Edit Individual');
+Feature('Edit Individual').retry(2);
 
 Scenario('test component present editing individuals', ({ I, individualsEditPage }) => {
   I.login();

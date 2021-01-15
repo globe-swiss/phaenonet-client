@@ -1,13 +1,18 @@
 const { navbarComponent, individualsEditPage, individualsPage, mapPage } = inject();
+const fetch = require('node-fetch');
 
 // in this file you can append custom step methods to 'I' object
 
 module.exports = function () {
   return actor({
-    ss: function () {
+    async clearTestData() {
+      console.log('clear individuals for e2e user');
+      await fetch('https://europe-west1-phaenonet-test.cloudfunctions.net/e2e_clear_individuals');
+    },
+    ss() {
       this.saveScreenshot('debug.png', true);
     },
-    login: function () {
+    login() {
       const { loginPage, e2eTestUser } = inject();
       this.visit(loginPage.url);
       this.fillField(loginPage.fields.email, e2eTestUser.email);
@@ -16,10 +21,10 @@ module.exports = function () {
       this.waitUrlEquals('/map');
       this.seeElement(mapPage.components.map);
     },
-    amLoggedIn: function () {
+    amLoggedIn() {
       this.see('Profil', navbarComponent.registerProfileButton); // fixme: better way to check if logged in
     },
-    amLoggedOut: function () {
+    amLoggedOut() {
       this.see('Anmelden', navbarComponent.registerProfileButton); // fixme: better way to check if logged in
     },
     selectDropdownValue(dropdownLocator, value) {
