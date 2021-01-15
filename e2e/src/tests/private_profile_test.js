@@ -1,4 +1,4 @@
-Feature('Private Profile');
+Feature('Private Profile').retry(2);
 
 Scenario('test component present', ({ I, privateProfilePage }) => {
   I.login();
@@ -43,6 +43,8 @@ Scenario('test edit profile link', ({ I, privateProfilePage, profileEditPage, e2
 });
 
 Scenario('test new individual shown on profile', async ({ I, privateProfilePage }) => {
+  await I.clearTestData();
+
   I.login();
   I.visit(privateProfilePage.url);
   I.wait(2);

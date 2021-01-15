@@ -1,9 +1,10 @@
-Feature('Individual View');
+Feature('Individual View').retry(2);
 
 var individualUrl;
 
 // fixme: fails if api limit reached
 Before(async ({ I }) => {
+  await I.clearTestData();
   I.login();
   individualUrl = await I.createDefaultIndividual();
   I.visit(individualUrl);

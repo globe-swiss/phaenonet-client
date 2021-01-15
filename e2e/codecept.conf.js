@@ -1,5 +1,4 @@
 // const { setHeadlessWhen } = require('@codeceptjs/configure');
-const fetch = require('node-fetch');
 
 // // turn on headless mode when running with HEADLESS=true environment variable
 // // export HEADLESS=true && npx codeceptjs run
@@ -34,10 +33,6 @@ exports.config = {
     statisticsPage: './src/pages/statistics.js',
     navbarComponent: './src/components/navbar.js',
     e2eTestUser: './src/users/e2e_test.js'
-  },
-  bootstrap: async () => {
-    console.log('clear individuals for e2e user');
-    await fetch('https://europe-west1-phaenonet-test.cloudfunctions.net/e2e_clear_individuals');
   },
   mocha: {
     reporterOptions: {
