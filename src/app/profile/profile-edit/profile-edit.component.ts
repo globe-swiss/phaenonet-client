@@ -25,6 +25,7 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
     lastname: new FormControl(''),
     locale: new FormControl('de-CH')
   });
+  initialLanguage: string;
 
   constructor(
     private navService: NavService,
@@ -41,6 +42,7 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
 
   ngOnInit(): void {
     super.ngOnInit();
+    this.initialLanguage = this.languageService.determineCurrentLang();
     this.navService.setLocation('Profil bearbeiten');
 
     this.detailSubject$.subscribe(detail => {
@@ -57,6 +59,11 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
         this.router.navigate(['profile']);
       });
     });
+  }
+
+  cancel() {
+    this.languageService.changeLocale(this.initialLanguage);
+    this.router.navigate(['profile']);
   }
 
   changePassword(): void {

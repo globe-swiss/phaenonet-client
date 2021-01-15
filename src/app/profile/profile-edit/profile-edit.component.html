@@ -82,8 +82,7 @@
             </button>
             <button
               mat-flat-button
-              [routerLink]="['/profile']"
-              routerLinkActive="router-link-active"
+              (click)="cancel()"
               id="cancel-button"
             >
               {{ 'Abbrechen' | translate }}
