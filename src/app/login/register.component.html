@@ -1,6 +1,6 @@
 <div gdColumns="repeat(8, 1fr)">
   <div gdColumn="2 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-view">
-    <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6">
+    <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
       <div>
         <h3 translate>REGISTRIEREN</h3>
       </div>
@@ -13,7 +13,7 @@
         <p translate>Wir freuen uns, Sie in unsere Community aufzunehmen!</p>
       </div>
     </div>
-    <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6">
+    <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
       <div>
         <form [formGroup]="registerForm" fxLayout="column" *ngIf="showRegisterForm()">
           <mat-form-field>
