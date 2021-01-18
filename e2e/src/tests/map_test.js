@@ -1,16 +1,20 @@
 Feature('Map').retry(2);
 
-Scenario('test map component present logged-out', ({ I, mapPage }) => {
+Scenario('test map component present logged-out', ({ I, mapPage, loginPage }) => {
   I.visit(mapPage.url);
   I.checkElementsPresent(mapPage.components);
-  I.dontSeeElement(mapPage.addObjectButton);
+  I.seeElement(mapPage.addObjectButton);
+  I.click(mapPage.addObjectButton);
+  I.waitUrlEquals(loginPage.url)
 });
 
-Scenario('test map component present logged-in', ({ I, mapPage }) => {
+Scenario('test map component present logged-in', ({ I, mapPage, individualsEditPage }) => {
   I.login();
   I.visit(mapPage.url);
   I.checkElementsPresent(mapPage.components);
   I.seeElement(mapPage.addObjectButton);
+  I.click(mapPage.addObjectButton);
+  I.waitUrlEquals(individualsEditPage.newIndividualUrl);
 });
 
 Scenario('test initial filter', ({ I, mapPage }) => {
@@ -18,13 +22,6 @@ Scenario('test initial filter', ({ I, mapPage }) => {
   I.waitForText('Alle', 1, mapPage.filter.source.dropdown);
   I.waitForText('Alle', 1, mapPage.filter.species.dropdown);
   I.waitForText('2021', 2, mapPage.filter.phenoyear.dropdown); // fixme: will fail on phenoyear rollover
-});
-
-Scenario('test add object navigation', async ({ I, mapPage, individualsEditPage }) => {
-  I.login();
-  I.visit(mapPage.url);
-  I.click(mapPage.addObjectButton);
-  I.waitUrlEquals(individualsEditPage.newIndividualUrl);
 });
 
 Scenario('test regression on map markers for 2018', async ({ I, mapPage }) => {

@@ -69,15 +69,12 @@ export class MapOverviewComponent implements OnInit {
     species: new FormControl(allSpecies.id)
   });
 
-  isLoggedIn: boolean;
-
   formatShortDate = formatShortDate;
 
   constructor(
     private navService: NavService,
     private individualService: IndividualService,
     private masterdataService: MasterdataService,
-    private authService: AuthService,
     private analytics: AngularFireAnalytics
   ) {}
 
@@ -87,8 +84,6 @@ export class MapOverviewComponent implements OnInit {
 
   ngOnInit() {
     this.navService.setLocation('Karte');
-
-    this.isLoggedIn = this.authService.isLoggedIn();
 
     this.masterdataService
       .getSpecies()
