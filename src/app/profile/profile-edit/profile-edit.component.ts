@@ -1,5 +1,5 @@
 import { first } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,19 +13,22 @@ import { NavService } from '../../core/nav/nav.service';
 import { PublicUserService } from '../../open/public-user.service';
 import { ChangePasswordData } from '../change-password-dialog/change-password-data';
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
+import { ChangeEmailDialogComponent } from '../change-email-dialog/change-email-dialog.component';
+import { ChangeEmailData } from '../change-email-dialog/change-email-data';
 
 @Component({
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.scss']
 })
-export class ProfileEditComponent extends BaseDetailComponent<User> implements OnInit {
+export class ProfileEditComponent extends BaseDetailComponent<User> implements OnInit, OnDestroy {
   editForm = new FormGroup({
     nickname: new FormControl('', { asyncValidators: this.publicUserService.uniqueNicknameValidator() }),
     firstname: new FormControl(''),
     lastname: new FormControl(''),
     locale: new FormControl('de-CH')
   });
-  initialLanguage: string;
+  private initialLanguage: string;
+  email: string;
 
   constructor(
     private navService: NavService,
@@ -42,12 +45,19 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.initialLanguage = this.languageService.determineCurrentLang();
     this.navService.setLocation('Profil bearbeiten');
+    this.initialLanguage = this.languageService.determineCurrentLang();
 
-    this.detailSubject$.subscribe(detail => {
-      this.editForm.reset(detail);
-    });
+    this.subscriptions.add(
+      this.detailSubject$.subscribe(detail => {
+        this.editForm.reset(detail);
+        this.email = this.authService.getUserEmail();
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   save() {
@@ -74,6 +84,18 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
     dialogRef.afterClosed().subscribe((result: ChangePasswordData) => {
       if (result) {
         this.authService.changePassword(result.currentPassword, result.password);
+      }
+    });
+  }
+
+  changeEmail(): void {
+    const dialogRef = this.dialog.open(ChangeEmailDialogComponent, {
+      width: '615px'
+    });
+
+    dialogRef.afterClosed().subscribe((result: ChangeEmailData) => {
+      if (result) {
+        this.authService.changeEmail(result.email, result.password).then(_ => (this.email = result.email));
       }
     });
   }

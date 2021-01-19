@@ -1,10 +1,10 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
-import { from, Observable, of } from 'rxjs';
+import { from, Observable, of, Subscription } from 'rxjs';
 import { switchMap, mergeAll, switchAll, take, tap, map } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
@@ -19,11 +19,15 @@ export const LOGGED_OUT_URL = '/auth/logged-out';
 const LOCALSTORAGE_LOGIN_RESULT_KEY = 'loginResult';
 
 @Injectable()
-export class AuthService extends BaseService {
+export class AuthService extends BaseService implements OnDestroy {
   browserIdHeaders: HttpHeaders;
 
+  private subscriptions = new Subscription();
   private user$: Observable<User>;
   private firebaseUser: firebase.User;
+
+  // store the URL so we can redirect after logging in
+  redirectUrl: string;
 
   constructor(
     alertService: AlertService,
@@ -46,11 +50,12 @@ export class AuthService extends BaseService {
         }
       })
     );
-    this.user$.subscribe();
+    this.subscriptions.add(this.user$.subscribe());
   }
 
-  // store the URL so we can redirect after logging in
-  redirectUrl: string;
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 
   login(email: string, password: string): Observable<User> {
     return from(
@@ -99,23 +104,34 @@ export class AuthService extends BaseService {
     );
   }
 
-  changePassword(currentPassword: string, password: string) {
-    const credentials = firebase.auth.EmailAuthProvider.credential(this.getUserEmail(), currentPassword);
+  async changeEmail(newEmail: string, currentPassword: string) {
+      const freshUser = await this.reauthUser(currentPassword);
+      try {
+        await freshUser.updateEmail(newEmail);
+        this.alertService.infoMessage('E-Mail geändert', 'Die E-Mail wurde erfolgreich geändert.');
+      } catch (error) {
+        this.alertService.infoMessage(error.code + '.title', error.code + '.message');
+        throw error;
+      }
+  }
 
-    this.afAuth.currentUser.then(user => {
-      return user.reauthenticateWithCredential(credentials).then(
-        _ => {
-          this.afAuth.currentUser.then(user => {
-            return user.updatePassword(password).then(_ => {
-              this.alertService.infoMessage('Passwort geändert', 'Das Passwort wurde erfolgreich geändert.');
-            });
-          });
-        },
-        _ => {
-          this.alertService.errorMessage('Passwort falsch', 'Das eingegebene aktuelle Passwort ist falsch.');
-        }
-      );
+  changePassword(currentPassword: string, newPassword: string) {
+    this.reauthUser(currentPassword).then(freshUser => {
+      const _ = freshUser.updatePassword(newPassword);
+      this.alertService.infoMessage('Passwort geändert', 'Das Passwort wurde erfolgreich geändert.');
     });
+  }
+
+  private async reauthUser(currentPassword: string) {
+    const credentials = firebase.auth.EmailAuthProvider.credential(this.getUserEmail(), currentPassword);
+    const user = await this.afAuth.currentUser;
+    try {
+      await user.reauthenticateWithCredential(credentials);
+      return this.afAuth.currentUser;
+    } catch (error) {
+      this.alertService.errorMessage('Passwort falsch', 'Das eingegebene aktuelle Passwort ist falsch.');
+      throw error;
+    }
   }
 
   register(
