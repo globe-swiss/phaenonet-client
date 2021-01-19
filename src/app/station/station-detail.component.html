@@ -42,7 +42,7 @@
                 />
               </mat-form-field>
               <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment">
-                {{ 'Kommentar' }}: {{ staticComments[item.observation.toNullable()?.comment] | translate }}
+                {{ 'Kommentar' | translate }}: {{ staticComments[item.observation.toNullable()?.comment] | translate }}
               </div>
             </ng-container>
           </div>
