@@ -19,6 +19,7 @@ import { Species } from './species';
 import * as configStatic from '../../assets/config_static.json';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AltitudeLimits } from './altitude-limits';
+import { LanguageService } from '../core/language.service';
 
 export interface MasterdataCollection {
   [index: string]: Object;
@@ -42,7 +43,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
   private configDynamic$: Observable<ConfigDynamic>;
   private configDynamic: ConfigDynamic;
 
-  constructor(alertService: AlertService, private afs: AngularFirestore) {
+  constructor(alertService: AlertService, private afs: AngularFirestore, private languageService: LanguageService) {
     super(alertService);
     this.configDynamic$ = this.afs
       .collection<any>('definitions')
@@ -85,7 +86,15 @@ export class MasterdataService extends BaseService implements OnDestroy {
     if (source === 'meteoswiss') {
       return '/assets/img/map_pins/map_pin_meteoschweiz.png';
     } else {
-      return '/assets/img/map_pins/map_pin_' + species.toLowerCase() + '_' + phaenoIndex + '.png';
+      return (
+        '/assets/img/map_pins/' +
+        this.languageService.determineCurrentLang() +
+        '/map_pin_' +
+        species.toLowerCase() +
+        '_' +
+        phaenoIndex +
+        '.png'
+      );
     }
   }
 
