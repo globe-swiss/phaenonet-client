@@ -10,6 +10,9 @@ on:
         description: "Which project to target? [phaenonet/phaenonet-test]"
         required: true
         default: phaenonet-test
+      tag:
+        description: "Tag this deployment?"
+        required: false
   push:
     branches: [ master, test-master ]
 
@@ -32,7 +35,7 @@ jobs:
         with:
           name: ${{ env.PROJECT }}
           path: dist
-  deploy-test:
+  deploy:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
@@ -50,3 +53,9 @@ jobs:
           args: deploy --project ${{ env.PROJECT }}
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Tag commit
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          tag: ${{ github.event.inputs.tag }}
+        if: ${{ github.event.inputs.tag }}
