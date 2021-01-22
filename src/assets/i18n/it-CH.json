@@ -122,12 +122,6 @@
   "WS": "Cardamine pratensis",
   "WZ": "Taraxacum",
 
-  "alt1": "a 499 m",
-  "alt2": "500 - 799 m",
-  "alt3": "800 - 999 m",
-  "alt4": "1000 - 1199 m",
-  "alt5": "via 1200 m",
-
   "Bergahorn": "Acero di monte",
   "Buschwindröschen": "Anemone bianca",
   "Rotbuche": "Faggio",
@@ -147,6 +141,15 @@
   "Vogelbeere": "Sorbo degli uccellatori",
   "Winterlinde": "Tiglio selvatico",
   "Weisstanne": "Abete bianco",
+  "Wiesenschaumkraut": "Cardamine pratensis",
+  "Wiesenlöwenzahn": "Taraxacum",
+
+  "alt1": "a 499 m",
+  "alt2": "500 - 799 m",
+  "alt3": "800 - 999 m",
+  "alt4": "1000 - 1199 m",
+  "alt5": "via 1200 m",
+
   "Blumen- oder Gemüsegarten": "Orto o giardino",
   "Wiese": "Prato naturale",
   "Fluss-, See-, Teichufer": "Sponda di un corso d'acqua o di un lago",
