@@ -3,7 +3,7 @@
   <form [formGroup]="changeEmailForm" fxLayout="column">
     <mat-form-field class="full-width">
       <mat-label>{{ 'Neue E-Mail' | translate }} </mat-label>
-      <input matInput type="text" formControlName="email" id="email" email required />
+      <input matInput type="text" formControlName="email" id="newemail" email required />
       <mat-error>{{ 'auth/invalid-email.message' | translate }}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
