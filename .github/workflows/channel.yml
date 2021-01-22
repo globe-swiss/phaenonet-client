@@ -1,0 +1,52 @@
+name: Create Hosting Channel
+
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: "Which project to target? [phaenonet/phaenonet-test]"
+        required: true
+        default: phaenonet-test
+      expires:
+        description: "Expiration"
+        required: true
+        default: "14d"
+
+env:
+  PROJECT: ${{ github.event.inputs.project }}
+  EXP: ${{ github.event.inputs.expires }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build
+        run: npx ng build
+      - name: Archive Test Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ env.PROJECT }}
+          path: dist
+  deploy:
+    name: Create Channel
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@master
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: ${{ env.PROJECT }}
+          path: dist
+      - name: Deploy Hosting Channel
+        uses: w9jds/firebase-action@master
+        with:
+          args: hosting:channel:deploy ${{ github.ref }} --project ${{ env.PROJECT }} -e ${{ env.EXP }}
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
