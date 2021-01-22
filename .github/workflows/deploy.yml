@@ -10,6 +10,9 @@ on:
         description: "Which project to target? [phaenonet/phaenonet-test]"
         required: true
         default: phaenonet-test
+      tag:
+        description: "Tag this deployment?"
+        required: false
   push:
     branches: [ master, test-master ]
 
@@ -23,30 +26,35 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
-      - name: Install Dependencies
-        run: npm ci
-      - name: Build
-        run: npx ng build "${{ github.event.inputs.project == 'phaenonet' && '--prod' || '' }}"
-      - name: Archive Test Artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: ${{ env.PROJECT }}
-          path: dist
-  deploy-test:
+      # - name: Install Dependencies
+      #   run: npm ci
+      # - name: Build
+      #   run: npx ng build "${{ github.event.inputs.project == 'phaenonet' && '--prod' || '' }}"
+      # - name: Archive Test Artifact
+      #   uses: actions/upload-artifact@master
+      #   with:
+      #     name: ${{ env.PROJECT }}
+      #     path: dist
+  deploy:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
-      - name: Download Artifact
-        uses: actions/download-artifact@master
+      # - name: Download Artifact
+      #   uses: actions/download-artifact@master
+      #   with:
+      #     name: ${{ env.PROJECT }}
+      #     path: dist
+      # - name: Deploy to Firebase
+      #   uses: w9jds/firebase-action@master
+      #   with:
+      #     args: deploy --project ${{ env.PROJECT }}
+      #   env:
+      #     FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Tag commit
+        uses: tvdias/github-tagger@v0.0.1
         with:
-          name: ${{ env.PROJECT }}
-          path: dist
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --project ${{ env.PROJECT }}
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          tag: "my_tag"
