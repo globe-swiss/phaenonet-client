@@ -14,7 +14,7 @@ Sentry.init({
   autoSessionTracking: true,
   integrations: [
     new Integrations.BrowserTracing({
-      tracingOrigins: ['localhost', 'app.phaenonet.ch', 'phaenonet-test.web.app'],
+      tracingOrigins: ['localhost', /^\//],
       routingInstrumentation: Sentry.routingInstrumentation
     })
   ],
