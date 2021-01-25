@@ -5,6 +5,22 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import { FIREBASE_OPTIONS } from '@angular/fire';
 
+import * as Sentry from '@sentry/angular';
+import { Integrations } from '@sentry/tracing';
+
+Sentry.init({
+  environment: environment.name,
+  dsn: 'https://b0f9e54dab264d1881553cbfbcc1641a@o510696.ingest.sentry.io/5606738',
+  autoSessionTracking: true,
+  integrations: [
+    new Integrations.BrowserTracing({
+      tracingOrigins: ['localhost', 'app.phaenonet.ch', 'phaenonet-test.web.app'],
+      routingInstrumentation: Sentry.routingInstrumentation
+    })
+  ],
+  tracesSampleRate: 1.0
+});
+
 if (environment.production) {
   enableProdMode();
 }

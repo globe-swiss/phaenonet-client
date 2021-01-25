@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import localeIt from '@angular/common/locales/it';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule, SETTINGS } from '@angular/fire/firestore';
@@ -26,6 +26,8 @@ import { httpInterceptorProviders } from './http-interceptors';
 import { LoginModule } from './login/login.module';
 import { SharedModule } from './shared/shared.module';
 import { MasterdataService } from './masterdata/masterdata.service';
+import { Router } from '@angular/router';
+import * as Sentry from '@sentry/angular';
 
 export class CustomTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<any> {
@@ -61,6 +63,22 @@ registerLocaleData(localeIt, 'it');
     LoginModule
   ],
   providers: [
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: false
+      })
+    },
+    {
+      provide: Sentry.TraceService,
+      deps: [Router]
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {},
+      deps: [Sentry.TraceService],
+      multi: true
+    },
     httpInterceptorProviders,
     ScreenTrackingService,
     UserTrackingService,
