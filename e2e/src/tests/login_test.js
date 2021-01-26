@@ -7,7 +7,8 @@ Scenario('test login component present', ({ I, loginPage }) => {
 
 Scenario('test login from home screen', ({ I, loginPage, mapPage, e2eTestUser, navbarComponent }) => {
   I.visit('/');
-  I.click(navbarComponent.registerProfileButton);
+  I.amLoggedOut();
+  I.click(navbarComponent.signinProfileButton);
 
   loginPage.login(e2eTestUser.email, e2eTestUser.password);
   I.seeElement(mapPage.components.map);

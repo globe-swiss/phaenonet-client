@@ -7,7 +7,7 @@ Scenario('test navbar content present', ({ I, navbarComponent }) => {
 
 Scenario('test register/profile', ({ I, navbarComponent }) => {
   I.visit('/');
-  I.see('Anmelden', navbarComponent.registerProfileButton);
+  I.see('Anmelden', navbarComponent.signinProfileButton);
   I.login();
-  I.see('Profil', navbarComponent.registerProfileButton);
+  I.see('Profil', navbarComponent.signinProfileButton);
 });

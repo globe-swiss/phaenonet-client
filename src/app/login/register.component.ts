@@ -47,7 +47,7 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewChecked {
     const equalValidator = equalValidation('password', 'passwordConfirm', 'passwordMissmatch');
     this.registerForm.setValidators(equalValidator);
     this.registerForm.updateValueAndValidity();
-    this.subscription = this.authService.user$.subscribe(user => {
+    this.subscription = this.authService.getUserObservable().subscribe(user => {
       if (user) {
         this.user = user;
         this.alertService.infoMessage(
