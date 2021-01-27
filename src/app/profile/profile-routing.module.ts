@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '',
     children: [
       { path: ':id', component: ProfileComponent },
-      { path: '', component: ProfileComponent },
+      { path: '', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: ':id/edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
       { path: '', redirectTo: '', pathMatch: 'full' }
     ]

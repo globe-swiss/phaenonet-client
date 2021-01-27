@@ -2,6 +2,7 @@ Feature('Map').retry(2);
 
 Scenario('test map component present logged-out', ({ I, mapPage, loginPage }) => {
   I.visit(mapPage.url);
+  I.amLoggedOut();
   I.checkElementsPresent(mapPage.components);
   I.seeElement(mapPage.addObjectButton);
   I.click(mapPage.addObjectButton);

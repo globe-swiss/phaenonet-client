@@ -63,5 +63,16 @@ Scenario('test new individual shown on profile', async ({ I, privateProfilePage 
   I.deleteIndividual(individualUrl);
 });
 
+Scenario('test loggedout profile access', ({ I, privateProfilePage, loginPage, e2eTestUser }) => {
+  I.visit(privateProfilePage.url);
+  I.amLoggedOut();
+  I.waitUrlEquals(loginPage.url);
+  I.enterLoginCredentials();
+  I.click(loginPage.loginButton);
+  I.waitUrlEquals(privateProfilePage.url); // test redirect
+  I.amLoggedIn();
+  I.see(e2eTestUser.nickname, privateProfilePage.profile.nickname);
+});
+
 // missing tests
 // - activities

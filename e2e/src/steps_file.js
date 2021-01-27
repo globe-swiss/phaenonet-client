@@ -13,14 +13,19 @@ module.exports = function () {
       this.saveScreenshot('debug.png', true);
     },
     login() {
-      const { loginPage, e2eTestUser } = inject();
+      const { loginPage } = inject();
       this.visit(loginPage.url);
       this.amLoggedOut();
-      this.fillField(loginPage.fields.email, e2eTestUser.email);
-      this.fillField(loginPage.fields.password, e2eTestUser.password);
+      this.enterLoginCredentials();
       this.click(loginPage.loginButton);
       this.waitUrlEquals('/map');
       this.seeElement(mapPage.components.map);
+    },
+    enterLoginCredentials() {
+      const { loginPage, e2eTestUser } = inject();
+      this.waitUrlEquals(loginPage.url)
+      this.fillField(loginPage.fields.email, e2eTestUser.email);
+      this.fillField(loginPage.fields.password, e2eTestUser.password);
     },
     amLoggedIn() {
       this.see('Profil', navbarComponent.signinProfileButton); // fixme: better way to check if logged in
