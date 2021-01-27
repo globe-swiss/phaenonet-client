@@ -222,7 +222,7 @@ export class AuthService extends BaseService {
   getUser(): User | null {
     const json = localStorage.getItem(LOCALSTORAGE_LOGIN_RESULT_KEY);
     if (json) {
-      return JSON.parse(json);
+      return JSON.parse(json).user;
     } else {
       return null;
     }
