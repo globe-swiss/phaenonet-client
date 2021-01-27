@@ -4,5 +4,6 @@
 
 export const environment = {
   production: true,
-  name: 'production'
+  name: 'production',
+  sentrySamplerate: 1.0
 };

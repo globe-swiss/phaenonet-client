@@ -18,7 +18,7 @@ Sentry.init({
       routingInstrumentation: Sentry.routingInstrumentation
     })
   ],
-  tracesSampleRate: 1.0
+  tracesSampleRate: environment.sentrySamplerate
 });
 
 if (environment.production) {

@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  name: 'test'
+  name: 'test',
+  sentrySamplerate: 1.0
 };
