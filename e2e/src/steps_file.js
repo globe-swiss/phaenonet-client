@@ -15,6 +15,7 @@ module.exports = function () {
     login() {
       const { loginPage, e2eTestUser } = inject();
       this.visit(loginPage.url);
+      this.amLoggedOut();
       this.fillField(loginPage.fields.email, e2eTestUser.email);
       this.fillField(loginPage.fields.password, e2eTestUser.password);
       this.click(loginPage.loginButton);
@@ -22,10 +23,10 @@ module.exports = function () {
       this.seeElement(mapPage.components.map);
     },
     amLoggedIn() {
-      this.see('Profil', navbarComponent.registerProfileButton); // fixme: better way to check if logged in
+      this.see('Profil', navbarComponent.signinProfileButton); // fixme: better way to check if logged in
     },
     amLoggedOut() {
-      this.see('Anmelden', navbarComponent.registerProfileButton); // fixme: better way to check if logged in
+      this.see('Anmelden', navbarComponent.signinProfileButton); // fixme: better way to check if logged in
     },
     selectDropdownValue(dropdownLocator, value) {
       this.click(dropdownLocator);

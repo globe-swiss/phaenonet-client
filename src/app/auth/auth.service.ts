@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { none, Option, some } from 'fp-ts/lib/Option';
+import { none } from 'fp-ts/lib/Option';
 import { from, Observable, of } from 'rxjs';
-import { switchMap, mergeAll, switchAll, take } from 'rxjs/operators';
+import { switchMap, mergeAll, switchAll, take, tap, map } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
@@ -22,8 +22,8 @@ const LOCALSTORAGE_LOGIN_RESULT_KEY = 'loginResult';
 export class AuthService extends BaseService {
   browserIdHeaders: HttpHeaders;
 
-  user$: Observable<User>;
-  firebaseUser: firebase.User;
+  private user$: Observable<User>;
+  private firebaseUser: firebase.User;
 
   constructor(
     alertService: AlertService,
@@ -36,11 +36,12 @@ export class AuthService extends BaseService {
 
     const self = this;
     this.user$ = this.afAuth.authState.pipe(
+      tap(user => (this.firebaseUser = user)),
       switchMap(user => {
         if (user) {
-          self.firebaseUser = user;
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         } else {
+          this.resetClientSession();
           return of(null);
         }
       })
@@ -64,9 +65,8 @@ export class AuthService extends BaseService {
 
   private handleUserLogin(firebaseResult: any): Observable<User> {
     if (firebaseResult) {
-      this.firebaseUser = firebaseResult.user;
       this.user$.pipe(take(1)).subscribe(u => {
-        this.handleLoginResult(new LoginResult('LOGIN_OK', this.firebaseUser, u));
+        this.handleLoginResult(new LoginResult('LOGIN_OK', firebaseResult.user, u));
       });
 
       return this.user$;
@@ -83,7 +83,6 @@ export class AuthService extends BaseService {
 
   logout(): void {
     this.afAuth.signOut().then(() => {
-      this.resetClientSession();
       this.router.navigate([LOGGED_OUT_URL]);
     });
   }
@@ -185,14 +184,31 @@ export class AuthService extends BaseService {
     document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT; path=' + path;
   }
 
+  // might report false on initial page loading until userId is set
   isLoggedIn(): boolean {
-    return this.getParsedLoginResult().isSome();
+    return this.getUserId() != null && this.getUser() != null;
+  }
+
+  isAuthenticated(redirectUrl: string): Observable<boolean> {
+    return this.user$.pipe(
+      take(1),
+      map(user => !!user && this.getUser() != null), // also check if user data is present
+      tap(authenticated => {
+        if (!authenticated) {
+          this.redirectUrl = redirectUrl;
+          this.router.navigate([LOGIN_URL]);
+        }
+      })
+    );
   }
 
   getUserNickname(): string {
-    return this.getUser()
-      .map(u => u.nickname)
-      .getOrElse('Anonymous');
+    const user = this.getUser();
+    if (user) {
+      return user.nickname;
+    } else {
+      return 'Anonymous';
+    }
   }
 
   getUserEmail(): string {
@@ -203,9 +219,13 @@ export class AuthService extends BaseService {
     }
   }
 
-  getUser(): Option<User> {
-    const loginResult = this.getParsedLoginResult();
-    return loginResult.mapNullable(r => r.user);
+  getUser(): User | null {
+    const json = localStorage.getItem(LOCALSTORAGE_LOGIN_RESULT_KEY);
+    if (json) {
+      return JSON.parse(json);
+    } else {
+      return null;
+    }
   }
 
   getUserObservable(): Observable<User> {
@@ -217,15 +237,6 @@ export class AuthService extends BaseService {
       return null;
     }
     return this.firebaseUser.uid;
-  }
-
-  private getParsedLoginResult(): Option<LoginResult> {
-    const json = localStorage.getItem(LOCALSTORAGE_LOGIN_RESULT_KEY);
-    if (json) {
-      return some(JSON.parse(json));
-    } else {
-      return none;
-    }
   }
 
   private errorHandling(error: any) {

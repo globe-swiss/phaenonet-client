@@ -2,6 +2,7 @@ const { I } = inject();
 
 module.exports = {
   url: '/auth/login',
+  logoutUrl: '/auth/logged-out',
   components: {
     navigation: { css: 'app-nav' },
     form: { css: 'app-login-form' }

@@ -25,12 +25,13 @@ Scenario('test profile buttons', ({ I, privateProfilePage }) => {
   I.seeElement(privateProfilePage.profile.profileEditButton);
 });
 
-Scenario('test logout', ({ I, privateProfilePage }) => {
+Scenario('test logout', ({ I, privateProfilePage, loginPage }) => {
   I.login();
   I.visit(privateProfilePage.url);
 
   I.amLoggedIn();
   I.click(privateProfilePage.profile.logoutButton);
+  I.waitUrlEquals(loginPage.logoutUrl);
   I.amLoggedOut();
 });
 
