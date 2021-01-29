@@ -11,11 +11,11 @@ export class LanguageService {
     @Inject(DOCUMENT) private document: Document,
     private translateService: TranslateService
     ) {}
+
   init(): any {
     this.translateService.addLangs(['de-CH', 'fr-CH', 'it-CH']);
     const currentLang = this.determineCurrentLang();
-    this.translateService.setDefaultLang('de-CH');
-    this.changeLocale(currentLang)
+    this.changeLocale(currentLang);
   }
 
   changeLocale(newLocale: string): any {
@@ -62,6 +62,6 @@ export class LanguageService {
   }
 
   private isLang(langLower: string, lang: string): boolean {
-    return langLower == lang || langLower.startsWith(lang + '_') || langLower.startsWith(lang + '-');
+    return langLower === lang || langLower.startsWith(lang + '_') || langLower.startsWith(lang + '-');
   }
 }

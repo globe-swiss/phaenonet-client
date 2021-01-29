@@ -1,4 +1,5 @@
 {
+  "de-CH": "Deutsch",
   "auth/user-not-found.title": "Anmeldung fehlgeschlagen",
   "auth/user-not-found.message": "Der Benutzername oder das Passwort ist falsch.",
   "auth/wrong-password.title": "Anmeldung fehlgeschlagen",
@@ -12,9 +13,6 @@
   "meteoswiss": "MeteoSchweiz",
   "species": "Art",
   "altitude": "Höhe",
-  "de-CH": "Deutsch",
-  "fr-CH": "Français",
-  "it-CH": "Italiano",
 
   "BA": "Bergahorn",
   "BR": "Buschwindröschen",
