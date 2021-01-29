@@ -10,6 +10,7 @@ export class SentryMissingTranslationHandler implements MissingTranslationHandle
       }
       Sentry.captureMessage(this.getMsg(params));
     }
+    return params.key;
   }
 
   getMsg(params: MissingTranslationHandlerParams) {
