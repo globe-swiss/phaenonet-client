@@ -9,7 +9,7 @@ import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/aler
 @Component({
   templateUrl: './complete-account.component.html'
 })
-export class CompleteAccountComponent implements OnInit, AfterViewChecked {
+export class CompleteAccountComponent implements OnInit {
   completeAccountForm = new FormGroup({
     nickname: new FormControl(''),
     email: new FormControl(''),
@@ -25,9 +25,7 @@ export class CompleteAccountComponent implements OnInit, AfterViewChecked {
     private navService: NavService
   ) {}
 
-  ngOnInit(): void {}
-
-  ngAfterViewChecked(): void {
+  ngOnInit(): void {
     this.navService.setLocation('Account Vervollständigen');
   }
 

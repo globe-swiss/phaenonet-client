@@ -16,7 +16,7 @@ import { PublicUserService } from '../open/public-user.service';
   selector: 'app-register',
   templateUrl: './register.component.html'
 })
-export class RegisterComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class RegisterComponent implements OnInit, OnDestroy {
   registerForm = new FormGroup({
     nickname: new FormControl('', { asyncValidators: this.publicUserService.uniqueNicknameValidator() }),
     firstname: new FormControl(''),
@@ -44,6 +44,7 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewChecked {
   ) {}
 
   ngOnInit(): void {
+    this.navService.setLocation('Registrierung');
     const equalValidator = equalValidation('password', 'passwordConfirm', 'passwordMissmatch');
     this.registerForm.setValidators(equalValidator);
     this.registerForm.updateValueAndValidity();
@@ -65,10 +66,6 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }
-
-  ngAfterViewChecked(): void {
-    this.navService.setLocation('Registrierung');
   }
 
   register(): void {
