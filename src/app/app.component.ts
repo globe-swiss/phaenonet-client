@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import browserUpdate from 'browser-update';
 import { LanguageService } from './core/language.service';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -15,19 +14,17 @@ export class AppComponent {
 
   constructor(
     languageService: LanguageService,
-    translateService: TranslateService,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
   ) {
     languageService.init();
 
-    translateService.get('browser-support').subscribe(translation =>
-      browserUpdate({
-        api: 2018.12,
-        required: { e: 14, f: 60, o: 53, s: 11, c: 67 },
-        text: translation
-      })
-    );
+    browserUpdate({
+      api: 2018.12,
+      required: { e: 14, f: 60, o: 53, s: 11, c: 67 },
+      // text: translation,
+      l: languageService.determineCurrentLang()
+    });
 
     this.matIconRegistry.addSvgIcon(
       'subscribe-active',

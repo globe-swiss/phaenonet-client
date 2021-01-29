@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component } from '@angular/core';
+import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
@@ -6,10 +6,10 @@ import { NavService } from '../core/nav/nav.service';
 @Component({
   templateUrl: './login-site.component.html'
 })
-export class LoginSiteComponent implements AfterViewChecked {
+export class LoginSiteComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router, private navService: NavService) {}
 
-  ngAfterViewChecked(): void {
+  ngOnInit(): void {
     this.navService.setLocation('Anmeldung');
   }
 

@@ -17,7 +17,7 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { from, Observable } from 'rxjs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +28,7 @@ import { SharedModule } from './shared/shared.module';
 import { MasterdataService } from './masterdata/masterdata.service';
 import { Router } from '@angular/router';
 import * as Sentry from '@sentry/angular';
+import { SentryMissingTranslationHandler } from './shared/SentryMissingTranslationHandler';
 
 export class CustomTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<any> {
@@ -51,7 +52,8 @@ registerLocaleData(localeIt, 'it');
       loader: {
         provide: TranslateLoader,
         useClass: CustomTranslateLoader
-      }
+      },
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: SentryMissingTranslationHandler }
     }),
     AngularFireModule,
     AngularFirestoreModule,
