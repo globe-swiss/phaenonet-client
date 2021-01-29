@@ -1,28 +1,31 @@
 import { OnInit, OnDestroy, Directive } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable, of, ReplaySubject, throwError } from 'rxjs';
+import { Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
 import { flatMap, switchMap } from 'rxjs/operators';
 import { ResourceService } from './resource.service';
 
 @Directive()
 export class BaseDetailComponent<T> implements OnInit, OnDestroy {
+  protected subscriptions = new Subscription();
   detailSubject$: ReplaySubject<T> = new ReplaySubject<T>(1);
   detailId: string;
 
   constructor(protected resourceService: ResourceService<T>, protected route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.getDetailId()
-      .pipe(
-        switchMap((id: string) => {
-          return this.getDetailSubject(id);
-        })
-      )
-      .subscribe(this.detailSubject$);
+    this.subscriptions.add(
+      this.getDetailId()
+        .pipe(
+          switchMap((id: string) => {
+            return this.getDetailSubject(id);
+          })
+        )
+        .subscribe(this.detailSubject$)
+    );
   }
 
   ngOnDestroy(): void {
-    this.detailSubject$.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   getRouteParam(param: string): Observable<string> {
