@@ -10,7 +10,8 @@ module.exports = {
   },
   filter: {
     phenoyear: {
-      dropdown: { css: '.map-filter mat-select[formcontrolname=year]' }
+      dropdown: { css: '.map-filter mat-select[formcontrolname=year]' },
+      placeholder: { css: '.map-filter mat-select[formcontrolname=year] .mat-select-placeholder' }
     },
     source: {
       dropdown: { css: '.map-filter mat-select[formcontrolname="datasource"]' },

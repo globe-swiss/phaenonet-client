@@ -6,7 +6,7 @@ Scenario('test map component present logged-out', ({ I, mapPage, loginPage }) =>
   I.checkElementsPresent(mapPage.components);
   I.seeElement(mapPage.addObjectButton);
   I.click(mapPage.addObjectButton);
-  I.waitUrlEquals(loginPage.url)
+  I.waitUrlEquals(loginPage.url);
 });
 
 Scenario('test map component present logged-in', ({ I, mapPage, individualsEditPage }) => {
@@ -27,6 +27,7 @@ Scenario('test initial filter', ({ I, mapPage }) => {
 
 Scenario('test regression on map markers for 2018', async ({ I, mapPage }) => {
   I.visit(mapPage.url);
+  I.waitForInvisible(mapPage.filter.phenoyear.placeholder, 10);
   I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
   I.wait(2);
   I.seeNumberOfElements(mapPage.mapMarker, 378); // 2018, all, all
