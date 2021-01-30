@@ -7,7 +7,7 @@ const routes: Routes = [
     path: '',
     children: [
       { path: ':id', component: StationDetailComponent },
-      { path: '', redirectTo: 'stations', pathMatch: 'full' }
+      { path: '', redirectTo: '/map', pathMatch: 'full' }
     ]
   }
 ];

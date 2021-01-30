@@ -1,2 +1,16 @@
-<h2>{{ 'error-404-title' | translate }}</h2>
-<p>{{ 'error-404-description' | translate }}</p>
+<div gdColumns="repeat(8, 1fr)">
+  <mat-card gdColumn="4 / span 2" gdColumn.lt-md="1 / span 8" class="detail-view">
+    <mat-card-header>
+      <mat-card-title>{{ 'Hier ist etwas schiefgelaufen.' | translate }}</mat-card-title>
+      <mat-card-subtitle>{{
+        'Diese Seite existiert leider nicht. Wenn Sie den Fehler melden möchten oder Hilfe benötigen, wenden Sie sich bitte an info@phaenonet.ch.'
+          | translate
+      }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions align="center">
+      <button mat-flat-button color="accent" routerLink="/map">
+        {{ 'zurück zur Karte' | translate }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

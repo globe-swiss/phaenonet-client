@@ -2,6 +2,9 @@ const { I } = inject();
 
 module.exports = {
   newIndividualUrl: '/individuals/new/edit',
+  url(individual_id) {
+    return '/individuals/' + individual_id + '/edit';
+  },
   components: {
     navigation: { css: 'app-nav' },
     header: { css: 'app-individual-edit-header' },

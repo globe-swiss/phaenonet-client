@@ -31,6 +31,7 @@ exports.config = {
     individualsPage: './src/pages/individuals.js',
     individualsEditPage: './src/pages/individuals_edit.js',
     statisticsPage: './src/pages/statistics.js',
+    stationsPage: './src/pages/stations.js',
     navbarComponent: './src/components/navbar.js',
     e2eTestUser: './src/users/e2e_test.js'
   },

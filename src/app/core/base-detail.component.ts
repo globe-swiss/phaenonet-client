@@ -1,23 +1,32 @@
 import { OnInit, OnDestroy, Directive } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
-import { flatMap, switchMap } from 'rxjs/operators';
+import { flatMap, switchMap, tap } from 'rxjs/operators';
 import { ResourceService } from './resource.service';
 
 @Directive()
 export class BaseDetailComponent<T> implements OnInit, OnDestroy {
-  protected subscriptions = new Subscription();
+  private baseSubscriptions = new Subscription();
   detailSubject$: ReplaySubject<T> = new ReplaySubject<T>(1);
   detailId: string;
 
-  constructor(protected resourceService: ResourceService<T>, protected route: ActivatedRoute) {}
+  constructor(
+    protected resourceService: ResourceService<T>,
+    protected route: ActivatedRoute,
+    protected router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.subscriptions.add(
+    this.baseSubscriptions.add(
       this.getDetailId()
         .pipe(
           switchMap((id: string) => {
             return this.getDetailSubject(id);
+          }),
+          tap(id => {
+            if (!id) {
+              this.router.navigate(['/404'], { skipLocationChange: true });
+            }
           })
         )
         .subscribe(this.detailSubject$)
@@ -25,7 +34,7 @@ export class BaseDetailComponent<T> implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+    this.baseSubscriptions.unsubscribe();
   }
 
   getRouteParam(param: string): Observable<string> {

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { Observable, ReplaySubject } from 'rxjs';
-import { first, map, mergeAll } from 'rxjs/operators';
+import { filter, first, map, mergeAll, tap } from 'rxjs/operators';
 import { Individual } from '../../individual';
 import { IndividualService } from '../../individual.service';
 import { GeoposService } from './geopos.service';
@@ -37,15 +37,21 @@ export class EditHeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.individual$.pipe(first()).subscribe(i => {
-      if (i.geopos) {
-        this.geoposService.update(new google.maps.LatLng(i.geopos));
-      } else {
-        this.geoposService.init();
-      }
-    });
+    this.individual$
+      .pipe(
+        first(),
+        filter(individual => individual !== undefined)
+      )
+      .subscribe(i => {
+        if (i.geopos) {
+          this.geoposService.update(new google.maps.LatLng(i.geopos));
+        } else {
+          this.geoposService.init();
+        }
+      });
     this.geopos$ = this.geoposService.geopos$;
     this.imageUrl$ = this.individual$.pipe(
+      filter(individual => individual !== undefined),
       map(individual => this.individualService.getImageUrl(individual, true)),
       mergeAll()
     );

@@ -15,6 +15,7 @@ import { ChangePasswordData } from '../change-password-dialog/change-password-da
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
 import { ChangeEmailDialogComponent } from '../change-email-dialog/change-email-dialog.component';
 import { ChangeEmailData } from '../change-email-dialog/change-email-data';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './profile-edit.component.html',
@@ -27,12 +28,13 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
     lastname: new FormControl(''),
     locale: new FormControl('de-CH')
   });
+  private subscriptions = new Subscription();
   private initialLanguage: string;
   email: string;
 
   constructor(
     private navService: NavService,
-    private router: Router,
+    protected router: Router,
     protected route: ActivatedRoute,
     private userService: UserService,
     private publicUserService: PublicUserService,
@@ -40,7 +42,7 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
     private languageService: LanguageService,
     private authService: AuthService
   ) {
-    super(userService, route);
+    super(userService, route, router);
   }
 
   ngOnInit(): void {
