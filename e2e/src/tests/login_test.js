@@ -24,3 +24,11 @@ Scenario('test login failure', ({ I, loginPage, e2eTestUser }) => {
   I.waitUrlEquals(loginPage.url);
   I.amLoggedOut();
 });
+
+Scenario('test login with invalid mail', ({ I, loginPage, e2eTestUser }) => {
+  I.visit(loginPage.url);
+  loginPage.login('invalid_email', 'doesnt_matter');
+  I.waitForText('Ungültige Mailadresse');
+  I.waitUrlEquals(loginPage.url);
+  I.amLoggedOut();
+});

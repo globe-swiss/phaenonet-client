@@ -64,7 +64,11 @@ export class AuthService extends BaseService implements OnDestroy {
         .then(firebaseResult => {
           return this.handleUserLogin(firebaseResult);
         })
-        .catch(this.errorHandling.bind(this))
+        .catch(x => {
+          this.errorHandling(x)
+          return of(null);
+        }
+        )
     ).pipe(switchAll());
   }
 
