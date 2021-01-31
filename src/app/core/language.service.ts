@@ -1,20 +1,37 @@
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
-export class LanguageService {
+export class LanguageService implements OnDestroy {
   private LOCALSTORAGE_KEY = 'lang';
+  private subscriptions = new Subscription();
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    private translateService: TranslateService
-    ) {}
+    private translateService: TranslateService,
+    private authService: AuthService
+  ) {
+    this.subscriptions.add(
+      this.authService
+        .getUserObservable()
+        .pipe(filter(user => !!user))
+        .subscribe(user => this.changeLocale(user.locale))
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 
   init(): any {
     this.translateService.addLangs(['de-CH', 'fr-CH', 'it-CH']);
     const currentLang = this.determineCurrentLang();
+    this.translateService.setDefaultLang('de-CH');
     this.changeLocale(currentLang);
   }
 

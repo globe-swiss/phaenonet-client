@@ -1,9 +1,8 @@
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { UserService } from '../../../auth/user.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
-import { first, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AlertService, Level, UntranslatedAlertMessage } from 'src/app/messaging/alert.service';
 import { Input } from '@angular/core';
 import { none } from 'fp-ts/lib/Option';
@@ -27,13 +26,12 @@ export class ProfileDetailsComponent implements OnInit {
   constructor(
     protected authService: AuthService,
     protected alertService: AlertService,
-    private userService: UserService,
     private analytics: AngularFireAnalytics
   ) {}
 
   ngOnInit() {
     this.email = this.authService.getUserEmail();
-    const user$ = this.userService.get(this.userId).pipe(first());
+    const user$ = this.authService.getUserObservable();
     this.nickname$ = user$.pipe(map(u => u.nickname));
     this.firstname$ = user$.pipe(map(u => u.firstname));
     this.lastname$ = user$.pipe(map(u => u.lastname));
