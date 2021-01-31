@@ -1,5 +1,5 @@
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { AfterViewChecked, Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
