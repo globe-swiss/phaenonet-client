@@ -7,7 +7,6 @@ import { none } from 'fp-ts/lib/Option';
 import { from, Observable, of, Subscription } from 'rxjs';
 import { switchMap, mergeAll, switchAll, take, tap, map } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
-import { LanguageService } from '../core/language.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { LoginResult } from './login-result';
 import { User } from './user';
@@ -32,7 +31,6 @@ export class AuthService extends BaseService implements OnDestroy {
   constructor(
     alertService: AlertService,
     private router: Router,
-    private languageService: LanguageService,
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore
   ) {
@@ -65,7 +63,7 @@ export class AuthService extends BaseService implements OnDestroy {
           return this.handleUserLogin(firebaseResult);
         })
         .catch(x => {
-          this.errorHandling(x)
+          this.errorHandling(x);
           return of(null);
         }
         )
@@ -155,7 +153,6 @@ export class AuthService extends BaseService implements OnDestroy {
           .collection('users')
           .doc(firebaseResult.user.uid)
           .set({
-            lang: this.languageService.determineCurrentLang(),
             nickname: nickname,
             firstname: firstname,
             lastname: lastname,

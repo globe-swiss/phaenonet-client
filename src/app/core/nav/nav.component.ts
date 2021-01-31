@@ -28,14 +28,6 @@ export class NavComponent {
     return this.authService.getUserNickname();
   }
 
-  selectedLocale(): string {
-    return this.translateService.currentLang || this.translateService.defaultLang;
-  }
-
-  changeLocale(event: MatSelectChange) {
-    this.languageService.changeLocale(event.value);
-  }
-
   logout() {
     this.authService.logout();
   }
