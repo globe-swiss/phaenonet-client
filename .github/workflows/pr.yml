@@ -1,6 +1,6 @@
 # Build PRs to master
 
-name: Build PR
+name: Build
 
 on:
   pull_request:
@@ -18,9 +18,11 @@ jobs:
       - name: Install Dependencies
         run: | 
           npm ci
+      - name: check style
+        run: npx prettier -c "."
       - name: Build
         run: npx ng build
-      - name: Archive PR Artifact
+      - name: Archive Artifact
         uses: actions/upload-artifact@master
         with:
           name: dist-pr-build

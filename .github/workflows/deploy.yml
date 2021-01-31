@@ -28,6 +28,8 @@ jobs:
         uses: actions/checkout@master
       - name: Install Dependencies
         run: npm ci
+      - name: check style
+        run: npx prettier -c "."
       - name: Build
         run: npx ng build "${{ github.event.inputs.project == 'phaenonet' && '--prod' || '' }}"
       - name: Archive Test Artifact
