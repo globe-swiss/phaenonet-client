@@ -4,6 +4,12 @@ import { environment } from 'src/environments/environment';
 
 export class SentryMissingTranslationHandler implements MissingTranslationHandler {
   handle(params: MissingTranslationHandlerParams) {
+    // bugfix for wrong positives
+    if (this.checkTranslationError(params)) {
+      return params.key;
+    }
+
+    // ignore numbers and missing translations is german
     if (params.translateService.currentLang !== 'de-CH' && !Number(params.key)) {
       if (environment.name === 'local') {
         console.log(this.getMsg(params));
@@ -15,5 +21,16 @@ export class SentryMissingTranslationHandler implements MissingTranslationHandle
 
   getMsg(params: MissingTranslationHandlerParams) {
     return 'Translation Error: ' + params.key + ' not found for ' + params.translateService.currentLang;
+  }
+
+  /*
+   * Check if the module was already loaded.
+   * On initial page load the missing translations handler is called
+   * once only with the default language causing false positives when
+   * reporting missing translations.
+   */
+
+  checkTranslationError(params: MissingTranslationHandlerParams) {
+    return !params.translateService.translations[params.translateService.currentLang];
   }
 }
