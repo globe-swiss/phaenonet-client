@@ -3,7 +3,7 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { MaterialModule } from './material.module';
 
 import { TranslateService } from '@ngx-translate/core';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { AuthModule } from '../auth/auth.module';
 import { AuthService } from '../auth/auth.service';
@@ -17,7 +17,6 @@ import { AlertService } from '../messaging/alert.service';
 import { AlertComponent } from '../messaging/alert.component';
 import { NavService } from './nav/nav.service';
 import { LanguageService } from './language.service';
-import { ProfileModule } from '../profile/profile.module';
 
 /**
  * The `CoreModule` is used to group singleton services like {@link ExceptionService} and single-use components like {@link NavComponent}.

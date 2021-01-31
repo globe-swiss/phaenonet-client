@@ -22,7 +22,6 @@ export class AppComponent {
     browserUpdate({
       api: 2018.12,
       required: { e: 14, f: 60, o: 53, s: 11, c: 67 },
-      // text: translation,
       l: languageService.determineCurrentLang()
     });
 
