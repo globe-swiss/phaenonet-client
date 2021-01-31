@@ -1,48 +1,32 @@
-import { first } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
+import { Injectable, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
-import { Router, RouterEvent, NavigationStart, RoutesRecognized, ResolveEnd } from '@angular/router';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Injectable()
-export class NavService {
+export class NavService implements OnDestroy {
   private DEFAULT_LOCATION = 'PhaenoNet';
-  readonly location$: Subject<string> = new Subject();
-  private untranslatedLocation: string;
-  private params: Object;
+  private location$: BehaviorSubject<string> = new BehaviorSubject(this.DEFAULT_LOCATION);
+  private subscriptions = new Subscription();
 
-  constructor(private translateService: TranslateService, private titleService: Title, routerService: Router) {
-    routerService.events.subscribe((event: RouterEvent) => {
-      if (event instanceof ResolveEnd && event.urlAfterRedirects != window.location.href) {
-        // in case the endpoint of this route does not call setLocation, we use the following default.
-        this.location$.next(this.DEFAULT_LOCATION);
-      }
-    });
-    translateService.onLangChange.subscribe(() => {
-      if (this.untranslatedLocation) {
-        this.translate(this.untranslatedLocation, this.params);
-      }
-    });
+  constructor(private translateService: TranslateService, private titleService: Title) {
+    this.subscriptions.add(
+      this.location$
+        .pipe(switchMap(untranslatedLocation => translateService.get(untranslatedLocation)))
+        .subscribe(translatedLocation => this.titleService.setTitle(translatedLocation))
+    );
+
+    this.subscriptions.add(
+      translateService.onLangChange.subscribe(() => this.location$.next(this.location$.getValue()))
+    );
   }
 
-  setLocation(untranslatedString: string, params?: Object) {
-    this.untranslatedLocation = untranslatedString;
-    if (params) {
-      this.params = params;
-    } else {
-      this.params = Object;
-    }
-    this.translate(untranslatedString, params);
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
-  private translate(untranslatedString: string, params?: Object) {
-    this.translateService
-      .get(untranslatedString, params)
-      .pipe(first())
-      .subscribe(translatedString => {
-        this.location$.next(translatedString);
-        this.titleService.setTitle(translatedString);
-      });
+  setLocation(untranslatedString: string) {
+    this.location$.next(untranslatedString);
   }
 }
