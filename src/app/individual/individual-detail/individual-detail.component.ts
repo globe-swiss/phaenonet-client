@@ -3,13 +3,14 @@ import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { first, map, filter } from 'rxjs/operators';
+import { filter, first, map } from 'rxjs/operators';
+import { MasterdataService } from 'src/app/masterdata/masterdata.service';
+
 import { AuthService } from '../../auth/auth.service';
 import { BaseDetailComponent } from '../../core/base-detail.component';
 import { NavService } from '../../core/nav/nav.service';
 import { Individual } from '../individual';
 import { IndividualService } from '../individual.service';
-import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 
 @Component({
   templateUrl: './individual-detail.component.html',
@@ -17,6 +18,7 @@ import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 })
 export class IndividualDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
   isEditable$: Observable<boolean>;
+  isOwn$: Observable<boolean>;
   isLoggedIn: boolean;
 
   constructor(
@@ -45,6 +47,11 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
         individual =>
           this.authService.getUserId() === individual.user && individual.year === this.masterdataService.getPhenoYear()
       )
+    );
+
+    this.isOwn$ = this.detailSubject$.pipe(
+      filter(individual => individual !== undefined),
+      map(individual => this.authService.getUserId() === individual.user)
     );
 
     this.detailSubject$.pipe(first()).subscribe(detail => {
