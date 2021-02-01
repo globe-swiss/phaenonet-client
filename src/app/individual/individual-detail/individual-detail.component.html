@@ -6,7 +6,7 @@
       [individual$]="detailSubject$"
     ></app-individual-detail-header>
     <app-individual-subscription
-      *ngIf="isLoggedIn && !(isEditable$ | async)"
+      *ngIf="isLoggedIn && !(isOwn$ | async)"
       gdColumn="1 / span 6"
       class="detail-header"
       [individual$]="detailSubject$"
