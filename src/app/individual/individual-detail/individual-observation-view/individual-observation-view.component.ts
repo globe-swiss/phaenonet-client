@@ -18,6 +18,7 @@ import { Individual } from '../../individual';
 import { PhenophaseDialogComponent } from '../../phenophase-dialog.component';
 import { findFirst } from 'fp-ts/lib/Array';
 import { altitudeLimits } from 'src/app/masterdata/altitude-limits';
+import firebase from 'firebase/app';
 
 @Component({
   selector: 'app-individual-observation-view',
@@ -107,9 +108,14 @@ export class ObservationViewComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result: PhenophaseObservation) => {
-      if (result) {
+      // discard result if empty or no data was selected (fixme -> disable button in form)
+      if (result && result.observation.toNullable().date) {
         this.individual$.pipe(first()).subscribe(detail => {
           result.observation.map(observation => {
+            // fix undefined comment #28
+            if (observation.comment === undefined) {
+              observation.comment = firebase.firestore.FieldValue.delete();
+            }
             // if this is a new observation the created date is not set
             if (!observation.created) {
               observation.individual = detail.individual;

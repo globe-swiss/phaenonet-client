@@ -1,3 +1,6 @@
+import firebase from 'firebase/app';
+import FieldValue = firebase.firestore.FieldValue;
+
 export class Observation {
   date: Date;
   individual: string;
@@ -6,7 +9,7 @@ export class Observation {
   species: string;
   year: number;
   user: string;
-  comment: string | null;
+  comment: string | FieldValue;
   created: Date;
   modified: Date;
   source: 'globe' | 'meteoswiss';
