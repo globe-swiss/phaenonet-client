@@ -10,7 +10,6 @@ import { LoginDialogComponent } from './login-dialog.component';
 import { LoggedOutComponent } from './logged-out.component';
 import { ResetPasswordComponent } from './reset-password.component';
 import { RegisterComponent } from './register.component';
-import { CompleteAccountComponent } from './complete-account.component';
 import { OpenModule } from '../open/open.module';
 
 @NgModule({
@@ -22,8 +21,7 @@ import { OpenModule } from '../open/open.module';
     LoginSiteComponent,
     LoggedOutComponent,
     ResetPasswordComponent,
-    RegisterComponent,
-    CompleteAccountComponent
+    RegisterComponent
   ],
   providers: [],
   entryComponents: [LoginDialogComponent]

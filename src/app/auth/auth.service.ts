@@ -36,7 +36,6 @@ export class AuthService extends BaseService implements OnDestroy {
   ) {
     super(alertService);
 
-    const self = this;
     this.user$ = this.afAuth.authState.pipe(
       tap(user => (this.firebaseUser = user)),
       switchMap(user => {
@@ -65,8 +64,7 @@ export class AuthService extends BaseService implements OnDestroy {
         .catch(x => {
           this.errorHandling(x);
           return of(null);
-        }
-        )
+        })
     ).pipe(switchAll());
   }
 
@@ -107,14 +105,14 @@ export class AuthService extends BaseService implements OnDestroy {
   }
 
   async changeEmail(newEmail: string, currentPassword: string) {
-      const freshUser = await this.reauthUser(currentPassword);
-      try {
-        await freshUser.updateEmail(newEmail);
-        this.alertService.infoMessage('E-Mail geändert', 'Die E-Mail wurde erfolgreich geändert.');
-      } catch (error) {
-        this.alertService.infoMessage(error.code + '.title', error.code + '.message');
-        throw error;
-      }
+    const freshUser = await this.reauthUser(currentPassword);
+    try {
+      await freshUser.updateEmail(newEmail);
+      this.alertService.infoMessage('E-Mail geändert', 'Die E-Mail wurde erfolgreich geändert.');
+    } catch (error) {
+      this.alertService.infoMessage(error.code + '.title', error.code + '.message');
+      throw error;
+    }
   }
 
   changePassword(currentPassword: string, newPassword: string) {
@@ -163,38 +161,6 @@ export class AuthService extends BaseService implements OnDestroy {
       .catch(this.errorHandling.bind(this));
 
     return this.user$;
-  }
-
-  /**
-   * Email wasn't mandatory in the old application. This method is used to complete the existing account with an email address.
-   * The given nickname has been migrated to the authentication database as `nickname@example.com`.
-   *
-   * @param nickname nickname from the old days
-   * @param password existing password
-   * @param email the new email address
-   */
-  completeAccount(nickname: string, password: string, email: string): Observable<any> {
-    return from(
-      this.afAuth
-        .signInWithEmailAndPassword(this.nicknameAsEmail(nickname), password)
-        .then(firebaseResult => {
-          if (firebaseResult) {
-            return from(
-              firebaseResult.user
-                .updateEmail(email)
-                .then(_ => {
-                  return this.login(email, password);
-                })
-                .catch(this.errorHandling.bind(this))
-            ).pipe(mergeAll());
-          }
-        })
-        .catch(this.errorHandling.bind(this))
-    ).pipe(mergeAll());
-  }
-
-  private nicknameAsEmail(nickname: string): string {
-    return nickname + '@example.com';
   }
 
   private removeCookie(name: string, path: string = '/') {
