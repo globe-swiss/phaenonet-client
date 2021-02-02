@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+
 import { AuthService } from '../auth/auth.service';
 
 @Injectable()
@@ -36,9 +37,9 @@ export class LanguageService implements OnDestroy {
   }
 
   changeLocale(newLocale: string): any {
-    const locale = this.parseLang(newLocale);
+    let locale = this.parseLang(newLocale);
     if (locale == null) {
-      throw new Error('given language is not supported: ' + newLocale);
+      locale = 'de-CH';
     }
     moment.locale(locale);
     this.translateService.use(locale);
