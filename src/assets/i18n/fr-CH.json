@@ -336,5 +336,9 @@
   "Passwort falsch": "Mot de passe incorrect",
   "Das eingegebene aktuelle Passwort ist falsch.": "Le mot de passe actuel saisi est incorrect.",
   "Neues Passwort": "Nouveau mot de passe",
-  "Neues Passwort bestätigen": "Confirmer nouveau mot de passe"
+  "Neues Passwort bestätigen": "Confirmer nouveau mot de passe",
+  "Anmeldung": "Connexion",
+  "Abgemeldet": "Déconnecté",
+  "Registrierung": "Inscription",
+  "PhaenoNet": "PhaenoNet"
 }
