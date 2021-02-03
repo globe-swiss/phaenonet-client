@@ -336,5 +336,9 @@
   "Passwort falsch": "Password non corretta",
   "Das eingegebene aktuelle Passwort ist falsch.": "La password attuale inserita non è corretta.",
   "Neues Passwort": "Nuova password",
-  "Neues Passwort bestätigen": "Conferma della nuova password"
+  "Neues Passwort bestätigen": "Conferma della nuova password",
+  "Anmeldung": "Accedi",
+  "Abgemeldet": "Disconnesso",
+  "Registrierung": "Registrazione",
+  "PhaenoNet": "PhaenoNet"
 }
