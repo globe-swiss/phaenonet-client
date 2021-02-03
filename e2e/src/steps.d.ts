@@ -7,6 +7,7 @@ type profileEditPage = typeof import('./pages/profile_edit.js');
 type individualsPage = typeof import('./pages/individuals.js');
 type individualsEditPage = typeof import('./pages/individuals_edit.js');
 type statisticsPage = typeof import('./pages/statistics.js');
+type stationsPage = typeof import('./pages/stations.js');
 type navbarComponent = typeof import('./components/navbar.js');
 type e2eTestUser = typeof import('./users/e2e_test.js');
 type customHelper = import('./helpers/clickIfVisible.js');
@@ -22,6 +23,7 @@ declare namespace CodeceptJS {
     individualsPage: individualsPage;
     individualsEditPage: individualsEditPage;
     statisticsPage: statisticsPage;
+    stationsPage: stationsPage;
     navbarComponent: navbarComponent;
     e2eTestUser: e2eTestUser;
   }

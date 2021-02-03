@@ -1,7 +1,6 @@
-import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, first, map } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
@@ -20,9 +19,10 @@ export class ProfileComponent extends BaseDetailComponent<PublicUser> implements
     protected route: ActivatedRoute,
     private publicUserService: PublicUserService,
     public dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    protected router: Router
   ) {
-    super(publicUserService, route);
+    super(publicUserService, route, router);
   }
 
   ngOnInit(): void {

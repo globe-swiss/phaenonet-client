@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
@@ -28,9 +28,10 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     public dialog: MatDialog,
     private authService: AuthService,
     private analytics: AngularFireAnalytics,
-    private masterdataService: MasterdataService
+    private masterdataService: MasterdataService,
+    protected router: Router
   ) {
-    super(individualService, route);
+    super(individualService, route, router);
   }
 
   ngOnInit(): void {
@@ -54,13 +55,18 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
       map(individual => this.authService.getUserId() === individual.user)
     );
 
-    this.detailSubject$.pipe(first()).subscribe(detail => {
-      this.analytics.logEvent('individual.view', {
-        own: this.authService.getUserId() === detail.user,
-        current: detail.year === this.masterdataService.getPhenoYear(),
-        year: detail.year,
-        species: detail.species
+    this.detailSubject$
+      .pipe(
+        first(),
+        filter(individual => individual !== undefined)
+      )
+      .subscribe(detail => {
+        this.analytics.logEvent('individual.view', {
+          own: this.authService.getUserId() === detail.user,
+          current: detail.year === this.masterdataService.getPhenoYear(),
+          year: detail.year,
+          species: detail.species
+        });
       });
-    });
   }
 }

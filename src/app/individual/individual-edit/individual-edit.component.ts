@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseDetailComponent } from '../../core/base-detail.component';
 import { NavService } from '../../core/nav/nav.service';
 import { Individual } from '../individual';
@@ -17,9 +17,10 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
     private navService: NavService,
     protected route: ActivatedRoute,
     private individualService: IndividualService,
-    private analytics: AngularFireAnalytics
+    private analytics: AngularFireAnalytics,
+    protected router: Router
   ) {
-    super(individualService, route);
+    super(individualService, route, router);
   }
 
   ngOnInit(): void {

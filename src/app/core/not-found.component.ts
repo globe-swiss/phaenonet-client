@@ -1,4 +1,4 @@
-import { Component, AfterViewChecked, AfterContentChecked, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavService } from './nav/nav.service';
 
 @Component({
@@ -10,6 +10,6 @@ export class NotFoundComponent implements OnInit {
   constructor(private navService: NavService) {}
 
   ngOnInit(): void {
-    this.navService.setLocation('error-404-title');
+    this.navService.setLocation('Hier ist etwas schiefgelaufen.');
   }
 }
