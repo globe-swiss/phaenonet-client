@@ -1,7 +1,8 @@
-import { OnInit, OnDestroy, Directive } from '@angular/core';
+import { Directive, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
+import { Observable, ReplaySubject, Subscription, of, throwError } from 'rxjs';
 import { flatMap, switchMap, tap } from 'rxjs/operators';
+
 import { ResourceService } from './resource.service';
 
 @Directive()

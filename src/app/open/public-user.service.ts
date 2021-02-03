@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { first, map, debounceTime, take, switchMap } from 'rxjs/operators';
+import { debounceTime, first, map, switchMap, take } from 'rxjs/operators';
+
+import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';
 import { PublicUser } from './public-user';
-import { AsyncValidatorFn, AbstractControl } from '@angular/forms';
-import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class PublicUserService extends BaseResourceService<PublicUser> {

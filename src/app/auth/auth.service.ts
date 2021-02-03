@@ -3,14 +3,15 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import firebase from 'firebase/app';
 import { none } from 'fp-ts/lib/Option';
-import { from, Observable, of, Subscription } from 'rxjs';
-import { switchMap, mergeAll, switchAll, take, tap, map } from 'rxjs/operators';
+import { Observable, Subscription, from, of } from 'rxjs';
+import { map, mergeAll, switchAll, switchMap, take, tap } from 'rxjs/operators';
+
 import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { LoginResult } from './login-result';
 import { User } from './user';
-import firebase from 'firebase/app';
 
 export const LOGIN_URL = '/auth/login';
 export const LOGGED_OUT_URL = '/auth/logged-out';

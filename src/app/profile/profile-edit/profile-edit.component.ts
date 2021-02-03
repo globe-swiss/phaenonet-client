@@ -1,9 +1,11 @@
-import { first } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatSelectChange } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
+
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../../auth/user';
 import { UserService } from '../../auth/user.service';
@@ -11,11 +13,10 @@ import { BaseDetailComponent } from '../../core/base-detail.component';
 import { LanguageService } from '../../core/language.service';
 import { NavService } from '../../core/nav/nav.service';
 import { PublicUserService } from '../../open/public-user.service';
+import { ChangeEmailData } from '../change-email-dialog/change-email-data';
+import { ChangeEmailDialogComponent } from '../change-email-dialog/change-email-dialog.component';
 import { ChangePasswordData } from '../change-password-dialog/change-password-data';
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
-import { ChangeEmailDialogComponent } from '../change-email-dialog/change-email-dialog.component';
-import { ChangeEmailData } from '../change-email-dialog/change-email-data';
-import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './profile-edit.component.html',

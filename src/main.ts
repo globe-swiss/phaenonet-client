@@ -1,12 +1,11 @@
 import { enableProdMode } from '@angular/core';
+import { FIREBASE_OPTIONS } from '@angular/fire';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import * as Sentry from '@sentry/angular';
+import { Integrations } from '@sentry/tracing';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
-import { FIREBASE_OPTIONS } from '@angular/fire';
-
-import * as Sentry from '@sentry/angular';
-import { Integrations } from '@sentry/tracing';
 
 Sentry.init({
   enabled: environment.sentryEnabled,

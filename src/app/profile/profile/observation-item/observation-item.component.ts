@@ -1,6 +1,7 @@
-import { MasterdataService } from 'src/app/masterdata/masterdata.service';
+import { Component, Input, OnInit } from '@angular/core';
 import { formatShortDate } from 'src/app/core/formatDate';
-import { Component, OnInit, Input } from '@angular/core';
+import { MasterdataService } from 'src/app/masterdata/masterdata.service';
+
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
 
 @Component({

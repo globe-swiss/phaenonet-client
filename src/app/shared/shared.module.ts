@@ -1,22 +1,20 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-
-import { MaterialModule } from '../core/material.module';
-
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { DisableNotAuthorizedDirective } from '../auth/disable-not-authorized.directive';
-import { RemoveNotAuthorizedDirective } from '../auth/remove-not-authorized.directive';
-import { NotFoundComponent } from '../core/not-found.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { GoogleMapsModule } from '@angular/google-maps';
 import { DisableNotOwnerDirective } from '../auth/disable-not-owner.directive';
-import { CopyClipboardDirective } from './copy-clipboard.directive';
+import { RemoveNotAuthorizedDirective } from '../auth/remove-not-authorized.directive';
+import { MaterialModule } from '../core/material.module';
+import { NotFoundComponent } from '../core/not-found.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
-import { RoundPipe } from './round.pipe';
+import { CopyClipboardDirective } from './copy-clipboard.directive';
 import { LoadingGuard } from './LoadingGuard';
+import { RoundPipe } from './round.pipe';
 
 /**
  * The `SharedModule` is used to group common services and modules like {@link TranslateModule}.

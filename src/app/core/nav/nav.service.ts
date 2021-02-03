@@ -1,8 +1,8 @@
-import { switchMap } from 'rxjs/operators';
 import { Injectable, OnDestroy } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class NavService implements OnDestroy {

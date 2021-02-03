@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { formatShortDateTime } from 'src/app/core/formatDate';
+
 import { Activity } from '../../../activity/activity';
 import { MasterdataService } from '../../../masterdata/masterdata.service';
 

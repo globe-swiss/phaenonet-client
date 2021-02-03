@@ -1,5 +1,6 @@
-import { User } from './user';
 import firebase from 'firebase/app';
+
+import { User } from './user';
 
 type LoginResultStatus = 'LOGIN_OK' | 'LOGIN_PASSWORD_CHANGE_REQUIRED';
 

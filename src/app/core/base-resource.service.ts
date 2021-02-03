@@ -1,6 +1,7 @@
 import { AngularFirestore } from '@angular/fire/firestore';
-import { from, identity, Observable } from 'rxjs';
-import { mergeMap, first } from 'rxjs/operators';
+import { Observable, from, identity } from 'rxjs';
+import { first, mergeMap } from 'rxjs/operators';
+
 import { AlertService } from '../messaging/alert.service';
 import { BaseService } from './base.service';
 import { ResourceService } from './resource.service';

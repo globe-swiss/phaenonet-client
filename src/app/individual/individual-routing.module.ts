@@ -1,8 +1,9 @@
-import { AuthGuard } from './../auth/auth-guard.service';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { IndividualEditComponent } from './individual-edit/individual-edit.component';
+
+import { AuthGuard } from './../auth/auth-guard.service';
 import { IndividualDetailComponent } from './individual-detail/individual-detail.component';
+import { IndividualEditComponent } from './individual-edit/individual-edit.component';
 
 const routes: Routes = [
   {

@@ -1,8 +1,9 @@
 import { Observable } from 'rxjs';
-import { Phenophase } from '../masterdata/phaenophase';
-import { Individual } from './individual';
+
 import { IdLike } from '../masterdata/masterdata-like';
+import { Phenophase } from '../masterdata/phaenophase';
 import { Species } from '../masterdata/species';
+import { Individual } from './individual';
 
 export class IndividualPhenophase {
   individual: Individual & IdLike;

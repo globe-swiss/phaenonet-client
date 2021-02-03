@@ -1,9 +1,14 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, of, Subscription } from 'rxjs';
-import { map, publishReplay, refCount, mergeAll, shareReplay } from 'rxjs/operators';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable, Subscription, of } from 'rxjs';
+import { map, mergeAll, publishReplay, refCount, shareReplay } from 'rxjs/operators';
+
+import * as configStatic from '../../assets/config_static.json';
 import { BaseService } from '../core/base.service';
+import { LanguageService } from '../core/language.service';
 import { Individual } from '../individual/individual';
 import { AlertService } from '../messaging/alert.service';
+import { AltitudeLimits } from './altitude-limits';
 import { Comment } from './comment';
 import { Description } from './description';
 import { Distance } from './distance';
@@ -16,10 +21,6 @@ import { Phenophase } from './phaenophase';
 import { PhenophaseGroup } from './phaenophase-group';
 import { Shade } from './shade';
 import { Species } from './species';
-import * as configStatic from '../../assets/config_static.json';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AltitudeLimits } from './altitude-limits';
-import { LanguageService } from '../core/language.service';
 
 export interface MasterdataCollection {
   [index: string]: Object;

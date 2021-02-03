@@ -2,8 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject, combineLatest } from 'rxjs';
 import { first, map, share, startWith, switchMap, tap } from 'rxjs/operators';
+
+import { AuthService } from './../auth/auth.service';
 import { formatShortDate } from '../core/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
@@ -13,7 +15,6 @@ import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
 import { SourceType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
-import { AuthService } from './../auth/auth.service';
 
 class GlobeInfoWindowData {
   individual: Individual;

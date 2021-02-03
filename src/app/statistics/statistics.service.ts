@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import { BaseResourceService } from '../core/base-resource.service';
+import { SourceType } from '../masterdata/source-type';
 import { AlertService } from '../messaging/alert.service';
 import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
-import { SourceType } from '../masterdata/source-type';
 
 @Injectable()
 export class StatisticsService extends BaseResourceService<Analytics> {

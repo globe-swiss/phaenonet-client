@@ -1,16 +1,17 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
+import { LanguageService } from '../core/language.service';
 import { NavService } from '../core/nav/nav.service';
 import { AlertService } from '../messaging/alert.service';
-import { equalValidation } from '../shared/validation';
-import { MatSelectChange } from '@angular/material/select';
-import { LanguageService } from '../core/language.service';
 import { PublicUserService } from '../open/public-user.service';
+import { equalValidation } from '../shared/validation';
 
 @Component({
   selector: 'app-register',

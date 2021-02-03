@@ -1,6 +1,6 @@
-import { Observable, ObservableInput, of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Observable, ObservableInput, of, throwError } from 'rxjs';
 
 export class HttpErrorHandler {
   constructor(protected router: Router) {}

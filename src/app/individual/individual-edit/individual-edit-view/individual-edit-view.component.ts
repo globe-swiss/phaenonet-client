@@ -14,8 +14,9 @@ import { Irrigation } from 'src/app/masterdata/irrigation';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { Shade } from 'src/app/masterdata/shade';
 import { Species } from 'src/app/masterdata/species';
-import { Individual } from '../../individual';
+
 import { IndividualService } from './../../individual.service';
+import { Individual } from '../../individual';
 import { GeoposService } from './../individual-edit-header/geopos.service';
 
 @Component({
