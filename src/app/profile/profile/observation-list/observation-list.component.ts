@@ -2,11 +2,11 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { first, map, mergeAll } from 'rxjs/operators';
-import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 
 import { AuthService } from '../../../auth/auth.service';
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
 import { IndividualService } from '../../../individual/individual.service';
+import { MasterdataService } from '../../../masterdata/masterdata.service';
 
 @Component({
   selector: 'app-observation-list',

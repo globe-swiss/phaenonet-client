@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { formatShortDate } from 'src/app/core/formatDate';
-import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 
+import { formatShortDate } from '../../../core/formatDate';
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
+import { MasterdataService } from '../../../masterdata/masterdata.service';
 
 @Component({
   selector: 'app-observation-item',

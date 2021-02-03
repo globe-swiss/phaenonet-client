@@ -4,11 +4,11 @@ import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { none } from 'fp-ts/lib/Option';
 import { Observable, ReplaySubject } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
-import { AuthService } from 'src/app/auth/auth.service';
-import { PublicUser } from 'src/app/open/public-user';
 
+import { AuthService } from '../../../auth/auth.service';
 import { UserService } from '../../../auth/user.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../../../messaging/alert.service';
+import { PublicUser } from '../../../open/public-user';
 
 @Component({
   selector: 'app-profile-public',

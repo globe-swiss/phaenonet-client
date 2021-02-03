@@ -5,7 +5,6 @@ import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { Observable, ReplaySubject, Subject, combineLatest } from 'rxjs';
 import { first, map, share, startWith, switchMap, tap } from 'rxjs/operators';
 
-import { AuthService } from './../auth/auth.service';
 import { formatShortDate } from '../core/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { formatShortDateTime } from 'src/app/core/formatDate';
 
 import { Activity } from '../../../activity/activity';
+import { formatShortDateTime } from '../../../core/formatDate';
 import { MasterdataService } from '../../../masterdata/masterdata.service';
 
 @Component({

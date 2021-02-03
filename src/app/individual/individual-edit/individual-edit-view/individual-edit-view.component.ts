@@ -5,19 +5,19 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { Description } from 'src/app/masterdata/description';
-import { Distance } from 'src/app/masterdata/distance';
-import { Exposition } from 'src/app/masterdata/exposition';
-import { Forest } from 'src/app/masterdata/forest';
-import { Habitat } from 'src/app/masterdata/habitat';
-import { Irrigation } from 'src/app/masterdata/irrigation';
-import { MasterdataService } from 'src/app/masterdata/masterdata.service';
-import { Shade } from 'src/app/masterdata/shade';
-import { Species } from 'src/app/masterdata/species';
 
-import { IndividualService } from './../../individual.service';
+import { Description } from '../../../masterdata/description';
+import { Distance } from '../../../masterdata/distance';
+import { Exposition } from '../../../masterdata/exposition';
+import { Forest } from '../../../masterdata/forest';
+import { Habitat } from '../../../masterdata/habitat';
+import { Irrigation } from '../../../masterdata/irrigation';
+import { MasterdataService } from '../../../masterdata/masterdata.service';
+import { Shade } from '../../../masterdata/shade';
+import { Species } from '../../../masterdata/species';
 import { Individual } from '../../individual';
-import { GeoposService } from './../individual-edit-header/geopos.service';
+import { IndividualService } from '../../individual.service';
+import { GeoposService } from '../individual-edit-header/geopos.service';
 
 @Component({
   selector: 'app-individual-edit-view',
