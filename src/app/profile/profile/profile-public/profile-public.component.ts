@@ -36,7 +36,7 @@ export class ProfilePublicComponent implements OnInit {
       map(u => u.nickname)
     );
 
-    this.isFollowing$ = this.authService.getUserObservable().pipe(
+    this.isFollowing$ = this.authService.user$.pipe(
       filter(u => u !== null),
       map(u => (u.following_users ? u.following_users.find(id => id === this.userId) !== undefined : false))
     );

@@ -22,7 +22,7 @@ export class AuthService extends BaseService implements OnDestroy {
   browserIdHeaders: HttpHeaders;
 
   private subscriptions = new Subscription();
-  private user$: Observable<User>;
+  public user$: Observable<User>;
   private firebaseUser: firebase.User;
 
   // store the URL so we can redirect after logging in
@@ -209,10 +209,6 @@ export class AuthService extends BaseService implements OnDestroy {
     } else {
       return null;
     }
-  }
-
-  getUserObservable(): Observable<User> {
-    return this.user$;
   }
 
   getUserId(): string {

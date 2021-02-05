@@ -1,11 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { first, map, mergeAll } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { AuthService } from '../../../auth/auth.service';
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
 import { IndividualService } from '../../../individual/individual.service';
-import { MasterdataService } from '../../../masterdata/masterdata.service';
 
 @Component({
   selector: 'app-observation-list',
@@ -21,53 +20,15 @@ export class ObservationListComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private individualService: IndividualService,
-    private masterdataService: MasterdataService,
     private analytics: AngularFireAnalytics
   ) {}
 
   ngOnInit() {
-    // combine the list of individuals with their phenophase
-    this.latestIndividualObservations$ = combineLatest(
-      [this.limitIndividuals$, this.individualService.listByUser(this.userId)],
-      (limit, individuals) =>
-        combineLatest(
-          individuals
-            .sort((l, r) => {
-              const l_hasnt_last_obs = l.last_observation_date ? false : true;
-              const r_hasnt_last_obs = r.last_observation_date ? false : true;
-
-              if (l_hasnt_last_obs && r_hasnt_last_obs) {
-                return 0;
-              }
-              if (l_hasnt_last_obs) {
-                return -1;
-              }
-              if (r_hasnt_last_obs) {
-                return 1;
-              } else {
-                return (r.last_observation_date as any).toMillis() - (l.last_observation_date as any).toMillis();
-              }
-            })
-            .slice(0, limit)
-            .map(individual => {
-              return combineLatest(
-                this.masterdataService.getSpeciesValue(individual.species),
-                this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase),
-                (species, phenophase) => {
-                  return {
-                    individual: individual,
-                    species: species,
-                    lastPhenophase: phenophase,
-                    imgUrl$: this.individualService.getImageUrl(individual, true).pipe(
-                      first(),
-                      map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
-                    )
-                  } as IndividualPhenophase;
-                }
-              );
-            })
-        )
-    ).pipe(mergeAll());
+    this.latestIndividualObservations$ = this.limitIndividuals$.pipe(
+      switchMap(limit =>
+        this.individualService.getIndividualPhenohases(this.individualService.listByUser(this.userId, limit))
+      )
+    );
   }
 
   isOwner(): boolean {

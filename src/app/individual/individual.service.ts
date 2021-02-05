@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { combineLatest, from, Observable } from 'rxjs';
+import { filter, first, map, mergeAll, switchMap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { IdLike } from '../masterdata/masterdata-like';
@@ -10,6 +10,7 @@ import { MasterdataService } from '../masterdata/masterdata.service';
 import { AlertService } from '../messaging/alert.service';
 import { Observation } from '../observation/observation';
 import { Individual } from './individual';
+import { IndividualPhenophase } from './individual-phenophase';
 
 @Injectable()
 export class IndividualService extends BaseResourceService<Individual> {
@@ -65,6 +66,69 @@ export class IndividualService extends BaseResourceService<Individual> {
         ref.where('user', '==', userId).orderBy('modified', 'desc').limit(limit)
       )
       .valueChanges({ idField: 'id' });
+  }
+
+  listByIds(individualIds: string[], year: number, limit: number = 100): Observable<(Individual & IdLike)[]> {
+    return this.afs
+      .collection<Individual>(this.collectionName, ref =>
+        ref.where('individual', 'in', individualIds).where('year', '==', year).limit(limit)
+      )
+      .valueChanges({ idField: 'id' });
+  }
+
+  getFollowedIndividuals(limit$: Observable<number>): Observable<Individual[]> {
+    return combineLatest([this.authService.user$, limit$, this.masterdataService.phenoYear$]).pipe(
+      filter(
+        ([user, limit, year]) =>
+          user.following_individuals !== undefined && user.following_individuals.length !== 0 && year !== undefined
+      ),
+      switchMap(([user, limit, year]) => this.listByIds(user.following_individuals, year, limit))
+    );
+  }
+
+  getIndividualPhenohases(individuals$: Observable<Individual[]>) {
+    // combine the list of individuals with their phenophase
+    return combineLatest([individuals$], (
+      individuals // fixme remove combinelatest
+    ) =>
+      combineLatest(
+        individuals
+          .sort((l, r) => {
+            const l_hasnt_last_obs = l.last_observation_date ? false : true;
+            const r_hasnt_last_obs = r.last_observation_date ? false : true;
+
+            if (l_hasnt_last_obs && r_hasnt_last_obs) {
+              return 0;
+            }
+            if (l_hasnt_last_obs) {
+              return -1;
+            }
+            if (r_hasnt_last_obs) {
+              return 1;
+            } else {
+              return (r.last_observation_date as any).toMillis() - (l.last_observation_date as any).toMillis();
+            }
+          })
+          .slice(0)
+          .map(individual => {
+            return combineLatest(
+              this.masterdataService.getSpeciesValue(individual.species),
+              this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase),
+              (species, phenophase) => {
+                return {
+                  individual: individual,
+                  species: species,
+                  lastPhenophase: phenophase,
+                  imgUrl$: this.getImageUrl(individual, true).pipe(
+                    first(),
+                    map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
+                  )
+                } as IndividualPhenophase;
+              }
+            );
+          })
+      )
+    ).pipe(mergeAll());
   }
 
   getImagePath(individual: Individual, thumbnail = false): string {

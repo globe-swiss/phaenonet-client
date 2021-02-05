@@ -34,7 +34,7 @@ export class ProfileComponent extends BaseDetailComponent<PublicUser> implements
     if (this.detailId == null) {
       return this.getRouteParam('id').pipe(
         catchError(_ => {
-          return this.authService.getUserObservable().pipe(
+          return this.authService.user$.pipe(
             first(),
             map(_ => this.authService.getUserId())
           );

@@ -74,7 +74,7 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
 
     this.isLoggedIn = this.authService.isLoggedIn();
 
-    this.currentUser$ = this.authService.getUserObservable();
+    this.currentUser$ = this.authService.user$;
 
     this.detailSubject$
       .pipe(

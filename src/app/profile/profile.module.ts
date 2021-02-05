@@ -13,6 +13,8 @@ import { ObservationListComponent } from './profile/observation-list/observation
 import { ProfileDetailsComponent } from './profile/profile-details/profile-details.component';
 import { ProfilePublicComponent } from './profile/profile-public/profile-public.component';
 import { ProfileComponent } from './profile/profile.component';
+import { FollowListComponent } from './profile/follow-list/follow-list.component';
+import { FollowUserComponent } from './profile/follow-user/follow-user.component';
 
 @NgModule({
   imports: [SharedModule, ProfileRoutingModule, IndividualModule, ActivityModule],
@@ -26,7 +28,9 @@ import { ProfileComponent } from './profile/profile.component';
     ObservationListComponent,
     ProfileDetailsComponent,
     ProfilePublicComponent,
-    ChangeEmailDialogComponent
+    ChangeEmailDialogComponent,
+    FollowListComponent,
+    FollowUserComponent
   ],
   providers: [],
   exports: [],
