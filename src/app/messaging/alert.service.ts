@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Option, some } from 'fp-ts/lib/Option';
-import { Subject, combineLatest } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 
 export enum Level {
   INFO,

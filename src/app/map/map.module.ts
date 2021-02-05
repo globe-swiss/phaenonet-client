@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
-
 import { IndividualModule } from '../individual/individual.module';
 import { SharedModule } from '../shared/shared.module';
 import { MapOverviewComponent } from './map-overview.component';

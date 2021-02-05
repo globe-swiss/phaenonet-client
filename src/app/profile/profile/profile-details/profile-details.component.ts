@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { none } from 'fp-ts/lib/Option';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import { AuthService } from '../../../auth/auth.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../../../messaging/alert.service';
 import { PublicUser } from '../../../open/public-user';

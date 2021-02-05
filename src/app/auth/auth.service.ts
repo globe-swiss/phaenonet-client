@@ -5,9 +5,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import firebase from 'firebase/app';
 import { none } from 'fp-ts/lib/Option';
-import { Observable, Subscription, from, of } from 'rxjs';
-import { map, mergeAll, switchAll, switchMap, take, tap } from 'rxjs/operators';
-
+import { from, Observable, of, Subscription } from 'rxjs';
+import { map, switchAll, switchMap, take, tap } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { LoginResult } from './login-result';

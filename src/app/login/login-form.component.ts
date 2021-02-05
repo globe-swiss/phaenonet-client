@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
 import { AlertService } from '../messaging/alert.service';

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { filter, map, mergeAll } from 'rxjs/operators';
-
 import { MasterdataService } from '../../../masterdata/masterdata.service';
 import { Individual } from '../../individual';
 import { IndividualService } from '../../individual.service';

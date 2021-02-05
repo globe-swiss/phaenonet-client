@@ -2,9 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { Observable, ReplaySubject, Subject, combineLatest } from 'rxjs';
+import { combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
 import { first, map, share, startWith, switchMap, tap } from 'rxjs/operators';
-
 import { formatShortDate } from '../core/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';

@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
-
-import { AlertMessage, Level } from './alert.service';
+import { AlertMessage } from './alert.service';
 
 @Component({
   templateUrl: 'alert.component.html',

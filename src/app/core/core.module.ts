@@ -1,7 +1,5 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { TranslateModule } from '@ngx-translate/core';
-
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthModule } from '../auth/auth.module';
 import { AuthService } from '../auth/auth.service';
 import { AlertComponent } from '../messaging/alert.component';

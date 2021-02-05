@@ -4,7 +4,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
 import { LanguageService } from '../core/language.service';

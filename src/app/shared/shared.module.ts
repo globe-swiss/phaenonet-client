@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-
 import { DisableNotAuthorizedDirective } from '../auth/disable-not-authorized.directive';
 import { DisableNotOwnerDirective } from '../auth/disable-not-owner.directive';
 import { RemoveNotAuthorizedDirective } from '../auth/remove-not-authorized.directive';

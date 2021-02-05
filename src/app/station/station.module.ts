@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { ActivityModule } from '../activity/activity.module';
 import { IndividualModule } from '../individual/individual.module';
 import { SharedModule } from '../shared/shared.module';

@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { equalValidation } from '../../shared/validation';
 import { ChangeEmailData } from './change-email-data';
 

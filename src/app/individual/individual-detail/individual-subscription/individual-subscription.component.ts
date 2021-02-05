@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable, ReplaySubject, combineLatest } from 'rxjs';
+import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-
 import { AuthService } from '../../../auth/auth.service';
 import { UserService } from '../../../auth/user.service';
 import { AlertService } from '../../../messaging/alert.service';

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { BaseDetailComponent } from '../../core/base-detail.component';
 import { NavService } from '../../core/nav/nav.service';
 import { Individual } from '../individual';

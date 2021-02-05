@@ -1,5 +1,4 @@
 import { Option } from 'fp-ts/lib/Option';
-
 import { Phenophase } from '../masterdata/phaenophase';
 import { Observation } from '../observation/observation';
 

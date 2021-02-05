@@ -2,9 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Observable, ReplaySubject, combineLatest } from 'rxjs';
+import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { filter, first, map, mergeAll, shareReplay } from 'rxjs/operators';
-
 import { formatShortDate } from '../../core/formatDate';
 import { Description } from '../../masterdata/description';
 import { Distance } from '../../masterdata/distance';

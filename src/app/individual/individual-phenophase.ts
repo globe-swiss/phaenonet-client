@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-
 import { IdLike } from '../masterdata/masterdata-like';
 import { Phenophase } from '../masterdata/phaenophase';
 import { Species } from '../masterdata/species';

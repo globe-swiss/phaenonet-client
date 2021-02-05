@@ -3,7 +3,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { debounceTime, first, map, switchMap, take } from 'rxjs/operators';
-
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';

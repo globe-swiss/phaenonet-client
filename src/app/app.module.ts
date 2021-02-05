@@ -5,12 +5,7 @@ import localeFr from '@angular/common/locales/fr';
 import localeIt from '@angular/common/locales/it';
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
-import {
-  AngularFireAnalyticsModule,
-  DEBUG_MODE,
-  ScreenTrackingService,
-  UserTrackingService
-} from '@angular/fire/analytics';
+import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule, SETTINGS } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
@@ -20,8 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import * as Sentry from '@sentry/angular';
-import { Observable, from } from 'rxjs';
-
+import { from, Observable } from 'rxjs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';

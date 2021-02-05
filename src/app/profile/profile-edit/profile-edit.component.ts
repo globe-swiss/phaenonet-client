@@ -5,7 +5,6 @@ import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../../auth/user';
 import { UserService } from '../../auth/user.service';

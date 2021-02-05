@@ -1,5 +1,4 @@
 import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
-
 import { AuthService } from './auth.service';
 
 @Directive({

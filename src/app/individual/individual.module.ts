@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { ActivityModule } from '../activity/activity.module';
 import { StorageModule } from '../core/storage/storage.module';
 import { MasterdataModule } from '../masterdata/masterdata.module';

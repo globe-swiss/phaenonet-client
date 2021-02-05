@@ -1,5 +1,3 @@
-import { AltitudeLimits } from './altitude-limits';
-
 export class Phenophase {
   id: string;
   description_de: string;

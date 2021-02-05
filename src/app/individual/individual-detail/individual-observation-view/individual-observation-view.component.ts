@@ -4,9 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import firebase from 'firebase/app';
 import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
-import { Observable, combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { filter, first, map, mergeAll } from 'rxjs/operators';
-
 import { altitudeLimits } from '../../../masterdata/altitude-limits';
 import { IdLike } from '../../../masterdata/masterdata-like';
 import { MasterdataService } from '../../../masterdata/masterdata.service';

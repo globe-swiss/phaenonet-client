@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import firebase from 'firebase/app';
-import { Observable, from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';

@@ -1,6 +1,5 @@
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-
 import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
 

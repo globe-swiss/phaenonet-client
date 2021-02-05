@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
 

@@ -4,9 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import * as _ from 'lodash';
-import { Observable, ReplaySubject, combineLatest } from 'rxjs';
+import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { filter, first, map, mergeAll } from 'rxjs/operators';
-
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user';
 import { BaseDetailComponent } from '../core/base-detail.component';

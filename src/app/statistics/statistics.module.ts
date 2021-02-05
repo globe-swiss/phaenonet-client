@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { MasterdataModule } from '../masterdata/masterdata.module';
 import { ObservationModule } from '../observation/observation.module';
 import { SharedModule } from '../shared/shared.module';

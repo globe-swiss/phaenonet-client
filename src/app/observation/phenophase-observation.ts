@@ -1,5 +1,4 @@
 import { Option } from 'fp-ts/lib/Option';
-
 import { AltitudeLimit } from '../masterdata/altitude-limits';
 import { Comment } from '../masterdata/comment';
 import { Phenophase } from '../masterdata/phaenophase';

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { LoggedOutComponent } from './logged-out.component';
 import { LoginSiteComponent } from './login-site.component';
 import { LoginComponent } from './login.component';

@@ -1,8 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { first, map, mergeAll } from 'rxjs/operators';
-
 import { AuthService } from '../../../auth/auth.service';
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
 import { IndividualService } from '../../../individual/individual.service';

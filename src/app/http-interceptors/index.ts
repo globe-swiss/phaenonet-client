@@ -1,6 +1,5 @@
 /* "Barrel" of Http Interceptors */
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-
 import { AuthInterceptor } from './auth-interceptor';
 import { HeaderInterceptor } from './header-interceptor';
 import { LocaleInterceptor } from './locale-interceptor';
