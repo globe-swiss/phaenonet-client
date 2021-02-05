@@ -1,12 +1,15 @@
-import { MasterdataService } from '../../../masterdata/masterdata.service';
-import { Observation } from '../../../observation/observation';
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { MatDialog } from '@angular/material/dialog';
+import firebase from 'firebase/app';
+import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
-import { Observable, combineLatest } from 'rxjs';
-import { first, map, mergeAll, filter } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, first, map, mergeAll } from 'rxjs/operators';
+import { altitudeLimits } from '../../../masterdata/altitude-limits';
 import { IdLike } from '../../../masterdata/masterdata-like';
+import { MasterdataService } from '../../../masterdata/masterdata.service';
+import { Observation } from '../../../observation/observation';
 import { ObservationService } from '../../../observation/observation.service';
 import { PhenophaseObservation } from '../../../observation/phenophase-observation';
 import { PhenophaseObservationsGroup } from '../../../observation/phenophase-observations-group';
@@ -16,9 +19,6 @@ import {
 } from '../../../shared/confirmation-dialog/confirmation-dialog.component';
 import { Individual } from '../../individual';
 import { PhenophaseDialogComponent } from '../../phenophase-dialog.component';
-import { findFirst } from 'fp-ts/lib/Array';
-import { altitudeLimits } from 'src/app/masterdata/altitude-limits';
-import firebase from 'firebase/app';
 
 @Component({
   selector: 'app-individual-observation-view',

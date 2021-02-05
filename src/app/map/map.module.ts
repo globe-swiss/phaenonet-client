@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
-
-import { SharedModule } from '../shared/shared.module';
-import { MapRoutingModule } from './map-routing.module';
-import { MapComponent } from './map.component';
-import { MapOverviewComponent } from './map-overview.component';
-
 import { GoogleMapsModule } from '@angular/google-maps';
 import { IndividualModule } from '../individual/individual.module';
+import { SharedModule } from '../shared/shared.module';
+import { MapOverviewComponent } from './map-overview.component';
+import { MapRoutingModule } from './map-routing.module';
+import { MapComponent } from './map.component';
 
 @NgModule({
   imports: [SharedModule, MapRoutingModule, GoogleMapsModule, IndividualModule],

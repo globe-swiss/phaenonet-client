@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MatDateFormats, MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,13 +24,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatMomentDateModule, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
-import { MatDatetimepickerModule, DatetimeAdapter } from '@mat-datetimepicker/core';
+import { DatetimeAdapter, MatDatetimepickerModule } from '@mat-datetimepicker/core';
 import { MatMomentDatetimeModule } from '@mat-datetimepicker/moment';
-import { AppMomentDatetimeAdapter } from './app-moment-date-adapter';
-import { AppMomentDateAdapter } from './app-moment-date-adapter';
+import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './app-moment-date-adapter';
 
 @NgModule({
   imports: [

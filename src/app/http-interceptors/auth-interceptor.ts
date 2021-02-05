@@ -1,9 +1,9 @@
+import { HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpInterceptor } from '@angular/common/http';
-import { AuthService, LOGIN_URL } from '../auth/auth.service';
-import { catchError, switchMap, map } from 'rxjs/operators';
-import { throwError, Observable, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { Observable, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 import { LoginDialogComponent } from '../login/login-dialog.component';
 
 @Injectable()

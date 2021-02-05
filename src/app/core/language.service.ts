@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-
 import { AuthService } from '../auth/auth.service';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
+import { SharedModule } from '../../shared/shared.module';
 import { StorageService } from './storage.service';
-import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [SharedModule],

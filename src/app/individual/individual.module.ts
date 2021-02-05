@@ -9,13 +9,13 @@ import { SharedModule } from '../shared/shared.module';
 import { IndividualDescriptionComponent } from './individual-description/individual-description.component';
 import { DetailHeaderComponent } from './individual-detail/individual-detail-header/individual-detail-header.component';
 import { IndividualDetailComponent } from './individual-detail/individual-detail.component';
+import { ObservationViewComponent } from './individual-detail/individual-observation-view/individual-observation-view.component';
+import { SubscriptionBarComponent } from './individual-detail/individual-subscription/individual-subscription.component';
 import { GeoposService } from './individual-edit/individual-edit-header/geopos.service';
 import { EditHeaderComponent } from './individual-edit/individual-edit-header/individual-edit-header.component';
 import { IndividualEditViewComponent } from './individual-edit/individual-edit-view/individual-edit-view.component';
 import { IndividualEditComponent } from './individual-edit/individual-edit.component';
-import { ObservationViewComponent } from './individual-detail/individual-observation-view/individual-observation-view.component';
 import { IndividualRoutingModule } from './individual-routing.module';
-import { SubscriptionBarComponent } from './individual-detail/individual-subscription/individual-subscription.component';
 import { IndividualService } from './individual.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
 

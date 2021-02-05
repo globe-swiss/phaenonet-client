@@ -23,7 +23,7 @@ module.exports = function () {
     },
     enterLoginCredentials() {
       const { loginPage, e2eTestUser } = inject();
-      this.waitUrlEquals(loginPage.url)
+      this.waitUrlEquals(loginPage.url);
       this.fillField(loginPage.fields.email, e2eTestUser.email);
       this.fillField(loginPage.fields.password, e2eTestUser.password);
     },

@@ -1,6 +1,6 @@
-import { CanActivate } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, of, interval } from 'rxjs';
+import { CanActivate } from '@angular/router';
+import { interval, Observable, of, Subject } from 'rxjs';
 
 /**
  * Delay rendering of router-outlet until the google maps api is loaded.

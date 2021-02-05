@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { Observable, ReplaySubject } from 'rxjs';
-import { filter, first, map, mergeAll, tap } from 'rxjs/operators';
+import { filter, first, map, mergeAll } from 'rxjs/operators';
 import { Individual } from '../../individual';
 import { IndividualService } from '../../individual.service';
 import { GeoposService } from './geopos.service';

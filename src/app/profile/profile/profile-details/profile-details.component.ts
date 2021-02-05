@@ -1,12 +1,11 @@
+import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { Component, OnInit } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
-import { map } from 'rxjs/operators';
-import { AlertService, Level, UntranslatedAlertMessage } from 'src/app/messaging/alert.service';
-import { Input } from '@angular/core';
 import { none } from 'fp-ts/lib/Option';
-import { PublicUser } from 'src/app/open/public-user';
+import { Observable, ReplaySubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AuthService } from '../../../auth/auth.service';
+import { AlertService, Level, UntranslatedAlertMessage } from '../../../messaging/alert.service';
+import { PublicUser } from '../../../open/public-user';
 
 @Component({
   selector: 'app-profile-details',

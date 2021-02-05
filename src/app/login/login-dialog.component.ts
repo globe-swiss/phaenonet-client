@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { LanguageService } from '../core/language.service';
 
 @Component({
   selector: 'app-login-dialog',

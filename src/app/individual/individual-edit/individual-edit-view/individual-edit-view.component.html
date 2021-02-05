@@ -44,13 +44,7 @@
   </mat-form-field>
   <mat-form-field class="full-width">
     <mat-label>{{ 'Foto' | translate }} </mat-label>
-    <input
-      matInput
-      id="fotos"
-      type="text"
-      value="{{ fileToUpload?.name }}"
-      readonly="true"
-    />
+    <input matInput id="fotos" type="text" value="{{ fileToUpload?.name }}" readonly="true" />
     <mat-icon class="add-image" matSuffix color="primary" (click)="fileInput.click()">add_circle</mat-icon>
     <mat-icon *ngIf="fileToUpload" class="add-image" matSuffix color="warn" (click)="removeUploadedFile()"
       >delete</mat-icon

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import browserUpdate from 'browser-update';
-import { LanguageService } from './core/language.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import browserUpdate from 'browser-update';
+import { LanguageService } from './core/language.service';
 
 @Component({
   selector: 'app-root',

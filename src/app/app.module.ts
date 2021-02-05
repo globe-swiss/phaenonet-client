@@ -5,30 +5,25 @@ import localeFr from '@angular/common/locales/fr';
 import localeIt from '@angular/common/locales/it';
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
+import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule, SETTINGS } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
-import {
-  AngularFireAnalyticsModule,
-  ScreenTrackingService,
-  UserTrackingService,
-  DEBUG_MODE
-} from '@angular/fire/analytics';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import * as Sentry from '@sentry/angular';
 import { from, Observable } from 'rxjs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { httpInterceptorProviders } from './http-interceptors';
 import { LoginModule } from './login/login.module';
-import { SharedModule } from './shared/shared.module';
 import { MasterdataService } from './masterdata/masterdata.service';
-import { Router } from '@angular/router';
-import * as Sentry from '@sentry/angular';
 import { SentryMissingTranslationHandler } from './shared/SentryMissingTranslationHandler';
+import { SharedModule } from './shared/shared.module';
 
 export class CustomTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<any> {

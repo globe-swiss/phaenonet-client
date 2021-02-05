@@ -1,9 +1,9 @@
-import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 @Component({
   templateUrl: './reset-password.component.html'

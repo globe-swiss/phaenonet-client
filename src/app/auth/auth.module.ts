@@ -1,8 +1,7 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-
-import { AuthService } from './auth.service';
-import { AuthGuard } from './auth-guard.service';
 import { throwIfAlreadyLoaded } from '../core/module-import-guard';
+import { AuthGuard } from './auth-guard.service';
+import { AuthService } from './auth.service';
 import { UserService } from './user.service';
 
 /**

@@ -13,7 +13,6 @@ import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
 import { SourceType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
-import { AuthService } from './../auth/auth.service';
 
 class GlobeInfoWindowData {
   individual: Individual;

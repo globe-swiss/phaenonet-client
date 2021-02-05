@@ -1,8 +1,8 @@
-import { Phenophase } from '../masterdata/phaenophase';
 import { Option } from 'fp-ts/lib/Option';
-import { Observation } from './observation';
-import { Comment } from '../masterdata/comment';
 import { AltitudeLimit } from '../masterdata/altitude-limits';
+import { Comment } from '../masterdata/comment';
+import { Phenophase } from '../masterdata/phaenophase';
+import { Observation } from './observation';
 
 export class PhenophaseObservation {
   phenophase: Phenophase;
