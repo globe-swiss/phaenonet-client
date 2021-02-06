@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { combineLatest, from, Observable } from 'rxjs';
-import { filter, first, map, mergeAll, switchMap } from 'rxjs/operators';
+import { first, map, mergeAll } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { IdLike } from '../masterdata/masterdata-like';
@@ -76,16 +76,7 @@ export class IndividualService extends BaseResourceService<Individual> {
       .valueChanges({ idField: 'id' });
   }
 
-  getFollowedIndividuals(limit$: Observable<number>): Observable<Individual[]> {
-    return combineLatest([this.authService.user$, limit$, this.masterdataService.phenoYear$]).pipe(
-      filter(
-        ([user, limit, year]) =>
-          user.following_individuals !== undefined && user.following_individuals.length !== 0 && year !== undefined
-      ),
-      switchMap(([user, limit, year]) => this.listByIds(user.following_individuals, year, limit))
-    );
-  }
-
+  // fixme move near component
   getIndividualPhenohases(individuals$: Observable<Individual[]>) {
     // combine the list of individuals with their phenophase
     return combineLatest([individuals$], (

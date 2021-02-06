@@ -7,7 +7,6 @@ import * as _ from 'lodash';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { filter, first, map, mergeAll } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
-import { User } from '../auth/user';
 import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
@@ -18,6 +17,7 @@ import { Phenophase } from '../masterdata/phaenophase';
 import { PhenophaseGroup } from '../masterdata/phaenophase-group';
 import { Observation } from '../observation/observation';
 import { ObservationService } from '../observation/observation.service';
+import { User } from '../profile/user';
 import { PhenophaseObservation } from './phenophase-observation';
 import { SpeciesPhenophaseObservations } from './species-phenophase-observations';
 

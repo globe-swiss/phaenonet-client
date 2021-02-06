@@ -4,9 +4,9 @@ import { none } from 'fp-ts/lib/Option';
 import { Observable, ReplaySubject } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
 import { AuthService } from '../../../auth/auth.service';
-import { UserService } from '../../../auth/user.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../../../messaging/alert.service';
 import { PublicUser } from '../../../open/public-user';
+import { UserService } from '../../../profile/user.service';
 
 @Component({
   selector: 'app-profile-public',

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IndividualPhenophase } from 'src/app/individual/individual-phenophase';
 import { IndividualService } from 'src/app/individual/individual.service';
+import { UserService } from '../../user.service';
 
 @Component({
   selector: 'app-follow-list',
@@ -12,11 +13,11 @@ export class FollowListComponent implements OnInit {
   followedIndividuals$: Observable<IndividualPhenophase[]>;
   limit$ = new BehaviorSubject<number>(4);
 
-  constructor(private individualService: IndividualService) {}
+  constructor(private individualService: IndividualService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.followedIndividuals$ = this.individualService.getIndividualPhenohases(
-      this.individualService.getFollowedIndividuals(this.limit$)
+      this.userService.getFollowedIndividuals(this.limit$)
     );
   }
 

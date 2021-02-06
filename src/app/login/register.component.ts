@@ -5,7 +5,6 @@ import { MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
-import { User } from '../auth/user';
 import { LanguageService } from '../core/language.service';
 import { NavService } from '../core/nav/nav.service';
 import { AlertService } from '../messaging/alert.service';
@@ -29,8 +28,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   registerFailed = false;
 
-  user: User;
-
   private subscription: Subscription;
 
   constructor(
@@ -50,7 +47,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.registerForm.updateValueAndValidity();
     this.subscription = this.authService.user$.subscribe(user => {
       if (user) {
-        this.user = user;
         this.alertService.infoMessage(
           'Registration erfolgreich',
           'Sie haben sich erfolgreich bei PhaenoNet registriert.'
@@ -80,8 +76,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     );
   }
 
+  // fixme: this probably should redirect to profile when logged in #125
   showRegisterForm(): boolean {
-    return !this.isLoggedIn() && !this.user;
+    return !this.isLoggedIn(); // && !this.user; fixme: check why both were checked?
   }
 
   isRegisterFailed(): boolean {
@@ -92,6 +89,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     return this.authService.isLoggedIn();
   }
 
+  // fixme: this still needed? #125
   title(): string {
     if (this.isLoggedIn()) {
       return 'Willkommen';

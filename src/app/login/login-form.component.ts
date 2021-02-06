@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
-import { User } from '../auth/user';
 import { AlertService } from '../messaging/alert.service';
 
 @Component({
@@ -17,8 +16,6 @@ export class LoginFormComponent {
 
   loginFailed = false;
 
-  user: User;
-
   @Output()
   onLoginSuccess: EventEmitter<void> = new EventEmitter();
 
@@ -30,14 +27,14 @@ export class LoginFormComponent {
       .login(this.loginForm.controls.email.value.trim(), this.loginForm.controls.password.value)
       .subscribe(user => {
         if (user) {
-          this.user = user;
           this.onLoginSuccess.emit();
         }
       });
   }
 
+  // fixme: this probably should redirect when logged in #125
   showLoginForm(): boolean {
-    return !this.isLoggedIn() && !this.user;
+    return !this.isLoggedIn(); // && !this.user;
   }
 
   isLoginFailed(): boolean {
@@ -48,6 +45,7 @@ export class LoginFormComponent {
     return this.authService.isLoggedIn();
   }
 
+  // fixme: set title static in page #125
   title(): string {
     if (this.isLoggedIn()) {
       return 'Willkommen';
