@@ -70,10 +70,10 @@ export class IndividualService extends BaseResourceService<Individual> {
       .valueChanges({ idField: 'id' });
   }
 
-  listByIds(individualIds: string[], year: number, limit: number = 100): Observable<(Individual & IdLike)[]> {
+  listByIds(individuals: string[], year: number, limit: number = 100): Observable<(Individual & IdLike)[]> {
     return this.afs
       .collection<Individual>(this.collectionName, ref =>
-        ref.where('individual', 'in', individualIds).where('year', '==', year).limit(limit)
+        ref.where('individual', 'in', individuals).where('year', '==', year).limit(limit)
       )
       .valueChanges({ idField: 'id' });
   }
@@ -121,11 +121,12 @@ export class IndividualService extends BaseResourceService<Individual> {
     }
   }
 
-  getIndividualPhenophase(individual: Individual, species: Species, phenophase: Phenophase) {
+  getIndividualPhenophase(individual: Individual, species: Species, phenophase: Phenophase): IndividualPhenophase {
     return {
       individual: individual,
       species: species,
       lastPhenophase: phenophase,
+      type: individual.type,
       imgUrl$: this.getImageUrl(individual, true).pipe(
         first(),
         map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))

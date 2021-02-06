@@ -9,4 +9,5 @@ export class IndividualPhenophase {
   species: Species;
   lastPhenophase: Phenophase;
   imgUrl$: Observable<string>;
+  type: 'station' | 'individual';
 }
