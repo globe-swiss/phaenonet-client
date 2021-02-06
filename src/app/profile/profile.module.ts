@@ -15,7 +15,6 @@ import { ObservationListComponent } from './profile/observation-list/observation
 import { ProfileDetailsComponent } from './profile/profile-details/profile-details.component';
 import { ProfilePublicComponent } from './profile/profile-public/profile-public.component';
 import { ProfileComponent } from './profile/profile.component';
-import { UserService } from './user.service';
 
 @NgModule({
   imports: [SharedModule, ProfileRoutingModule, IndividualModule, ActivityModule],
@@ -33,7 +32,7 @@ import { UserService } from './user.service';
     FollowListComponent,
     FollowUserComponent
   ],
-  providers: [UserService],
+  providers: [],
   exports: [],
   entryComponents: [ChangePasswordDialogComponent]
 })

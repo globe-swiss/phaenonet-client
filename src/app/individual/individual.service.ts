@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { combineLatest, from, Observable } from 'rxjs';
+import { combineLatest, from, Observable, of } from 'rxjs';
 import { first, map, mergeAll } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { IdLike } from '../masterdata/masterdata-like';
 import { MasterdataService } from '../masterdata/masterdata.service';
+import { Phenophase } from '../masterdata/phaenophase';
+import { Species } from '../masterdata/species';
 import { AlertService } from '../messaging/alert.service';
 import { Observation } from '../observation/observation';
 import { Individual } from './individual';
@@ -79,47 +81,56 @@ export class IndividualService extends BaseResourceService<Individual> {
   // fixme move near component
   getIndividualPhenohases(individuals$: Observable<Individual[]>) {
     // combine the list of individuals with their phenophase
-    return combineLatest([individuals$], (
-      individuals // fixme remove combinelatest
-    ) =>
-      combineLatest(
-        individuals
-          .sort((l, r) => {
-            const l_hasnt_last_obs = l.last_observation_date ? false : true;
-            const r_hasnt_last_obs = r.last_observation_date ? false : true;
-
-            if (l_hasnt_last_obs && r_hasnt_last_obs) {
-              return 0;
-            }
-            if (l_hasnt_last_obs) {
-              return -1;
-            }
-            if (r_hasnt_last_obs) {
-              return 1;
-            } else {
-              return (r.last_observation_date as any).toMillis() - (l.last_observation_date as any).toMillis();
-            }
-          })
-          .slice(0)
-          .map(individual => {
-            return combineLatest(
-              this.masterdataService.getSpeciesValue(individual.species),
-              this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase),
-              (species, phenophase) => {
-                return {
-                  individual: individual,
-                  species: species,
-                  lastPhenophase: phenophase,
-                  imgUrl$: this.getImageUrl(individual, true).pipe(
-                    first(),
-                    map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
-                  )
-                } as IndividualPhenophase;
+    return individuals$.pipe(
+      map(individuals =>
+        combineLatest(
+          individuals
+            .sort((l, r) => {
+              const l_hasnt_last_obs = l.last_observation_date ? false : true;
+              const r_hasnt_last_obs = r.last_observation_date ? false : true;
+              if (l_hasnt_last_obs && r_hasnt_last_obs) {
+                return 0;
               }
-            );
-          })
+              if (l_hasnt_last_obs) {
+                return -1;
+              }
+              if (r_hasnt_last_obs) {
+                return 1;
+              } else {
+                return (r.last_observation_date as any).toMillis() - (l.last_observation_date as any).toMillis();
+              }
+            })
+            .map(individual =>
+              combineLatest([
+                this.masterdataService.getSpeciesValue(individual.species),
+                this.getPhenophaseNameIfDefined(individual)
+              ]).pipe(map(([species, phenophase]) => this.getIndividualPhenophase(individual, species, phenophase)))
+            )
+        )
+      ),
+      mergeAll()
+    );
+  }
+
+  getPhenophaseNameIfDefined(individual: Individual) {
+    // fixme: probably switch on individual.type
+    try {
+      return this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase);
+    } catch (error) {
+      return of(null);
+    }
+  }
+
+  getIndividualPhenophase(individual: Individual, species: Species, phenophase: Phenophase) {
+    return {
+      individual: individual,
+      species: species,
+      lastPhenophase: phenophase,
+      imgUrl$: this.getImageUrl(individual, true).pipe(
+        first(),
+        map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
       )
-    ).pipe(mergeAll());
+    } as IndividualPhenophase;
   }
 
   getImagePath(individual: Individual, thumbnail = false): string {

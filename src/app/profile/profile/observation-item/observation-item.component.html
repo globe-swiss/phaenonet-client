@@ -2,7 +2,7 @@
   <img class="individual-image" *ngIf="item.imgUrl$ | async" [src]="item.imgUrl$ | async" />
   <div fxLayout="column" style="margin-left: 25px; margin-right: 25px; margin-top: 15px">
     <div class="detail-label">
-      {{ item.species.de | translate }}
+      {{ item.species?.de | translate }}
     </div>
     <h3>{{ item.individual.name }}</h3>
     <div class="detail-label" *ngIf="item.individual.last_observation_date">
