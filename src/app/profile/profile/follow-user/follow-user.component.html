@@ -1,1 +1,9 @@
-<p>follow-user works!</p>
+<div fxLayout="row" [routerLink]="['/profile', item.id]" class="latest-individual-observation">
+  <img class="individual-image" src="assets/img/user_placeholder.png" />
+  <div fxLayout="column" style="margin-left: 25px; margin-right: 25px; margin-top: 15px">
+    <div class="detail-label">
+      {{ 'Person' | translate }}
+    </div>
+    <h3>{{ item.nickname }}</h3>
+  </div>
+</div>

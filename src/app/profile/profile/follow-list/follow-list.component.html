@@ -6,6 +6,7 @@
 <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
   <!-- <ng-container *ngComponentOutlet="component" *ngFor="let item of followedComponents$ | async"></ng-container> -->
   <!-- <app-follow-user *ngFor="let item of usersFollowed$ | async" [item]="item"></app-follow-user> -->
+  <app-follow-user *ngFor="let item of followedUsers$ | async" [item]="item"></app-follow-user>
   <app-observation-item *ngFor="let item of followedIndividuals$ | async" [item]="item"></app-observation-item>
   <button mat-flat-button color="primary">
     <span>{{ 'Einladungen' | translate }}</span>

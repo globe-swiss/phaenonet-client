@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { PublicUser } from '../../../open/public-user';
 
 @Component({
   selector: 'app-follow-user',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FollowUserComponent implements OnInit {
   constructor() {}
+  @Input() item: PublicUser;
 
   ngOnInit(): void {}
 }

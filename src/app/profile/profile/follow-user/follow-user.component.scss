@@ -1,0 +1,33 @@
+.latest-individual-observation {
+  margin-bottom: 1.875rem;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 1rem;
+
+  img {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+  }
+}
+
+.phenophase-title {
+  font-size: 1.375rem;
+  padding-top: 0.125rem;
+  padding-bottom: 1.25rem;
+}
+
+.individual-image {
+  max-width: 180px;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 959px) {
+  .individual-image {
+    max-width: 120px;
+    object-fit: cover;
+  }
+
+  .activity {
+    margin-bottom: 1rem;
+  }
+}

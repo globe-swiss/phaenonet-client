@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IndividualPhenophase } from 'src/app/individual/individual-phenophase';
 import { IndividualService } from 'src/app/individual/individual.service';
+import { PublicUser } from 'src/app/open/public-user';
 import { UserService } from '../../user.service';
 
 @Component({
@@ -11,7 +12,8 @@ import { UserService } from '../../user.service';
 })
 export class FollowListComponent implements OnInit {
   followedIndividuals$: Observable<IndividualPhenophase[]>;
-  limit$ = new BehaviorSubject<number>(4);
+  followedUsers$: Observable<PublicUser[]>;
+  limit$ = new BehaviorSubject<number>(1);
 
   constructor(private individualService: IndividualService, private userService: UserService) {}
 
@@ -19,9 +21,10 @@ export class FollowListComponent implements OnInit {
     this.followedIndividuals$ = this.individualService.getIndividualPhenohases(
       this.userService.getFollowedIndividuals(this.limit$)
     );
+    this.followedUsers$ = this.userService.getFollowedUsers(this.limit$);
   }
 
   showMore() {
-    this.limit$.next(this.limit$.value + 10);
+    this.limit$.next(this.limit$.value + 5);
   }
 }
