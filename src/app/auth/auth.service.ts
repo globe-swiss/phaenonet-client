@@ -9,8 +9,8 @@ import { from, Observable, of, Subscription } from 'rxjs';
 import { map, switchAll, switchMap, take, tap } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
+import { User } from '../profile/user';
 import { LoginResult } from './login-result';
-import { User } from './user';
 
 export const LOGIN_URL = '/auth/login';
 export const LOGGED_OUT_URL = '/auth/logged-out';
@@ -22,7 +22,7 @@ export class AuthService extends BaseService implements OnDestroy {
   browserIdHeaders: HttpHeaders;
 
   private subscriptions = new Subscription();
-  private user$: Observable<User>;
+  public user$: Observable<User>;
   private firebaseUser: firebase.User;
 
   // store the URL so we can redirect after logging in
@@ -209,10 +209,6 @@ export class AuthService extends BaseService implements OnDestroy {
     } else {
       return null;
     }
-  }
-
-  getUserObservable(): Observable<User> {
-    return this.user$;
   }
 
   getUserId(): string {

@@ -1,0 +1,15 @@
+<div gdColumn="1 / span 2" class="detail-left">
+  <h3>
+    <span>{{ 'ABONNEMENTE' | translate }}</span>
+  </h3>
+</div>
+<div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
+  <app-user-item *ngFor="let item of followedUsers$ | async" [item]="item"></app-user-item>
+  <app-observation-item *ngFor="let item of followedIndividuals$ | async" [item]="item"></app-observation-item>
+  <!-- <button mat-flat-button color="primary">
+    <span>{{ 'Einladungen' | translate }}</span>
+  </button> -->
+  <button mat-flat-button color="accent" (click)="showMore()">
+    <span>{{ 'Mehr anzeigen' | translate }}</span>
+  </button>
+</div>

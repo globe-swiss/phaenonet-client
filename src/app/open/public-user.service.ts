@@ -14,6 +14,10 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
     super(alertService, afs, 'public_users');
   }
 
+  get(id: string): Observable<PublicUser> {
+    return this.afs.collection<PublicUser>(this.collectionName).doc<PublicUser>(id).valueChanges({ idField: 'id' });
+  }
+
   existingNickname(nickname: string): Observable<boolean> {
     if (nickname && nickname.length > 0) {
       if (nickname === this.authService.getUserNickname()) {

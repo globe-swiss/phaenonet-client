@@ -16,7 +16,6 @@ import { EditHeaderComponent } from './individual-edit/individual-edit-header/in
 import { IndividualEditViewComponent } from './individual-edit/individual-edit-view/individual-edit-view.component';
 import { IndividualEditComponent } from './individual-edit/individual-edit.component';
 import { IndividualRoutingModule } from './individual-routing.module';
-import { IndividualService } from './individual.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
 
 @NgModule({
@@ -40,7 +39,7 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
     EditHeaderComponent,
     IndividualEditViewComponent
   ],
-  providers: [IndividualService, GeoposService],
+  providers: [GeoposService],
   exports: [DetailHeaderComponent, SubscriptionBarComponent],
   entryComponents: [PhenophaseDialogComponent, ConfirmationDialogComponent]
 })

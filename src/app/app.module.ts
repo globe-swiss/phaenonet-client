@@ -20,8 +20,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { httpInterceptorProviders } from './http-interceptors';
+import { IndividualService } from './individual/individual.service';
 import { LoginModule } from './login/login.module';
 import { MasterdataService } from './masterdata/masterdata.service';
+import { UserService } from './profile/user.service';
 import { SentryMissingTranslationHandler } from './shared/SentryMissingTranslationHandler';
 import { SharedModule } from './shared/shared.module';
 
@@ -80,6 +82,8 @@ registerLocaleData(localeIt, 'it');
     ScreenTrackingService,
     UserTrackingService,
     MasterdataService,
+    UserService,
+    IndividualService,
     // workaround for https://github.com/firebase/firebase-js-sdk/issues/1674 remove when fixed in the SDK
     { provide: SETTINGS, useValue: { experimentalForceLongPolling: true } }
     // { provide: DEBUG_MODE, useValue: true }

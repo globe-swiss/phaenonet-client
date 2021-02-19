@@ -17,10 +17,7 @@ export class LanguageService implements OnDestroy {
     private authService: AuthService
   ) {
     this.subscriptions.add(
-      this.authService
-        .getUserObservable()
-        .pipe(filter(user => !!user))
-        .subscribe(user => this.changeLocale(user.locale))
+      this.authService.user$.pipe(filter(user => !!user)).subscribe(user => this.changeLocale(user.locale))
     );
   }
 

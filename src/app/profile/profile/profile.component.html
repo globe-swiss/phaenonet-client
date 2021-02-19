@@ -27,6 +27,13 @@
         class="detail-content"
         [userId]="detailId"
       ></app-observation-list>
+      <app-follow-list
+        gdColumn="1 / span 6"
+        gdColumn.lt-md="1 / span 6"
+        gdColumns="repeat(6, 1fr)"
+        class="detail-content"
+        *ngIf="isOwner()"
+      ></app-follow-list>
       <app-activity-list
         gdColumn="1 / span 6"
         gdColumns="repeat(6, 1fr)"
