@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { AlertService } from 'src/app/messaging/alert.service';
 import { Description } from '../../../masterdata/description';
 import { Distance } from '../../../masterdata/distance';
 import { Exposition } from '../../../masterdata/exposition';
@@ -64,7 +65,8 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     private masterdataService: MasterdataService,
     private individualService: IndividualService,
     private geoposService: GeoposService,
-    private analytics: AngularFireAnalytics
+    private analytics: AngularFireAnalytics,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -106,7 +108,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
         if (this.fileToUpload) {
           this.uploadImage(result, this.fileToUpload);
         } else {
-          this.router.navigate(['individuals', this.toIndividualId(result)]); // fixme: navigating in this subscription is causing ObjectUnsubscribedError
+          this.router.navigate(['individuals', this.toIndividualId(result)]);
         }
       });
     });
@@ -126,7 +128,11 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     const ref = this.afStorage.ref(path);
     ref
       .put(file, { contentType: file.type })
-      .then(() => this.router.navigate(['individuals', this.toIndividualId(individual)])); // fixme: navigating in this subscription is causing ObjectUnsubscribedError
+      .then(() => this.router.navigate(['individuals', this.toIndividualId(individual)]))
+      .catch(() => {
+        this.alertService.errorMessage('Upload Error', 'Ununterstütztes Bildformat, fehlerhaftes oder zu grosses Bild'); // fixme: change to final text
+        this.router.navigate(['individuals', this.toIndividualId(individual)]);
+      });
     this.analytics.logEvent('individual.upload-image');
   }
 
