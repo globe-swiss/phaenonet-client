@@ -129,7 +129,7 @@ export class AuthService extends BaseService implements OnDestroy {
       await user.reauthenticateWithCredential(credentials);
       return this.afAuth.currentUser;
     } catch (error) {
-      this.alertService.errorMessage('Passwort falsch', 'Das eingegebene aktuelle Passwort ist falsch.');
+      this.alertService.errorMessage('Passwort falsch', 'Das aktuelle Passwort ist falsch.');
       throw error;
     }
   }
