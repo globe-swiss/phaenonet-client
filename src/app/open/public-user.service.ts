@@ -15,7 +15,7 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
   }
 
   get(id: string): Observable<PublicUser> {
-    return this.afs.collection<PublicUser>(this.collectionName).doc<PublicUser>(id).valueChanges({ idField: 'id' }); // fixme: check if id can be pushed up
+    return this.afs.collection<PublicUser>(this.collectionName).doc<PublicUser>(id).valueChanges({ idField: 'id' });
   }
 
   existingNickname(nickname: string): Observable<boolean> {

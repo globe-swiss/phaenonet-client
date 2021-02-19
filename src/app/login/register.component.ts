@@ -78,7 +78,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   // fixme: this probably should redirect to profile when logged in #125
   showRegisterForm(): boolean {
-    return !this.isLoggedIn(); // && !this.user; fixme: check why both were checked?
+    return !this.isLoggedIn();
   }
 
   isRegisterFailed(): boolean {
