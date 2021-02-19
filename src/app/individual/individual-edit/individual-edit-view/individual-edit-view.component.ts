@@ -3,7 +3,7 @@ import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, ReplaySubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Description } from '../../../masterdata/description';
 import { Distance } from '../../../masterdata/distance';
@@ -27,7 +27,9 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
   @Input() individual$: ReplaySubject<Individual>;
   @Input() createNewIndividual: boolean;
   subscriptions = new Subscription();
+
   fileToUpload: File = null;
+  processing$ = new BehaviorSubject(false);
 
   selectableSpecies$: Observable<Species[]>;
 
@@ -41,6 +43,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
   geopos$: Observable<google.maps.LatLngLiteral>;
 
   altitudeInput = new FormControl({ value: '', disabled: true });
+
   createForm = new FormGroup({
     altitude: this.altitudeInput,
     species: new FormControl(''),
@@ -92,6 +95,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    this.processing$.next(true);
     this.individual$.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
       const individual: Individual = { ...detail, ...this.createForm.value };
