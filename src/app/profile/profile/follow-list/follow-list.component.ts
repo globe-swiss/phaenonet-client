@@ -25,6 +25,6 @@ export class FollowListComponent implements OnInit {
   }
 
   showMore() {
-    this.limit$.next(this.limit$.value + 5);
+    this.limit$.next(this.limit$.value + 50);
   }
 }

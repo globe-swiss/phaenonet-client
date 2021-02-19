@@ -9,12 +9,12 @@ import { ProfileRoutingModule } from './profile-routing.module';
 import { ActivityItemComponent } from './profile/activity-item/activity-item.component';
 import { ActivityListComponent } from './profile/activity-list/activity-list.component';
 import { FollowListComponent } from './profile/follow-list/follow-list.component';
-import { FollowUserComponent } from './profile/follow-user/follow-user.component';
 import { ObservationItemComponent } from './profile/observation-item/observation-item.component';
 import { ObservationListComponent } from './profile/observation-list/observation-list.component';
 import { ProfileDetailsComponent } from './profile/profile-details/profile-details.component';
 import { ProfilePublicComponent } from './profile/profile-public/profile-public.component';
 import { ProfileComponent } from './profile/profile.component';
+import { FollowUserComponent } from './profile/user-item/user-item.component';
 
 @NgModule({
   imports: [SharedModule, ProfileRoutingModule, IndividualModule, ActivityModule],
