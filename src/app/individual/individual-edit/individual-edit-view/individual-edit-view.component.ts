@@ -1,9 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Description } from '../../../masterdata/description';
 import { Distance } from '../../../masterdata/distance';
@@ -23,9 +23,10 @@ import { GeoposService } from '../individual-edit-header/geopos.service';
   templateUrl: './individual-edit-view.component.html',
   styleUrls: ['./individual-edit-view.component.scss']
 })
-export class IndividualEditViewComponent implements OnInit {
+export class IndividualEditViewComponent implements OnInit, OnDestroy {
   @Input() individual$: ReplaySubject<Individual>;
   @Input() createNewIndividual: boolean;
+  subscriptions = new Subscription();
   fileToUpload: File = null;
 
   selectableSpecies$: Observable<Species[]>;
@@ -37,10 +38,11 @@ export class IndividualEditViewComponent implements OnInit {
   selectableForests$: Observable<Forest[]>;
   selectableDistances$: Observable<Distance[]>;
   selectableIrrigations$: Observable<Irrigation[]>;
-  geopos$: BehaviorSubject<google.maps.LatLngLiteral>;
-  altitude$: BehaviorSubject<number>;
+  geopos$: Observable<google.maps.LatLngLiteral>;
 
+  altitudeInput = new FormControl({ value: '', disabled: true });
   createForm = new FormGroup({
+    altitude: this.altitudeInput,
     species: new FormControl(''),
     name: new FormControl(''),
     description: new FormControl(''),
@@ -64,7 +66,7 @@ export class IndividualEditViewComponent implements OnInit {
 
   ngOnInit() {
     this.geopos$ = this.geoposService.geopos$;
-    this.altitude$ = this.geoposService.altitude$;
+    this.subscriptions.add(this.geoposService.altitude$.subscribe(altitude => this.altitudeInput.setValue(altitude)));
 
     this.selectableSpecies$ = this.masterdataService.getSelectableSpecies();
     this.selectableDescriptions$ = this.masterdataService.getDescriptions();
@@ -85,12 +87,16 @@ export class IndividualEditViewComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+
   onSubmit(): void {
     this.individual$.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
       const individual: Individual = { ...detail, ...this.createForm.value };
-      individual.geopos = this.geopos$.value;
-      individual.altitude = this.altitude$.value;
+      individual.geopos = this.geoposService.getGeoPos();
+      individual.altitude = this.geoposService.getAltitude();
 
       this.individualService.upsert(individual).subscribe(result => {
         if (this.fileToUpload) {
