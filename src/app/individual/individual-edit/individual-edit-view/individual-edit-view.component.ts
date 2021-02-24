@@ -3,6 +3,7 @@ import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { some } from 'fp-ts/lib/Option';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AlertService } from 'src/app/messaging/alert.service';
@@ -130,7 +131,11 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
       .put(file, { contentType: file.type })
       .then(() => this.router.navigate(['individuals', this.toIndividualId(individual)]))
       .catch(() => {
-        this.alertService.errorMessage('Upload Error', 'Ununterstütztes Bildformat, fehlerhaftes oder zu grosses Bild'); // fixme: change to final text
+        this.alertService.errorMessage(
+          'Fehlerhaftes Foto',
+          'Das Foto konnte nicht hochgeladen werden. Das Format wird nicht unterstützt oder die maximale Grösse wurde überschritten.',
+          some(10000)
+        );
         this.router.navigate(['individuals', this.toIndividualId(individual)]);
       });
     this.analytics.logEvent('individual.upload-image');
