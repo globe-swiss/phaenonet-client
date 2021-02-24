@@ -3,8 +3,10 @@ import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, ReplaySubject, Subscription } from 'rxjs';
+import { some } from 'fp-ts/lib/Option';
+import { BehaviorSubject, Observable, ReplaySubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { AlertService } from 'src/app/messaging/alert.service';
 import { Description } from '../../../masterdata/description';
 import { Distance } from '../../../masterdata/distance';
 import { Exposition } from '../../../masterdata/exposition';
@@ -27,7 +29,9 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
   @Input() individual$: ReplaySubject<Individual>;
   @Input() createNewIndividual: boolean;
   subscriptions = new Subscription();
+
   fileToUpload: File = null;
+  processing$ = new BehaviorSubject(false);
 
   selectableSpecies$: Observable<Species[]>;
 
@@ -41,6 +45,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
   geopos$: Observable<google.maps.LatLngLiteral>;
 
   altitudeInput = new FormControl({ value: '', disabled: true });
+
   createForm = new FormGroup({
     altitude: this.altitudeInput,
     species: new FormControl(''),
@@ -61,7 +66,8 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     private masterdataService: MasterdataService,
     private individualService: IndividualService,
     private geoposService: GeoposService,
-    private analytics: AngularFireAnalytics
+    private analytics: AngularFireAnalytics,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -92,6 +98,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    this.processing$.next(true);
     this.individual$.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
       const individual: Individual = { ...detail, ...this.createForm.value };
@@ -102,7 +109,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
         if (this.fileToUpload) {
           this.uploadImage(result, this.fileToUpload);
         } else {
-          this.router.navigate(['individuals', this.toIndividualId(result)]); // fixme: navigating in this subscription is causing ObjectUnsubscribedError
+          this.router.navigate(['individuals', this.toIndividualId(result)]);
         }
       });
     });
@@ -122,7 +129,15 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     const ref = this.afStorage.ref(path);
     ref
       .put(file, { contentType: file.type })
-      .then(() => this.router.navigate(['individuals', this.toIndividualId(individual)])); // fixme: navigating in this subscription is causing ObjectUnsubscribedError
+      .then(() => this.router.navigate(['individuals', this.toIndividualId(individual)]))
+      .catch(() => {
+        this.alertService.errorMessage(
+          'Fehlerhaftes Foto',
+          'Das Foto konnte nicht hochgeladen werden. Das Format wird nicht unterstützt oder die maximale Grösse wurde überschritten.',
+          some(10000)
+        );
+        this.router.navigate(['individuals', this.toIndividualId(individual)]);
+      });
     this.analytics.logEvent('individual.upload-image');
   }
 
