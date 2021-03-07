@@ -1,4 +1,4 @@
-const { navbarComponent, individualsEditPage, individualsPage, mapPage } = inject();
+const { navbarComponent, individualsEditPage, individualsPage, mapPage, privateProfilePage } = inject();
 const fetch = require('node-fetch');
 
 // in this file you can append custom step methods to 'I' object
@@ -18,8 +18,8 @@ module.exports = function () {
       this.amLoggedOut();
       this.enterLoginCredentials();
       this.click(loginPage.loginButton);
-      this.waitUrlEquals('/map');
-      this.seeElement(mapPage.components.map);
+      this.waitUrlEquals(privateProfilePage.url);
+      this.seeElement(privateProfilePage.components.profile);
     },
     enterLoginCredentials() {
       const { loginPage, e2eTestUser } = inject();

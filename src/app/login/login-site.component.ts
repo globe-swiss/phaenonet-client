@@ -14,7 +14,7 @@ export class LoginSiteComponent implements OnInit {
   }
 
   onLoginSuccess() {
-    const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/';
+    const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/profile';
     const url = this.router.parseUrl(redirect);
 
     const navigationExtras: NavigationExtras = {
