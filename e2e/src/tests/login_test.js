@@ -5,15 +5,14 @@ Scenario('test login component present', ({ I, loginPage }) => {
   I.checkElementsPresent(loginPage.components);
 });
 
-Scenario('test login from home screen', ({ I, loginPage, mapPage, e2eTestUser, navbarComponent }) => {
+Scenario('test login from home screen', ({ I, loginPage, privateProfilePage, e2eTestUser, navbarComponent }) => {
   I.visit('/');
   I.amLoggedOut();
   I.click(navbarComponent.signinProfileButton);
 
   loginPage.login(e2eTestUser.email, e2eTestUser.password);
-  I.seeElement(mapPage.components.map);
-  I.waitUrlEquals(mapPage.url);
-  I.seeElement(mapPage.components.map);
+  I.waitUrlEquals(privateProfilePage.url);
+  I.seeElement(privateProfilePage.components.profile);
   I.amLoggedIn();
 });
 
