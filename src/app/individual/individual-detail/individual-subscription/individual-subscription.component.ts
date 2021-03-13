@@ -18,6 +18,7 @@ export class SubscriptionBarComponent implements OnInit {
   constructor(private authService: AuthService, private userService: UserService, private alertService: AlertService) {}
 
   ngOnInit() {
+    // fixme: use methods provided in user service
     const currentUser = this.authService.user$;
     this.isFollowing$ = combineLatest([currentUser, this.individual$]).pipe(
       map(([u, i]) =>

@@ -1,0 +1,34 @@
+.invite-card {
+  margin-bottom: 1.875rem;
+  background-color: white;
+  border-radius: 1rem;
+  cursor: default;
+
+  img {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+  }
+}
+
+.user-image {
+  max-width: 180px;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 1279px) {
+  .user-image {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 959px) {
+  .user-image {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .user-image {
+    display: none;
+  }
+}

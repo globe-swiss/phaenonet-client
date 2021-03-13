@@ -17,7 +17,7 @@ import * as d3Time from 'd3-time';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { filter, first, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { formatShortDate } from '../core/formatDate';
+import { formatShortDate } from '../shared/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { SourceType } from '../masterdata/source-type';

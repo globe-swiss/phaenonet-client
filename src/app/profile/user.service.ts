@@ -46,6 +46,14 @@ export class UserService extends BaseResourceService<User> {
     return this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayRemove(target) });
   }
 
+  isFollowingUser(id: string) {
+    return this.get(this.authService.getUserId()).pipe(map(user => user.following_users.includes[id]));
+  }
+
+  isFollowingIndividual(id: string) {
+    return this.get(this.authService.getUserId()).pipe(map(user => user.following_individuals.includes(id)));
+  }
+
   private followUnfollow(partial: Partial<unknown>): Observable<void> {
     return from(this.afs.collection('users').doc(this.authService.getUserId()).update(partial));
   }

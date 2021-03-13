@@ -1,0 +1,41 @@
+<div
+  fxLayout="row"
+  [routerLink]="item.register_user ? ['/profile', item.register_user] : []"
+  class="invite-card"
+  [style.cursor]="item.sent ? 'pointer' : 'default'"
+>
+  <img class="user-image" src="assets/img/user_placeholder.svg" />
+  <div
+    class="clip-text"
+    fxLayout="column"
+    fxFlex="grow"
+    style="margin-left: 25px; margin-right: 25px; margin-top: 15px"
+  >
+    <div class="detail-label">
+      {{ 'Einladung für' | translate }}
+    </div>
+    <h3>{{ item.email }}</h3>
+    <ng-container *ngIf="item.register_date; else notregistered">
+      <div class="detail-label">
+        {{ 'Profil' | translate }} ({{ 'Registriert am' | translate }} {{ item.register_date | shortdate }})
+      </div>
+      <h3 (click)="resendInvite()">{{ item.register_nick }}</h3>
+    </ng-container>
+  </div>
+  <div fxLayout="column" style="margin-left: 25px; margin-right: 25px; align-self: center">
+    <button mat-fab color="primary">
+      <mat-icon svgIcon="subscribe"></mat-icon>
+    </button>
+  </div>
+</div>
+
+<ng-template #notregistered>
+  <ng-container *ngIf="item.sent; else notsent">
+    <div class="detail-label">{{ 'Versendet am' | translate }} {{ item.sent | shortdate }}</div>
+    <h3 (click)="resendInvite()">{{ 'Erneut senden' | translate }}</h3>
+  </ng-container>
+</ng-template>
+
+<ng-template #notsent>
+  <div class="detail-label">Noch nicht versendet.</div>
+</ng-template>
