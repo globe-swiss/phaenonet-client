@@ -1,10 +1,10 @@
-# Phaenonet Client
+# PhaenoNet Client
 
 This project is the web-client application for the phenology observation offer [PhaenoNet](https://www.phaenonet.ch) by [GLOBE Switzerland](https://www.globe-swiss.ch).
 
 ## Environment
 
-Phaenonet is set up with two Firebase projects instances. These projects have a separate Firestore and storage instance as well as access rules.
+PhaenoNet is set up with two Firebase projects instances. These projects have a separate Firestore and storage instance as well as access rules.
 
 - [phaenonet](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the production instance
 - [phaenonet-test](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the test instance
@@ -23,11 +23,15 @@ Phaenonet is set up with two Firebase projects instances. These projects have a 
 1. Install cloud functions and setup configuration data
    - <https://github.com/globe-swiss/phaenonet-functions>
 
+## Development
+
+The application will be using the database and access rules of the `phaenonet-test` project for all use-cases described in this section.
+
 ### Local setup
 
 Install Node.js and npm see: <https://www.npmjs.com/get-npm>
 
-Install the firebase console and login:
+Install the Firebase console and login:
 
 ```commandline
 npm install
@@ -36,9 +40,9 @@ npx firebase login
 
 Consult the official documentation for the [Firebase CLI](https://firebase.google.com/docs/cli) for further information.
 
-## Development
+API information [init.json](https://phaenonet-test.web.app/__/firebase/init.json) must be copied to the folder `/app/src/local/`.
 
-The application will be using the database and access rules of the `phaenonet-test` project for all use-cases described in this section.
+Firestore and Storage rules need to be checked out from a separate project [phaenonet-client-security](https://github.com/globe-swiss/phaenonet-client-security) into the `/security` folder.
 
 ### Serve locally
 
@@ -66,14 +70,18 @@ npm install
 and run the tests with `codeceptjs` e.g.
 
 ```commandline
-codeceptjs run --reporter mochawesome
+npx codeceptjs run --steps
 ```
 
 Test output will be located in `/e2e/output`.
 
 ## Deploy to Firebase
 
-### Deploy applications in development
+Whenever possible use the GitHub action [deploy](https://github.com/globe-swiss/phaenonet-client/actions/workflows/deploy.yml) and [channel](https://github.com/globe-swiss/phaenonet-client/actions/workflows/channel.yml) to deploy applications to Firebase.
+
+Code merged to the `master` branch will be deployed to <https://phaenonet-test.web.app/> for final acceptance. This deployment will also include all rules and indexes.
+
+### Manually deploy applications in development
 
 Intermediate development states of the application can be deployed to [hosting channels](https://firebase.google.com/docs/hosting/manage-hosting-resources).
 
@@ -81,16 +89,16 @@ Intermediate development states of the application can be deployed to [hosting c
 npx ng build && npx firebase hosting:channel:deploy my_channel_name --project phaenonet-test
 ```
 
+### Manually deploy rules & indexes in development
+
 Rules and indexes for Firestore and Storage will need to be deployed manually if needed.
-Be aware that the rules are shared between the hosting channel and the `test` applicaton.
+Be aware that the rules are shared between the hosting channel and the `test` application.
 
 ```commandline
 npx firebase deploy --only storage,firestore --project phaenonet-test
 ```
 
-### Deploy application for acceptance test
-
-Code merged to the `master` branch will be deployed to <https://phaenonet-test.web.app/> for final acceptance. This deployment will also include all rules and indexes.
+### Manually deploy application for acceptance test
 
 To manually deploy a test version:
 
@@ -98,7 +106,7 @@ To manually deploy a test version:
 npx ng build && npx firebase deploy --project phaenonet-test
 ```
 
-### Production Deployment
+### Manually deploy application to production
 
 ```commandline
 npx ng build --prod && npx firebase deploy --project phaenonet
