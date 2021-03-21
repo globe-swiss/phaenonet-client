@@ -1,7 +1,7 @@
 # Build and deploy workflow
 # Builds development version by default or production version if the project is 'phaenonet'
 
-name: CI Build and Deploy
+name: Build and Deploy
 
 on:
   workflow_dispatch:
@@ -44,6 +44,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
+      - name: Checkout rules
+        uses: actions/checkout@v2
+        with:
+          repository: globe-swiss/phaenonet-client-security
+          path: security
+          ssh-key: ${{ secrets.SECURITY_REPO_DEPLOY_KEY }}
       - name: Download Artifact
         uses: actions/download-artifact@master
         with:
