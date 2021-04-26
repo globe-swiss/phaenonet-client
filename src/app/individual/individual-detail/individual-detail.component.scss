@@ -1,3 +1,17 @@
 .detail-view {
   background-color: white;
 }
+
+.individual-subscription-button {
+  position: relative;
+  margin-left: 90%;
+  bottom: 28px;
+  width: 70px;
+  height: 0;
+}
+
+@media screen and (max-width: 959px) {
+  .individual-subscription-button {
+    margin-left: 70%;
+  }
+}

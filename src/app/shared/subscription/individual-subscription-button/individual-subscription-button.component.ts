@@ -1,17 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { first, map } from 'rxjs/operators';
+import { Individual } from 'src/app/individual/individual';
 import { AuthService } from '../../../auth/auth.service';
 import { AlertService } from '../../../messaging/alert.service';
 import { UserService } from '../../../profile/user.service';
-import { Individual } from '../../individual';
 
 @Component({
-  selector: 'app-individual-subscription',
-  templateUrl: './individual-subscription.component.html',
-  styleUrls: ['./individual-subscription.component.scss']
+  selector: 'app-individual-subscription-button',
+  templateUrl: './individual-subscription-button.component.html',
+  styleUrls: ['./individual-subscription-button.component.scss']
 })
-export class SubscriptionBarComponent implements OnInit {
+export class IndividualSubscriptionButtonComponent implements OnInit {
   @Input() individual$: ReplaySubject<Individual>;
   isFollowing$: Observable<boolean>;
 

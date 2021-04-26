@@ -10,7 +10,6 @@ import { IndividualDescriptionComponent } from './individual-description/individ
 import { DetailHeaderComponent } from './individual-detail/individual-detail-header/individual-detail-header.component';
 import { IndividualDetailComponent } from './individual-detail/individual-detail.component';
 import { ObservationViewComponent } from './individual-detail/individual-observation-view/individual-observation-view.component';
-import { SubscriptionBarComponent } from './individual-detail/individual-subscription/individual-subscription.component';
 import { GeoposService } from './individual-edit/individual-edit-header/geopos.service';
 import { EditHeaderComponent } from './individual-edit/individual-edit-header/individual-edit-header.component';
 import { IndividualEditViewComponent } from './individual-edit/individual-edit-view/individual-edit-view.component';
@@ -33,14 +32,13 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
     IndividualDetailComponent,
     PhenophaseDialogComponent,
     DetailHeaderComponent,
-    SubscriptionBarComponent,
     IndividualDescriptionComponent,
     ObservationViewComponent,
     EditHeaderComponent,
     IndividualEditViewComponent
   ],
   providers: [GeoposService],
-  exports: [DetailHeaderComponent, SubscriptionBarComponent],
+  exports: [DetailHeaderComponent],
   entryComponents: [PhenophaseDialogComponent, ConfirmationDialogComponent]
 })
 export class IndividualModule {}
