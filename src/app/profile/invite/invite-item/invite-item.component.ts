@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { IdLike } from 'src/app/masterdata/masterdata-like';
 import { Invite } from '../invite';
+import { InviteService } from '../invite.service';
 
 @Component({
   selector: 'app-invite-item',
@@ -7,13 +9,13 @@ import { Invite } from '../invite';
   styleUrls: ['./invite-item.component.scss']
 })
 export class InviteItemComponent implements OnInit {
-  @Input() item: Invite;
+  @Input() item: Invite & IdLike;
 
-  constructor() {}
+  constructor(private inviteService: InviteService) {}
 
   ngOnInit(): void {}
 
   resendInvite() {
-    console.log('Resend invite'); // fixme: remove log output
+    this.inviteService.resendInvite(this.item, this.item.id);
   }
 }

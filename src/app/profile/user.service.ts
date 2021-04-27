@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import firebase from 'firebase/app';
 import { combineLatest, from, Observable, of } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, first, map, switchMap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { Individual } from '../individual/individual';
@@ -31,26 +31,30 @@ export class UserService extends BaseResourceService<User> {
     return this.get(this.authService.getUserId());
   }
 
-  followIndividual(target: string | Observable<Individual & IdLike>): Observable<void> {
-    return this.idObservable(target).pipe(
+  followIndividual(target: string | Observable<Individual>): Observable<void> {
+    return this.individualObservable(target).pipe(
+      first(),
       switchMap(id => this.followUnfollow({ following_individuals: firebase.firestore.FieldValue.arrayUnion(id) }))
     );
   }
 
-  unfollowIndividual(target: string): Observable<void> {
-    return this.idObservable(target).pipe(
+  unfollowIndividual(target: string | Observable<Individual>): Observable<void> {
+    return this.individualObservable(target).pipe(
+      first(),
       switchMap(id => this.followUnfollow({ following_individuals: firebase.firestore.FieldValue.arrayRemove(id) }))
     );
   }
 
   followUser(target: string | Observable<PublicUser>) {
     return this.idObservable(target).pipe(
+      first(),
       switchMap(id => this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayUnion(id) }))
     );
   }
 
   unfollowUser(target: string | Observable<PublicUser>): Observable<void> {
     return this.idObservable(target).pipe(
+      first(),
       switchMap(id => this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayRemove(id) }))
     );
   }
@@ -61,9 +65,9 @@ export class UserService extends BaseResourceService<User> {
     );
   }
 
-  isFollowingIndividual(target: string | Observable<Individual & IdLike>) {
-    return combineLatest([this.idObservable(target), this.getUser()]).pipe(
-      map(([id, user]) => user.following_individuals.includes(id))
+  isFollowingIndividual(target: string | Observable<Individual>) {
+    return combineLatest([this.individualObservable(target), this.getUser()]).pipe(
+      map(([individual, user]) => user.following_individuals.includes(individual))
     );
   }
 
@@ -94,7 +98,15 @@ export class UserService extends BaseResourceService<User> {
     if (typeof target === 'string') {
       return of(target);
     } else {
-      return target.pipe(map(u => u.id));
+      return target.pipe(map(x => x.id));
+    }
+  }
+
+  private individualObservable(target: string | Observable<Individual>) {
+    if (typeof target === 'string') {
+      return of(target);
+    } else {
+      return target.pipe(map(x => x.individual));
     }
   }
 }

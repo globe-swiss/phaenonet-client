@@ -9,6 +9,7 @@ export class Invite {
   register_user?: string;
   register_date?: Timestamp;
   sent?: Timestamp;
+  resend?: any;
   created?: Timestamp;
   modified?: Timestamp;
 }

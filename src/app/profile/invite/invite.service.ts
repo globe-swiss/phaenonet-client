@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import firebase from 'firebase/app';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { BaseResourceService } from 'src/app/core/base-resource.service';
 import { LanguageService } from 'src/app/core/language.service';
+import { IdLike } from 'src/app/masterdata/masterdata-like';
 import { AlertService } from 'src/app/messaging/alert.service';
 import { Invite } from './invite';
 
@@ -29,24 +32,18 @@ export class InviteService extends BaseResourceService<Invite> {
     this.upsert(invite, this.authService.getUserId() + '_' + email);
   }
 
-  getInvites() {
-    return (
-      this.afs
-        .collection<Invite>(this.collectionName, ref => ref.where('user', '==', this.authService.getUserId()))
-        // .valueChanges({ idField: 'id' })
-        .valueChanges()
-    );
-    // .pipe(
-    //   map(invites =>
-    //     invites.map(o => {
-    //       o.date = o.date ? (o.date as any).toDate() : o.date;
-    //       o.created = o.created ? (o.created as any).toDate() : o.created;
-    //       o.modified = o.modified ? (o.modified as any).toDate() : o.modified;
+  getInvites(): Observable<(Invite & IdLike)[]> {
+    return this.afs
+      .collection<Invite>(this.collectionName, ref => ref.where('user', '==', this.authService.getUserId()))
+      .valueChanges({ idField: 'id' });
+  }
 
-    //       return o;
-    //     })
-    //   )
-    // );
-    // }
+  resendInvite(invite: Invite, id: string) {
+    if (!invite.sent || new Date().getTime() - invite.sent.toDate().getTime() > 10 * 60 * 1000) {
+      invite.resend = firebase.firestore.FieldValue.increment(1);
+      this.upsert(invite, id);
+    } else {
+      this.alertService.infoMessage('not sent', 'timespan too short (10min)');
+    }
   }
 }

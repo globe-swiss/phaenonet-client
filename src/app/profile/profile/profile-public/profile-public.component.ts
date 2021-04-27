@@ -17,7 +17,6 @@ export class ProfilePublicComponent implements OnInit {
   @Input() user$: ReplaySubject<PublicUser>;
 
   isLoggedIn: boolean;
-  isFollowing$: Observable<boolean>;
   nickname$: Observable<string>;
 
   constructor(
