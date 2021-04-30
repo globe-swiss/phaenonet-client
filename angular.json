@@ -23,7 +23,12 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/manifest.webmanifest",
+              { "glob": "init.json", "input": "src/local/", "output": "/__/firebase/" }
+            ],
             "styles": ["src/styles.scss"],
             "scripts": []
           },
@@ -53,7 +58,9 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json"
             },
             "local": {
               "fileReplacements": [
@@ -65,6 +72,7 @@
               "assets": [
                 "src/favicon.ico",
                 "src/assets",
+                "src/manifest.webmanifest",
                 { "glob": "init.json", "input": "src/local/", "output": "/__/firebase/" }
               ],
               "budgets": [
@@ -105,7 +113,7 @@
             "karmaConfig": "src/karma.conf.js",
             "styles": ["src/styles.scss"],
             "scripts": [],
-            "assets": ["src/favicon.ico", "src/assets"]
+            "assets": ["src/favicon.ico", "src/assets", "src/manifest.webmanifest"]
           }
         },
         "lint": {
