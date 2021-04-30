@@ -53,7 +53,7 @@ registerLocaleData(localeIt, 'it');
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: SentryMissingTranslationHandler }
     }),
     AngularFireModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     AngularFireStorageModule,
     AngularFireAnalyticsModule,
