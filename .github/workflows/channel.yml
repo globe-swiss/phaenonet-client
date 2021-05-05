@@ -11,10 +11,14 @@ on:
         description: "Expiration"
         required: true
         default: "14d"
+      build_flags:
+        description: "Build flags to add"
+        required: false
 
 env:
   PROJECT: ${{ github.event.inputs.project }}
   EXP: ${{ github.event.inputs.expires }}
+  BUILD_FLAGS: ${{ github.event.inputs.build_flags }}
 
 jobs:
   build:
@@ -26,7 +30,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Build
-        run: npx ng build
+        run: npx ng build ${{ env.BUILD_FLAGS }}
       - name: Archive Test Artifact
         uses: actions/upload-artifact@master
         with:

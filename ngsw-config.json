@@ -6,7 +6,7 @@
       "name": "app",
       "installMode": "prefetch",
       "resources": {
-        "files": ["/favicon.ico", "/index.html", "/manifest.webmanifest", "/*.css", "/*.js"]
+        "files": ["/favicon.ico", "/index.html", "/manifest.webmanifest", "/*.css", "/*.js", "/__/firebase/init.json"]
       }
     },
     {
@@ -15,6 +15,25 @@
       "updateMode": "prefetch",
       "resources": {
         "files": ["/assets/**", "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"]
+      }
+    },
+    {
+      "name": "user_images",
+      "installMode": "lazy",
+      "updateMode": "lazy",
+      "resources": {
+        "urls": ["https://firebasestorage.googleapis.com/**"]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "user_images",
+      "urls": ["https://firebasestorage.googleapis.com/**"],
+      "cacheConfig": {
+        "maxSize": 100,
+        "maxAge": "7d",
+        "strategy": "performance"
       }
     }
   ]

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { combineLatest, from, Observable, of } from 'rxjs';
-import { first, map, mergeAll } from 'rxjs/operators';
+import { map, mergeAll } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { IdLike } from '../masterdata/masterdata-like';
@@ -127,10 +127,7 @@ export class IndividualService extends BaseResourceService<Individual> {
       species: species,
       lastPhenophase: phenophase,
       type: individual.type,
-      imgUrl$: this.getImageUrl(individual, true).pipe(
-        first(),
-        map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
-      )
+      imgUrl$: this.getImageUrl(individual, true).pipe(map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u)))
     } as IndividualPhenophase;
   }
 
@@ -140,13 +137,13 @@ export class IndividualService extends BaseResourceService<Individual> {
 
   getImageUrl(individual: Individual, thumbnail = false): Observable<string | null> {
     const path = this.getImagePath(individual, thumbnail);
-
+    const ref = this.afStorage.ref(path);
+    ref.updateMetadata({ cacheControl: 'private, max-age=15552000' }).subscribe(e => {});
     return from(
-      this.afStorage
-        .ref(path)
+      ref
         .getDownloadURL()
         .toPromise()
-        .catch(_ => null)
+        .catch(() => null)
     );
   }
 

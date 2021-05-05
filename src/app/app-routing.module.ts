@@ -36,8 +36,9 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/map',
-        pathMatch: 'full'
+        loadChildren: () => import('./map/map.module').then(m => m.MapModule)
+        // redirectTo: '/map'
+        // pathMatch: 'full'
       }
     ]
   },
