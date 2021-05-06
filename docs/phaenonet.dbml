@@ -1,8 +1,8 @@
 project phaenonet {
   database_type: 'Firestore'
   Note: '''
-    # Phaenonet Data
-    Description of Phaenonet data structures.
+    # PhaenoNet Data
+    Description of PhaenoNet data structures.
   '''
 }
 
