@@ -67,3 +67,13 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           tag: ${{ github.event.inputs.tag }}
         if: ${{ github.event.inputs.tag }}
+  docs:
+    name: Update Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@master
+      - name: build & upload docs
+        run: npx dbdocs build docs/phaenonet.dbml
+        env:
+          DBDOCS_TOKEN: ${{ secrets.DBDOCS_TOKEN }}

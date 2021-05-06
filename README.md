@@ -111,3 +111,8 @@ npx ng build && npx firebase deploy --project phaenonet-test
 ```commandline
 npx ng build --prod && npx firebase deploy --project phaenonet
 ```
+
+## Related resources
+
+- [phaenonet-functions](https://github.com/globe-swiss/phaenonet-functions)
+- [data model documentation](https://dbdocs.io/pgoellnitz/phaenonet)

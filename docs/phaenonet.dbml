@@ -1,0 +1,172 @@
+project phaenonet {
+  database_type: 'Firestore'
+  Note: '''
+    # PhaenoNet Data
+    Description of PhaenoNet data structures.
+  '''
+}
+
+enum locale {
+  "de-CH"
+  "fr-CH"
+  "it-CH"
+}
+
+enum source {
+  globe
+  meteoswiss
+}
+
+table activities {
+  id string [pk]
+  action activity_action
+  activity_date date
+  followers array[string] [ref: < users.id, note: 'many-to-many relationship']
+  individual_id string [ref: > individuals.id]
+  individual_name string
+  observation_id string [ref: > observations.id]
+  phenophase string [note: 'definitions/config_static/phenophases']
+  phenophase_name string
+  source source
+  species string [note: 'definitions/config_static/species']
+  species_name string
+  type individual_type
+  user string [ref: > users.id]
+  user_name string
+
+  indexes {
+    (followers, activity_date) //[note: 'followers Arrays, activity_date Descending']
+  }
+
+  note: 'Activities (observations) tracked by users.'
+}
+
+enum activity_action {
+  create
+  delete
+  modify
+}
+
+tablegroup anaytics {
+  analytics_state
+  analytics_results
+}
+
+table analytics_results {
+  id string [pk, note: 'year_species_source[_altitudegroup]']
+  source source
+  species string
+  type analytics_type
+  values map [note: 'map of statistic values per phenophase']
+  year number
+
+  note: 'Statistical values displayed in the statistics section in the Phaenonet application.'
+}
+
+table analytics_state {
+  id string [pk, note: 'year_species_source[_altitudegroup]']
+  source source
+  species string [note: 'definitions/config_static/species']
+  state map [note: 'map of observation_date per phenophase']
+  year number
+
+  note: 'Internal data-structure for calculating statistical values.'
+}
+
+
+enum analytics_type {
+  species
+  altitude
+}
+
+table definitions {
+  id string [pk]
+  note: 'Applications specific definitions and states.'
+}
+
+table individuals {
+  id string [pk, note: 'year_individual']
+  altitude number
+  description string [note: 'definitions/config_static/description']
+  exposition string [note: 'definitions/config_static/exposition']
+  forest string [note: 'definitions/config_static/forest']
+  geopos map [note: 'map containing lng, lat']
+  gradient number
+  habitat string [note: 'definitions/config_static/habitat']
+  individual string
+  last_observation_date date [null]
+  last_phenophase string [note: 'definitions/config_static/phenophases']
+  less100 string [note: 'definitions/config_static/less100']
+  name string
+  shade string [note: 'definitions/config_static/shade']
+  source source
+  species string [note: 'definitions/config_static/species']
+  type individual_type
+  user string [ref: < users.id]
+  watering string [note: 'definitions/config_static/watering']
+  year number
+  created timestamp
+  modified timestamp
+
+  indexes {
+    (year, last_observation_date) //[note: 'year Ascending last_observation_date, Descending']
+    (user, modified) //[note: 'user Ascending, modified Descending']
+  }
+
+  note: 'Definitions of (single) individuals and phenological stations.'
+}
+
+enum individual_type {
+  individual
+  station
+}
+
+table observations {
+  id string [note: 'individual_year_species_phenophase']
+  date date
+  individual string [ref: > individuals.individual, note: 'many-to-many relationship']
+  individual_id string [ref: > individuals.id]
+  phenophase string [note: 'definitions/config_static/phenophases']
+  source source
+  species string [note: 'definitions/config_static/species']
+  user string [ref: > users.id]
+  year number
+  created timestamp
+  modified timestamp
+
+  note: 'Observed phenological phases for individuals and stations.'
+}
+
+table nicknames {
+  id string [pk, ref: - users.nickname]
+  user string [unique, ref: - users.id]
+
+  note: 'Public nickname list.'
+}
+
+table public_user {
+  id string [pk, ref: - users.id]
+  nickname string [unique, ref: - users.nickname]
+
+  note: 'Public user information.'
+}
+
+table users {
+  id string [pk]
+  nickname string [unique]
+  locale locale
+  firstname string [null]
+  lastname string [null]
+  following_individuals array[string] [null, ref: > individuals.individual, note: 'many-to-many relationship']
+  following_users array[string] [null, ref: > users.id, note: 'many-to-many relationship']
+  created timestamp
+  modified timestamp
+
+  note: 'Private user information.'
+}
+
+tablegroup users {
+  nicknames
+  public_user
+  users
+}
