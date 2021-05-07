@@ -170,3 +170,31 @@ tablegroup users {
   public_user
   users
 }
+
+table invites {
+  id string [pk]
+  email string
+  locale locale
+  user string [ref: > users.id]
+  sent timestamp [null]
+  numsent number [null]
+  register_date timestamp [null]
+  register_nick string [null]
+  register_user string [null, ref: > users.id]
+  created timestamp
+  modified timestamp
+
+  note: 'User invites.'
+}
+
+table invites_lookup {
+  id string [pk, ref: > invites.email]
+  invites array[string] [ref: > users.id, note: 'many-to-many relationship']
+
+  note: 'Reverse lookup table for finding the invite initiator(s).'
+}
+
+tablegroup invites {
+  invites
+  invites_lookup
+}
