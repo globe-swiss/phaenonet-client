@@ -4,10 +4,10 @@
   </h3>
 </div>
 <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
-  <ng-container *ngIf="invites$ | async as list; else noinvites">
+  <ng-container *ngIf="invites$ | async; else noinvites">
     <app-invite-item *ngFor="let invite of invites$ | async" [item]="invite"></app-invite-item>
   </ng-container>
-  <button mat-flat-button color="primary" (click)="invite()">
+  <button id="invite" mat-flat-button color="primary" (click)="invite()">
     <span>{{ 'Jetzt einladen' | translate }}</span>
   </button>
 </div>
