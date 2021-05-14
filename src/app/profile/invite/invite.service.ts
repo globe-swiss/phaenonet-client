@@ -43,7 +43,10 @@ export class InviteService extends BaseResourceService<Invite> {
       invite.resend = firebase.firestore.FieldValue.increment(1);
       this.upsert(invite, id);
     } else {
-      this.alertService.infoMessage('not sent', 'timespan too short (10min)');
+      this.alertService.infoMessage(
+        'Erneutes Senden noch nicht möglich',
+        'Einladungen können höchstens alle 10 Minuten erneut gesendet werden.'
+      );
     }
   }
 }

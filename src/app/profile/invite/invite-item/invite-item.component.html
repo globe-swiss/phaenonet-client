@@ -19,7 +19,7 @@
     <h3>{{ item.email }}</h3>
     <ng-container *ngIf="item.register_date; else notregistered">
       <div class="detail-label">
-        {{ 'Profil' | translate }} ({{ 'Registriert am' | translate }} {{ item.register_date | shortdate }})
+        {{ 'Profil' | translate }} ({{ 'registriert am' | translate }} {{ item.register_date | shortdate }})
       </div>
       <h3 (click)="resendInvite()">{{ item.register_nick }}</h3>
     </ng-container>
@@ -43,5 +43,5 @@
 </ng-template>
 
 <ng-template #notsent>
-  <div class="detail-label">Noch nicht versendet.</div>
+  <div class="detail-label">Wird gesendet…</div>
 </ng-template>
