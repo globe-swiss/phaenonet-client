@@ -1,6 +1,6 @@
 <div fxLayout="row" [routerLink]="['/' + item.type + 's', item.individual.id]" class="latest-individual-observation">
   <img class="individual-image" *ngIf="item.imgUrl$ | async" [src]="item.imgUrl$ | async" />
-  <div fxLayout="column" style="margin-left: 25px; margin-right: 25px; margin-top: 15px">
+  <div class="clip-text" fxLayout="column" style="margin-left: 25px; margin-right: 25px; margin-top: 15px">
     <div class="detail-label">
       {{ item.species?.de | translate }}
     </div>

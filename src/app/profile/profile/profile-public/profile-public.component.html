@@ -8,11 +8,6 @@
     <button mat-icon-button [app-copy-clipboard]="profileLink" (copied)="notifyCopied()">
       <mat-icon svgIcon="copylink"></mat-icon>
     </button>
-    <button *ngIf="isLoggedIn && isFollowing$ | async" mat-fab color="primary" class="a100" (click)="unfollow()">
-      <mat-icon svgIcon="subscribe-active"></mat-icon>
-    </button>
-    <button *ngIf="isLoggedIn && !(isFollowing$ | async)" mat-fab color="primary" (click)="follow()">
-      <mat-icon svgIcon="subscribe"></mat-icon>
-    </button>
+    <app-user-subscription-button [user$]="user$" *ngIf="isLoggedIn"></app-user-subscription-button>
   </div>
 </div>

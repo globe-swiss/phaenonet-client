@@ -30,6 +30,7 @@ exports.config = {
     profileEditPage: './src/pages/profile_edit.js',
     individualsPage: './src/pages/individuals.js',
     individualsEditPage: './src/pages/individuals_edit.js',
+    invitesPage: './src/pages/invites.js',
     statisticsPage: './src/pages/statistics.js',
     stationsPage: './src/pages/stations.js',
     navbarComponent: './src/components/navbar.js',

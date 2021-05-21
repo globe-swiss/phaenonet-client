@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
 import { first, map, share, startWith, switchMap, tap } from 'rxjs/operators';
-import { formatShortDate } from '../core/formatDate';
+import { formatShortDate } from '../shared/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
 import { IndividualService } from '../individual/individual.service';

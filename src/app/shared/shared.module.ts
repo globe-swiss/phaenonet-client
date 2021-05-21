@@ -12,8 +12,13 @@ import { MaterialModule } from '../core/material.module';
 import { NotFoundComponent } from '../core/not-found.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { CopyClipboardDirective } from './copy-clipboard.directive';
+import { LimitToPipe } from './limitTo.pipe';
 import { LoadingGuard } from './LoadingGuard';
 import { RoundPipe } from './round.pipe';
+import { ShortdatePipe } from './shortdate.pipe';
+import { ShortdatetimePipe } from './shortdatetime.pipe';
+import { IndividualSubscriptionButtonComponent } from './subscription/individual-subscription-button/individual-subscription-button.component';
+import { UserSubscriptionButtonComponent } from './subscription/user-subscription-button/user-subscription-button.component';
 
 /**
  * The `SharedModule` is used to group common services and modules like {@link TranslateModule}.
@@ -36,7 +41,12 @@ import { RoundPipe } from './round.pipe';
     NotFoundComponent,
     CopyClipboardDirective,
     ConfirmationDialogComponent,
-    RoundPipe
+    RoundPipe,
+    ShortdatePipe,
+    ShortdatetimePipe,
+    LimitToPipe,
+    UserSubscriptionButtonComponent,
+    IndividualSubscriptionButtonComponent
   ],
   exports: [
     CommonModule,
@@ -51,7 +61,12 @@ import { RoundPipe } from './round.pipe';
     TranslateModule,
     FlexLayoutModule,
     GoogleMapsModule,
-    RoundPipe
+    RoundPipe,
+    ShortdatePipe,
+    ShortdatetimePipe,
+    LimitToPipe,
+    UserSubscriptionButtonComponent,
+    IndividualSubscriptionButtonComponent
   ],
   providers: [LoadingGuard]
 })

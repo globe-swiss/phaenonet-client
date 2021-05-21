@@ -5,12 +5,12 @@
       class="detail-header"
       [individual$]="detailSubject$"
     ></app-individual-detail-header>
-    <app-individual-subscription
+    <app-individual-subscription-button
       *ngIf="isLoggedIn && !(isOwn$ | async)"
       gdColumn="1 / span 6"
-      class="detail-header"
+      class="individual-subscription-button"
       [individual$]="detailSubject$"
-    ></app-individual-subscription>
+    ></app-individual-subscription-button>
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
       <app-individual-description
         *ngIf="detailSubject$ | async"

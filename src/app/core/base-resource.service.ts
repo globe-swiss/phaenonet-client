@@ -22,6 +22,7 @@ export abstract class BaseResourceService<T> extends BaseService implements Reso
    */
   upsert(t: T, id: string): Observable<T> {
     const { created, modified, ...withoutDates } = t as any;
+    delete withoutDates.id;
     return from(
       this.afs
         .collection<T>(this.collectionName)

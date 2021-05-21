@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { filter, first, map, mergeAll, shareReplay } from 'rxjs/operators';
-import { formatShortDate } from '../../core/formatDate';
+import { formatShortDate } from '../../shared/formatDate';
 import { Description } from '../../masterdata/description';
 import { Distance } from '../../masterdata/distance';
 import { Exposition } from '../../masterdata/exposition';

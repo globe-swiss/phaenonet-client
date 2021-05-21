@@ -1,0 +1,20 @@
+<div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
+  <h3>
+    <span>{{ 'MEINE EINLADUNGEN' | translate }}</span>
+  </h3>
+</div>
+<div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
+  <ng-container *ngIf="invites$ | async; else noinvites">
+    <app-invite-item *ngFor="let invite of invites$ | async" [item]="invite"></app-invite-item>
+  </ng-container>
+  <button id="invite" mat-flat-button color="primary" (click)="invite()">
+    <span>{{ 'Jetzt einladen' | translate }}</span>
+  </button>
+</div>
+
+<ng-template #noinvites>
+  <div>
+    <img src="assets/img/illu_noinvites.png" style="display: block; margin-left: auto; margin-right: auto" />
+    <p style="text-align: center" class="detail-label">Es sind noch keine Einladungen vorhanden</p>
+  </div>
+</ng-template>

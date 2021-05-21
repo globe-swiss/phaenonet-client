@@ -44,5 +44,10 @@ export class AppComponent {
       'locateMe',
       this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/ico_btn_locateme.svg')
     );
+
+    this.matIconRegistry.addSvgIcon(
+      'resend-mail',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/btn_resend_email.svg')
+    );
   }
 }

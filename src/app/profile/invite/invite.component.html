@@ -1,0 +1,15 @@
+<div gdColumns="repeat(8, 1fr)">
+  <div gdColumn="2 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-view">
+    <div gdColumn="1 / span 6" class="detail-header">
+      <!-- There is no header -->
+    </div>
+    <ng-container *ngIf="detailId">
+      <app-invite-list
+        gdColumn="1 / span 6"
+        gdColumns="repeat(6, 1fr)"
+        class="detail-content"
+        [userId]="detailId"
+      ></app-invite-list>
+    </ng-container>
+  </div>
+</div>

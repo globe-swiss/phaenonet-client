@@ -5,8 +5,8 @@ module.exports = {
   components: {
     navigation: { css: 'app-nav' },
     map: { css: 'google-map' },
-    filter: { css: '.map-filter' }
-    //actions: { css: '.map-actions' } // not always visible
+    filter: { css: '.map-filter' },
+    actions: { css: '.map-actions' }
   },
   filter: {
     phenoyear: {

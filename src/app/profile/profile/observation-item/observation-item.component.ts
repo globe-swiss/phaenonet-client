@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { formatShortDate } from '../../../core/formatDate';
+import { formatShortDate } from '../../../shared/formatDate';
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
 import { MasterdataService } from '../../../masterdata/masterdata.service';
 
