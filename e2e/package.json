@@ -15,5 +15,12 @@
     "mochawesome": "^6.2.2",
     "node-fetch": "^2.6.1",
     "playwright": "^1.11.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.27.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-codeceptjs": "^1.3.0",
+    "eslint-plugin-import": "^2.23.3",
+    "prettier-eslint": "^12.0.0"
   }
 }

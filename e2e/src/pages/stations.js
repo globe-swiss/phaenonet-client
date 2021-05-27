@@ -1,6 +1,6 @@
 module.exports = {
-  url(individual_id) {
-    return '/stations/' + individual_id;
+  url(individualId) {
+    return `/stations/${individualId}`;
   },
   components: {
     navigation: { css: 'app-nav' }

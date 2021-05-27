@@ -1,8 +1,8 @@
 const { I, privateProfilePage } = inject();
 
 module.exports = {
-  url(individual_id) {
-    return '/individuals/' + individual_id;
+  url(individualId) {
+    return `/individuals/${individualId}`;
   },
   components: {
     navigation: { css: 'app-nav' },
@@ -14,7 +14,7 @@ module.exports = {
     species: locate('.detail-label').inside('app-individual-description').at(1),
     name: { css: 'app-individual-description .title-individual' },
     owner: { css: 'app-individual-description .creator' },
-    lastObservationDate: locate('span').inside('app-individual-description div').at(3), //unstable
+    lastObservationDate: locate('span').inside('app-individual-description div').at(3), // unstable
     descriptionFields: {
       environment: locate('.detail-info-value').inside('app-individual-description').at(1),
       altitude: locate('.detail-info-value').inside('app-individual-description').at(2),

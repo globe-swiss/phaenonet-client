@@ -2,8 +2,8 @@ const { I } = inject();
 
 module.exports = {
   newIndividualUrl: '/individuals/new/edit',
-  url(individual_id) {
-    return '/individuals/' + individual_id + '/edit';
+  url(individualId) {
+    return `/individuals/${individualId}/edit`;
   },
   components: {
     navigation: { css: 'app-nav' },
@@ -20,7 +20,7 @@ module.exports = {
   name: {
     field: { css: 'input[formcontrolname="name"]' }
   },
-  //foto - todo: not implemented
+  // foto - todo: not implemented
   environment: {
     dropdown: { css: 'mat-select[formcontrolname="description"]' },
     options: {
