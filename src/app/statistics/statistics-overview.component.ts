@@ -17,12 +17,12 @@ import * as d3Time from 'd3-time';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { filter, first, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { formatShortDate } from '../shared/formatDate';
 import { NavService } from '../core/nav/nav.service';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { SourceType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 import { Observation } from '../observation/observation';
+import { formatShortDate } from '../shared/formatDate';
 import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
 import { AnalyticsValue } from './analytics-value';
@@ -221,6 +221,30 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         .style('opacity', 0.7)
         .attr('fill', 'none');
 
+      this.drawVerticalLines(
+        '.median',
+        analytics,
+        d => this.x(this.toX(analytics.year, d.median)),
+        d => this.x(this.toX(analytics.year, d.median)),
+        d => this.getColor(d.phenophase)
+      );
+
+      this.drawVerticalLines(
+        '.whiskersMin',
+        analytics,
+        d => this.x(this.toX(analytics.year, d.min)),
+        d => this.x(this.toX(analytics.year, d.min)),
+        d => this.getColor(d.phenophase)
+      );
+
+      this.drawVerticalLines(
+        '.whiskersMax',
+        analytics,
+        d => this.x(this.toX(analytics.year, d.max)),
+        d => this.x(this.toX(analytics.year, d.max)),
+        d => this.getColor(d.phenophase)
+      );
+
       const self = this;
       this.g
         .selectAll('.rect')
@@ -253,6 +277,12 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
             .select('#value')
             .text('' + formatShortDate(d.quantile_25) + ' - ' + formatShortDate(d.quantile_75));
 
+          d3.select('#tooltip')
+            .style('left', xPosition + 'px')
+            .style('top', yPosition + 'px')
+            .select('#median')
+            .text(self.translateService.instant('Median:') + ' ' + formatShortDate(d.median));
+
           self.masterdataService
             .getPhenophaseValue(analytics.species, d.phenophase)
             .pipe(
@@ -265,33 +295,9 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
             )
             .subscribe();
         })
-        .on('mouseout', _ => {
+        .on('mouseout', () => {
           d3.select('#tooltip').classed('hidden', true);
         });
-
-      this.drawVerticalLines(
-        '.median',
-        analytics,
-        d => this.x(this.toX(analytics.year, d.median)),
-        d => this.x(this.toX(analytics.year, d.median)),
-        d => this.getColor(d.phenophase)
-      );
-
-      this.drawVerticalLines(
-        '.whiskersMin',
-        analytics,
-        d => this.x(this.toX(analytics.year, d.min)),
-        d => this.x(this.toX(analytics.year, d.min)),
-        d => this.getColor(d.phenophase)
-      );
-
-      this.drawVerticalLines(
-        '.whiskersMax',
-        analytics,
-        d => this.x(this.toX(analytics.year, d.max)),
-        d => this.x(this.toX(analytics.year, d.max)),
-        d => this.getColor(d.phenophase)
-      );
     });
 
     const axisLeft = d3Axis.axisLeft(this.y).tickFormat(t => this.translateLeftAxisTick(t.toString()));
