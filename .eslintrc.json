@@ -3,10 +3,11 @@
   "ignorePatterns": ["projects/**/*"],
   "overrides": [
     {
-      "files": ["*.ts"],
+      "files": ["src/**/*.ts"],
       "parserOptions": {
-        "project": ["tsconfig.json", "e2e/tsconfig.json"],
-        "createDefaultProgram": true
+        "project": ["tsconfig.json"],
+        "createDefaultProgram": true,
+        "sourceType": "module"
       },
       "extends": [
         "plugin:@angular-eslint/recommended",
@@ -32,7 +33,7 @@
       }
     },
     {
-      "files": ["*.html"],
+      "files": ["src/**/*.html"],
       "extends": ["plugin:@angular-eslint/template/recommended", "plugin:prettier/recommended"],
       "rules": {}
     }
