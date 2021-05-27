@@ -253,6 +253,12 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
             .select('#value')
             .text('' + formatShortDate(d.quantile_25) + ' - ' + formatShortDate(d.quantile_75));
 
+          d3.select('#tooltip')
+            .style('left', xPosition + 'px')
+            .style('top', yPosition + 'px')
+            .select('#median')
+            .text(self.translateService.instant('Median:') + ' ' + formatShortDate(d.median));
+
           self.masterdataService
             .getPhenophaseValue(analytics.species, d.phenophase)
             .pipe(
@@ -265,7 +271,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
             )
             .subscribe();
         })
-        .on('mouseout', _ => {
+        .on('mouseout', () => {
           d3.select('#tooltip').classed('hidden', true);
         });
 
