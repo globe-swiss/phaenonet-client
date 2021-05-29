@@ -1,7 +1,9 @@
-FROM codeceptjs/codeceptjs
+FROM codeceptjs/codeceptjs:latest
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends wait-for-it 
+    && apt-get -y install --no-install-recommends wait-for-it=0.0~git20170723-1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tests
 
