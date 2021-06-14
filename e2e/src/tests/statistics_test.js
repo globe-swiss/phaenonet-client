@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 Feature('Statistics').retry(2);
 
 Scenario('test quantil regression on 2018', ({ I, statisticsPage }) => {

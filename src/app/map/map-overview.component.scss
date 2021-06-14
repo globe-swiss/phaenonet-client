@@ -56,18 +56,19 @@
   position: fixed;
   left: 13.5%;
   top: 8rem;
-
   background-color: white;
   border-radius: 20px;
 
   form {
     display: flex;
     flex-direction: row;
+
     * {
       margin: 3px 5px -5px 5px;
       display: flex;
       flex-direction: column;
     }
+
     .seperator {
       background-color: #f0f0f0;
       width: 1px;
@@ -86,6 +87,7 @@
 ::ng-deep #phaenonet-body #form-year .mat-form-field-infix {
   width: 7rem;
 }
+
 ::ng-deep #phaenonet-body #form-datasource .mat-form-field-infix {
   width: 7rem;
 }
@@ -102,6 +104,7 @@
   ::ng-deep #phaenonet-body #form-year .mat-form-field-infix {
     width: 6rem;
   }
+
   ::ng-deep #phaenonet-body #form-datasource .mat-form-field-infix {
     width: 6rem;
   }

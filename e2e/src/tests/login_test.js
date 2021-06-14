@@ -24,7 +24,7 @@ Scenario('test login failure', ({ I, loginPage, e2eTestUser }) => {
   I.amLoggedOut();
 });
 
-Scenario('test login with invalid mail', ({ I, loginPage, e2eTestUser }) => {
+Scenario('test login with invalid mail', ({ I, loginPage }) => {
   I.visit(loginPage.url);
   loginPage.login('invalid_email', 'doesnt_matter');
   I.waitForText('Ungültige Mailadresse');

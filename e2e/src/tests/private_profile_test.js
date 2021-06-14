@@ -52,7 +52,7 @@ Scenario('test new individual shown on profile', async ({ I, privateProfilePage 
   I.say('Checking that the profile is clean');
   I.dontSeeElement(privateProfilePage.observations.listItems);
 
-  let individualUrl = await I.createDefaultIndividual();
+  const individualUrl = await I.createDefaultIndividual();
   I.visit(privateProfilePage.url);
   I.waitForElement(privateProfilePage.observations.listItems);
   within(privateProfilePage.observations.getItem(1), () => {

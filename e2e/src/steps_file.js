@@ -3,10 +3,11 @@ const fetch = require('node-fetch');
 
 // in this file you can append custom step methods to 'I' object
 
+// eslint-disable-next-line func-names
 module.exports = function () {
   return actor({
     async clearTestData() {
-      console.log('clear individuals for e2e user');
+      this.say('clear individuals for e2e user');
       await fetch('https://europe-west1-phaenonet-test.cloudfunctions.net/e2e_clear_individuals');
     },
     ss() {
@@ -35,7 +36,7 @@ module.exports = function () {
     },
     selectDropdownValue(dropdownLocator, value) {
       this.click(dropdownLocator);
-      this.click({ css: "mat-option[ng-reflect-value='" + value + "']" });
+      this.click({ css: `mat-option[ng-reflect-value='${value}']` });
     },
     async createDefaultIndividual() {
       // fixme: fails if api limit reached
@@ -44,12 +45,12 @@ module.exports = function () {
       this.click(individualsEditPage.saveButton);
       this.waitForElement(individualsPage.components.header, 10);
       const url = await this.grabCurrentUrl();
-      this.say('Created Individual at ' + url);
+      this.say(`Created Individual at ${url}`);
       return url;
     },
     deleteIndividual(url) {
       this.visit(url);
-      //delete all observations
+      // delete all observations
       individualsPage.deleteIndividual();
     },
     checkElementsPresent(elementList) {

@@ -156,7 +156,7 @@ export class IndividualDescriptionComponent implements OnInit {
       width: '615px',
       data: {
         title: 'OBJEKT LÖSCHEN',
-        // tslint:disable-next-line: max-line-length
+        // eslint-disable-next-line max-len
         content:
           'Möchten Sie das Objekt definitiv löschen? In Zukunft können Sie keine Daten mehr zu diesem Objekt eingeben. Daten zu diesem Objekt aus vergangenen Jahren bleiben erhalten.',
         yes: 'Objekt löschen',
@@ -189,7 +189,7 @@ export class IndividualDescriptionComponent implements OnInit {
       width: '615px',
       data: {
         title: 'LÖSCHEN NICHT MÖGLICH',
-        // tslint:disable-next-line: max-line-length
+        // eslint-disable-next-line max-len
         content:
           'Das Objekt kann nicht gelöscht werden, weil im aktuellen Jahr Beobachtungen erfasst wurden. Löschen Sie zuerst die Beobachtungen, um das Objekt löschen zu können.<br /><br />Wenn Sie die Beobachtungen im aktuellen Jahr behalten wollen, löschen Sie das Objekt erst im kommenden Jahr.',
         yes: 'zurück zum Objekt',

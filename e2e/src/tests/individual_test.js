@@ -1,6 +1,6 @@
 Feature('Individual View').retry(2);
 
-var individualUrl;
+let individualUrl;
 
 // fixme: fails if api limit reached
 Before(async ({ I }) => {
@@ -34,5 +34,5 @@ Scenario('test individual details', ({ I, individualsPage, e2eTestUser }) => {
 
 Scenario('test edit individual button', ({ I, individualsPage }) => {
   I.click(individualsPage.description.editButton);
-  I.waitUrlEquals(individualUrl + '/edit');
+  I.waitUrlEquals(`${individualUrl}/edit`);
 });

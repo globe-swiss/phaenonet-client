@@ -40,14 +40,17 @@ body {
     padding-left: 0.3rem;
     padding-right: 0.3rem;
   }
+
   .detail-right {
     padding-top: 2.46875rem;
     padding-right: 0.3rem;
     padding-left: 0.3rem;
   }
+
   .detail-content {
     margin-top: 1rem;
   }
+
   .detail-content:nth-child(2n - 1) {
     margin-top: 2.46875rem;
   }
@@ -93,6 +96,8 @@ h3 {
 #phaenonet-body .gm-style .gm-style-iw-c {
   padding: 0;
 }
+
+//fixme: typos in following 3 selectors pahenonet, fix or remove
 #pahenonet-body button.gm-ui-hover-effect {
   visibility: hidden;
 }
