@@ -7,6 +7,7 @@ import { some } from 'fp-ts/lib/Option';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AlertService } from 'src/app/messaging/alert.service';
+import { UserService } from 'src/app/profile/user.service';
 import { Description } from '../../../masterdata/description';
 import { Distance } from '../../../masterdata/distance';
 import { Exposition } from '../../../masterdata/exposition';
@@ -67,14 +68,15 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     private individualService: IndividualService,
     private geoposService: GeoposService,
     private analytics: AngularFireAnalytics,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
     this.geopos$ = this.geoposService.geopos$;
     this.subscriptions.add(this.geoposService.altitude$.subscribe(altitude => this.altitudeInput.setValue(altitude)));
 
-    this.selectableSpecies$ = this.masterdataService.getSelectableSpecies();
+    this.selectableSpecies$ = this.masterdataService.getSelectableSpecies(this.userService.getRoles());
     this.selectableDescriptions$ = this.masterdataService.getDescriptions();
     this.selectableExpositions$ = this.masterdataService.getExpositions();
     this.selectableShades$ = this.masterdataService.getShades();
