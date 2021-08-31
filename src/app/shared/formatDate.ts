@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 
 export function formatShortDate(date: Date): string {
   return moment(date).format(moment.localeData().longDateFormat('L'));

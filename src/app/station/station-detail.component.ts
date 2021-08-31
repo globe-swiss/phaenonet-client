@@ -3,7 +3,7 @@ import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { filter, first, map, mergeAll } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';

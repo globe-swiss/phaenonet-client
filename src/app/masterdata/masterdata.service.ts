@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, mergeAll, publishReplay, refCount, shareReplay } from 'rxjs/operators';
-import * as configStatic from '../../assets/config_static.json';
+import configStatic from '../../assets/config_static.json';
 import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
 import { Individual } from '../individual/individual';

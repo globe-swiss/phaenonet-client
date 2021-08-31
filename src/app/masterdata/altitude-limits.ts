@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 
 export interface AltitudeLimits {
   altitude_grp_1_start_day: number;

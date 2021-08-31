@@ -14,7 +14,7 @@ import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import * as d3 from 'd3-selection';
 import * as d3Time from 'd3-time';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Observable } from 'rxjs';
 import { filter, first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { NavService } from '../core/nav/nav.service';

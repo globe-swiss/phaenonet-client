@@ -44,6 +44,4 @@
 @include mat.tree-theme($phaenonet-theme);
 @include mat.snack-bar-theme($phaenonet-theme);
 
-@include custom-button-theme($phaenonet-theme);
-
 @import './overwrite-mat';
