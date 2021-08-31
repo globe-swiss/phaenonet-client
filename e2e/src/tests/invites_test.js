@@ -13,5 +13,4 @@ Scenario('test component send invite', ({ I, invitesPage }) => {
   I.fillField(invitesPage.invitesDialog.textfield, 'aaazzz@example.com');
   I.click(invitesPage.invitesDialog.sendButton);
   I.see('aaazzz@example.com', invitesPage.invitesList.listItems);
-  I.ss();
 });

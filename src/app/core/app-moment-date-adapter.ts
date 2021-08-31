@@ -6,8 +6,7 @@ import {
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDatetimeAdapter } from '@mat-datetimepicker/moment';
-import * as moment from 'moment';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import { LanguageService } from './language.service';
 
 @Injectable()

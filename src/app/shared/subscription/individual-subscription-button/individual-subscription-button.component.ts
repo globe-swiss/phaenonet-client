@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { Observable } from 'rxjs';
 import { Individual } from 'src/app/individual/individual';
 import { AuthService } from '../../../auth/auth.service';
