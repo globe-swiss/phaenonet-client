@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { combineLatest, from, Observable, of } from 'rxjs';
 import { first, map, mergeAll } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';

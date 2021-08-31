@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/analytics';
-import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { some } from 'fp-ts/lib/Option';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { debounceTime, first, map, switchMap, take } from 'rxjs/operators';

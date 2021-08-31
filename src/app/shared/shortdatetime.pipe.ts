@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import { formatShortDateTime } from './formatDate';
 import Timestamp = firebase.firestore.Timestamp;
 

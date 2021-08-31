@@ -1,5 +1,5 @@
 import { enableProdMode } from '@angular/core';
-import { FIREBASE_OPTIONS } from '@angular/fire';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import * as Sentry from '@sentry/angular';
 import { Integrations } from '@sentry/tracing';
