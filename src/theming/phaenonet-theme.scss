@@ -1,48 +1,48 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 @import './typography';
 
-@include angular-material-typography($phaenonet-typography);
+@include mat.all-component-typographies($phaenonet-typography);
 
 @import './palettes';
 
 @import './custom-button-theme';
 
 //tutorial https://blog.thoughtram.io/angular/2017/05/23/custom-themes-with-angular-material.html#custom-theme-using-built-in-color-palettes
-@include mat-core-theme($phaenonet-theme);
-@include mat-autocomplete-theme($phaenonet-theme);
-@include mat-button-theme($phaenonet-theme);
-@include mat-button-toggle-theme($phaenonet-theme);
-@include mat-card-theme($phaenonet-theme);
-@include mat-checkbox-theme($phaenonet-theme);
-@include mat-chips-theme($phaenonet-theme);
-@include mat-table-theme($phaenonet-theme);
-@include mat-datepicker-theme($phaenonet-theme);
-@include mat-dialog-theme($phaenonet-theme);
-@include mat-divider-theme($phaenonet-theme);
-@include mat-expansion-panel-theme($phaenonet-theme);
-@include mat-form-field-theme($phaenonet-theme);
-@include mat-grid-list-theme($phaenonet-theme);
-@include mat-icon-theme($phaenonet-theme);
-@include mat-input-theme($phaenonet-theme);
-@include mat-list-theme($phaenonet-theme);
-@include mat-menu-theme($phaenonet-theme);
-@include mat-paginator-theme($phaenonet-theme);
-@include mat-progress-bar-theme($phaenonet-theme);
-@include mat-progress-spinner-theme($phaenonet-theme);
-@include mat-radio-theme($phaenonet-theme);
-@include mat-select-theme($phaenonet-theme);
-@include mat-sidenav-theme($phaenonet-theme);
-@include mat-slide-toggle-theme($phaenonet-theme);
-@include mat-slider-theme($phaenonet-theme);
-@include mat-stepper-theme($phaenonet-theme);
-@include mat-sort-theme($phaenonet-theme);
-@include mat-tabs-theme($phaenonet-theme);
-@include mat-toolbar-theme($phaenonet-theme);
-@include mat-tooltip-theme($phaenonet-theme);
-@include mat-tree-theme($phaenonet-theme);
-@include mat-snack-bar-theme($phaenonet-theme);
+@include mat.core-theme($phaenonet-theme);
+@include mat.autocomplete-theme($phaenonet-theme);
+@include mat.button-theme($phaenonet-theme);
+@include mat.button-toggle-theme($phaenonet-theme);
+@include mat.card-theme($phaenonet-theme);
+@include mat.checkbox-theme($phaenonet-theme);
+@include mat.chips-theme($phaenonet-theme);
+@include mat.table-theme($phaenonet-theme);
+@include mat.datepicker-theme($phaenonet-theme);
+@include mat.dialog-theme($phaenonet-theme);
+@include mat.divider-theme($phaenonet-theme);
+@include mat.expansion-theme($phaenonet-theme);
+@include mat.form-field-theme($phaenonet-theme);
+@include mat.grid-list-theme($phaenonet-theme);
+@include mat.icon-theme($phaenonet-theme);
+@include mat.input-theme($phaenonet-theme);
+@include mat.list-theme($phaenonet-theme);
+@include mat.menu-theme($phaenonet-theme);
+@include mat.paginator-theme($phaenonet-theme);
+@include mat.progress-bar-theme($phaenonet-theme);
+@include mat.progress-spinner-theme($phaenonet-theme);
+@include mat.radio-theme($phaenonet-theme);
+@include mat.select-theme($phaenonet-theme);
+@include mat.sidenav-theme($phaenonet-theme);
+@include mat.slide-toggle-theme($phaenonet-theme);
+@include mat.slider-theme($phaenonet-theme);
+@include mat.stepper-theme($phaenonet-theme);
+@include mat.sort-theme($phaenonet-theme);
+@include mat.tabs-theme($phaenonet-theme);
+@include mat.toolbar-theme($phaenonet-theme);
+@include mat.tooltip-theme($phaenonet-theme);
+@include mat.tree-theme($phaenonet-theme);
+@include mat.snack-bar-theme($phaenonet-theme);
 
 @include custom-button-theme($phaenonet-theme);
 

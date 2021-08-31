@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 // generated using http://mcg.mbitson.com/#!?mcgpalette0=%23478b64&mcgpalette1=%23f7f5f2&mcgpalette2=%23d37872&themename=phaenonet
 
@@ -101,8 +101,8 @@ $phaenonet-w: (
   )
 );
 
-$phaenonet-primary: mat-palette($phaenonet-p, 500);
-$phaenonet-accent: mat-palette($phaenonet-s, 500);
-$phaenonet-warn: mat-palette($phaenonet-w, 500);
+$phaenonet-primary: mat.define-palette($phaenonet-p, 500);
+$phaenonet-accent: mat.define-palette($phaenonet-s, 500);
+$phaenonet-warn: mat.define-palette($phaenonet-w, 500);
 
-$phaenonet-theme: mat-light-theme($phaenonet-primary, $phaenonet-accent, $phaenonet-warn);
+$phaenonet-theme: mat.define-light-theme($phaenonet-primary, $phaenonet-accent, $phaenonet-warn);
