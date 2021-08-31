@@ -9,18 +9,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@codeceptjs/ui": "^0.4.3",
-    "codeceptjs": "^3.0.7",
-    "mocha": "^8.4.0",
+    "@codeceptjs/ui": "^0.4.6",
+    "codeceptjs": "^3.1.1",
+    "mocha": "^9.1.1",
     "mochawesome": "^6.2.2",
     "node-fetch": "^2.6.1",
-    "playwright": "^1.11.1"
+    "playwright": "^1.14.1"
   },
   "devDependencies": {
-    "eslint": "^7.27.0",
+    "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-codeceptjs": "^1.3.0",
-    "eslint-plugin-import": "^2.23.3",
-    "prettier-eslint": "^12.0.0"
+    "eslint-plugin-import": "^2.24.2",
+    "prettier-eslint": "^13.0.0"
   }
 }
