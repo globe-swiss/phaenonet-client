@@ -1,6 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
+  "ignorePatterns": ["dist/**/*", "e2e/output/**/*"],
   "overrides": [
     {
       "files": ["src/**/*.ts"],
