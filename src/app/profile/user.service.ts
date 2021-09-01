@@ -12,10 +12,13 @@ import { MasterdataService } from '../masterdata/masterdata.service';
 import { AlertService } from '../messaging/alert.service';
 import { PublicUser } from '../open/public-user';
 import { PublicUserService } from '../open/public-user.service';
+import { Roles } from './Roles.enum';
 import { User } from './user';
 
 @Injectable()
 export class UserService extends BaseResourceService<User> {
+  private roles$: Observable<string[]>;
+
   constructor(
     private publicUserService: PublicUserService,
     alertService: AlertService,
@@ -25,9 +28,12 @@ export class UserService extends BaseResourceService<User> {
     private masterdataService: MasterdataService
   ) {
     super(alertService, afs, 'users');
+    this.roles$ = this.publicUserService
+      .get(this.authService.getUserId())
+      .pipe(map(publicUser => (publicUser.roles ? publicUser.roles : [])));
   }
 
-  getUser() {
+  getUser(): Observable<User> {
     return this.get(this.authService.getUserId());
   }
 
@@ -45,7 +51,7 @@ export class UserService extends BaseResourceService<User> {
     );
   }
 
-  followUser(target: string | Observable<PublicUser>) {
+  followUser(target: string | Observable<PublicUser>): Observable<void> {
     return this.idObservable(target).pipe(
       first(),
       switchMap(id => this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayUnion(id) }))
@@ -59,13 +65,13 @@ export class UserService extends BaseResourceService<User> {
     );
   }
 
-  isFollowingUser(target: string | Observable<PublicUser>) {
+  isFollowingUser(target: string | Observable<PublicUser>): Observable<boolean> {
     return combineLatest([this.idObservable(target), this.getUser()]).pipe(
       map(([id, user]) => user.following_users.includes(id))
     );
   }
 
-  isFollowingIndividual(target: string | Observable<Individual>) {
+  isFollowingIndividual(target: string | Observable<Individual>): Observable<boolean> {
     return combineLatest([this.individualObservable(target), this.getUser()]).pipe(
       map(([individual, user]) => user.following_individuals.includes(individual))
     );
@@ -78,7 +84,7 @@ export class UserService extends BaseResourceService<User> {
   getFollowedIndividuals(limit$: Observable<number>): Observable<Individual[]> {
     return combineLatest([this.authService.user$, limit$, this.masterdataService.phenoYear$]).pipe(
       filter(
-        ([user, limit, year]) =>
+        ([user, , year]) =>
           user.following_individuals !== undefined && user.following_individuals.length !== 0 && year !== undefined
       ),
       switchMap(([user, limit, year]) => this.individualService.listByIds(user.following_individuals, year, limit))
@@ -87,7 +93,7 @@ export class UserService extends BaseResourceService<User> {
 
   getFollowedUsers(limit$: Observable<number>): Observable<PublicUser[]> {
     return combineLatest([this.authService.user$, limit$]).pipe(
-      filter(([user, limit]) => user.following_users !== undefined && user.following_users.length !== 0),
+      filter(([user]) => user.following_users !== undefined && user.following_users.length !== 0),
       switchMap(([user_ids, limit]) =>
         combineLatest(user_ids.following_users.slice(0, limit).map(user_id => this.publicUserService.get(user_id)))
       )
@@ -108,5 +114,13 @@ export class UserService extends BaseResourceService<User> {
     } else {
       return target.pipe(map(x => x.individual));
     }
+  }
+
+  public getRoles(): Observable<string[]> {
+    return this.roles$;
+  }
+
+  public isRanger(): Observable<boolean> {
+    return this.roles$.pipe(map(roles => roles.includes(Roles.RANGER)));
   }
 }

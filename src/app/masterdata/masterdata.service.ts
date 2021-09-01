@@ -1,12 +1,13 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, of, Subscription } from 'rxjs';
+import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { map, mergeAll, publishReplay, refCount, shareReplay } from 'rxjs/operators';
 import configStatic from '../../assets/config_static.json';
 import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
 import { Individual } from '../individual/individual';
 import { AlertService } from '../messaging/alert.service';
+import { Roles } from '../profile/Roles.enum';
 import { AltitudeLimits } from './altitude-limits';
 import { Comment } from './comment';
 import { Description } from './description';
@@ -127,8 +128,18 @@ export class MasterdataService extends BaseService implements OnDestroy {
   /**
    * Species that can be selected for creating new individuals.
    */
-  getSelectableSpecies(): Observable<Species[]> {
-    return this.getSpecies().pipe(map(species => species.filter(s => s.tenant === 'all' || s.tenant === 'globe')));
+  getSelectableSpecies(roles: Observable<string[]>): Observable<Species[]> {
+    return combineLatest([this.getSpecies(), roles]).pipe(
+      map(([species, roles]) => {
+        if (roles.includes(Roles.RANGER)) {
+          // PhaenoRanger user can enter data for ranger and globe species
+          return species.filter(s => s.tenants.includes('globe') || s.tenants.includes('ranger'));
+        } else {
+          // normal PhaenoNet User can enter globe species only
+          return species.filter(s => s.tenants.includes('globe'));
+        }
+      })
+    );
   }
 
   getHabitats(): Observable<Habitat[]> {

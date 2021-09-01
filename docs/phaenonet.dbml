@@ -147,6 +147,7 @@ table nicknames {
 table public_user {
   id string [pk, ref: - users.id]
   nickname string [unique, ref: - users.nickname]
+  roles array[roles] [note: 'defined roles: ranger']
 
   note: 'Public user information.'
 }
