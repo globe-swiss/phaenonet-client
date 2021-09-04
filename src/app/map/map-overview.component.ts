@@ -11,7 +11,7 @@ import { IndividualService } from '../individual/individual.service';
 import { IdLike } from '../masterdata/masterdata-like';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
-import { SourceFilterType } from '../masterdata/source-type';
+import { SourceFilterType, SourceType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 
 class GlobeInfoWindowData {
@@ -55,11 +55,11 @@ export class MapOverviewComponent implements OnInit {
 
   globeInfoWindowData$ = new ReplaySubject<GlobeInfoWindowData>(1);
   meteoswissInfoWindowData$ = new ReplaySubject<MeteoswissInfoWindowData>(1);
-  infoWindowType$ = new ReplaySubject<'globe' | 'meteoswiss'>(1);
+  infoWindowType$ = new ReplaySubject<SourceType>(1);
 
   years$ = this.masterdataService.availableYears$.pipe(tap(years => this.selectedYear.patchValue(years[0])));
   species$: Subject<Species[]> = new ReplaySubject(1);
-  datasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss'];
+  datasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger'];
 
   selectedYear = new FormControl();
   mapFormGroup = new FormGroup({
