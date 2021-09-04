@@ -1,1 +1,1 @@
-export type SourceType = 'all' | 'globe' | 'meteoswiss';
+export type SourceFilterType = 'all' | 'globe' | 'meteoswiss';

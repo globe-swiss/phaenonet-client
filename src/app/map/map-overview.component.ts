@@ -11,7 +11,7 @@ import { IndividualService } from '../individual/individual.service';
 import { IdLike } from '../masterdata/masterdata-like';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
-import { SourceType } from '../masterdata/source-type';
+import { SourceFilterType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 
 class GlobeInfoWindowData {
@@ -59,7 +59,7 @@ export class MapOverviewComponent implements OnInit {
 
   years$ = this.masterdataService.availableYears$.pipe(tap(years => this.selectedYear.patchValue(years[0])));
   species$: Subject<Species[]> = new ReplaySubject(1);
-  datasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
+  datasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss'];
 
   selectedYear = new FormControl();
   mapFormGroup = new FormGroup({
@@ -93,7 +93,7 @@ export class MapOverviewComponent implements OnInit {
       startWith(this.mapFormGroup.getRawValue()),
       switchMap(form => {
         const year = +form.year;
-        const datasource: SourceType = form.datasource;
+        const datasource: SourceFilterType = form.datasource;
         const species = form.species;
 
         // only report an event if filter is not the default
