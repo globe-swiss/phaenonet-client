@@ -4,7 +4,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { some } from 'fp-ts/lib/Option';
-import { BehaviorSubject, Observable, ReplaySubject, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, ReplaySubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AlertService } from 'src/app/messaging/alert.service';
 import { UserService } from 'src/app/profile/user.service';
@@ -72,7 +72,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     private userService: UserService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.geopos$ = this.geoposService.geopos$;
     this.subscriptions.add(this.geoposService.altitude$.subscribe(altitude => this.altitudeInput.setValue(altitude)));
 
@@ -85,17 +85,19 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     this.selectableDistances$ = this.masterdataService.getDistances();
     this.selectableIrrigations$ = this.masterdataService.getIrrigations();
 
-    this.individual$.pipe(first()).subscribe(detail => {
-      if (this.createNewIndividual) {
-        detail.gradient = 0;
-        detail.type = 'individual';
-        detail.source = 'globe';
-      }
-      this.createForm.reset(detail);
-    });
+    combineLatest([this.individual$, this.userService.getSource()])
+      .pipe(first())
+      .subscribe(([detail, source]) => {
+        if (this.createNewIndividual) {
+          detail.gradient = 0;
+          detail.type = 'individual';
+          detail.source = source;
+        }
+        this.createForm.reset(detail);
+      });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
@@ -111,18 +113,18 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
         if (this.fileToUpload) {
           this.uploadImage(result, this.fileToUpload);
         } else {
-          this.router.navigate(['individuals', this.toIndividualId(result)]);
+          void this.router.navigate(['individuals', this.toIndividualId(result)]);
         }
       });
     });
     if (this.createNewIndividual) {
-      this.analytics.logEvent('individual-create.submit');
+      void this.analytics.logEvent('individual-create.submit');
     } else {
-      this.analytics.logEvent('individual-modify.submit');
+      void this.analytics.logEvent('individual-modify.submit');
     }
   }
 
-  onFileSelected(files: FileList) {
+  onFileSelected(files: FileList): void {
     this.fileToUpload = files.item(0);
   }
 
@@ -138,16 +140,16 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
           'Das Foto konnte nicht hochgeladen werden. Das Format wird nicht unterstützt oder die maximale Grösse wurde überschritten.',
           some(10000)
         );
-        this.router.navigate(['individuals', this.toIndividualId(individual)]);
+        void this.router.navigate(['individuals', this.toIndividualId(individual)]);
       });
-    this.analytics.logEvent('individual.upload-image');
+    void this.analytics.logEvent('individual.upload-image');
   }
 
-  removeUploadedFile() {
+  removeUploadedFile(): void {
     this.fileToUpload = null;
   }
 
   private toIndividualId(individual: Individual): string {
-    return individual.year + '_' + individual.individual;
+    return `${individual.year}_${individual.individual}`;
   }
 }

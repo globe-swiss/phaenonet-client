@@ -107,12 +107,8 @@ export class MapOverviewComponent implements OnInit {
         }
         return this.individualService.listByYear(year).pipe(
           map(individuals => {
-            if (datasource === 'meteoswiss') {
-              individuals = individuals.filter(i => i.source === 'meteoswiss');
-            } else {
-              if (datasource === 'globe') {
-                individuals = individuals.filter(i => i.source === 'globe');
-              }
+            if (datasource !== 'all') {
+              individuals = individuals.filter(i => i.source === datasource);
             }
             if (species !== allSpecies.id) {
               individuals = individuals.filter(i => {

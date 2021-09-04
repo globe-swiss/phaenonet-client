@@ -6,6 +6,7 @@ import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, first, map, mergeAll } from 'rxjs/operators';
+import { UserService } from 'src/app/profile/user.service';
 import { altitudeLimits } from '../../../masterdata/altitude-limits';
 import { IdLike } from '../../../masterdata/masterdata-like';
 import { MasterdataService } from '../../../masterdata/masterdata.service';
@@ -37,10 +38,11 @@ export class ObservationViewComponent implements OnInit {
     private dialog: MatDialog,
     private observationService: ObservationService,
     private masterdataService: MasterdataService,
-    private analytics: AngularFireAnalytics
+    private analytics: AngularFireAnalytics,
+    private userService: UserService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     const availablePhenophases$ = this.individual$.pipe(
       filter(i => i !== undefined),
       map(i => this.masterdataService.getPhenophases(i.species)),
@@ -110,38 +112,40 @@ export class ObservationViewComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: PhenophaseObservation) => {
       // discard result if empty or no data was selected (fixme -> disable button in form)
       if (result && result.observation.toNullable().date) {
-        this.individual$.pipe(first()).subscribe(detail => {
-          result.observation.map(observation => {
-            // fix undefined comment #28
-            if (observation.comment === undefined) {
-              observation.comment = firebase.firestore.FieldValue.delete();
-            }
-            // if this is a new observation the created date is not set
-            if (!observation.created) {
-              observation.individual = detail.individual;
-              observation.individual_id = this.individualId;
-              observation.phenophase = result.phenophase.id;
-              observation.species = detail.species;
-              observation.year = detail.year;
-              observation.user = detail.user;
-              observation.source = 'globe';
-            }
+        combineLatest([this.individual$, this.userService.getSource()])
+          .pipe(first())
+          .subscribe(([detail, source]) => {
+            result.observation.map(observation => {
+              // fix undefined comment #28
+              if (observation.comment === undefined) {
+                observation.comment = firebase.firestore.FieldValue.delete();
+              }
+              // if this is a new observation the created date is not set
+              if (!observation.created) {
+                observation.individual = detail.individual;
+                observation.individual_id = this.individualId;
+                observation.phenophase = result.phenophase.id;
+                observation.species = detail.species;
+                observation.year = detail.year;
+                observation.user = detail.user;
+                observation.source = source;
+              }
 
-            const observationId = [
-              observation.individual,
-              observation.year,
-              observation.species,
-              observation.phenophase
-            ].join('_');
+              const observationId = [
+                observation.individual,
+                observation.year,
+                observation.species,
+                observation.phenophase
+              ].join('_');
 
-            this.observationService.upsert(observation, observationId);
+              this.observationService.upsert(observation, observationId);
 
-            this.analytics.logEvent(observation.created ? 'observation.modify' : 'observation.create', {
-              species: detail.species,
-              phenophase: result.phenophase.id
+              void this.analytics.logEvent(observation.created ? 'observation.modify' : 'observation.create', {
+                species: detail.species,
+                phenophase: result.phenophase.id
+              });
             });
           });
-        });
       }
     });
   }

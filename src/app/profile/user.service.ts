@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
-import { combineLatest, from, Observable, of } from 'rxjs';
+import { combineLatest, from, Observable, of, Subscription } from 'rxjs';
 import { filter, first, map, switchMap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
@@ -9,6 +9,7 @@ import { Individual } from '../individual/individual';
 import { IndividualService } from '../individual/individual.service';
 import { IdLike } from '../masterdata/masterdata-like';
 import { MasterdataService } from '../masterdata/masterdata.service';
+import { SourceType } from '../masterdata/source-type';
 import { AlertService } from '../messaging/alert.service';
 import { PublicUser } from '../open/public-user';
 import { PublicUserService } from '../open/public-user.service';
@@ -16,8 +17,10 @@ import { Roles } from './Roles.enum';
 import { User } from './user';
 
 @Injectable()
-export class UserService extends BaseResourceService<User> {
+export class UserService extends BaseResourceService<User> implements OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   private roles$: Observable<string[]>;
+  private currentRoles: string[];
 
   constructor(
     private publicUserService: PublicUserService,
@@ -31,6 +34,11 @@ export class UserService extends BaseResourceService<User> {
     this.roles$ = this.publicUserService
       .get(this.authService.getUserId())
       .pipe(map(publicUser => (publicUser.roles ? publicUser.roles : [])));
+    this.subscriptions.add(this.roles$.subscribe(roles => (this.currentRoles = roles)));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   getUser(): Observable<User> {
@@ -122,5 +130,13 @@ export class UserService extends BaseResourceService<User> {
 
   public isRanger(): Observable<boolean> {
     return this.roles$.pipe(map(roles => roles.includes(Roles.RANGER)));
+  }
+
+  public getCurrentRoles(): string[] {
+    return this.currentRoles;
+  }
+
+  public getSource(): Observable<SourceType> {
+    return this.roles$.pipe(map(roles => (roles.includes(Roles.RANGER) ? 'ranger' : 'globe')));
   }
 }
