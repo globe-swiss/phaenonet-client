@@ -20,7 +20,6 @@ import { User } from './user';
 export class UserService extends BaseResourceService<User> implements OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private roles$: Observable<string[]>;
-  private currentRoles: string[];
 
   constructor(
     private publicUserService: PublicUserService,
@@ -34,7 +33,6 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
     this.roles$ = this.publicUserService
       .get(this.authService.getUserId())
       .pipe(map(publicUser => (publicUser.roles ? publicUser.roles : [])));
-    this.subscriptions.add(this.roles$.subscribe(roles => (this.currentRoles = roles)));
   }
 
   ngOnDestroy(): void {
@@ -130,10 +128,6 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
 
   public isRanger(): Observable<boolean> {
     return this.roles$.pipe(map(roles => roles.includes(Roles.RANGER)));
-  }
-
-  public getCurrentRoles(): string[] {
-    return this.currentRoles;
   }
 
   public getSource(): Observable<SourceType> {
