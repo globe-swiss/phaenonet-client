@@ -1,4 +1,5 @@
 import firebase from 'firebase/compat/app';
+import { SourceType } from '../masterdata/source-type';
 import Timestamp = firebase.firestore.Timestamp;
 
 export class Activity {
@@ -10,7 +11,7 @@ export class Activity {
   observation_id?: string;
   phenophase: string;
   phenophase_name: string;
-  source: 'globe' | 'meteoswiss';
+  source: SourceType;
   species: string;
   species_name: string;
   type: 'observation';

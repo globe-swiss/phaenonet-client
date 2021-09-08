@@ -23,7 +23,6 @@ export class AuthService extends BaseService implements OnDestroy {
 
   private subscriptions = new Subscription();
   public user$: Observable<User>;
-  private firebaseUser: firebase.User;
 
   // store the URL so we can redirect after logging in
   redirectUrl: string;
@@ -37,20 +36,19 @@ export class AuthService extends BaseService implements OnDestroy {
     super(alertService);
 
     this.user$ = this.afAuth.authState.pipe(
-      tap(user => (this.firebaseUser = user)),
       switchMap(user => {
         if (user) {
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         } else {
           this.resetClientSession();
-          return of(null);
+          return of(null) as Observable<User>;
         }
       })
     );
     this.subscriptions.add(this.user$.subscribe());
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
@@ -63,12 +61,12 @@ export class AuthService extends BaseService implements OnDestroy {
         })
         .catch(x => {
           this.errorHandling(x);
-          return of(null);
+          return of(null) as Observable<User>;
         })
     ).pipe(switchAll());
   }
 
-  private handleUserLogin(firebaseResult: any): Observable<User> {
+  private handleUserLogin(firebaseResult: firebase.auth.UserCredential): Observable<User> {
     if (firebaseResult) {
       this.user$.pipe(take(1)).subscribe(u => {
         this.handleLoginResult(new LoginResult('LOGIN_OK', firebaseResult.user, u));
@@ -76,46 +74,51 @@ export class AuthService extends BaseService implements OnDestroy {
 
       return this.user$;
     } else {
-      return of(null);
+      return of(null) as Observable<User>;
     }
   }
 
   private handleLoginResult(loginResult: LoginResult) {
     if (loginResult && loginResult.status === 'LOGIN_OK') {
-      localStorage.setItem(LOCALSTORAGE_LOGIN_RESULT_KEY, JSON.stringify(loginResult));
+      this.setLoginCache(loginResult);
     }
   }
 
   logout(): void {
-    this.afAuth.signOut().then(() => {
-      this.router.navigate([LOGGED_OUT_URL]);
+    void this.afAuth.signOut().then(() => {
+      void this.router.navigate([LOGGED_OUT_URL]);
     });
   }
 
-  resetClientSession() {
+  resetClientSession(): void {
     localStorage.removeItem(LOCALSTORAGE_LOGIN_RESULT_KEY);
   }
 
   resetPassword(email: string): Observable<void> {
     return from(
-      this.afAuth.sendPasswordResetEmail(email).catch(error => {
+      this.afAuth.sendPasswordResetEmail(email).catch(() => {
         // silently ignore errors
       })
     );
   }
 
-  async changeEmail(newEmail: string, currentPassword: string) {
+  async changeEmail(newEmail: string, currentPassword: string): Promise<void> {
     const freshUser = await this.reauthUser(currentPassword);
     try {
       await freshUser.updateEmail(newEmail);
+
+      const loginCache = this.getLoginCache();
+      loginCache.firebaseUser.email = newEmail;
+      this.setLoginCache(loginCache);
+
       this.alertService.infoMessage('E-Mail geändert', 'Die E-Mail wurde erfolgreich geändert.');
     } catch (error) {
-      this.alertService.infoMessage(error.code + '.title', error.code + '.message');
+      this.alertService.infoMessage(`${error.code}.title`, `${error.code}.message`);
       throw error;
     }
   }
 
-  changePassword(currentPassword: string, newPassword: string) {
+  changePassword(currentPassword: string, newPassword: string): void {
     this.reauthUser(currentPassword).then(freshUser => {
       const _ = freshUser.updatePassword(newPassword);
       this.alertService.infoMessage('Passwort geändert', 'Das Passwort wurde erfolgreich geändert.');
@@ -179,7 +182,7 @@ export class AuthService extends BaseService implements OnDestroy {
       tap(authenticated => {
         if (!authenticated) {
           this.redirectUrl = redirectUrl;
-          this.router.navigate([LOGIN_URL]);
+          void this.router.navigate([LOGIN_URL]);
         }
       })
     );
@@ -195,27 +198,25 @@ export class AuthService extends BaseService implements OnDestroy {
   }
 
   getUserEmail(): string {
-    if (this.firebaseUser) {
-      return this.firebaseUser.email;
+    const firebaseUser = this.getFirebaseUser();
+    if (firebaseUser) {
+      return firebaseUser.email;
     } else {
       return 'Anonymous';
     }
   }
 
   getUser(): User | null {
-    const json = localStorage.getItem(LOCALSTORAGE_LOGIN_RESULT_KEY);
-    if (json) {
-      return JSON.parse(json).user;
-    } else {
-      return null;
-    }
+    return this.getLoginCache()?.user;
+  }
+
+  private getFirebaseUser(): firebase.User | null {
+    const cache = this.getLoginCache();
+    return cache?.firebaseUser;
   }
 
   getUserId(): string {
-    if (this.firebaseUser == null) {
-      return null;
-    }
-    return this.firebaseUser.uid;
+    return this.getFirebaseUser()?.uid;
   }
 
   private errorHandling(error: any) {
@@ -229,5 +230,14 @@ export class AuthService extends BaseService implements OnDestroy {
       titleParams: Object,
       duration: none
     } as UntranslatedAlertMessage);
+  }
+
+  private getLoginCache(): LoginResult | null {
+    const json = localStorage.getItem(LOCALSTORAGE_LOGIN_RESULT_KEY);
+    return json ? (JSON.parse(json) as LoginResult) : null;
+  }
+
+  private setLoginCache(loginResult: LoginResult): void {
+    localStorage.setItem(LOCALSTORAGE_LOGIN_RESULT_KEY, JSON.stringify(loginResult));
   }
 }

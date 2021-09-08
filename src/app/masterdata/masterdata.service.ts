@@ -133,10 +133,10 @@ export class MasterdataService extends BaseService implements OnDestroy {
       map(([species, roles]) => {
         if (roles.includes(Roles.RANGER)) {
           // PhaenoRanger user can enter data for ranger and globe species
-          return species.filter(s => s.tenants.includes('globe') || s.tenants.includes('ranger'));
+          return species.filter(s => s.sources.includes('globe') || s.sources.includes('ranger'));
         } else {
           // normal PhaenoNet User can enter globe species only
-          return species.filter(s => s.tenants.includes('globe'));
+          return species.filter(s => s.sources.includes('globe'));
         }
       })
     );

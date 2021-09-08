@@ -1,8 +1,8 @@
 import { MasterdataLike } from './masterdata-like';
-import { TenantType } from './tenant-type';
+import { SourceType } from './source-type';
 
 export class Species implements MasterdataLike {
   id: string;
   de: string;
-  tenants: TenantType[];
+  sources: SourceType[];
 }

@@ -1,4 +1,5 @@
 import firebase from 'firebase/compat/app';
+import { SourceType } from '../masterdata/source-type';
 import FieldValue = firebase.firestore.FieldValue;
 
 export class Observation {
@@ -12,5 +13,5 @@ export class Observation {
   comment: string | FieldValue;
   created: Date;
   modified: Date;
-  source: 'globe' | 'meteoswiss';
+  source: SourceType;
 }

@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BaseResourceService } from '../core/base-resource.service';
-import { SourceType } from '../masterdata/source-type';
+import { SourceFilterType } from '../masterdata/source-type';
 import { AlertService } from '../messaging/alert.service';
 import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
@@ -14,7 +14,12 @@ export class StatisticsService extends BaseResourceService<Analytics> {
     super(alertService, afs, 'analytics_result');
   }
 
-  listByYear(year: string, analyticsType: AnalyticsType, source: SourceType, species: string): Observable<Analytics[]> {
+  listByYear(
+    year: string,
+    analyticsType: AnalyticsType,
+    source: SourceFilterType,
+    species: string
+  ): Observable<Analytics[]> {
     return this.afs
       .collection<Analytics>(this.collectionName, ref => {
         let query = ref.where('type', '==', analyticsType).where('source', '==', source);

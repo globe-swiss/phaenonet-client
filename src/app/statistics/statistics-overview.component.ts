@@ -19,7 +19,7 @@ import { Observable } from 'rxjs';
 import { filter, first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { NavService } from '../core/nav/nav.service';
 import { MasterdataService } from '../masterdata/masterdata.service';
-import { SourceType } from '../masterdata/source-type';
+import { SourceFilterType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 import { Observation } from '../observation/observation';
 import { formatShortDate } from '../shared/formatDate';
@@ -58,7 +58,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   availableYears: number[];
   selectableYears$: Observable<string[]>;
-  selectableDatasources: SourceType[] = ['all', 'globe', 'meteoswiss'];
+  selectableDatasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss'];
   selectableAnalyticsTypes: AnalyticsType[] = ['species', 'altitude'];
   selectableSpecies$: Observable<Species[]>;
 
@@ -124,7 +124,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         filter(form => form.year),
         switchMap(form => {
           const year: string = form.year;
-          const datasource: SourceType = form.datasource;
+          const datasource: SourceFilterType = form.datasource;
           let analyticsType: AnalyticsType = form.analyticsType;
           let species: string = form.species;
 
