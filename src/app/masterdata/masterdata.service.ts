@@ -2,6 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { map, mergeAll, publishReplay, refCount, shareReplay } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import configStatic from '../../assets/config_static.json';
 import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
@@ -47,7 +48,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
   constructor(alertService: AlertService, private afs: AngularFirestore, private languageService: LanguageService) {
     super(alertService);
     this.configDynamic$ = this.afs
-      .collection<any>('definitions')
+      .collection<ConfigDynamic>('definitions')
       .doc<ConfigDynamic>('config_dynamic')
       .valueChanges()
       .pipe(shareReplay(1));
@@ -75,8 +76,15 @@ export class MasterdataService extends BaseService implements OnDestroy {
     return this.phenoYear;
   }
 
-  public getLimits(species: string, phenophase: string) {
-    return this.configDynamic.limits[species][phenophase];
+  public getLimits(species: string, phenophase: string): AltitudeLimits | null {
+    try {
+      return this.configDynamic.limits[species][phenophase];
+    } catch (TypeError) {
+      if (!environment.production) {
+        console.warn(`No limits found for ${species}.${phenophase}`);
+      }
+      return null;
+    }
   }
 
   getIndividualIconPath(species: string, source: string, phenophase: string): string {

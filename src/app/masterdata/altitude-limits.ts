@@ -19,25 +19,30 @@ export interface AltitudeLimit {
   isEditable: boolean;
 }
 
-export function altitudeLimits(altitude: number, limits: AltitudeLimits, phenoyear: number): AltitudeLimit {
+export function altitudeLimits(altitude: number, limits: AltitudeLimits | null, phenoyear: number): AltitudeLimit {
   let start: number;
   let end: number;
-
-  if (altitude < 500) {
-    start = limits.altitude_grp_1_start_day;
-    end = limits.altitude_grp_1_end_day;
-  } else if (altitude < 800) {
-    start = limits.altitude_grp_2_start_day;
-    end = limits.altitude_grp_2_end_day;
-  } else if (altitude < 1000) {
-    start = limits.altitude_grp_3_start_day;
-    end = limits.altitude_grp_3_end_day;
-  } else if (altitude < 1200) {
-    start = limits.altitude_grp_4_start_day;
-    end = limits.altitude_grp_4_end_day;
+  if (limits) {
+    if (altitude < 500) {
+      start = limits.altitude_grp_1_start_day;
+      end = limits.altitude_grp_1_end_day;
+    } else if (altitude < 800) {
+      start = limits.altitude_grp_2_start_day;
+      end = limits.altitude_grp_2_end_day;
+    } else if (altitude < 1000) {
+      start = limits.altitude_grp_3_start_day;
+      end = limits.altitude_grp_3_end_day;
+    } else if (altitude < 1200) {
+      start = limits.altitude_grp_4_start_day;
+      end = limits.altitude_grp_4_end_day;
+    } else {
+      start = limits.altitude_grp_5_start_day;
+      end = limits.altitude_grp_5_end_day;
+    }
   } else {
-    start = limits.altitude_grp_5_start_day;
-    end = limits.altitude_grp_5_end_day;
+    // default if no limits are provided
+    start = -150;
+    end = 360;
   }
 
   // start day is the limits start day in the current pheno year
@@ -46,7 +51,6 @@ export function altitudeLimits(altitude: number, limits: AltitudeLimits, phenoye
   const end_day = new Date(
     Math.min(moment().endOf('day').toDate().getTime(), moment().year(phenoyear).dayOfYear(end).toDate().getTime())
   );
-
   return {
     start_day: start_day,
     end_day: end_day,
