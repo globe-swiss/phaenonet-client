@@ -155,6 +155,16 @@
   "Weisstanne": "Abete bianco",
   "Wiesenschaumkraut": "Cardamine pratensis",
   "Wiesenlöwenzahn": "Taraxacum",
+  "Gemeines Pfaffenhütchen": "Berretto da prete",
+  "Vogelkirsche": "Ciliegio",
+  "Trauben-Eiche": "Quercia rovere",
+  "Stiel-Eiche": "Quercia comune",
+  "Flaumeiche": "Quercia pubescente",
+  "Heidelbeere": "Mirtillo nero",
+  "Eingriffeliger Weissdorn": "Biancospino comune",
+  "Bärlauch": "Aglio orsino",
+  "Hartriegel": "Corniolo sanguinello",
+  "Waldrebe": "Clematide vitalba",
 
   "alt1": "a 499 m",
   "alt2": "500 - 799 m",
@@ -373,5 +383,10 @@
   "Erneutes Senden noch nicht möglich": "Reinvio non ancora possibile",
   "Einladungen können höchstens alle 10 Minuten erneut gesendet werden.": "Gli inviti possono essere reinviati al massimo ogni 10 minuti.",
   "MEINE EINLADUNGEN": "I MIEI INVITI",
-  "Median:": "Mediana:"
+  "Median:": "Mediana:",
+  "Kleine grüne Spitzchen sind ersichtlich an drei Orten an der Liane": "Prime puntine verdi in tre diversi punti della liana",
+  "50% der Blätter der Liane entfaltet": "Il 50% delle foglie sulla liana si è interamente sviluppato",
+  "Drei erste Blätter erkennbar über der Streuschicht": "Tre prime foglie visibili sopra lo strato di lettiera",
+  "50% der Blätter erreichen ihre finale Grösse von ca. 15 cm": "Il 50% delle foglie raggiungono la loro dimensione finale di circa 15 cm",
+  "Erste Blüten offen, an mindestens drei Individuen": "Primi fiori aperti, su almeno tre individui"
 }

@@ -155,6 +155,16 @@
   "Weisstanne": "Sapin blanc",
   "Wiesenschaumkraut": "Cardamine des prés",
   "Wiesenlöwenzahn": "Taraxacum",
+  "Gemeines Pfaffenhütchen": "Fusain d'Europe",
+  "Vogelkirsche": "Merisier",
+  "Trauben-Eiche": "Chêne sessile",
+  "Stiel-Eiche": "Chêne pédonculé",
+  "Flaumeiche": "Chêne pubescent",
+  "Heidelbeere": "Myrtille",
+  "Eingriffeliger Weissdorn": "Aubépine monogyne",
+  "Bärlauch": "Ail des ours",
+  "Hartriegel": "Cornouiller sanguin",
+  "Waldrebe": "Clématite blanche",
 
   "alt1": "499 m",
   "alt2": "500 - 799 m",
@@ -373,5 +383,10 @@
   "Erneutes Senden noch nicht möglich": "Renvoi pas encore possible",
   "Einladungen können höchstens alle 10 Minuten erneut gesendet werden.": "Les invitations peuvent être renvoyées au maximum toutes les 10 minutes.",
   "MEINE EINLADUNGEN": "MES INVITATIONS",
-  "Median:": "Médiane :"
+  "Median:": "Médiane :",
+  "Kleine grüne Spitzchen sind ersichtlich an drei Orten an der Liane": "Petites pointes vertes apparaissant en 3 points différents de la liane",
+  "50% der Blätter der Liane entfaltet": "50 % des feuilles de la liane sont entièrement déployées",
+  "Drei erste Blätter erkennbar über der Streuschicht": "Trois premières feuilles visibles au-dessus de la couche de litière",
+  "50% der Blätter erreichen ihre finale Grösse von ca. 15 cm": "50 % des feuilles atteignent leur taille définitive d'environ 15 cm",
+  "Erste Blüten offen, an mindestens drei Individuen": "Les premières fleurs sont entièrement ouvertes pour au moins 3 individus"
 }

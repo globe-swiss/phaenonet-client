@@ -82,7 +82,7 @@ export class ObservationViewComponent implements OnInit {
                   this.masterdataService.getPhenoYear()
                 ),
                 observation: findFirst((o: Observation) => o.phenophase === p.id)(observations),
-                availableComments: comments.filter(a => p.comments.find(commentId => commentId === a.id))
+                availableComments: comments.filter(a => p.comments?.find(commentId => commentId === a.id))
               };
             });
 
