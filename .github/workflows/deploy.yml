@@ -30,6 +30,10 @@ jobs:
         run: npm ci
       - name: check style
         run: npx prettier -c "."
+      - name: check map icon completeness
+        run: |
+          diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/fr-CH) || exit
+          diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/it-CH) || exit
       - name: Build
         run: npx ng build "${{ github.event.inputs.project == 'phaenonet' && '--prod' || '' }}"
       - name: Archive Test Artifact
