@@ -133,6 +133,9 @@
   "BL": "Ail des ours",
   "HR": "Cornouiller sanguin",
   "WR": "Clématite blanche",
+  "IBM": "Cécidomyie du hêtre",
+  "ISS": "Bombyx disparate",
+  "IWA": "Fourmis des bois",
 
   "Bergahorn": "Érable sycomore",
   "Buschwindröschen": "Anémone des bois",
@@ -165,6 +168,9 @@
   "Bärlauch": "Ail des ours",
   "Hartriegel": "Cornouiller sanguin",
   "Waldrebe": "Clématite blanche",
+  "Buchengallmücke": "Cécidomyie du hêtre",
+  "Schwammspinner": "Bombyx disparate",
+  "Waldameise": "Fourmis des bois",
 
   "alt1": "499 m",
   "alt2": "500 - 799 m",
@@ -388,5 +394,18 @@
   "50% der Blätter der Liane entfaltet": "50 % des feuilles de la liane sont entièrement déployées",
   "Drei erste Blätter erkennbar über der Streuschicht": "Trois premières feuilles visibles au-dessus de la couche de litière",
   "50% der Blätter erreichen ihre finale Grösse von ca. 15 cm": "50 % des feuilles atteignent leur taille définitive d'environ 15 cm",
-  "Erste Blüten offen, an mindestens drei Individuen": "Les premières fleurs sont entièrement ouvertes pour au moins 3 individus"
+  "Erste Blüten offen, an mindestens drei Individuen": "Les premières fleurs sont entièrement ouvertes pour au moins 3 individus",
+  "Aufwärmphase": "Phase de réchauffement",
+  "Ausaperung": "Fonte des neiges",
+  "Sonnungstraube": "Réveil printanier",
+  "Beutefang": "Capture de proies",
+  "Jungfernflug": "Vol nupital",
+  "Schlüpfzeitpunkt": "Temps d'éclosion",
+  "Erste Teile des Nests sind frei von Schnee": "Certaines parties du nid sont déneigées",
+  ">10 Individuen auf dem Nest bei sonnigen Bedingungen (Mittag) mit einem Suchaufwand von 20 Sekunden": ">10 individus sur le nid par temps ensoleillé (midi) avec un effort de recherche de 20 secondes",
+  "Unzählige Individuen auf dem Nest formen sich zu Clustern bei sonnigen Bedingungen (Mittagszeit)": "D'innombrables individus sur le nid sont regroupés en masse dans des conditions ensoleillées (midi)",
+  "Mindestens ein zum Nest getragenes Beutetier (Insekt, Spinne, Tausendfüßler etc.) wird bei einem Suchaufwand von 20 Sekunden in der Nähe des Nestes entdeckt": "Au moins une proie transportée vers le nid (insecte, araignée, mille-pattes, etc.) est détectée avec un effort de recherche de 20 secondes juste autour du nid",
+  ">10 geflügelte Individuen auf dem Nest sichtbar (Männchen und/oder Königinnen) mit einem Suchaufwand von 20 Sekunden (Vormittag)": ">10 individus ailés visibles sur le nid (mâles et/ou reines) avec un effort de recherche de 20 secondes (matin)",
+  "Mindestens eine Raupe ist aus dem Ei geschlüpft": "Au moins une chenille est sortie de l'œuf",
+  "Mindestens eine adulte Mücke ist aus der Galle geschlüpft": "Au moins un moustique adulte a éclos de la galle"
 }

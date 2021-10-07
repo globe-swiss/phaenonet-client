@@ -133,6 +133,9 @@
   "BL": "Aglio orsino",
   "HR": "Corniolo sanguinello",
   "WR": "Clematide vitalba",
+  "IBM": "Cecidomia del faggio",
+  "ISS": "Bombice dispari",
+  "IWA": "Formica del legno",
 
   "Bergahorn": "Acero di monte",
   "Buschwindröschen": "Anemone bianca",
@@ -165,6 +168,9 @@
   "Bärlauch": "Aglio orsino",
   "Hartriegel": "Corniolo sanguinello",
   "Waldrebe": "Clematide vitalba",
+  "Buchengallmücke": "Cecidomia del faggio",
+  "Schwammspinner": "Bombice dispari",
+  "Waldameise": "Formica del legno",
 
   "alt1": "a 499 m",
   "alt2": "500 - 799 m",
@@ -388,5 +394,18 @@
   "50% der Blätter der Liane entfaltet": "Il 50% delle foglie sulla liana si è interamente sviluppato",
   "Drei erste Blätter erkennbar über der Streuschicht": "Tre prime foglie visibili sopra lo strato di lettiera",
   "50% der Blätter erreichen ihre finale Grösse von ca. 15 cm": "Il 50% delle foglie raggiungono la loro dimensione finale di circa 15 cm",
-  "Erste Blüten offen, an mindestens drei Individuen": "Primi fiori aperti, su almeno tre individui"
+  "Erste Blüten offen, an mindestens drei Individuen": "Primi fiori aperti, su almeno tre individui",
+  "Aufwärmphase": "Fase di riscaldamento",
+  "Ausaperung": "Scioglimento della neve",
+  "Sonnungstraube": "Risveglio primaverile",
+  "Beutefang": "Cattura della preda",
+  "Jungfernflug": "Volo nuziale",
+  "Schlüpfzeitpunkt": "Tempo di schiusa",
+  "Erste Teile des Nests sind frei von Schnee": "Alcune parti del nido sono ancora coperte di neve",
+  ">10 Individuen auf dem Nest bei sonnigen Bedingungen (Mittag) mit einem Suchaufwand von 20 Sekunden": ">10 individui sul nido in condizioni di sole (mezzogiorno) entro un tempo di ricerca di 20 secondi",
+  "Unzählige Individuen auf dem Nest formen sich zu Clustern bei sonnigen Bedingungen (Mittagszeit)": "Innumerevoli individui sul nido sono raggruppati in massa in condizioni di sole (mezzogiorno)",
+  "Mindestens ein zum Nest getragenes Beutetier (Insekt, Spinne, Tausendfüßler etc.) wird bei einem Suchaufwand von 20 Sekunden in der Nähe des Nestes entdeckt": "Almeno una preda portata al nido (insetto, ragno, millepiedi, etc.) viene rilevata entro un tempo di 20 secondi proprio intorno al nido",
+  ">10 geflügelte Individuen auf dem Nest sichtbar (Männchen und/oder Königinnen) mit einem Suchaufwand von 20 Sekunden (Vormittag)": ">10 individui alati visibili sul nido entro un tempo di ricerca di 20 secondi",
+  "Mindestens eine Raupe ist aus dem Ei geschlüpft": "Almeno un bruco si è schiuso",
+  "Mindestens eine adulte Mücke ist aus der Galle geschlüpft": "Almeno una zanzara adulta si è schiusa dalla galla"
 }
