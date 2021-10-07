@@ -77,7 +77,7 @@ export class MapOverviewComponent implements OnInit {
     private analytics: AngularFireAnalytics
   ) {}
 
-  getColor(phenophase: string) {
+  getColor(phenophase: string): string | null {
     return this.masterdataService.getColor(phenophase);
   }
 
