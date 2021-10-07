@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { map, mergeAll, publishReplay, refCount, shareReplay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import configStatic from '../../assets/config_static.json';
+import configStatic_import from '../../assets/config_static.json';
 import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
 import { Individual } from '../individual/individual';
@@ -27,13 +27,41 @@ export interface MasterdataCollection {
   [index: string]: Object;
 }
 
-export interface AltitudeLimitsConfig {
+interface AltitudeLimitsConfig {
   [species: string]: { [phenophase: string]: AltitudeLimits };
 }
-export interface ConfigDynamic {
+interface ConfigDynamic {
   phenoyear: number;
   first_year: number;
   limits: AltitudeLimitsConfig;
+}
+
+interface ConfigStaticItems {
+  [id: string]: { de: string; seq: number };
+}
+
+interface ConfigStaticSpecies {
+  [id: string]: {
+    de: string;
+    groups: { [id: string]: { de: string; seq: number; color: string } };
+    phenophases: {
+      [id: string]: { comments?: string[]; de: string; description_de: string; group_id: string; seq: number };
+    };
+    sources: string[];
+  };
+}
+
+interface ConfigStatic {
+  comments: ConfigStaticItems;
+  description: ConfigStaticItems;
+  exposition: ConfigStaticItems;
+  forest: ConfigStaticItems;
+  habitat: ConfigStaticItems;
+  less100: ConfigStaticItems;
+  phenophases: { [id: string]: { color: string; icon_index: number } };
+  shade: ConfigStaticItems;
+  watering: ConfigStaticItems;
+  species: ConfigStaticSpecies;
 }
 
 @Injectable()
@@ -44,6 +72,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
   private phenoYear: number;
   private configDynamic$: Observable<ConfigDynamic>;
   private configDynamic: ConfigDynamic;
+  private configStatic = <ConfigStatic>configStatic_import;
 
   constructor(alertService: AlertService, private afs: AngularFirestore, private languageService: LanguageService) {
     super(alertService);
@@ -68,8 +97,8 @@ export class MasterdataService extends BaseService implements OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  public getColor(phenophase: string) {
-    return configStatic.phenophases[phenophase].color;
+  public getColor(phenophase: string): string | null {
+    return this.configStatic.phenophases[phenophase]?.color;
   }
 
   public getPhenoYear() {
@@ -90,7 +119,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
   getIndividualIconPath(species: string, source: string, phenophase: string): string {
     let phaenoIndex = 1;
     if (phenophase) {
-      phaenoIndex = configStatic.phenophases[phenophase].icon_index;
+      phaenoIndex = this.configStatic.phenophases[phenophase]?.icon_index;
     }
     if (source === 'meteoswiss') {
       return '/assets/img/map_pins/map_pin_meteoschweiz.png';
@@ -130,7 +159,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
    */
 
   getSpecies(): Observable<Species[]> {
-    return this.getMasterdataFor(configStatic.species);
+    return this.getMasterdataFor(this.configStatic.species);
   }
 
   /**
@@ -151,71 +180,71 @@ export class MasterdataService extends BaseService implements OnDestroy {
   }
 
   getHabitats(): Observable<Habitat[]> {
-    return this.getMasterdataFor(configStatic.habitat);
+    return this.getMasterdataFor(this.configStatic.habitat);
   }
 
   getDescriptions(): Observable<Description[]> {
-    return this.getMasterdataFor(configStatic.description);
+    return this.getMasterdataFor(this.configStatic.description);
   }
 
   getExpositions(): Observable<Exposition[]> {
-    return this.getMasterdataFor(configStatic.exposition);
+    return this.getMasterdataFor(this.configStatic.exposition);
   }
 
   getForests(): Observable<Forest[]> {
-    return this.getMasterdataFor(configStatic.forest);
+    return this.getMasterdataFor(this.configStatic.forest);
   }
 
   getShades(): Observable<Shade[]> {
-    return this.getMasterdataFor(configStatic.shade);
+    return this.getMasterdataFor(this.configStatic.shade);
   }
 
   getDistances(): Observable<Distance[]> {
-    return this.getMasterdataFor(configStatic.less100);
+    return this.getMasterdataFor(this.configStatic.less100);
   }
 
   getIrrigations(): Observable<Irrigation[]> {
-    return this.getMasterdataFor(configStatic.watering);
+    return this.getMasterdataFor(this.configStatic.watering);
   }
 
   getComments(): Observable<Comment[]> {
-    return this.getMasterdataFor(configStatic.comments);
+    return this.getMasterdataFor(this.configStatic.comments);
   }
 
   getSpeciesValue(id: string): Observable<Species> {
-    return this.getMasterdataValueFor(configStatic.species, id);
+    return this.getMasterdataValueFor(this.configStatic.species, id);
   }
 
   getHabitatValue(id: string): Observable<Habitat> {
-    return this.getMasterdataValueFor(configStatic.habitat, id);
+    return this.getMasterdataValueFor(this.configStatic.habitat, id);
   }
 
   getDescriptionValue(id: string): Observable<Description> {
-    return this.getMasterdataValueFor(configStatic.description, id);
+    return this.getMasterdataValueFor(this.configStatic.description, id);
   }
 
   getExpositionValue(id: string): Observable<Exposition> {
-    return this.getMasterdataValueFor(configStatic.exposition, id);
+    return this.getMasterdataValueFor(this.configStatic.exposition, id);
   }
 
   getForestValue(id: string): Observable<Forest> {
-    return this.getMasterdataValueFor(configStatic.forest, id);
+    return this.getMasterdataValueFor(this.configStatic.forest, id);
   }
 
   getShadeValue(id: string): Observable<Shade> {
-    return this.getMasterdataValueFor(configStatic.shade, id);
+    return this.getMasterdataValueFor(this.configStatic.shade, id);
   }
 
   getDistanceValue(id: string): Observable<Distance> {
-    return this.getMasterdataValueFor(configStatic.less100, id);
+    return this.getMasterdataValueFor(this.configStatic.less100, id);
   }
 
   getIrrigationValue(id: string): Observable<Irrigation> {
-    return this.getMasterdataValueFor(configStatic.watering, id);
+    return this.getMasterdataValueFor(this.configStatic.watering, id);
   }
 
   getCommentValue(id: string): Observable<Comment> {
-    return this.getMasterdataValueFor(configStatic.comments, id);
+    return this.getMasterdataValueFor(this.configStatic.comments, id);
   }
 
   getPhenophases(speciesId: string): Observable<Phenophase[]> {
@@ -255,7 +284,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
 
   private getPhenoDataFor<T extends PhenophasesdataLike>(speciesId: string, name: string): Observable<T[]> {
     return of(
-      this.toMasterdatalikeList<T>(configStatic.species[speciesId][name]).sort((n1, n2) => {
+      this.toMasterdatalikeList<T>(this.configStatic.species[speciesId][name]).sort((n1, n2) => {
         if (n1.seq > n2.seq) {
           return 1;
         }
