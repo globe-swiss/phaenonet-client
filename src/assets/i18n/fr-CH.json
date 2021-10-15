@@ -118,7 +118,7 @@
   "SD": "Épine noire",
   "SH": "Sureau noir",
   "SL": "Tilleul à grandes feuilles",
-  "VB": "Sorbier",
+  "VB": "Sorbier des oiseleurs",
   "WL": "Tilleul à petites feuilles",
   "WT": "Sapin blanc",
   "WS": "Cardamine des prés",
@@ -153,7 +153,7 @@
   "Schwarzdorn": "Épine noire",
   "Schwarzer Holunder": "Sureau noir",
   "Sommerlinde": "Tilleul à grandes feuilles",
-  "Vogelbeere": "Sorbier",
+  "Vogelbeere": "Sorbier des oiseleurs",
   "Winterlinde": "Tilleul à petites feuilles",
   "Weisstanne": "Sapin blanc",
   "Wiesenschaumkraut": "Cardamine des prés",
@@ -407,5 +407,12 @@
   "Mindestens ein zum Nest getragenes Beutetier (Insekt, Spinne, Tausendfüssler etc.) wird bei einem Suchaufwand von 20 Sekunden in der Nähe des Nestes entdeckt": "Au moins une proie transportée vers le nid (insecte, araignée, mille-pattes, etc.) est détectée avec un effort de recherche de 20 secondes juste autour du nid",
   ">10 geflügelte Individuen auf dem Nest sichtbar (Männchen und/oder Königinnen) mit einem Suchaufwand von 20 Sekunden (Vormittag)": ">10 individus ailés visibles sur le nid (mâles et/ou reines) avec un effort de recherche de 20 secondes (matin)",
   "Mindestens eine Raupe ist aus dem Ei geschlüpft": "Au moins une chenille est sortie de l'œuf",
-  "Mindestens eine adulte Mücke ist aus der Galle geschlüpft": "Au moins un moustique adulte a éclos de la galle"
+  "Mindestens eine adulte Mücke ist aus der Galle geschlüpft": "Au moins un moustique adulte a éclos de la galle",
+  "Kleine grüne Spitzchen sind ersichtlich an 3 Orten im Strauch": "Petites pointes vertes apparaissant en 3 points différents de l'arbuste",
+  "Die Blüten von 3 Blütenständen im Strauch sind offen": "Les fleurs de 3 inflorescences de l'arbuste sont ouvertes",
+  "An 3 Blütenständen im Strauch haben sich die Früchte arttypisch schwarz verfärbt": "Les fruits de 3 inflorescences de l'arbuste ont pris la couleur typique (noir) des fruits de cette essence",
+  "50% der Früchte haben sich arttypisch schwarz verfärbt": "50% des fruits ont pris la couleur typique (noir) des fruits de cette essence",
+  "Die Blüten von 3 Blütenständen im Baum sind offen": "Les fleurs de 3 inflorescences de l'arbre sont ouvertes",
+  "An 3 Blütenständen im Baum haben sich die Früchte arttypisch rot verfärbt": "Les fruits de 3 inflorescences de l'arbre ont pris la couleur typique (rouge) des fruits de cette essence",
+  "50% der Früchte haben sich arttypisch rot verfärbt": "50% des fruits ont pris la couleur typique (rouge) des fruits de cette essence"
 }
