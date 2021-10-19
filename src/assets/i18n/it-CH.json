@@ -204,7 +204,7 @@
   "mehrheitlich Laubwald": "principalmente bosco di latifoglie",
   "Mischwald": "bosco misto",
   "mehrheitlich Nadelwald": "bosco principalmente di conifere",
-  "beschattet (weniger als 2 Std/Tag)": "ombreggiato (meno di 2 ore/giorno)",
+  "beschattet (weniger als 2 Std/Tag direktes Sonnenlicht)": "ombreggiato (meno di 2 ore/giorno di sole diretto)",
   "direktes Sonnenlicht (mehr als 5 Std/Tag)": "soleggiamento diretto (più di 5 ore/giorno)",
   "teilweise beschattet": "parzialmente ombreggiato",
   "mehr als 100m zu Gebäude/Strasse": "non inferiore a 100 m da strada/edificio",

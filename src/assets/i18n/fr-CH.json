@@ -204,7 +204,7 @@
   "mehrheitlich Laubwald": "Forêt de feuillus",
   "Mischwald": "Forêt mixte",
   "mehrheitlich Nadelwald": "Forêt de résineux",
-  "beschattet (weniger als 2 Std/Tag)": "Ombragé (moins de 2 h/jour)",
+  "beschattet (weniger als 2 Std/Tag direktes Sonnenlicht)": "Ombragé (moins de 2 h/jour de soleil direct)",
   "direktes Sonnenlicht (mehr als 5 Std/Tag)": "Ensoleillement direct (plus de 5 h/jour)",
   "teilweise beschattet": "Partiellement ombragé",
   "mehr als 100m zu Gebäude/Strasse": "Bâtiment/route à plus de 100 m",
