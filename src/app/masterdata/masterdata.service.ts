@@ -17,14 +17,14 @@ import { Exposition } from './exposition';
 import { Forest } from './forest';
 import { Habitat } from './habitat';
 import { Irrigation } from './irrigation';
-import { MasterdataLike, PhenophasesdataLike } from './masterdata-like';
+import { MasterdataLike, SortedMasterdataLike } from './masterdata-like';
 import { Phenophase } from './phaenophase';
 import { PhenophaseGroup } from './phaenophase-group';
 import { Shade } from './shade';
 import { Species } from './species';
 
 export interface MasterdataCollection {
-  [index: string]: Object;
+  [index: string]: Record<string, unknown>;
 }
 
 interface AltitudeLimitsConfig {
@@ -93,7 +93,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
     this.subscriptions.add(this.configDynamic$.subscribe(config => (this.configDynamic = config)));
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
@@ -101,7 +101,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
     return this.configStatic.phenophases[phenophase]?.color;
   }
 
-  public getPhenoYear() {
+  public getPhenoYear(): number {
     return this.phenoYear;
   }
 
@@ -180,35 +180,35 @@ export class MasterdataService extends BaseService implements OnDestroy {
   }
 
   getHabitats(): Observable<Habitat[]> {
-    return this.getMasterdataFor(this.configStatic.habitat);
+    return this.getSortedMasterdataFor(this.configStatic.habitat);
   }
 
   getDescriptions(): Observable<Description[]> {
-    return this.getMasterdataFor(this.configStatic.description);
+    return this.getSortedMasterdataFor(this.configStatic.description);
   }
 
   getExpositions(): Observable<Exposition[]> {
-    return this.getMasterdataFor(this.configStatic.exposition);
+    return this.getSortedMasterdataFor(this.configStatic.exposition);
   }
 
   getForests(): Observable<Forest[]> {
-    return this.getMasterdataFor(this.configStatic.forest);
+    return this.getSortedMasterdataFor(this.configStatic.forest);
   }
 
   getShades(): Observable<Shade[]> {
-    return this.getMasterdataFor(this.configStatic.shade);
+    return this.getSortedMasterdataFor(this.configStatic.shade);
   }
 
   getDistances(): Observable<Distance[]> {
-    return this.getMasterdataFor(this.configStatic.less100);
+    return this.getSortedMasterdataFor(this.configStatic.less100);
   }
 
   getIrrigations(): Observable<Irrigation[]> {
-    return this.getMasterdataFor(this.configStatic.watering);
+    return this.getSortedMasterdataFor(this.configStatic.watering);
   }
 
   getComments(): Observable<Comment[]> {
-    return this.getMasterdataFor(this.configStatic.comments);
+    return this.getSortedMasterdataFor(this.configStatic.comments);
   }
 
   getSpeciesValue(id: string): Observable<Species> {
@@ -216,42 +216,43 @@ export class MasterdataService extends BaseService implements OnDestroy {
   }
 
   getHabitatValue(id: string): Observable<Habitat> {
-    return this.getMasterdataValueFor(this.configStatic.habitat, id);
+    return this.getSortedMasterdataValueFor(this.configStatic.habitat, id);
   }
 
   getDescriptionValue(id: string): Observable<Description> {
-    return this.getMasterdataValueFor(this.configStatic.description, id);
+    return this.getSortedMasterdataValueFor(this.configStatic.description, id);
   }
 
   getExpositionValue(id: string): Observable<Exposition> {
-    return this.getMasterdataValueFor(this.configStatic.exposition, id);
+    return this.getSortedMasterdataValueFor(this.configStatic.exposition, id);
   }
 
   getForestValue(id: string): Observable<Forest> {
-    return this.getMasterdataValueFor(this.configStatic.forest, id);
+    return this.getSortedMasterdataValueFor(this.configStatic.forest, id);
   }
 
   getShadeValue(id: string): Observable<Shade> {
-    return this.getMasterdataValueFor(this.configStatic.shade, id);
+    return this.getSortedMasterdataValueFor(this.configStatic.shade, id);
   }
 
   getDistanceValue(id: string): Observable<Distance> {
-    return this.getMasterdataValueFor(this.configStatic.less100, id);
+    return this.getSortedMasterdataValueFor(this.configStatic.less100, id);
   }
 
   getIrrigationValue(id: string): Observable<Irrigation> {
-    return this.getMasterdataValueFor(this.configStatic.watering, id);
+    return this.getSortedMasterdataValueFor(this.configStatic.watering, id);
   }
 
   getCommentValue(id: string): Observable<Comment> {
-    return this.getMasterdataValueFor(this.configStatic.comments, id);
+    return this.getSortedMasterdataValueFor(this.configStatic.comments, id);
   }
 
   getPhenophases(speciesId: string): Observable<Phenophase[]> {
-    return this.getPhenoDataFor(speciesId, 'phenophases');
+    // return this.getPhenoDataFor(speciesId, 'phenophases');
+    return this.getSortedMasterdataFor(this.configStatic.species[speciesId]['phenophases']);
   }
 
-  getPhenophasesFromIndividual(individual: Observable<Individual>) {
+  getPhenophasesFromIndividual(individual: Observable<Individual>): Observable<Phenophase[]> {
     return individual.pipe(
       map(i => this.getPhenophases(i.species)),
       mergeAll()
@@ -259,19 +260,19 @@ export class MasterdataService extends BaseService implements OnDestroy {
   }
 
   getPhenophaseValue(speciesId: string, phenophase: string): Observable<Phenophase> {
-    return this.getPhenoDataValueFor(speciesId, 'phenophases', phenophase);
+    return this.getSortedMasterdataValueFor(this.configStatic.species[speciesId]['phenophases'], phenophase);
   }
 
   getPhenophaseGroups(speciesId: string): Observable<PhenophaseGroup[]> {
-    return this.getPhenoDataFor(speciesId, 'groups');
-  }
-
-  private getMasterdataFor<T extends MasterdataLike>(data: MasterdataCollection): Observable<T[]> {
-    return of(this.toMasterdatalikeList<T>(data));
+    return this.getSortedMasterdataFor(this.configStatic.species[speciesId]['groups']);
   }
 
   private toMasterdatalikeList<T extends MasterdataLike>(masterdataLikeObjects: MasterdataCollection): T[] {
     return Object.entries(masterdataLikeObjects).map(([key, value]) => ({ id: key, ...value } as T));
+  }
+
+  private getMasterdataFor<T extends MasterdataLike>(data: MasterdataCollection): Observable<T[]> {
+    return of(this.toMasterdatalikeList<T>(data));
   }
 
   private getMasterdataValueFor<T extends MasterdataLike>(data: MasterdataCollection, id: string): Observable<T> {
@@ -282,29 +283,23 @@ export class MasterdataService extends BaseService implements OnDestroy {
     );
   }
 
-  private getPhenoDataFor<T extends PhenophasesdataLike>(speciesId: string, name: string): Observable<T[]> {
-    return of(
-      this.toMasterdatalikeList<T>(this.configStatic.species[speciesId][name]).sort((n1, n2) => {
-        if (n1.seq > n2.seq) {
-          return 1;
-        }
-        if (n1.seq < n2.seq) {
-          return -1;
-        }
-        return 0;
-      })
+  private getSortedMasterdataFor<T extends SortedMasterdataLike>(data: MasterdataCollection): Observable<T[]> {
+    return of(this.toMasterdatalikeList<T>(data).sort((n1, n2) => n1.seq - n2.seq));
+  }
+
+  private getSortedMasterdataValueFor<T extends SortedMasterdataLike>(
+    data: MasterdataCollection,
+    id: string
+  ): Observable<T> {
+    return this.getSortedMasterdataFor<T>(data).pipe(
+      map(elements => elements.find(element => element.id === id)),
+      publishReplay(1),
+      refCount()
     );
   }
 
-  private getPhenoDataValueFor<T extends PhenophasesdataLike>(
-    speciesId: string,
-    name: string,
-    id: string
-  ): Observable<T> {
-    return this.getPhenoDataFor<T>(speciesId, name).pipe(map(elements => elements.find(element => element.id === id)));
-  }
-
-  private range(start: number, stop: number, step = 1) {
+  private range(start: number, stop?: number, step = 1): number[] {
+    const result: number[] = [];
     if (typeof stop === 'undefined') {
       // one param defined
       stop = start;
@@ -312,10 +307,9 @@ export class MasterdataService extends BaseService implements OnDestroy {
     }
 
     if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
-      return [];
+      return result;
     }
 
-    const result = [];
     for (let i = start; step > 0 ? i < stop : i > stop; i += step) {
       result.push(i);
     }
