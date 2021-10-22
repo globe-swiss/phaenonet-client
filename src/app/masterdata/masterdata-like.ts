@@ -3,10 +3,8 @@ export interface MasterdataLike {
   de: string;
 }
 
-export interface PhenophasesdataLike {
-  id: string;
-  de: string;
-  seq?: number;
+export interface SortedMasterdataLike extends MasterdataLike {
+  seq: number;
 }
 
 export interface IdLike {
