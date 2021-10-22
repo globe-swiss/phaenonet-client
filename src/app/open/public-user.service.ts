@@ -6,6 +6,7 @@ import { debounceTime, first, map, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';
+import { Roles } from '../profile/Roles.enum';
 import { PublicUser } from './public-user';
 
 @Injectable()
@@ -33,6 +34,13 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
     } else {
       return of(false);
     }
+  }
+
+  public isRanger(user$: Observable<PublicUser>): Observable<boolean> {
+    return user$.pipe(
+      map(u => (u.roles ? u.roles : [])),
+      map(r => r.includes(Roles.RANGER))
+    );
   }
 
   uniqueNicknameValidator(initialValue: string = ''): AsyncValidatorFn {

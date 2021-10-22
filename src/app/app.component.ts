@@ -49,5 +49,10 @@ export class AppComponent {
       'resend-mail',
       this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/btn_resend_email.svg')
     );
+
+    this.matIconRegistry.addSvgIcon(
+      'ranger-badge',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/ico_phenorangers.svg')
+    );
   }
 }

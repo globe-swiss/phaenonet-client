@@ -5,6 +5,17 @@
   <div class="detail-label">{{ 'Hallo' | translate }}</div>
   <div class="title-nickname">
     {{ nickname$ | async }}
+    <button
+      mat-icon-button
+      class="badge"
+      matTooltip="{{
+        'PhenoRanger sind speziell ausgebildete Personen, welche Daten zu zusätzlichen Arten erfassen können. Für weitere Informationen, oder um selbst PhenoRanger zu werden, wenden Sie sich an pheno.rangers@wsl.ch.'
+          | translate
+      }}"
+      *ngIf="isRanger$ | async"
+    >
+      <mat-icon svgIcon="ranger-badge"></mat-icon>
+    </button>
     <button mat-icon-button [app-copy-clipboard]="profileLink" (copied)="notifyCopied()">
       <mat-icon svgIcon="copylink"></mat-icon>
     </button>

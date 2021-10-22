@@ -10,10 +10,21 @@
   <span>{{ (lastPhenophase$ | async)?.de | translate }}</span>
 </div>
 <div>
-  <span>{{ 'Von' | translate }} </span
-  ><a mat-button [routerLink]="['/profile', (individual$ | async).user]" class="creator">{{
-    individualCreatorNickname$ | async
-  }}</a>
+  <span>{{ 'Von' | translate }}</span>
+  <a mat-button [routerLink]="['/profile', (individual$ | async).user]" class="creator"
+    >{{ individualCreatorNickname$ | async }}
+  </a>
+  <button
+    mat-icon-button
+    class="badge"
+    matTooltip="{{
+      'PhenoRanger sind speziell ausgebildete Personen, welche Daten zu zusätzlichen Arten erfassen können. Für weitere Informationen, oder um selbst PhenoRanger zu werden, wenden Sie sich an pheno.rangers@wsl.ch.'
+        | translate
+    }}"
+    *ngIf="isRanger$ | async"
+  >
+    <mat-icon svgIcon="ranger-badge"></mat-icon>
+  </button>
 </div>
 <div class="detail-label">{{ 'Umgebung' | translate }}</div>
 <div class="detail-info-value">{{ (description$ | async)?.de | translate }}</div>
@@ -39,6 +50,7 @@
 
 <div>
   <button
+    class="navigation"
     mat-flat-button
     color="primary"
     type="button"
@@ -51,6 +63,7 @@
 </div>
 <div>
   <button
+    class="navigation"
     mat-flat-button
     color="accent"
     type="button"

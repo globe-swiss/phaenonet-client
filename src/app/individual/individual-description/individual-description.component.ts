@@ -2,9 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { filter, first, map, mergeAll, shareReplay } from 'rxjs/operators';
-import { formatShortDate } from '../../shared/formatDate';
+import { combineLatest, Observable } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
+import { PublicUser } from 'src/app/open/public-user';
 import { Description } from '../../masterdata/description';
 import { Distance } from '../../masterdata/distance';
 import { Exposition } from '../../masterdata/exposition';
@@ -21,6 +21,7 @@ import {
   ConfirmationDialogComponent,
   ConfirmationDialogData
 } from '../../shared/confirmation-dialog/confirmation-dialog.component';
+import { formatShortDate } from '../../shared/formatDate';
 import { Individual } from '../individual';
 import { IndividualService } from '../individual.service';
 
@@ -30,7 +31,7 @@ import { IndividualService } from '../individual.service';
   styleUrls: ['./individual-description.component.scss']
 })
 export class IndividualDescriptionComponent implements OnInit {
-  @Input() individual$: ReplaySubject<Individual>;
+  @Input() individual$: Observable<Individual>; // injected ReplaySubject
   @Input() isEditable$: Observable<boolean>;
   @Input() individualId: string; // should be added to the individual by the resource service
 
@@ -49,6 +50,9 @@ export class IndividualDescriptionComponent implements OnInit {
   lastPhenophaseColor$: Observable<string>;
   lastObservationDate$: Observable<string>;
 
+  private publicUser$: Observable<PublicUser>;
+  isRanger$: Observable<boolean>;
+
   constructor(
     private router: Router,
     private dialog: MatDialog,
@@ -59,86 +63,33 @@ export class IndividualDescriptionComponent implements OnInit {
     private analytics: AngularFireAnalytics
   ) {}
 
-  exclude_undefined() {
-    return filter(i => i !== undefined);
-  }
-
-  ngOnInit() {
-    this.species$ = this.individual$.pipe(
-      filter(i => i !== undefined),
-      map(i => this.masterdataService.getSpeciesValue(i.species)),
-      mergeAll()
-    );
+  ngOnInit(): void {
+    // this.individual$ = this.individual$.pipe(filter(i => i !== undefined)); // why was this necessary? is it?
+    this.publicUser$ = this.individual$.pipe(switchMap(i => this.publicUserService.get(i.user)));
+    this.species$ = this.individual$.pipe(switchMap(i => this.masterdataService.getSpeciesValue(i.species)));
     this.description$ = this.individual$.pipe(
-      filter(i => i !== undefined),
-      map(i => this.masterdataService.getDescriptionValue(i.description)),
-      mergeAll()
+      switchMap(i => this.masterdataService.getDescriptionValue(i.description))
     );
-    this.exposition$ = this.individual$.pipe(
-      filter(i => i !== undefined),
-      map(i => this.masterdataService.getExpositionValue(i.exposition)),
-      mergeAll()
-    );
-    this.shade$ = this.individual$.pipe(
-      filter(i => i !== undefined),
-      map(i => this.masterdataService.getShadeValue(i.shade)),
-      mergeAll()
-    );
-    this.habitat$ = this.individual$.pipe(
-      filter(i => i !== undefined),
-      map(i => this.masterdataService.getHabitatValue(i.habitat)),
-      mergeAll()
-    );
-    this.forest$ = this.individual$.pipe(
-      filter(i => i !== undefined),
-      map(i => this.masterdataService.getForestValue(i.forest)),
-      mergeAll()
-    );
-    this.distance$ = this.individual$.pipe(
-      filter(i => i !== undefined),
-      map(i => this.masterdataService.getDistanceValue(i.less100)),
-      mergeAll()
-    );
-    this.irrigation$ = this.individual$.pipe(
-      filter(i => i !== undefined),
-      map(i => this.masterdataService.getIrrigationValue(i.watering)),
-      mergeAll()
-    );
+    this.exposition$ = this.individual$.pipe(switchMap(i => this.masterdataService.getExpositionValue(i.exposition)));
+    this.shade$ = this.individual$.pipe(switchMap(i => this.masterdataService.getShadeValue(i.shade)));
+    this.habitat$ = this.individual$.pipe(switchMap(i => this.masterdataService.getHabitatValue(i.habitat)));
+    this.forest$ = this.individual$.pipe(switchMap(i => this.masterdataService.getForestValue(i.forest)));
+    this.distance$ = this.individual$.pipe(switchMap(i => this.masterdataService.getDistanceValue(i.less100)));
+    this.irrigation$ = this.individual$.pipe(switchMap(i => this.masterdataService.getIrrigationValue(i.watering)));
 
-    this.individualCreatorNickname$ = this.individual$.pipe(
-      filter(i => i !== undefined),
-      map(i => this.getUserName(i)),
-      mergeAll()
-    );
+    this.individualCreatorNickname$ = this.publicUser$.pipe(map(u => u.nickname));
 
-    this.lastPhenophase$ = this.individual$.pipe(
-      filter(i => i !== undefined),
-      map(i => this.getPhenophase(i)),
-      mergeAll()
-    );
-    this.lastPhenophaseColor$ = this.lastPhenophase$.pipe(map(p => this.masterdataService.getColor(p.id))); // cannot be undefined
-    this.lastObservationDate$ = this.individual$.pipe(
-      filter(i => i !== undefined),
-      map(i => formatShortDate(i.last_observation_date.toDate()))
-    );
+    const species$ = this.individual$.pipe(switchMap(i => this.masterdataService.getSpeciesValue(i.species)));
+    this.lastPhenophase$ = combineLatest([this.individual$, species$]).pipe(
+      switchMap(([i, s]) => this.masterdataService.getPhenophaseValue(s.id, i.last_phenophase))
+    ); // unknown if non-existent
+    this.lastPhenophaseColor$ = this.lastPhenophase$.pipe(map(p => this.masterdataService.getColor(p.id))); // only subscribed when lastPhenophase$ is present
+    this.lastObservationDate$ = this.individual$.pipe(map(i => formatShortDate(i.last_observation_date.toDate()))); // only subscribed if individual has last_observation_date
+
+    this.isRanger$ = this.publicUserService.isRanger(this.publicUser$);
   }
 
-  private getUserName(individual: Individual) {
-    return this.publicUserService.get(individual.user).pipe(
-      filter(u => u !== undefined),
-      map(u => u.nickname),
-      shareReplay()
-    );
-  }
-
-  private getPhenophase(individual: Individual) {
-    return this.masterdataService.getSpeciesValue(individual.species).pipe(
-      map(species => this.masterdataService.getPhenophaseValue(species.id, individual.last_phenophase)),
-      mergeAll()
-    );
-  }
-
-  deleteIndividual() {
+  deleteIndividual(): void {
     this.individualService
       .hasObservations(this.individualId)
       .pipe(first())
@@ -173,9 +124,9 @@ export class IndividualDescriptionComponent implements OnInit {
           this.individualService
             .delete(this.individualId)
             .then(() => {
-              this.analytics.logEvent('individual.delete');
+              void this.analytics.logEvent('individual.delete');
               this.alertService.infoMessage('Löschen erfolgreich', 'Das Objekt wurde gelöscht.');
-              this.router.navigate(['/profile']);
+              void this.router.navigate(['/profile']);
             })
             .catch(() => {
               this.alertService.infoMessage('Löschen fehlgeschlagen', 'Das Objekt konnte nicht gelöscht werden.');
