@@ -15,7 +15,12 @@
   font-weight: 700;
 }
 
-button {
+button.badge {
+  transform: scale(0.7);
+  width: 20px;
+}
+
+button.navigation {
   padding-left: 40px;
   padding-right: 40px;
   margin-top: 0.5rem;
