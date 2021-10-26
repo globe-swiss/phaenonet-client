@@ -1,6 +1,6 @@
-<button *ngIf="isFollowing$ | async" mat-fab class="a100" color="primary" (click)="unfollow()">
+<button *ngIf="isFollowing$ | async" mat-fab color="subscribed" (click)="unfollow()">
   <mat-icon svgIcon="subscribe-active"></mat-icon>
 </button>
-<button *ngIf="!(isFollowing$ | async)" mat-fab color="primary" (click)="follow()">
+<button *ngIf="(isFollowing$ | async) === false" mat-fab color="primary" (click)="follow()">
   <mat-icon svgIcon="subscribe"></mat-icon>
 </button>
