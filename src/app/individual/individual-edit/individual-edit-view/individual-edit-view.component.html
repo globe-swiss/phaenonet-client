@@ -23,7 +23,7 @@
     </mat-form-field>
   </div>
   <mat-form-field class="full-width">
-    <mat-label>{{ 'Pflanzenart' | translate }}</mat-label>
+    <mat-label>{{ 'Art' | translate }}</mat-label>
     <mat-select formControlName="species" required>
       <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
       <mat-option *ngFor="let element of selectableSpecies$ | async" [value]="element.id">
