@@ -8,8 +8,6 @@
 
 @import './palettes';
 
-@import './custom-button-theme';
-
 //tutorial https://blog.thoughtram.io/angular/2017/05/23/custom-themes-with-angular-material.html#custom-theme-using-built-in-color-palettes
 @include mat.core-theme($phaenonet-theme);
 @include mat.autocomplete-theme($phaenonet-theme);
