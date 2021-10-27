@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   name: 'local',
-  sentrySamplerate: 0.0,
+  sentrySamplerate: 1.0,
   sentryEnabled: false,
   version: 'local'
 };

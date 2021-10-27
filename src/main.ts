@@ -21,6 +21,24 @@ Sentry.init({
   tracesSampleRate: environment.sentrySamplerate
 });
 
+Sentry.addGlobalEventProcessor(event => {
+  if (event.type === 'transaction') {
+    //remove specific ids to enable performance tracking in sentry
+    event.transaction = sanitizeTransactionName(event.transaction);
+  }
+  return event;
+});
+
+function sanitizeTransactionName(transaction: string) {
+  const singlePageRegex = new RegExp('/(individuals|stations|profile)/([^/]*)');
+  const editPageRegex = new RegExp('/(individuals|profile)/([^/]*)/edit');
+  if (singlePageRegex.test(transaction)) {
+    return transaction.replace(singlePageRegex, '/$1/:id');
+  } else if (editPageRegex.test(transaction)) {
+    return transaction.replace(editPageRegex, '/$1/:id/edit');
+  } else return transaction;
+}
+
 if (environment.production) {
   enableProdMode();
 }
