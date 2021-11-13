@@ -17,7 +17,10 @@ import { equalValidation } from '../shared/validation';
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   registerForm = new FormGroup({
-    nickname: new FormControl('', { asyncValidators: this.publicUserService.uniqueNicknameValidator() }),
+    nickname: new FormControl('', {
+      updateOn: 'blur',
+      asyncValidators: this.publicUserService.uniqueNicknameValidator()
+    }),
     firstname: new FormControl(''),
     lastname: new FormControl(''),
     email: new FormControl(''),
