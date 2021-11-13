@@ -1,4 +1,4 @@
-Feature('Map').retry(2);
+Feature('Map');
 
 Scenario('test map component present logged-out', ({ I, mapPage, loginPage }) => {
   I.visit(mapPage.url);

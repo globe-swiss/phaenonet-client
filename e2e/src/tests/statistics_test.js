@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-Feature('Statistics').retry(2);
+Feature('Statistics');
 
 Scenario('test quantil regression on 2018', ({ I, statisticsPage }) => {
   I.visit(statisticsPage.url);

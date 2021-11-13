@@ -1,4 +1,4 @@
-Feature('Navigation Bar Component').retry(2);
+Feature('Navigation Bar Component');
 
 Scenario('test navbar content present', ({ I, navbarComponent }) => {
   I.visit('/');

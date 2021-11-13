@@ -12,8 +12,8 @@ exports.config = {
       url: 'http://localhost:4200',
       show: false,
       browser: 'chromium',
-      waitForTimeout: 5000,
-      video: true
+      video: true,
+      waitForTimeout: 5000
     },
     Mochawesome: {
       uniqueScreenshotNames: false,

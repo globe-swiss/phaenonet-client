@@ -1,4 +1,4 @@
-Feature('Private Profile').retry(2);
+Feature('Private Profile');
 
 Scenario('test component present', ({ I, privateProfilePage }) => {
   I.login();

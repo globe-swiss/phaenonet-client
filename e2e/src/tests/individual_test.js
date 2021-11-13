@@ -1,4 +1,4 @@
-Feature('Individual View').retry(2);
+Feature('Individual View');
 
 let individualUrl;
 
@@ -10,9 +10,9 @@ Before(async ({ I }) => {
   I.visit(individualUrl);
 });
 
-After(({ I }) => {
-  I.deleteIndividual(individualUrl);
-});
+// After(({ I }) => {
+//   I.deleteIndividual(individualUrl);
+// });
 
 Scenario('test create/delete individual', () => {});
 

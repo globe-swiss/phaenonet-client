@@ -1,4 +1,4 @@
-FROM codeceptjs/codeceptjs:latest
+FROM codeceptjs/codeceptjs:3.0.7
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends wait-for-it=0.0~git20170723-1 \
