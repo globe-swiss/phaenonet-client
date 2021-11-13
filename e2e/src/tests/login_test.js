@@ -1,4 +1,4 @@
-Feature('Login').retry(2);
+Feature('Login');
 
 Scenario('test login component present', ({ I, loginPage }) => {
   I.visit(loginPage.url);
