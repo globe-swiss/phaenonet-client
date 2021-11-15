@@ -124,15 +124,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
     if (source === 'meteoswiss') {
       return '/assets/img/map_pins/map_pin_meteoschweiz.png';
     } else {
-      return (
-        '/assets/img/map_pins/' +
-        this.languageService.determineCurrentLang() +
-        '/map_pin_' +
-        species.toLowerCase() +
-        '_' +
-        phaenoIndex +
-        '.png'
-      );
+      return `/assets/img/map_pins/${this.languageService.determineCurrentLang()}/map_pin_${species.toLowerCase()}_${phaenoIndex}.png`;
     }
   }
 
