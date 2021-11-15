@@ -8,7 +8,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
@@ -17,6 +17,7 @@ import * as d3Time from 'd3-time';
 import moment from 'moment';
 import { Observable } from 'rxjs';
 import { filter, first, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { SourceFilterType } from '../masterdata/source-type';
@@ -62,13 +63,8 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   selectableAnalyticsTypes: AnalyticsType[] = ['species', 'altitude'];
   selectableSpecies$: Observable<Species[]>;
 
-  selectedYear = new FormControl();
-  filterForm = new FormGroup({
-    year: this.selectedYear,
-    datasource: new FormControl(this.selectableDatasources[0]),
-    analyticsType: new FormControl(this.selectableAnalyticsTypes[0]),
-    species: new FormControl(allSpecies.id)
-  });
+  selectedYear: AbstractControl;
+  filter: FormGroup;
 
   private margin: Margin = { top: 20, right: 20, bottom: 30, left: 160 };
 
@@ -91,6 +87,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     private navService: NavService,
     private statisticsService: StatisticsService,
     private masterdataService: MasterdataService,
+    private formPersistanceService: FormPersistenceService,
     private translateService: TranslateService,
     private analytics: AngularFireAnalytics
   ) {}
@@ -108,19 +105,33 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.navService.setLocation('Auswertungen');
     this.selectableSpecies$ = this.masterdataService.getSpecies().pipe(map(species => [allSpecies].concat(species)));
-    this.analytics.logEvent('statistics.view');
+    void this.analytics.logEvent('statistics.view');
+
+    if (!this.formPersistanceService.statisticFilter) {
+      this.selectedYear = new FormControl();
+      this.filter = new FormGroup({
+        year: this.selectedYear,
+        datasource: new FormControl(this.selectableDatasources[0]),
+        analyticsType: new FormControl(this.selectableAnalyticsTypes[0]),
+        species: new FormControl(allSpecies.id)
+      });
+      this.masterdataService.phenoYear$.pipe(first()).subscribe(year => this.selectedYear.patchValue(String(year)));
+      this.formPersistanceService.statisticFilter = this.filter;
+    } else {
+      this.filter = this.formPersistanceService.statisticFilter;
+      this.selectedYear = this.formPersistanceService.statisticFilter.controls.year;
+    }
 
     this.selectableYears$ = this.masterdataService.availableYears$.pipe(
       tap(years => (this.availableYears = years)),
-      map(years => [allYear, ...years.map(year => '' + year)]),
-      tap(years => this.selectedYear.patchValue(years[1]))
+      map(years => [allYear, ...years.map(year => String(year))])
     );
   }
 
   ngAfterViewInit(): void {
-    this.filterForm.valueChanges
+    this.filter.valueChanges
       .pipe(
-        startWith(this.filterForm.getRawValue()),
+        startWith(this.filter.getRawValue()),
         filter(form => form.year),
         switchMap(form => {
           const year: string = form.year;
@@ -136,12 +147,12 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
             (year === allYear && form.species === allSpecies.id)
           ) {
             species = 'BA';
-            this.filterForm.controls.species.setValue('BA', { emitEvent: false });
+            this.filter.controls.species.setValue('BA', { emitEvent: false });
           }
 
           if (year === allYear) {
             analyticsType = 'species';
-            this.filterForm.controls.analyticsType.setValue(this.selectableAnalyticsTypes[0], { emitEvent: false });
+            this.filter.controls.analyticsType.setValue(this.selectableAnalyticsTypes[0], { emitEvent: false });
           }
 
           // only report an event if filter is not the default

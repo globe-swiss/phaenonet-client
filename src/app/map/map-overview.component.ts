@@ -93,7 +93,7 @@ export class MapOverviewComponent implements OnInit {
       this.formPersistanceService.mapFilter = this.filter;
     } else {
       this.filter = this.formPersistanceService.mapFilter;
-      this.selectedYear = this.formPersistanceService.mapFilter.get('year');
+      this.selectedYear = this.formPersistanceService.mapFilter.controls.year;
     }
 
     this.masterdataService
