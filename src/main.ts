@@ -30,12 +30,9 @@ Sentry.addGlobalEventProcessor(event => {
 });
 
 function sanitizeTransactionName(transaction: string) {
-  const singlePageRegex = new RegExp('/(individuals|stations|profile)/([^/]*)');
-  const editPageRegex = new RegExp('/(individuals|profile)/([^/]*)/edit');
-  if (singlePageRegex.test(transaction)) {
-    return transaction.replace(singlePageRegex, '/$1/:id');
-  } else if (editPageRegex.test(transaction)) {
-    return transaction.replace(editPageRegex, '/$1/:id/edit');
+  const regexp = new RegExp('/(individuals|stations|profile)/(?!new)([^/]*)');
+  if (regexp.test(transaction)) {
+    return transaction.replace(regexp, '/$1/:id');
   } else return transaction;
 }
 
