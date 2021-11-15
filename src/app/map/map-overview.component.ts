@@ -104,11 +104,8 @@ export class MapOverviewComponent implements OnInit {
     this.individualsWithMarkerOpts$ = this.filter.valueChanges.pipe(
       startWith(this.filter.getRawValue()),
       switchMap(form => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         const year = +form.year;
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         const datasource = form.datasource as SourceFilterType;
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         const species = form.species as string;
 
         // only report an event if filter is not the default

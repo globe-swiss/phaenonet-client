@@ -80,7 +80,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   private y: any;
   private g: any;
 
-  private year: number;
+  private year: number | null; // null if all year
   private data: Analytics[];
 
   constructor(
@@ -93,16 +93,17 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
   ) {}
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: UIEvent) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onResize(event: UIEvent): void {
     // re-render the svg on window resize
     this.drawChart();
   }
 
-  getColor(phenophase: string) {
+  getColor(phenophase: string): string {
     return this.masterdataService.getColor(phenophase);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.navService.setLocation('Auswertungen');
     this.selectableSpecies$ = this.masterdataService.getSpecies().pipe(map(species => [allSpecies].concat(species)));
     void this.analytics.logEvent('statistics.view');
@@ -134,10 +135,10 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
         startWith(this.filter.getRawValue()),
         filter(form => form.year),
         switchMap(form => {
-          const year: string = form.year;
-          const datasource: SourceFilterType = form.datasource;
-          let analyticsType: AnalyticsType = form.analyticsType;
-          let species: string = form.species;
+          const year = form.year as string;
+          const datasource = form.datasource as SourceFilterType;
+          let analyticsType = form.analyticsType as AnalyticsType;
+          let species = form.species as string;
 
           this.year = year === allYear ? null : parseInt(year, 10);
 
@@ -157,7 +158,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
           // only report an event if filter is not the default
           if (this.year !== this.masterdataService.getPhenoYear() || datasource !== 'all' || species !== 'all') {
-            this.analytics.logEvent('statistics.filter', {
+            void this.analytics.logEvent('statistics.filter', {
               year: this.year,
               source: datasource,
               species: species,
@@ -177,9 +178,9 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   private toKey(analytics: Analytics) {
     if (analytics.altitude_grp) {
-      return analytics.species + '-' + analytics.altitude_grp;
+      return `${analytics.species}-${analytics.altitude_grp}`;
     } else if (!this.year) {
-      return analytics.species + '-' + analytics.year;
+      return `${analytics.species}-${analytics.year}`;
     } else {
       return analytics.species;
     }
@@ -208,7 +209,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
     domain.forEach(species => {
       subdomain.forEach(subdomainKey => {
         if (subdomainKey) {
-          resultingDomain.push(species + '-' + subdomainKey);
+          resultingDomain.push(`${species}-${subdomainKey}`);
         } else {
           resultingDomain.push(species);
         }
