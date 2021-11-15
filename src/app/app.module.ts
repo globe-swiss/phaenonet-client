@@ -24,11 +24,12 @@ import { IndividualService } from './individual/individual.service';
 import { LoginModule } from './login/login.module';
 import { MasterdataService } from './masterdata/masterdata.service';
 import { UserService } from './profile/user.service';
+import { GlobalErrorHandler } from './shared/GlobalErrorHandler';
 import { SentryMissingTranslationHandler } from './shared/SentryMissingTranslationHandler';
 import { SharedModule } from './shared/shared.module';
 
 export class CustomTranslateLoader implements TranslateLoader {
-  getTranslation(lang: string): Observable<any> {
+  getTranslation(lang: string): Observable<unknown> {
     return from(import(`../assets/i18n/${lang}.json`));
   }
 }
@@ -64,9 +65,7 @@ registerLocaleData(localeIt, 'it');
   providers: [
     {
       provide: ErrorHandler,
-      useValue: Sentry.createErrorHandler({
-        showDialog: false
-      })
+      useClass: GlobalErrorHandler
     },
     {
       provide: Sentry.TraceService,
@@ -74,6 +73,7 @@ registerLocaleData(localeIt, 'it');
     },
     {
       provide: APP_INITIALIZER,
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       useFactory: () => () => {},
       deps: [Sentry.TraceService],
       multi: true
