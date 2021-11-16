@@ -9,28 +9,6 @@ PhaenoNet is set up with two Firebase projects instances. These projects have a 
 - [phaenonet](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the production instance
 - [phaenonet-test](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the test instance
 
-### Server side setup
-
-1. Create the project in GCP or Firebase
-
-   - <https://console.firebase.google.com/u/0/>
-
-1. Enable Maps and Elevation API
-
-   - <https://console.cloud.google.com/marketplace/details/google/maps-backend.googleapis.com>
-   - <https://console.cloud.google.com/marketplace/details/google/elevation-backend.googleapis.com>
-
-1. Enable username/password authentication in Firebase
-
-   - <https://console.firebase.google.com/u/0/project/[project_name]/authentication/providers>
-
-1. (optional) set outgoing email address
-
-   - <https://console.firebase.google.com/u/0/project/[project_name]/authentication/emails>
-
-1. Install cloud functions and setup configuration data
-   - <https://github.com/globe-swiss/phaenonet-functions>
-
 ## Development
 
 The application will be using the database and access rules of the `phaenonet-test` project for all use-cases described in this section.
