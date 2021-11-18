@@ -1,6 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": ["dist/**/*", "e2e/output/**/*"],
+  "ignorePatterns": ["dist/**/*", "e2e/output/**/*", "src/assets/**/*", "e2e/src/steps.d.ts"],
   "overrides": [
     {
       "files": ["src/**/*.ts"],
@@ -53,6 +53,21 @@
       "files": ["src/**/*.html"],
       "extends": ["plugin:@angular-eslint/template/recommended", "plugin:prettier/recommended"],
       "rules": {}
+    },
+    {
+      "files": ["e2e/**/*.js"],
+      "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+      },
+      "extends": ["airbnb-base", "plugin:prettier/recommended"],
+      "parserOptions": {
+        "ecmaVersion": 12
+      },
+      "rules": {
+        "no-undef": "off" // until plugin:codeceptjs/recommended is supported by codacy
+      }
     }
   ]
 }
