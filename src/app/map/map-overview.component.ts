@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
-import { first, map, share, startWith, switchMap, tap } from 'rxjs/operators';
-import { formatShortDate } from '../shared/formatDate';
+import { first, map, share, startWith, switchMap } from 'rxjs/operators';
+import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
 import { IndividualService } from '../individual/individual.service';
@@ -13,6 +13,7 @@ import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
 import { SourceFilterType, SourceType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
+import { formatShortDate } from '../shared/formatDate';
 
 class GlobeInfoWindowData {
   individual: Individual;
@@ -57,16 +58,12 @@ export class MapOverviewComponent implements OnInit {
   meteoswissInfoWindowData$ = new ReplaySubject<MeteoswissInfoWindowData>(1);
   infoWindowType$ = new ReplaySubject<SourceType>(1);
 
-  years$ = this.masterdataService.availableYears$.pipe(tap(years => this.selectedYear.patchValue(years[0])));
+  years$: Observable<number[]> = this.masterdataService.availableYears$;
   species$: Subject<Species[]> = new ReplaySubject(1);
   datasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger'];
 
-  selectedYear = new FormControl();
-  mapFormGroup = new FormGroup({
-    year: this.selectedYear,
-    datasource: new FormControl(this.datasources[0]),
-    species: new FormControl(allSpecies.id)
-  });
+  selectedYear: AbstractControl;
+  filter: FormGroup;
 
   formatShortDate = formatShortDate;
 
@@ -74,6 +71,7 @@ export class MapOverviewComponent implements OnInit {
     private navService: NavService,
     private individualService: IndividualService,
     private masterdataService: MasterdataService,
+    private formPersistanceService: FormPersistenceService,
     private analytics: AngularFireAnalytics
   ) {}
 
@@ -81,24 +79,38 @@ export class MapOverviewComponent implements OnInit {
     return this.masterdataService.getColor(phenophase);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.navService.setLocation('Karte');
+
+    if (!this.formPersistanceService.mapFilter) {
+      this.selectedYear = new FormControl();
+      this.filter = new FormGroup({
+        year: this.selectedYear,
+        datasource: new FormControl(this.datasources[0]),
+        species: new FormControl(allSpecies.id)
+      });
+      this.masterdataService.phenoYear$.pipe(first()).subscribe(year => this.selectedYear.patchValue(year));
+      this.formPersistanceService.mapFilter = this.filter;
+    } else {
+      this.filter = this.formPersistanceService.mapFilter;
+      this.selectedYear = this.formPersistanceService.mapFilter.controls.year;
+    }
 
     this.masterdataService
       .getSpecies()
       .pipe(map(species => [allSpecies].concat(species)))
       .subscribe(this.species$);
 
-    this.individualsWithMarkerOpts$ = this.mapFormGroup.valueChanges.pipe(
-      startWith(this.mapFormGroup.getRawValue()),
+    this.individualsWithMarkerOpts$ = this.filter.valueChanges.pipe(
+      startWith(this.filter.getRawValue()),
       switchMap(form => {
         const year = +form.year;
-        const datasource: SourceFilterType = form.datasource;
-        const species = form.species;
+        const datasource = form.datasource as SourceFilterType;
+        const species = form.species as string;
 
         // only report an event if filter is not the default
         if (year !== this.masterdataService.getPhenoYear() || datasource !== 'all' || species !== 'ALL') {
-          this.analytics.logEvent('map.filter', {
+          void this.analytics.logEvent('map.filter', {
             year: year,
             source: datasource,
             species: species,
@@ -131,10 +143,10 @@ export class MapOverviewComponent implements OnInit {
       share()
     );
 
-    this.analytics.logEvent('map.view');
+    void this.analytics.logEvent('map.view');
   }
 
-  openInfoWindow(marker: MapMarker, pos: google.maps.LatLngLiteral, individual: Individual & IdLike) {
+  openInfoWindow(marker: MapMarker, pos: google.maps.LatLngLiteral, individual: Individual & IdLike): void {
     const baseUrl = individual.source === 'meteoswiss' ? '/stations' : '/individuals';
     const url = { url: [baseUrl, individual.id] };
 
@@ -170,7 +182,7 @@ export class MapOverviewComponent implements OnInit {
 
     this.infoWindow.open(marker);
 
-    this.analytics.logEvent('map.click-pin', {
+    void this.analytics.logEvent('map.click-pin', {
       id: individual.id,
       individual: individual.individual,
       year: individual.year,
