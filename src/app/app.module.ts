@@ -85,7 +85,7 @@ registerLocaleData(localeIt, 'it');
     UserService,
     IndividualService,
     // workaround for https://github.com/firebase/firebase-js-sdk/issues/1674 remove when fixed in the SDK
-    { provide: SETTINGS, useValue: { experimentalForceLongPolling: true } }
+    { provide: SETTINGS, useValue: { experimentalForceLongPolling: true, merge: true } }
     // { provide: DEBUG_MODE, useValue: true }
   ],
   bootstrap: [AppComponent]
