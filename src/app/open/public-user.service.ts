@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { debounceTime, first, map, switchMap, take } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';
@@ -44,21 +44,18 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
   }
 
   uniqueNicknameValidator(initialValue: string = ''): AsyncValidatorFn {
-    return (
-      control: AbstractControl
-    ): Promise<{ [key: string]: any } | null> | Observable<{ [key: string]: any } | null> => {
-      if (control.value === null || control.value.length === 0 || control.value === initialValue) {
+    return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+      const controlValue = control.value as string;
+      if (controlValue === null || controlValue.length === 0 || controlValue === initialValue) {
         return of(null);
       } else {
-        return control.valueChanges.pipe(
-          debounceTime(250),
-          take(1),
-          switchMap(_ =>
-            this.existingNickname(control.value).pipe(
-              map(existingNickname => (existingNickname ? { existingNickname: { value: control.value } } : null))
-            )
-          )
-        );
+        if (controlValue.includes('/')) {
+          return of({ invalidCharacters: { value: '/' } });
+        } else {
+          return this.existingNickname(controlValue).pipe(
+            map(existingNickname => (existingNickname ? { existingNickname: { value: controlValue } } : null))
+          );
+        }
       }
     };
   }

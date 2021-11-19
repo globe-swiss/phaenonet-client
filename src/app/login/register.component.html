@@ -34,6 +34,9 @@
             <mat-error *ngIf="registerForm.get('nickname').hasError('minlength')">
               {{ 'Der Nickname muss mindestens 3 Zeichen lang sein.' | translate }}
             </mat-error>
+            <mat-error *ngIf="registerForm.get('nickname').hasError('invalidCharacters')">
+              {{ 'Der Nickname enthält ungültige Zeichen.' | translate }}
+            </mat-error>
           </mat-form-field>
           <mat-form-field>
             <mat-label>{{ 'Vorname' | translate }} </mat-label>
@@ -97,7 +100,7 @@
             type="submit"
             (click)="register()"
             id="register-button"
-            [disabled]="registerForm.invalid"
+            [disabled]="registerForm.invalid || registerForm.pending"
           >
             {{ 'Jetzt registrieren' | translate }}
           </button>
