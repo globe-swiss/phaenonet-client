@@ -1,6 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": ["dist/**/*", "e2e/output/**/*"],
+  "ignorePatterns": ["dist/**/*", "e2e/output/**/*", "src/assets/**/*", "e2e/src/steps.d.ts"],
   "overrides": [
     {
       "files": ["src/**/*.ts"],
@@ -19,6 +19,22 @@
         "plugin:@angular-eslint/recommended--extra"
       ],
       "rules": {
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
+          }
+        ],
         "@typescript-eslint/consistent-type-definitions": "error",
         "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/explicit-member-accessibility": [
@@ -37,6 +53,21 @@
       "files": ["src/**/*.html"],
       "extends": ["plugin:@angular-eslint/template/recommended", "plugin:prettier/recommended"],
       "rules": {}
+    },
+    {
+      "files": ["e2e/**/*.js"],
+      "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+      },
+      "extends": ["airbnb-base", "plugin:prettier/recommended"],
+      "parserOptions": {
+        "ecmaVersion": 12
+      },
+      "rules": {
+        "no-undef": "off" // until plugin:codeceptjs/recommended is supported by codacy
+      }
     }
   ]
 }

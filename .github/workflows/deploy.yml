@@ -1,7 +1,7 @@
 # Build and deploy workflow
 # Builds development version by default or production version if the project is 'phaenonet'
 
-name: Build and Deploy
+name: Deploy
 
 on:
   workflow_dispatch:

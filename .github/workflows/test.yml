@@ -1,0 +1,67 @@
+name: "Test"
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master, test-pr ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build
+        run: npx ng build
+      - name: Archive Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: dist-pr-build
+          path: dist
+  e2e-tests:
+    concurrency: e2e-test
+    name: E2E-tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@master
+    - name: e2e-test
+      run: docker-compose up --exit-code-from e2e-test
+    - uses: actions/upload-artifact@v2
+      with:
+        name: e2e-test-report
+        path: e2e/output
+      if: ${{ always() }}
+  codacy:
+    name: Codacy Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: npm ci
+      - name: Codacy Analysis CLI
+        uses: codacy/codacy-analysis-cli-action@4.0.0
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          upload: true
+          verbose: true
+          parallel: 10
+  checks:
+    name: run checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: npm ci
+      - name: check style
+        run: npx prettier -c "."
+      - name: check map icon completeness
+        run: |
+          diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/fr-CH) || exit
+          diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/it-CH) || exit
