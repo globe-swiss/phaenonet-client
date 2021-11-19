@@ -95,7 +95,7 @@ npx ng build && npx firebase deploy --project phaenonet-test
 ### Manually deploy application to production
 
 ```commandline
-npx ng build --prod && npx firebase deploy --project phaenonet
+npx ng build --c=production && npx firebase deploy --project phaenonet
 ```
 
 ## Related resources
