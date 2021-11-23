@@ -1,4 +1,4 @@
-<div gdColumns="repeat(8, 1fr)">
+<div gdColumns="repeat(8, 1fr)" *ngIf="(detailSubject$ | async) !== null">
   <div gdColumn="2 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-view">
     <div gdColumn="1 / span 6" class="detail-header">
       <!-- There is no header -->

@@ -103,7 +103,9 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
     return combineLatest([this.authService.user$, limit$]).pipe(
       filter(([user]) => user.following_users !== undefined && user.following_users.length !== 0),
       switchMap(([user_ids, limit]) =>
-        combineLatest(user_ids.following_users.slice(0, limit).map(user_id => this.publicUserService.get(user_id)))
+        combineLatest(
+          user_ids.following_users.slice(0, limit).map(user_id => this.publicUserService.get(user_id, true))
+        )
       )
     );
   }

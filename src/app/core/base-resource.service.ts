@@ -32,8 +32,11 @@ export abstract class BaseResourceService<T> extends BaseService implements Reso
     ).pipe(mergeMap(identity));
   }
 
-  get(id: string): Observable<T> {
-    return this.afs.collection<T>(this.collectionName).doc<T>(id).valueChanges();
+  get(id: string, withId = false): Observable<T> {
+    return this.afs
+      .collection<T>(this.collectionName)
+      .doc<T>(id)
+      .valueChanges(withId ? { idField: 'id' } : undefined);
   }
 
   /**

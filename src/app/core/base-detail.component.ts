@@ -20,12 +20,10 @@ export class BaseDetailComponent<T> implements OnInit, OnDestroy {
     this.baseSubscriptions.add(
       this.getDetailId()
         .pipe(
-          switchMap((id: string) => {
-            return this.getDetailSubject(id);
-          }),
-          tap(id => {
-            if (!id) {
-              this.router.navigate(['/404'], { skipLocationChange: true });
+          switchMap(id => this.getDetailSubject(id)),
+          tap(subject => {
+            if (!subject) {
+              void this.router.navigate(['/404'], { skipLocationChange: true });
             }
           })
         )

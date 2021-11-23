@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, first, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { catchError, first, map, tap } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
 import { BaseDetailComponent } from '../../core/base-detail.component';
 import { NavService } from '../../core/nav/nav.service';
@@ -31,18 +31,15 @@ export class ProfileComponent extends BaseDetailComponent<PublicUser> implements
   }
 
   protected getDetailId(): Observable<string> {
-    if (this.detailId == null) {
-      return this.getRouteParam('id').pipe(
-        catchError(_ => {
-          return this.authService.user$.pipe(
-            first(),
-            map(_ => this.authService.getUserId())
-          );
-        })
-      );
-    } else {
-      return of(this.detailId);
-    }
+    return super.getDetailId().pipe(
+      catchError(() =>
+        this.authService.user$.pipe(
+          first(),
+          // load the user first to be sure firebase is logged in
+          map(() => this.authService.getUserId())
+        )
+      )
+    );
   }
 
   isOwner(): boolean {
