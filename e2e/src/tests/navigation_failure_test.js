@@ -30,3 +30,8 @@ Scenario('test individual edit not found', ({ I, individualsEditPage }) => {
   I.amOnPage(individualsEditPage.url('not_existing'));
   I.see('Hier ist etwas schiefgelaufen.');
 });
+
+Scenario('test public profile not found', ({ I, publicProfilePage }) => {
+  I.amOnPage(publicProfilePage.url('not_existing'));
+  I.see('Hier ist etwas schiefgelaufen.');
+});
