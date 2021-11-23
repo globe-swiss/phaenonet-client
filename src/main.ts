@@ -41,13 +41,14 @@ if (environment.production) {
 }
 
 function loadConfig() {
-  return fetch('/__/firebase/init.json').then(response => response.json());
+  fetch('/__/firebase/init.json')
+    .then(response =>
+      response.json().then(config =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        platformBrowserDynamic([{ provide: FIREBASE_OPTIONS, useValue: config }]).bootstrapModule(AppModule)
+      )
+    )
+    .catch(() => Sentry.captureMessage('Could not fetch firebase config.', Sentry.Severity.Fatal));
 }
 
-(async () => {
-  const config = await loadConfig();
-
-  platformBrowserDynamic([{ provide: FIREBASE_OPTIONS, useValue: config }])
-    .bootstrapModule(AppModule)
-    .catch(err => console.error(err));
-})();
+void loadConfig();
