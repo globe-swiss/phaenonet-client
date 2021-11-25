@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { catchError, first, map, tap } from 'rxjs/operators';
+import { catchError, first, map } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
 import { BaseDetailComponent } from '../../core/base-detail.component';
 import { NavService } from '../../core/nav/nav.service';
