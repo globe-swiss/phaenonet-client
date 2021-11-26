@@ -29,6 +29,7 @@ exports.config = {
     mapPage: './src/pages/map.js',
     privateProfilePage: './src/pages/private_profile.js',
     profileEditPage: './src/pages/profile_edit.js',
+    publicProfilePage: './src/pages/public_profile.js',
     individualsPage: './src/pages/individuals.js',
     individualsEditPage: './src/pages/individuals_edit.js',
     invitesPage: './src/pages/invites.js',

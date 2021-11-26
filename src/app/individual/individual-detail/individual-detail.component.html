@@ -1,4 +1,4 @@
-<div gdColumns="repeat(8, 1fr)">
+<div gdColumns="repeat(8, 1fr)" *ngIf="(detailSubject$ | async) !== null">
   <div gdColumn="2 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-view">
     <app-individual-detail-header
       gdColumn="1 / span 6"
@@ -6,7 +6,7 @@
       [individual$]="detailSubject$"
     ></app-individual-detail-header>
     <app-individual-subscription-button
-      *ngIf="isLoggedIn && !(isOwn$ | async)"
+      *ngIf="isLoggedIn && (isOwn$ | async) === false"
       gdColumn="1 / span 6"
       class="individual-subscription-button"
       [individual$]="detailSubject$"
