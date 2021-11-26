@@ -4,5 +4,5 @@ export class Phenophase {
   de: string;
   group_id: string;
   seq: number;
-  comments: string[];
+  comments?: string[];
 }

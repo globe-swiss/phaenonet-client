@@ -36,7 +36,7 @@ export class IndividualService extends BaseResourceService<Individual> {
       individual.year = this.masterdataService.getPhenoYear();
     }
 
-    return super.upsert(individual, individual.year + '_' + individual.individual);
+    return super.upsert(individual, `${individual.year}_${individual.individual}`);
   }
 
   listByYear(year: number): Observable<(Individual & IdLike)[]> {
@@ -44,17 +44,7 @@ export class IndividualService extends BaseResourceService<Individual> {
       .collection<Individual>(this.collectionName, ref =>
         ref.where('year', '==', year).orderBy('last_observation_date', 'desc')
       )
-      .valueChanges({ idField: 'id' })
-      .pipe(
-        map(individuals => {
-          return individuals.map(i => {
-            if (i.last_observation_date) {
-              i.last_observation_date = (i.last_observation_date as any).toDate();
-            }
-            return i;
-          });
-        })
-      );
+      .valueChanges({ idField: 'id' });
   }
 
   /**
@@ -79,7 +69,7 @@ export class IndividualService extends BaseResourceService<Individual> {
   }
 
   // fixme move near component
-  getIndividualPhenohases(individuals$: Observable<Individual[]>) {
+  getIndividualPhenohases(individuals$: Observable<Individual[]>): Observable<IndividualPhenophase[]> {
     // combine the list of individuals with their phenophase
     return individuals$.pipe(
       map(individuals =>
@@ -97,7 +87,7 @@ export class IndividualService extends BaseResourceService<Individual> {
               if (r_hasnt_last_obs) {
                 return 1;
               } else {
-                return (r.last_observation_date as any).toMillis() - (l.last_observation_date as any).toMillis();
+                return r.last_observation_date.toMillis() - l.last_observation_date.toMillis();
               }
             })
             .map(individual =>
@@ -112,12 +102,13 @@ export class IndividualService extends BaseResourceService<Individual> {
     );
   }
 
-  getPhenophaseNameIfDefined(individual: Individual) {
+  getPhenophaseNameIfDefined(individual: Individual): Observable<Phenophase> {
     // fixme: probably switch on individual.type
     try {
       return this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase);
     } catch (error) {
-      return of(null);
+      // fixme: does this case actually happen?
+      return of(null as Phenophase);
     }
   }
 
@@ -146,11 +137,11 @@ export class IndividualService extends BaseResourceService<Individual> {
         .ref(path)
         .getDownloadURL()
         .toPromise()
-        .catch(_ => null)
-    );
+        .catch(() => null)
+    ) as Observable<string | null>;
   }
 
-  hasObservations(individualId: string) {
+  hasObservations(individualId: string): Observable<boolean> {
     return this.afs
       .collection<Observation>('observations', ref => ref.where('individual_id', '==', individualId).limit(1))
       .valueChanges()
@@ -161,22 +152,8 @@ export class IndividualService extends BaseResourceService<Individual> {
       );
   }
 
-  deleteImages(individual: Individual) {
-    this.afStorage.storage
-      .ref(this.getImagePath(individual, true))
-      .delete()
-      .catch(reason => {
-        if (reason.code !== 'storage/object-not-found') {
-          console.log(reason);
-        }
-      });
-    this.afStorage.storage
-      .ref(this.getImagePath(individual, false))
-      .delete()
-      .catch(reason => {
-        if (reason.code !== 'storage/object-not-found') {
-          console.log(reason);
-        }
-      });
+  deleteImages(individual: Individual): void {
+    void this.afStorage.storage.ref(this.getImagePath(individual, true)).delete();
+    void this.afStorage.storage.ref(this.getImagePath(individual, false)).delete();
   }
 }
