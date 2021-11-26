@@ -120,17 +120,18 @@ export class IndividualDescriptionComponent implements OnInit {
       .pipe(first())
       .subscribe(([confirmed, individual]) => {
         if (confirmed) {
-          this.individualService.deleteImages(individual);
-          this.individualService
-            .delete(this.individualId)
-            .then(() => {
-              void this.analytics.logEvent('individual.delete');
-              this.alertService.infoMessage('Löschen erfolgreich', 'Das Objekt wurde gelöscht.');
-              void this.router.navigate(['/profile']);
-            })
-            .catch(() => {
-              this.alertService.infoMessage('Löschen fehlgeschlagen', 'Das Objekt konnte nicht gelöscht werden.');
-            });
+          void this.router.navigate(['/profile']).then(() => {
+            this.individualService.deleteImages(individual);
+            this.individualService
+              .delete(this.individualId)
+              .then(() => {
+                void this.analytics.logEvent('individual.delete');
+                this.alertService.infoMessage('Löschen erfolgreich', 'Das Objekt wurde gelöscht.');
+              })
+              .catch(() => {
+                this.alertService.infoMessage('Löschen fehlgeschlagen', 'Das Objekt konnte nicht gelöscht werden.');
+              });
+          });
         }
       });
   }
