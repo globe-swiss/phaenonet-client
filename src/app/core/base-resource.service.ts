@@ -1,6 +1,7 @@
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { from, identity, Observable } from 'rxjs';
 import { first, mergeMap } from 'rxjs/operators';
+import { IdLike } from '../masterdata/masterdata-like';
 import { AlertService } from '../messaging/alert.service';
 import { BaseService } from './base.service';
 import { ResourceService } from './resource.service';
@@ -32,11 +33,12 @@ export abstract class BaseResourceService<T> extends BaseService implements Reso
     ).pipe(mergeMap(identity));
   }
 
-  get(id: string, withId = false): Observable<T> {
-    return this.afs
-      .collection<T>(this.collectionName)
-      .doc<T>(id)
-      .valueChanges(withId ? { idField: 'id' } : undefined);
+  get(id: string): Observable<T> {
+    return this.afs.collection<T>(this.collectionName).doc<T>(id).valueChanges();
+  }
+
+  getWithId(id: string): Observable<T & IdLike> {
+    return this.afs.collection<T>(this.collectionName).doc<T>(id).valueChanges({ idField: 'id' });
   }
 
   /**

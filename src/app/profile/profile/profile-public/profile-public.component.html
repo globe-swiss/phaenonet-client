@@ -19,6 +19,6 @@
     <button mat-icon-button [app-copy-clipboard]="profileLink" (copied)="notifyCopied()">
       <mat-icon svgIcon="copylink"></mat-icon>
     </button>
-    <app-user-subscription-button [user$]="user$" *ngIf="isLoggedIn"></app-user-subscription-button>
+    <app-user-subscription-button [userId]="userId" *ngIf="isLoggedIn"></app-user-subscription-button>
   </div>
 </div>
