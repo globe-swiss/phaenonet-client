@@ -57,21 +57,21 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
     );
   }
 
-  followUser(target: string | Observable<PublicUser>): Observable<void> {
+  followUser(target: string | Observable<PublicUser & IdLike>): Observable<void> {
     return this.idObservable(target).pipe(
       first(),
       switchMap(id => this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayUnion(id) }))
     );
   }
 
-  unfollowUser(target: string | Observable<PublicUser>): Observable<void> {
+  unfollowUser(target: string | Observable<PublicUser & IdLike>): Observable<void> {
     return this.idObservable(target).pipe(
       first(),
       switchMap(id => this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayRemove(id) }))
     );
   }
 
-  isFollowingUser(target: string | Observable<PublicUser>): Observable<boolean> {
+  isFollowingUser(target: string | Observable<PublicUser & IdLike>): Observable<boolean> {
     return combineLatest([this.idObservable(target), this.getUser()]).pipe(
       map(([id, user]) => (user.following_users ? user.following_users.includes(id) : false))
     );
@@ -99,12 +99,12 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
     );
   }
 
-  getFollowedUsers(limit$: Observable<number>): Observable<PublicUser[]> {
+  getFollowedUsers(limit$: Observable<number>): Observable<(PublicUser & IdLike)[]> {
     return combineLatest([this.authService.user$, limit$]).pipe(
       filter(([user]) => user.following_users !== undefined && user.following_users.length !== 0),
       switchMap(([user_ids, limit]) =>
         combineLatest(
-          user_ids.following_users.slice(0, limit).map(user_id => this.publicUserService.get(user_id, true))
+          user_ids.following_users.slice(0, limit).map(user_id => this.publicUserService.getWithId(user_id))
         )
       )
     );

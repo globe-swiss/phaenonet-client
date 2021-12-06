@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { IdLike } from 'src/app/masterdata/masterdata-like';
 import { PublicUser } from '../../../open/public-user';
 
 @Component({
@@ -6,9 +7,6 @@ import { PublicUser } from '../../../open/public-user';
   templateUrl: './user-item.component.html',
   styleUrls: ['./user-item.component.scss']
 })
-export class FollowUserComponent implements OnInit {
-  constructor() {}
-  @Input() item: PublicUser;
-
-  ngOnInit(): void {}
+export class FollowUserComponent {
+  @Input() item: PublicUser & IdLike;
 }

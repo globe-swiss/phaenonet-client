@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { Observable } from 'rxjs';
 import { AlertService } from 'src/app/messaging/alert.service';
-import { PublicUser } from 'src/app/open/public-user';
 import { PublicUserService } from 'src/app/open/public-user.service';
 import { UserService } from 'src/app/profile/user.service';
 
@@ -12,7 +11,6 @@ import { UserService } from 'src/app/profile/user.service';
   styleUrls: ['./user-subscription-button.component.scss']
 })
 export class UserSubscriptionButtonComponent implements OnInit {
-  @Input() user$: Observable<PublicUser>;
   @Input() userId: string;
   isFollowing$: Observable<boolean>;
 
@@ -24,31 +22,28 @@ export class UserSubscriptionButtonComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (!this.user$) {
-      this.user$ = this.publicUserService.get(this.userId);
-    }
-    this.isFollowing$ = this.userService.isFollowingUser(this.user$);
+    this.isFollowing$ = this.userService.isFollowingUser(this.userId);
   }
 
   follow(): void {
     this.userService
-      .followUser(this.user$)
+      .followUser(this.userId)
       .subscribe(() =>
         this.alertService.infoMessage('Aktivitäten abonniert', 'Sie haben die Aktivitäten des Benutzers abonniert.')
       );
 
-    this.analytics.logEvent('follow-user');
+    void this.analytics.logEvent('follow-user');
   }
 
   unfollow(): void {
     this.userService
-      .unfollowUser(this.user$)
+      .unfollowUser(this.userId)
       .subscribe(() =>
         this.alertService.infoMessage(
           'Aktivitäten gekündigt',
           'Sie erhalten keine Aktivitäten mehr zu diesem Benutzer.'
         )
       );
-    this.analytics.logEvent('unfollow-user');
+    void this.analytics.logEvent('unfollow-user');
   }
 }
