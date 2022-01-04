@@ -4,13 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       project:
-        description: "Which project to target? [phaenonet/phaenonet-test]"
+        description: Project
         required: true
         default: phaenonet-test
+        type: choice
+        options:
+          - phaenonet
+          - phaenonet-test
       expires:
-        description: "Expiration"
+        description: Expiration
         required: true
-        default: "14d"
+        default: 14d
 
 env:
   PROJECT: ${{ github.event.inputs.project }}
