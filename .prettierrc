@@ -3,5 +3,13 @@
   "bracketSpacing": true,
   "arrowParens": "avoid",
   "trailingComma": "none",
-  "printWidth": 120
+  "printWidth": 120,
+  "overrides": [
+    {
+      "files": "index.html",
+      "options": {
+        "parser": "html"
+      }
+    }
+  ]
 }
