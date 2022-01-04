@@ -7,19 +7,24 @@ on:
   workflow_dispatch:
     inputs:
       project:
-        description: "Which project to target? [phaenonet/phaenonet-test]"
+        description: Project
         required: true
         default: phaenonet-test
+        type: choice
+        options:
+          - phaenonet
+          - phaenonet-test
       tag:
-        description: "Tag this deployment?"
+        description: Tag
         required: false
+        type: string
   push:
-    branches: [ master, test-master ]
+    branches: [master, test-master]
 
 env:
   PROJECT: ${{ github.event.inputs.project || 'phaenonet-test' }}
   TAG: ${{ github.event.inputs.tag }}
-  VERSION: "phaenonet-client@${{ github.event.inputs.tag && github.event.inputs.tag || github.sha }}"
+  VERSION: 'phaenonet-client@${{ github.event.inputs.tag && github.event.inputs.tag || github.sha }}'
 
 jobs:
   build:
@@ -106,7 +111,7 @@ jobs:
       - name: Tag commit
         uses: tvdias/github-tagger@v0.0.1
         with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
           tag: ${{ env.TAG }}
         if: ${{ env.TAG }}
   docs:

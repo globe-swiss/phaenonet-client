@@ -1,4 +1,4 @@
-version: "2"
+version: '2'
 services:
   phaenonet-app:
     build: .
@@ -9,4 +9,4 @@ services:
       - phaenonet-app
     build: ./e2e
     volumes:
-    - "./e2e/output:/tests/output:rw"
+      - './e2e/output:/tests/output:rw'
