@@ -2,17 +2,23 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { first, map, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';
 import { Roles } from '../profile/Roles.enum';
+import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { PublicUser } from './public-user';
 
 @Injectable()
 export class PublicUserService extends BaseResourceService<PublicUser> {
-  constructor(alertService: AlertService, protected afs: AngularFirestore, private authService: AuthService) {
-    super(alertService, afs, 'public_users');
+  constructor(
+    alertService: AlertService,
+    protected afs: AngularFirestore,
+    private authService: AuthService,
+    protected fds: FirestoreDebugService
+  ) {
+    super(alertService, afs, 'public_users', fds);
   }
 
   existingNickname(nickname: string): Observable<boolean> {
@@ -24,6 +30,7 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
         .collection<PublicUser>(this.collectionName, ref => ref.where('nickname', '==', nickname))
         .valueChanges()
         .pipe(
+          tap(x => this.fds.addRead(`${this.collectionName} (existingNickname)`, x.length)),
           first(),
           map(users => users.length > 0)
         );

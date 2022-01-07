@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { combineLatest, from, Observable, of } from 'rxjs';
-import { first, map, mergeAll } from 'rxjs/operators';
+import { first, map, mergeAll, shareReplay, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { IdLike } from '../masterdata/masterdata-like';
@@ -11,19 +11,23 @@ import { Phenophase } from '../masterdata/phaenophase';
 import { Species } from '../masterdata/species';
 import { AlertService } from '../messaging/alert.service';
 import { Observation } from '../observation/observation';
+import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { Individual } from './individual';
 import { IndividualPhenophase } from './individual-phenophase';
 
 @Injectable()
 export class IndividualService extends BaseResourceService<Individual> {
+  individualsByYear$$: Map<number, Observable<(Individual & IdLike)[]>>;
   constructor(
     alertService: AlertService,
     protected afs: AngularFirestore,
     private authService: AuthService,
     private afStorage: AngularFireStorage,
-    private masterdataService: MasterdataService
+    private masterdataService: MasterdataService,
+    protected fds: FirestoreDebugService
   ) {
-    super(alertService, afs, 'individuals');
+    super(alertService, afs, 'individuals', fds);
+    this.individualsByYear$$ = new Map();
   }
 
   upsert(individual: Individual): Observable<Individual> {
@@ -40,11 +44,22 @@ export class IndividualService extends BaseResourceService<Individual> {
   }
 
   listByYear(year: number): Observable<(Individual & IdLike)[]> {
-    return this.afs
-      .collection<Individual>(this.collectionName, ref =>
-        ref.where('year', '==', year).orderBy('last_observation_date', 'desc')
-      )
-      .valueChanges({ idField: 'id' });
+    const cachedObservable$ = this.individualsByYear$$.get(year);
+    if (cachedObservable$ !== undefined) {
+      return cachedObservable$;
+    } else {
+      const obs$ = this.afs
+        .collection<Individual>(this.collectionName, ref =>
+          ref.where('year', '==', year).orderBy('last_observation_date', 'desc')
+        )
+        .valueChanges({ idField: 'id' })
+        .pipe(
+          tap(x => this.fds.addRead(`${this.collectionName} (listByYear)`, x.length)),
+          shareReplay(1)
+        );
+      this.individualsByYear$$.set(year, obs$);
+      return obs$;
+    }
   }
 
   /**
@@ -57,7 +72,11 @@ export class IndividualService extends BaseResourceService<Individual> {
       .collection<Individual>(this.collectionName, ref =>
         ref.where('user', '==', userId).orderBy('modified', 'desc').limit(limit)
       )
-      .valueChanges({ idField: 'id' });
+      .valueChanges({ idField: 'id' })
+      .pipe(
+        tap(x => this.fds.addRead(`${this.collectionName} (listByUser)`, x.length)),
+        shareReplay(1)
+      );
   }
 
   listByIds(individuals: string[], year: number, limit: number = 100): Observable<(Individual & IdLike)[]> {
@@ -65,7 +84,8 @@ export class IndividualService extends BaseResourceService<Individual> {
       .collection<Individual>(this.collectionName, ref =>
         ref.where('individual', 'in', individuals).where('year', '==', year).limit(limit)
       )
-      .valueChanges({ idField: 'id' });
+      .valueChanges({ idField: 'id' })
+      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByIds)`, x.length)));
   }
 
   // fixme move near component
@@ -146,6 +166,7 @@ export class IndividualService extends BaseResourceService<Individual> {
       .collection<Observation>('observations', ref => ref.where('individual_id', '==', individualId).limit(1))
       .valueChanges()
       .pipe(
+        tap(x => this.fds.addRead('observations (hasObservations)', x.length)),
         map(observations => {
           return observations.length > 0;
         })

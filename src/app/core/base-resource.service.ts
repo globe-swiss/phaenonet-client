@@ -1,18 +1,27 @@
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { from, identity, Observable } from 'rxjs';
-import { first, mergeMap } from 'rxjs/operators';
+import { first, mergeMap, tap } from 'rxjs/operators';
 import { IdLike } from '../masterdata/masterdata-like';
 import { AlertService } from '../messaging/alert.service';
+import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { BaseService } from './base.service';
 import { ResourceService } from './resource.service';
 
 export abstract class BaseResourceService<T> extends BaseService implements ResourceService<T> {
-  constructor(protected alertService: AlertService, protected afs: AngularFirestore, protected collectionName: string) {
+  constructor(
+    protected alertService: AlertService,
+    protected afs: AngularFirestore,
+    protected collectionName: string,
+    protected fds: FirestoreDebugService
+  ) {
     super(alertService);
   }
 
   list(): Observable<T[]> {
-    return this.afs.collection<T>(this.collectionName).valueChanges({ idField: 'id' });
+    return this.afs
+      .collection<T>(this.collectionName)
+      .valueChanges({ idField: 'id' })
+      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (list)`, x.length)));
   }
 
   /**
@@ -24,21 +33,30 @@ export abstract class BaseResourceService<T> extends BaseService implements Reso
   upsert(t: T, id: string): Observable<T> {
     const { created, modified, ...withoutDates } = t as any;
     delete withoutDates.id;
+    this.fds.addWrite(`${this.collectionName} (upsert)`);
     return from(
       this.afs
         .collection<T>(this.collectionName)
         .doc<T>(id)
         .set(withoutDates, { merge: true })
-        .then(_ => this.get(id).pipe(first()))
+        .then(() => this.get(id).pipe(first()))
     ).pipe(mergeMap(identity));
   }
 
   get(id: string): Observable<T> {
-    return this.afs.collection<T>(this.collectionName).doc<T>(id).valueChanges();
+    return this.afs
+      .collection<T>(this.collectionName)
+      .doc<T>(id)
+      .valueChanges()
+      .pipe(tap(() => this.fds.addRead(`${this.collectionName} (base-resource.get)`)));
   }
 
   getWithId(id: string): Observable<T & IdLike> {
-    return this.afs.collection<T>(this.collectionName).doc<T>(id).valueChanges({ idField: 'id' });
+    return this.afs
+      .collection<T>(this.collectionName)
+      .doc<T>(id)
+      .valueChanges({ idField: 'id' })
+      .pipe(tap(() => this.fds.addRead(`${this.collectionName} (base-resource.getWithId)`)));
   }
 
   /**

@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';
+import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { Observation } from './observation';
 
 @Injectable()
 export class ObservationService extends BaseResourceService<Observation> {
-  constructor(alertService: AlertService, protected afs: AngularFirestore) {
-    super(alertService, afs, 'observations');
+  constructor(alertService: AlertService, protected afs: AngularFirestore, protected fds: FirestoreDebugService) {
+    super(alertService, afs, 'observations', fds);
   }
 
   listByIndividual(individualId: string): Observable<Observation[]> {
@@ -17,6 +18,7 @@ export class ObservationService extends BaseResourceService<Observation> {
       .collection<Observation>(this.collectionName, ref => ref.where('individual_id', '==', individualId))
       .valueChanges({ idField: 'id' })
       .pipe(
+        tap(x => this.fds.addRead(`${this.collectionName} (listByIndividual)`, x.length)),
         map(obs =>
           obs.map(o => {
             o.date = o.date ? (o.date as any).toDate() : o.date;
