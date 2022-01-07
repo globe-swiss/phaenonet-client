@@ -8,6 +8,8 @@
   "auth/invalid-email.message": "Die eingegebene Mailadresse ist ungültig.",
   "auth/email-already-in-use.title": "Mailadresse bereits verwendet",
   "auth/email-already-in-use.message": "Die eingegebene Mailadresse wird bereits verwendet.",
+  "auth/network-request-failed.title": "Fehler",
+  "auth/network-request-failed.message": "Es ist ein Netzwerkfehler aufgetreten.",
   "all": "Alle",
   "globe": "PhaenoNet",
   "meteoswiss": "MeteoSchweiz",

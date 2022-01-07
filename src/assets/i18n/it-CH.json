@@ -8,6 +8,8 @@
   "auth/invalid-email.message": "L'indirizzo e-mail inserito non è valido.",
   "auth/email-already-in-use.title": "Indirizzo e-mail già usato",
   "auth/email-already-in-use.message": "L'indirizzo e-mail inserito è già usato.",
+  "auth/network-request-failed.title": "Errore",
+  "auth/network-request-failed.message": "Si è verificato un errore di rete.",
   "Profil": "Profilo",
   "PROFIL": "PROFILO",
   "Karte": "Carta",
