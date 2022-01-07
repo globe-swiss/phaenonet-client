@@ -22,7 +22,7 @@ Scenario('test initial filter', ({ I, mapPage }) => {
   I.visit(mapPage.url);
   I.waitForText('Alle', 1, mapPage.filter.source.dropdown);
   I.waitForText('Alle', 1, mapPage.filter.species.dropdown);
-  I.waitForText('2021', 2, mapPage.filter.phenoyear.dropdown); // fixme: will fail on phenoyear rollover
+  I.waitForText('2022', 2, mapPage.filter.phenoyear.dropdown); // fixme: will fail on phenoyear rollover
 });
 
 Scenario('test regression on map markers for 2018', async ({ I, mapPage }) => {
