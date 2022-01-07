@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import internal from 'events';
 import { combineLatest, from, Observable, of } from 'rxjs';
 import { first, map, mergeAll } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
@@ -48,14 +49,15 @@ export class IndividualService extends BaseResourceService<Individual> {
   }
 
   /**
-   * Get the list of individuals ordered by modified date descending.
+   * Get the list of individuals (unordered).
    * @param userId the userId, can be public or self.
-   * @param limit defaults to 100
+   * @param fromYear return individuals starting with this year
+   * @limit limit global limit defaults to 1000
    */
-  listByUser(userId: string, limit: number = 100): Observable<(Individual & IdLike)[]> {
+  listByUser(userId: string, fromYear: number, limit: number = 1000): Observable<(Individual & IdLike)[]> {
     return this.afs
       .collection<Individual>(this.collectionName, ref =>
-        ref.where('user', '==', userId).orderBy('modified', 'desc').limit(limit)
+        ref.where('user', '==', userId).where('year', '>=', fromYear).limit(limit)
       )
       .valueChanges({ idField: 'id' });
   }
