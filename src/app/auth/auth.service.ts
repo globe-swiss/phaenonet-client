@@ -10,6 +10,7 @@ import { map, switchAll, switchMap, take, tap } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { User } from '../profile/user';
+import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { LoginResult } from './login-result';
 
 export const LOGIN_URL = '/auth/login';
@@ -31,14 +32,18 @@ export class AuthService extends BaseService implements OnDestroy {
     alertService: AlertService,
     private router: Router,
     private afAuth: AngularFireAuth,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private fds: FirestoreDebugService
   ) {
     super(alertService);
 
     this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+          return this.afs
+            .doc<User>(`users/${user.uid}`)
+            .valueChanges()
+            .pipe(tap(() => this.fds.addRead('users (auth-state)')));
         } else {
           this.resetClientSession();
           return of(null) as Observable<User>;

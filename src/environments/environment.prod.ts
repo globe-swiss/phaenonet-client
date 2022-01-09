@@ -4,6 +4,7 @@
 
 export const environment = {
   production: true,
+  debugFirestore: true,
   name: 'production',
   sentrySamplerate: 1.0,
   sentryEnabled: true,

@@ -4,6 +4,6 @@ export class User {
   lastname: string;
   locale: string;
 
-  following_users: string[];
-  following_individuals: string[];
+  following_users?: string[];
+  following_individuals?: string[];
 }

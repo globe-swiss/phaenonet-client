@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { BaseResourceService } from 'src/app/core/base-resource.service';
 import { LanguageService } from 'src/app/core/language.service';
 import { IdLike } from 'src/app/masterdata/masterdata-like';
 import { AlertService } from 'src/app/messaging/alert.service';
+import { FirestoreDebugService } from 'src/app/shared/firestore-debug.service';
 import { Invite } from './invite';
 
 @Injectable({
@@ -17,9 +19,10 @@ export class InviteService extends BaseResourceService<Invite> {
     protected alertService: AlertService,
     protected afs: AngularFirestore,
     protected authService: AuthService,
-    protected languageService: LanguageService
+    protected languageService: LanguageService,
+    protected fds: FirestoreDebugService
   ) {
-    super(alertService, afs, 'invites');
+    super(alertService, afs, 'invites', fds);
   }
 
   addInvite(email: string) {
@@ -35,7 +38,8 @@ export class InviteService extends BaseResourceService<Invite> {
   getInvites(): Observable<(Invite & IdLike)[]> {
     return this.afs
       .collection<Invite>(this.collectionName, ref => ref.where('user', '==', this.authService.getUserId()))
-      .valueChanges({ idField: 'id' });
+      .valueChanges({ idField: 'id' })
+      .pipe(tap(x => this.fds.addRead('activities (getInvites)', x.length)));
   }
 
   resendInvite(invite: Invite, id: string) {

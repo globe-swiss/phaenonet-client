@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 import { combineLatest, from, Observable, of, Subscription } from 'rxjs';
-import { filter, first, map, switchMap } from 'rxjs/operators';
+import { filter, first, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { Individual } from '../individual/individual';
@@ -13,6 +13,7 @@ import { SourceType } from '../masterdata/source-type';
 import { AlertService } from '../messaging/alert.service';
 import { PublicUser } from '../open/public-user';
 import { PublicUserService } from '../open/public-user.service';
+import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { Roles } from './Roles.enum';
 import { User } from './user';
 
@@ -27,9 +28,10 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
     protected afs: AngularFirestore,
     private authService: AuthService,
     private individualService: IndividualService,
-    private masterdataService: MasterdataService
+    private masterdataService: MasterdataService,
+    protected fds: FirestoreDebugService
   ) {
-    super(alertService, afs, 'users');
+    super(alertService, afs, 'users', fds);
     this.roles$ = this.publicUserService
       .get(this.authService.getUserId())
       .pipe(map(publicUser => (publicUser.roles ? publicUser.roles : [])));
@@ -86,7 +88,9 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
   }
 
   private followUnfollow(partial: Partial<unknown>): Observable<void> {
-    return from(this.afs.collection('users').doc(this.authService.getUserId()).update(partial));
+    return from(this.afs.collection('users').doc(this.authService.getUserId()).update(partial)).pipe(
+      tap(() => this.fds.addWrite('users (followUnfollow)'))
+    );
   }
 
   getFollowedIndividuals(limit$: Observable<number>): Observable<Individual[]> {

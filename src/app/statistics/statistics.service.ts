@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { BaseResourceService } from '../core/base-resource.service';
 import { SourceFilterType } from '../masterdata/source-type';
 import { AlertService } from '../messaging/alert.service';
+import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
 
 @Injectable()
 export class StatisticsService extends BaseResourceService<Analytics> {
-  constructor(alertService: AlertService, protected afs: AngularFirestore) {
-    super(alertService, afs, 'analytics_result');
+  constructor(alertService: AlertService, protected afs: AngularFirestore, protected fds: FirestoreDebugService) {
+    super(alertService, afs, 'analytics_result', fds);
   }
 
   listByYear(
@@ -36,6 +37,7 @@ export class StatisticsService extends BaseResourceService<Analytics> {
       })
       .valueChanges({ idField: 'id' })
       .pipe(
+        tap(x => this.fds.addRead(`${this.collectionName} (listByYear)`, x.length)),
         map(analytics =>
           analytics.map(a => ({
             source: a.source,
