@@ -83,10 +83,10 @@ export class IndividualService extends BaseResourceService<Individual> {
                 return 0;
               }
               if (l_hasnt_last_obs) {
-                return -1;
+                return 1;
               }
               if (r_hasnt_last_obs) {
-                return 1;
+                return -1;
               } else {
                 return r.last_observation_date.toMillis() - l.last_observation_date.toMillis();
               }
