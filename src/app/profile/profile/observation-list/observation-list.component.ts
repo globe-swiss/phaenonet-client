@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { first, switchMap } from 'rxjs/operators';
+import { first, switchMap, tap } from 'rxjs/operators';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { AuthService } from '../../../auth/auth.service';
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
@@ -17,6 +17,7 @@ export class ObservationListComponent implements OnInit {
 
   latestIndividualObservations$: Observable<IndividualPhenophase[]>;
   private fromYear$ = new BehaviorSubject<number>(9999);
+  private initialYear = 0;
 
   constructor(
     private authService: AuthService,
@@ -26,7 +27,12 @@ export class ObservationListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.masterdataService.phenoYear$.pipe(first()).subscribe(year => this.fromYear$.next(year));
+    this.masterdataService.phenoYear$
+      .pipe(
+        first(),
+        tap(year => (this.initialYear = year))
+      )
+      .subscribe(year => this.fromYear$.next(year));
     this.latestIndividualObservations$ = this.fromYear$.pipe(
       switchMap(year =>
         this.individualService.getIndividualPhenohases(this.individualService.listByUser(this.userId, year))
@@ -38,8 +44,11 @@ export class ObservationListComponent implements OnInit {
     return this.authService.getUserId() === this.userId;
   }
 
+  /**
+   * 1st click, show last year. 2nd click show all observations.
+   */
   showMoreIndividuals(): void {
-    this.fromYear$.next(this.fromYear$.value - 1);
+    this.fromYear$.next(this.initialYear - this.fromYear$.value > 1 ? 0 : this.fromYear$.value - 1);
     void this.analytics.logEvent('profile.show-more-individuals');
   }
 }
