@@ -31,6 +31,8 @@ jobs:
         uses: actions/checkout@master
       - name: e2e-test
         run: docker-compose up --exit-code-from e2e-test
+        env:
+          DOCKER_BUILDKIT: '1'
       - uses: actions/upload-artifact@v2
         with:
           name: e2e-test-report
