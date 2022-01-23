@@ -48,7 +48,7 @@ export class ObservationListComponent implements OnInit {
    * 1st click, show last year. 2nd click show all observations.
    */
   showMoreIndividuals(): void {
-    this.fromYear$.next(this.initialYear - this.fromYear$.value > 1 ? 0 : this.fromYear$.value - 1);
+    this.fromYear$.next(this.initialYear - this.fromYear$.value >= 1 ? 0 : this.fromYear$.value - 1);
     void this.analytics.logEvent('profile.show-more-individuals');
   }
 }
