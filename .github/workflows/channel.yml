@@ -20,13 +20,25 @@ env:
   PROJECT: ${{ github.event.inputs.project }}
   EXP: ${{ github.event.inputs.expires }}
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   build:
-    name: Build
+    name: Build & Create Channel
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.project }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          create_credentials_file: true
       - name: Install Dependencies
         run: npm ci
       - name: Build
@@ -36,21 +48,5 @@ jobs:
         with:
           name: ${{ env.PROJECT }}
           path: dist
-  deploy:
-    name: Create Channel
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@master
-      - name: Download Artifact
-        uses: actions/download-artifact@master
-        with:
-          name: ${{ env.PROJECT }}
-          path: dist
       - name: Deploy Hosting Channel
-        uses: w9jds/firebase-action@master
-        with:
-          args: hosting:channel:deploy ${{ github.ref }} --project ${{ env.PROJECT }} -e ${{ env.EXP }}
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: npx firebase hosting:channel:deploy ${{ github.ref }} --project ${{ env.PROJECT }} -e ${{ env.EXP }}

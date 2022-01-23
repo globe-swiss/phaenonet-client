@@ -26,6 +26,10 @@ env:
   TAG: ${{ github.event.inputs.tag }}
   VERSION: 'phaenonet-client@${{ github.event.inputs.tag && github.event.inputs.tag || github.sha }}'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   build:
     name: Build
@@ -85,6 +89,7 @@ jobs:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.project || 'phaenonet-test' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
@@ -94,6 +99,13 @@ jobs:
           repository: globe-swiss/phaenonet-client-security
           path: security
           ssh-key: ${{ secrets.SECURITY_REPO_DEPLOY_KEY }}
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          create_credentials_file: true
       - name: Download Artifact
         uses: actions/download-artifact@master
         with:
@@ -102,12 +114,10 @@ jobs:
       - name: Remove source maps (prod)
         run: rm ./dist/**/*.map
         if: ${{ env.PROJECT == 'phaenonet' }}
+      - name: install firebase-tools
+        run: npm i --no-save firebase-tools
       - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --project ${{ env.PROJECT }}
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: npx firebase deploy --project ${{ env.PROJECT }}
       - name: Tag commit
         uses: tvdias/github-tagger@v0.0.1
         with:
@@ -117,6 +127,7 @@ jobs:
   docs:
     name: Update Docs
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.project == 'phaenonet' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
