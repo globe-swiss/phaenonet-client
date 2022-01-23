@@ -23,8 +23,22 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "year",
+          "fieldPath": "modified",
           "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "individuals",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "user",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "year",
+          "order": "ASCENDING"
         }
       ]
     },
