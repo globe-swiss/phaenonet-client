@@ -26,6 +26,10 @@ env:
   TAG: ${{ github.event.inputs.tag }}
   VERSION: 'phaenonet-client@${{ github.event.inputs.tag && github.event.inputs.tag || github.sha }}'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   build:
     name: Build
@@ -110,8 +114,10 @@ jobs:
       - name: Remove source maps (prod)
         run: rm ./dist/**/*.map
         if: ${{ env.PROJECT == 'phaenonet' }}
+      - name: install firebase-tools
+        run: npm i --no-save firebase-tools
       - name: Deploy to Firebase
-        run: npx firebase deploy --only hosting --project ${{ env.PROJECT }}
+        run: npx firebase deploy --project ${{ env.PROJECT }}
       - name: Tag commit
         uses: tvdias/github-tagger@v0.0.1
         with:
@@ -121,6 +127,7 @@ jobs:
   docs:
     name: Update Docs
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.project == 'phaenonet' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
