@@ -166,7 +166,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
   /**
    * Species that can be selected for creating new individuals.
    */
-  getSelectableSpecies(roles: Observable<string[]>): Observable<Species[]> {
+  getObservableSpecies(roles: Observable<string[]>): Observable<Species[]> {
     return combineLatest([this.getSpecies(), roles]).pipe(
       map(([species, roles]) => {
         if (roles.includes(Roles.RANGER)) {
@@ -316,5 +316,9 @@ export class MasterdataService extends BaseService implements OnDestroy {
     }
 
     return result;
+  }
+
+  public sortTranslatedMasterData<T extends MasterdataLike>(records: Array<T>): Array<T> {
+    return records.sort((m1, m2) => this.languageService.sortTranslated(m1.de, m2.de));
   }
 }

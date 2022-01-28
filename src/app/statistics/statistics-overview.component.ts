@@ -105,7 +105,10 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.navService.setLocation('Auswertungen');
-    this.selectableSpecies$ = this.masterdataService.getSpecies().pipe(map(species => [allSpecies].concat(species)));
+    this.selectableSpecies$ = this.masterdataService.getSpecies().pipe(
+      map(species => this.masterdataService.sortTranslatedMasterData(species)),
+      map(species => [allSpecies].concat(species))
+    );
     void this.analytics.logEvent('statistics.view');
 
     if (!this.formPersistanceService.statisticFilter) {

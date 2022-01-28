@@ -5,7 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { some } from 'fp-ts/lib/Option';
 import { BehaviorSubject, combineLatest, Observable, ReplaySubject, Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { AlertService } from 'src/app/messaging/alert.service';
 import { UserService } from 'src/app/profile/user.service';
 import { Description } from '../../../masterdata/description';
@@ -76,7 +76,9 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     this.geopos$ = this.geoposService.geopos$;
     this.subscriptions.add(this.geoposService.altitude$.subscribe(altitude => this.altitudeInput.setValue(altitude)));
 
-    this.selectableSpecies$ = this.masterdataService.getSelectableSpecies(this.userService.getRoles());
+    this.selectableSpecies$ = this.masterdataService
+      .getObservableSpecies(this.userService.getRoles())
+      .pipe(map(species => this.masterdataService.sortTranslatedMasterData(species)));
     this.selectableDescriptions$ = this.masterdataService.getDescriptions();
     this.selectableExpositions$ = this.masterdataService.getExpositions();
     this.selectableShades$ = this.masterdataService.getShades();
