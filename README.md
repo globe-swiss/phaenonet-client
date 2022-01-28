@@ -101,4 +101,4 @@ npx ng build --c=production && npx firebase deploy --project phaenonet
 ## Related resources
 
 - [phaenonet-functions](https://github.com/globe-swiss/phaenonet-functions)
-- [data model documentation](https://dbdocs.io/pgoellnitz/phaenonet) ([diagrams.io](http://diagrams.io))
+- [data model documentation](https://dbdocs.io/pgoellnitz/phaenonet) ([dbdiagrams.io](http://dbdiagrams.io))
