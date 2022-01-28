@@ -19,6 +19,7 @@ on:
 env:
   PROJECT: ${{ github.event.inputs.project }}
   EXP: ${{ github.event.inputs.expires }}
+  NODE_VERSION: '14'
 
 permissions:
   contents: read
@@ -32,13 +33,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
-      - id: auth
-        name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v0
+      - uses: actions/setup-node@v2
         with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-          create_credentials_file: true
+          node-version: ${{ env.NODE_VERSION }}
       - name: Install Dependencies
         run: npm ci
       - name: Build
@@ -48,5 +45,12 @@ jobs:
         with:
           name: ${{ env.PROJECT }}
           path: dist
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          create_credentials_file: true
       - name: Deploy Hosting Channel
         run: npx firebase hosting:channel:deploy ${{ github.ref }} --project ${{ env.PROJECT }} -e ${{ env.EXP }}
