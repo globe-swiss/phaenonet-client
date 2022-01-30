@@ -1,7 +1,7 @@
 import { Directive, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
-import { flatMap, switchMap, tap } from 'rxjs/operators';
+import { filter, flatMap, switchMap, tap } from 'rxjs/operators';
 import { ResourceService } from './resource.service';
 
 @Directive()
@@ -25,7 +25,8 @@ export class BaseDetailComponent<T> implements OnInit, OnDestroy {
             if (!subject) {
               void this.router.navigate(['/404'], { skipLocationChange: true });
             }
-          })
+          }),
+          filter(subject => subject !== undefined) // do not publish undefined values (after subject deletion)
         )
         .subscribe(this.detailSubject$)
     );
