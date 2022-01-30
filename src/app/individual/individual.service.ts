@@ -172,7 +172,13 @@ export class IndividualService extends BaseResourceService<Individual> {
   }
 
   deleteImages(individual: Individual): void {
-    void this.afStorage.storage.ref(this.getImagePath(individual, true)).delete();
-    void this.afStorage.storage.ref(this.getImagePath(individual, false)).delete();
+    this.afStorage.storage
+      .ref(this.getImagePath(individual, true))
+      .delete()
+      .catch(() => null); // ignore if image does not exist
+    this.afStorage.storage
+      .ref(this.getImagePath(individual, false))
+      .delete()
+      .catch(() => null); // ignore if image does not exist
   }
 }
