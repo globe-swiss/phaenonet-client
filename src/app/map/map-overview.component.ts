@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
+import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { first, map, share, startWith, switchMap } from 'rxjs/operators';
 import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
@@ -59,7 +59,7 @@ export class MapOverviewComponent implements OnInit {
   infoWindowType$ = new ReplaySubject<SourceType>(1);
 
   years$: Observable<number[]> = this.masterdataService.availableYears$;
-  species$: Subject<Species[]> = new ReplaySubject(1);
+  species$: Observable<Species[]>;
   datasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger'];
 
   selectedYear: AbstractControl;
@@ -96,10 +96,10 @@ export class MapOverviewComponent implements OnInit {
       this.selectedYear = this.formPersistanceService.mapFilter.controls.year;
     }
 
-    this.masterdataService
-      .getSpecies()
-      .pipe(map(species => [allSpecies].concat(species)))
-      .subscribe(this.species$);
+    this.species$ = this.masterdataService.getSpecies().pipe(
+      map(species => this.masterdataService.sortTranslatedMasterData(species)),
+      map(species => [allSpecies].concat(species))
+    );
 
     this.individualsWithMarkerOpts$ = this.filter.valueChanges.pipe(
       startWith(this.filter.getRawValue()),

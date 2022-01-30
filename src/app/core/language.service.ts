@@ -21,18 +21,18 @@ export class LanguageService implements OnDestroy {
     );
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  init(): any {
+  init(): void {
     this.translateService.addLangs(['de-CH', 'fr-CH', 'it-CH']);
     const currentLang = this.determineCurrentLang();
     this.translateService.setDefaultLang('de-CH');
     this.changeLocale(currentLang);
   }
 
-  changeLocale(newLocale: string): any {
+  changeLocale(newLocale: string): void {
     let locale = this.parseLang(newLocale);
     if (locale == null) {
       locale = 'de-CH';
@@ -77,5 +77,9 @@ export class LanguageService implements OnDestroy {
 
   private isLang(langLower: string, lang: string): boolean {
     return langLower === lang || langLower.startsWith(lang + '_') || langLower.startsWith(lang + '-');
+  }
+
+  public sortTranslated(a: string, b: string): number {
+    return (this.translateService.instant(a) as string).localeCompare(this.translateService.instant(b));
   }
 }
