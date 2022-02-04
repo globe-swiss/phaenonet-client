@@ -1,11 +1,22 @@
 <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
   <h3>
-    <span>{{ 'MEINE EINLADUNGEN' | translate }}</span>
+    <span>{{ 'OFFENE EINLADUNGEN' | translate }}</span>
   </h3>
 </div>
 <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
-  <ng-container *ngIf="(invites$ | async)?.length > 0; else noinvites">
-    <app-invite-item *ngFor="let invite of invites$ | async" [item]="invite"></app-invite-item>
+  <ng-container *ngIf="(openInvites$ | async)?.length > 0; else noinvites">
+    <app-invite-item *ngFor="let invite of openInvites$ | async" [item]="invite"></app-invite-item>
+  </ng-container>
+</div>
+
+<div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
+  <h3>
+    <span>{{ 'ANGENOMMENE EINLADUNGEN' | translate }}</span>
+  </h3>
+</div>
+<div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
+  <ng-container *ngIf="(acceptedInvites$ | async)?.length > 0">
+    <app-invite-item *ngFor="let invite of acceptedInvites$ | async" [item]="invite"></app-invite-item>
   </ng-container>
   <button id="invite" mat-flat-button color="primary" (click)="invite()">
     <span>{{ 'Jetzt einladen' | translate }}</span>
