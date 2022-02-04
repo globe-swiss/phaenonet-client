@@ -32,9 +32,10 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
     protected fds: FirestoreDebugService
   ) {
     super(alertService, afs, 'users', fds);
+    // load roles or initialize roles array if public user document does not exist or roles array is not defined
     this.roles$ = this.publicUserService
       .get(this.authService.getUserId())
-      .pipe(map(publicUser => (publicUser.roles ? publicUser.roles : [])));
+      .pipe(map(publicUser => (publicUser && publicUser.roles ? publicUser.roles : [])));
   }
 
   ngOnDestroy(): void {
