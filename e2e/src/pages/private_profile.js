@@ -7,7 +7,7 @@ module.exports = {
     activities: { css: 'app-activity-list' }
   },
   profile: {
-    title: { css: 'app-profile-details .detail-left h3' },
+    title: { css: 'app-profile-details .detail-left h2' },
     nickname: { css: 'app-profile-details .detail-right .title-nickname' },
     name: { css: 'app-profile-details .detail-right :nth-child(4)' },
     surname: { css: 'app-profile-details .detail-right :nth-child(6)' },
@@ -25,7 +25,7 @@ module.exports = {
     withinItem: {
       image: { css: '.individual-image' },
       species: locate({ css: '.detail-label' }).at(1),
-      name: { css: 'h3' }
+      name: { css: '[data-test-id=observation-item_name]' }
     }
   }
 };

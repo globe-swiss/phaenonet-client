@@ -1,5 +1,9 @@
+@use '~@angular/material' as mat;
+
+@import '../../../../theming/phaenonet-theme.scss';
+
 .activity-title {
-  font-size: 1.375rem;
+  @include mat.typography-level($phaenonet-typography, 'body-1');
   padding-top: 0.125rem;
 }
 

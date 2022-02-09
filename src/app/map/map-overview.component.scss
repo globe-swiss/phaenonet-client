@@ -1,3 +1,7 @@
+@use '~@angular/material' as mat;
+
+@import '../../theming/typography';
+
 .map-container {
   height: 100%;
 }
@@ -18,12 +22,6 @@
 
   .mat-icon {
     margin-right: 10px;
-  }
-
-  .extended-fab-button__text {
-    font-weight: 300;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
   }
 }
 
@@ -49,7 +47,7 @@
 }
 
 .map-info-content {
-  font-size: 1rem;
+  @include mat.typography-level($phaenonet-typography, 'body-2');
 }
 
 .map-filter {

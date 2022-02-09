@@ -13,7 +13,7 @@ export class InviteItemComponent {
 
   constructor(private inviteService: InviteService) {}
 
-  resendInvite() {
+  resendInvite(): void {
     if (this.item.id) {
       this.inviteService.resendInvite(this.item, this.item.id);
     }

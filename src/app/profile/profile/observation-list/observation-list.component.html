@@ -1,8 +1,8 @@
 <div gdColumn="1 / span 2" class="detail-left">
-  <h3>
-    <span *ngIf="isOwner()">{{ 'MEINE BEOBACHTUNGEN' | translate }}</span>
-    <span *ngIf="!isOwner()">{{ 'BEOBACHTUNGEN' | translate }}</span>
-  </h3>
+  <h2>
+    <span *ngIf="isOwner()" translate>MEINE BEOBACHTUNGEN</span>
+    <span *ngIf="!isOwner()" translate>BEOBACHTUNGEN</span>
+  </h2>
 </div>
 <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" *ngIf="userId" class="detail-right">
   <app-observation-item *ngFor="let item of latestIndividualObservations$ | async" [item]="item"></app-observation-item>

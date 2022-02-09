@@ -8,20 +8,19 @@
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
       <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject$ | async" class="detail-left">
         <div class="detail-label detail-label-standort">{{ 'Standort' | translate }}</div>
-        <h3>{{ (detailSubject$ | async).name }}</h3>
-        <div>
-          <span>{{ 'Von' | translate }} </span><span class="creator">{{ 'MeteoSchweiz' | translate }}</span>
-        </div>
+        <div class="mat-body-1">{{ (detailSubject$ | async).name }}</div>
+        <div class="detail-label">{{ 'Von' | translate }}</div>
+        <div class="mat-body-1">{{ 'MeteoSchweiz' | translate }}</div>
         <div class="detail-label">{{ 'Höhe' | translate }}</div>
         <div>
-          <span>{{ (detailSubject$ | async)?.altitude }}</span
-          ><span translate> {{ 'm ü. M.' }}</span>
+          <span class="detail-info-value">{{ (detailSubject$ | async)?.altitude }}</span
+          ><span class="detail-info-value-addition" translate> {{ 'm ü. M.' }}</span>
         </div>
       </div>
       <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
-        <h3>{{ 'Phänophasen' | translate }}</h3>
+        <h2>{{ 'Phänophasen' | translate }}</h2>
         <div *ngFor="let groupedItem of phenophaseObservationsBySpecies$ | async" class="species-group">
-          <h4>{{ groupedItem.species.de | translate }}</h4>
+          <div class="mat-body-2">{{ groupedItem.species.de | translate }}</div>
           <div *ngFor="let item of groupedItem.phenophaseObservations">
             <ng-container *ngIf="item.observation.isSome()">
               <div class="detail-label">{{ item.phenophase.de | translate }}</div>

@@ -12,8 +12,8 @@ module.exports = {
   },
   description: {
     species: locate('.detail-label').inside('app-individual-description').at(1),
-    name: { css: 'app-individual-description .title-individual' },
-    owner: { css: 'app-individual-description .creator' },
+    name: { css: 'app-individual-description [data-test-id=individual_name]' },
+    owner: { css: 'app-individual-description [data-test-id=individual_creator]' },
     lastObservationDate: locate('span').inside('app-individual-description div').at(3), // unstable
     descriptionFields: {
       environment: locate('.detail-info-value').inside('app-individual-description').at(1),
