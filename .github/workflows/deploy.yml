@@ -25,7 +25,7 @@ env:
   NODE_VERSION: '14'
 
 permissions:
-  contents: write
+  contents: read
   id-token: write
 
 jobs:
@@ -125,6 +125,13 @@ jobs:
         run: npm i --no-save firebase-tools
       - name: Deploy to Firebase
         run: npx firebase deploy --project ${{ env.PROJECT }}
+  tag:
+    name: Tag
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
       - name: Tag commit
         uses: tvdias/github-tagger@v0.0.1
         with:
