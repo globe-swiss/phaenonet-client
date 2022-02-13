@@ -28,7 +28,6 @@ env:
   NODE_VERSION: '14'
 
 permissions:
-  contents: read
   id-token: write
 
 jobs:
@@ -38,60 +37,60 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
-      - uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Install Dependencies
-        run: npm ci
-      - name: check style
-        run: npx prettier -c "."
-      - name: check map icon completeness
-        run: |
-          diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/fr-CH) || exit
-          diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/it-CH) || exit
-      - name: set release version
-        run: |
-          echo "set release version: ${{ env.VERSION }}"
-          sed -ri "s|'#VERSION#'|'${{ env.VERSION }}'|" src/environments/environment*.ts
-      - name: Build
-        run: npx ng build "${{ env.PROJECT == 'phaenonet' && '--c=production' || '' }}"
-      - name: Upload Artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: ${{ env.PROJECT }}
-          path: dist
-  sentry:
-    name: Sentry
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@master
-      - name: Download Artifact
-        uses: actions/download-artifact@master
-        with:
-          name: ${{ env.PROJECT }}
-          path: dist
-      - uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Install sentry-cli
-        run: npm install @sentry/cli --no-save
-      - name: Perform release
-        run: |
-          echo "Create new release ${{ env.VERSION }}"
-          npx sentry-cli releases new ${{ env.VERSION }}
-          npx sentry-cli releases set-commits ${{ env.VERSION }} --auto
-          npx sentry-cli releases files ${{ env.VERSION }} upload-sourcemaps ./dist/phaenonet -x=js -x=map -x=css -i=**/src_assets_i18n* --validate --verbose --rewrite --strip-common-prefix
-          npx sentry-cli releases finalize ${{ env.VERSION }}
-          echo "Finalized release ${{ env.VERSION }}"
-          echo "Adding deployment for ${{ env.ENVIRONMENT }} environment"
-          npx sentry-cli releases deploys ${{ env.VERSION }} new --env ${{ env.ENVIRONMENT }}
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: phaenonet
-          SENTRY_PROJECT: phaenonet-client
-          ENVIRONMENT: ${{ env.PROJECT == 'phaenonet' && 'production' || 'test' }}
+      # - uses: actions/setup-node@v2
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
+      # - name: Install Dependencies
+      #   run: npm ci
+      # - name: check style
+      #   run: npx prettier -c "."
+      # - name: check map icon completeness
+      #   run: |
+      #     diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/fr-CH) || exit
+      #     diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/it-CH) || exit
+      # - name: set release version
+      #   run: |
+      #     echo "set release version: ${{ env.VERSION }}"
+      #     sed -ri "s|'#VERSION#'|'${{ env.VERSION }}'|" src/environments/environment*.ts
+      # - name: Build
+      #   run: npx ng build "${{ env.PROJECT == 'phaenonet' && '--c=production' || '' }}"
+      # - name: Upload Artifact
+      #   uses: actions/upload-artifact@master
+      #   with:
+      #     name: ${{ env.PROJECT }}
+      #     path: dist
+  # sentry:
+  #   name: Sentry
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@master
+  #     - name: Download Artifact
+  #       uses: actions/download-artifact@master
+  #       with:
+  #         name: ${{ env.PROJECT }}
+  #         path: dist
+  #     - uses: actions/setup-node@v2
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #     - name: Install sentry-cli
+  #       run: npm install @sentry/cli --no-save
+  #     - name: Perform release
+  #       run: |
+  #         echo "Create new release ${{ env.VERSION }}"
+  #         npx sentry-cli releases new ${{ env.VERSION }}
+  #         npx sentry-cli releases set-commits ${{ env.VERSION }} --auto
+  #         npx sentry-cli releases files ${{ env.VERSION }} upload-sourcemaps ./dist/phaenonet -x=js -x=map -x=css -i=**/src_assets_i18n* --validate --verbose --rewrite --strip-common-prefix
+  #         npx sentry-cli releases finalize ${{ env.VERSION }}
+  #         echo "Finalized release ${{ env.VERSION }}"
+  #         echo "Adding deployment for ${{ env.ENVIRONMENT }} environment"
+  #         npx sentry-cli releases deploys ${{ env.VERSION }} new --env ${{ env.ENVIRONMENT }}
+  #       env:
+  #         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  #         SENTRY_ORG: phaenonet
+  #         SENTRY_PROJECT: phaenonet-client
+  #         ENVIRONMENT: ${{ env.PROJECT == 'phaenonet' && 'production' || 'test' }}
   deploy:
     name: Deploy
     needs: build
@@ -106,45 +105,45 @@ jobs:
           repository: globe-swiss/phaenonet-client-security
           path: security
           ssh-key: ${{ secrets.SECURITY_REPO_DEPLOY_KEY }}
-      - id: auth
-        name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v0
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-          create_credentials_file: true
-      - name: Download Artifact
-        uses: actions/download-artifact@master
-        with:
-          name: ${{ env.PROJECT }}
-          path: dist
-      - name: Remove source maps (prod)
-        run: rm ./dist/**/*.map
-        if: ${{ env.PROJECT == 'phaenonet' }}
-      - uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: install firebase-tools
-        run: npm i --no-save firebase-tools
-      - name: Deploy to Firebase
-        run: npx firebase deploy --project ${{ env.PROJECT }}
+      # - id: auth
+      #   name: Authenticate to Google Cloud
+      #   uses: google-github-actions/auth@v0
+      #   with:
+      #     workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      #     service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      #     create_credentials_file: true
+      # - name: Download Artifact
+      #   uses: actions/download-artifact@master
+      #   with:
+      #     name: ${{ env.PROJECT }}
+      #     path: dist
+      # - name: Remove source maps (prod)
+      #   run: rm ./dist/**/*.map
+      #   if: ${{ env.PROJECT == 'phaenonet' }}
+      # - uses: actions/setup-node@v2
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
+      # - name: install firebase-tools
+      #   run: npm i --no-save firebase-tools
+      # - name: Deploy to Firebase
+      #   run: npx firebase deploy --project ${{ env.PROJECT }}
       - name: Tag commit
         uses: tvdias/github-tagger@v0.0.1
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
           tag: ${{ env.TAG }}
         if: ${{ env.TAG }}
-  docs:
-    name: Update Docs
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.project == 'phaenonet' }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@master
-      - uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: build & upload docs
-        run: npx dbdocs build docs/phaenonet.dbml
-        env:
-          DBDOCS_TOKEN: ${{ secrets.DBDOCS_TOKEN }}
+  # docs:
+  #   name: Update Docs
+  #   runs-on: ubuntu-latest
+  #   if: ${{ github.event.inputs.project == 'phaenonet' }}
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@master
+  #     - uses: actions/setup-node@v2
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #     - name: build & upload docs
+  #       run: npx dbdocs build docs/phaenonet.dbml
+  #       env:
+  #         DBDOCS_TOKEN: ${{ secrets.DBDOCS_TOKEN }}
