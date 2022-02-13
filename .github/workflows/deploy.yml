@@ -1,6 +1,3 @@
-# Build and deploy workflow
-# Builds development version by default or production version if the project is 'phaenonet'
-
 name: Deploy
 
 on:
@@ -128,6 +125,13 @@ jobs:
         run: npm i --no-save firebase-tools
       - name: Deploy to Firebase
         run: npx firebase deploy --project ${{ env.PROJECT }}
+  tag:
+    name: Tag
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
       - name: Tag commit
         uses: tvdias/github-tagger@v0.0.1
         with:
