@@ -126,7 +126,9 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  onFileSelected(files: FileList): void {
+  onFileSelected(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const files = target.files;
     this.fileToUpload = files.item(0);
   }
 

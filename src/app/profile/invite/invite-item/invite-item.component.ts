@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IdLike } from 'src/app/masterdata/masterdata-like';
+import { MaybeIdLike } from 'src/app/masterdata/masterdata-like';
 import { Invite } from '../invite';
 import { InviteService } from '../invite.service';
 
@@ -8,14 +8,14 @@ import { InviteService } from '../invite.service';
   templateUrl: './invite-item.component.html',
   styleUrls: ['./invite-item.component.scss']
 })
-export class InviteItemComponent implements OnInit {
-  @Input() item: Invite & IdLike;
+export class InviteItemComponent {
+  @Input() item: Invite & MaybeIdLike;
 
   constructor(private inviteService: InviteService) {}
 
-  ngOnInit(): void {}
-
   resendInvite() {
-    this.inviteService.resendInvite(this.item, this.item.id);
+    if (this.item.id) {
+      this.inviteService.resendInvite(this.item, this.item.id);
+    }
   }
 }

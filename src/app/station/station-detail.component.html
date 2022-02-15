@@ -5,12 +5,6 @@
       class="detail-header"
       [individual$]="detailSubject$"
     ></app-individual-detail-header>
-    <app-individual-subscription
-      *ngIf="isLoggedIn"
-      gdColumn="1 / span 6"
-      class="detail-header"
-      [individual$]="detailSubject$"
-    ></app-individual-subscription>
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
       <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject$ | async" class="detail-left">
         <div class="detail-label detail-label-standort">{{ 'Standort' | translate }}</div>
@@ -34,15 +28,14 @@
               <mat-form-field class="full-width detail-observation-date">
                 <input
                   matInput
-                  [matDatepicker]="fakePicker"
-                  [id]="item.id"
+                  [id]="item.phenophase.id"
                   placeholder="{{ item.phenophase.description_de | translate }}"
                   [value]="item.observation.toNullable()?.date"
                   readonly="true"
                 />
               </mat-form-field>
-              <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment">
-                {{ 'Kommentar' | translate }}: {{ staticComments[item.observation.toNullable()?.comment] | translate }}
+              <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment.toString() as comment">
+                {{ 'Kommentar' | translate }}: {{ staticComments[comment] | translate }}
               </div>
             </ng-container>
           </div>
