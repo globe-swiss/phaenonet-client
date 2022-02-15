@@ -1,0 +1,23 @@
+<div class="individual-description-basic-info">
+  <div class="individual-description-basic-info__label">{{ 'Umgebung' | translate }}</div>
+  <div class="individual-description-basic-info__value">{{ (description$ | async)?.de | translate }}</div>
+  <div class="individual-description-basic-info__label">{{ 'Höhe' | translate }}</div>
+  <div>
+    <span class="individual-description-basic-info__value">{{ (individual$ | async)?.altitude | round }}</span>
+    <span class="individual-description-basic-info__value-addition" translate> {{ 'm ü. M.' }}</span>
+  </div>
+  <div class="individual-description-basic-info__label">{{ 'Exposition' | translate }}</div>
+  <div class="individual-description-basic-info__value">{{ (exposition$ | async)?.de | translate }}</div>
+  <div class="individual-description-basic-info__label">{{ 'Hangneigung' | translate }}</div>
+  <div class="individual-description-basic-info__value">{{ (individual$ | async)?.gradient }}%</div>
+  <div class="individual-description-basic-info__label">{{ 'Schatten' | translate }}</div>
+  <div class="individual-description-basic-info__value">{{ (shade$ | async)?.de | translate }}</div>
+  <div class="individual-description-basic-info__label">{{ 'Bewässerung' | translate }}</div>
+  <div class="individual-description-basic-info__value">{{ (irrigation$ | async)?.de | translate }}</div>
+  <div class="individual-description-basic-info__label">{{ 'Distanz zu Gebäude / Strasse' | translate }}</div>
+  <div class="individual-description-basic-info__value">{{ (distance$ | async)?.de | translate }}</div>
+  <div class="individual-description-basic-info__label">{{ 'Habitat' | translate }}</div>
+  <div class="individual-description-basic-info__value">{{ (habitat$ | async)?.de | translate }}</div>
+  <div class="individual-description-basic-info__label">{{ 'Waldtyp' | translate }}</div>
+  <div class="individual-description-basic-info__value">{{ (forest$ | async)?.de | translate }}</div>
+</div>

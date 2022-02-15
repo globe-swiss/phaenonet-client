@@ -1,0 +1,84 @@
+@import './constants';
+
+@mixin default-left-right-padding {
+  padding-left: var(--default-padding);
+  padding-right: var(--default-padding);
+}
+
+@mixin margin-between-description {
+  &:nth-child(2n - 1) {
+    margin-top: 7rem;
+  }
+}
+
+@mixin detail-view {
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+
+  padding-top: 2.625rem;
+
+  max-width: 1120px;
+}
+
+@mixin detail-card {
+  padding-bottom: 7.5375rem;
+  border-radius: 1rem;
+  margin-bottom: 2.625rem;
+  background-color: white;
+}
+
+@mixin detail-view-content {
+  @include default-left-right-padding();
+
+  margin-top: 40px;
+
+  display: grid;
+  grid-template-columns: calc(410px - 2 * var(--default-padding)) 1fr;
+  grid-template-rows: repeat(4, min-content);
+
+  @media screen and (max-width: $min-desktop-width) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@mixin left-column {
+  grid-column: 1;
+}
+
+@mixin complete-right-column {
+  grid-column: 2;
+  grid-row: 1/-1;
+}
+
+@mixin detail-label {
+  @include mat.typography-level($phaenonet-typography, 'button');
+  font-weight: 500;
+  color: #868072;
+}
+
+@mixin detail-value {
+  @include mat.typography-level($phaenonet-typography, 'button');
+  color: #5d5d5d;
+  font-weight: var(--t4-bold-font-weight);
+}
+
+@mixin detail-value-regular {
+  @include detail-value();
+  font-weight: var(--t4-font-weight);
+}
+
+@mixin flex-last-on-mobile {
+  @media screen and (max-width: $min-desktop-width) {
+    order: 100;
+  }
+}
+
+@mixin detail-bottom-padding {
+  padding-bottom: 60px;
+  @media screen and (min-width: $min-desktop-width) {
+    padding-bottom: 50px;
+  }
+}

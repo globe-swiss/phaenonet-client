@@ -6,7 +6,9 @@ import { ObservationModule } from '../observation/observation.module';
 import { OpenModule } from '../open/open.module';
 import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
 import { SharedModule } from '../shared/shared.module';
-import { IndividualDescriptionComponent } from './individual-description/individual-description.component';
+import { IndividualDescriptionBasicInfoComponent } from './individual-description/individual-description-basic-info.component';
+import { IndividualDescriptionButtonsComponent } from './individual-description/individual-description-buttons.component';
+import { IndividualDescriptionHeaderComponent } from './individual-description/individual-description-header.component';
 import { DetailHeaderComponent } from './individual-detail/individual-detail-header/individual-detail-header.component';
 import { IndividualDetailComponent } from './individual-detail/individual-detail.component';
 import { ObservationViewComponent } from './individual-detail/individual-observation-view/individual-observation-view.component';
@@ -32,7 +34,9 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
     IndividualDetailComponent,
     PhenophaseDialogComponent,
     DetailHeaderComponent,
-    IndividualDescriptionComponent,
+    IndividualDescriptionHeaderComponent,
+    IndividualDescriptionBasicInfoComponent,
+    IndividualDescriptionButtonsComponent,
     ObservationViewComponent,
     EditHeaderComponent,
     IndividualEditViewComponent

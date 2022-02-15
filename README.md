@@ -13,6 +13,40 @@ PhaenoNet is set up with two Firebase projects instances. These projects have a 
 
 The application will be using the database and access rules of the `phaenonet-test` project for all use-cases described in this section.
 
+The CSS is developed according to [BEM](http://getbem.com/introduction/).
+
+e.g.
+
+individual-detail.component.html (with the Block `individual-detail` and the element `header`):
+
+```html
+<div class="individual-detail">
+  <div class="individual-detail__header">...</div>
+</div>
+```
+
+individual-detail.component.scss:
+
+```scss
+.individual-detail {
+  @include detail-view &__header {
+    // the `&` will be replaced with the parent selector, so this will become `individual-detail__header`
+    @include left-right-padding;
+  }
+}
+```
+
+mixins.scss:
+
+```scss
+@mixin detail-view {
+  ...
+}
+@mixin left-right-padding{
+  ...
+}
+```
+
 ### Local setup
 
 Install Node.js and npm see: <https://www.npmjs.com/get-npm>

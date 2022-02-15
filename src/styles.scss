@@ -1,5 +1,8 @@
 @use '~@angular/material' as mat;
+
 @import './theming/phaenonet-theme';
+@import './theming/constants';
+@import './theming/mixins';
 
 html,
 body {
@@ -19,32 +22,34 @@ body {
 }
 
 .detail-left {
-  padding-left: 2.46875rem;
-  padding-right: 1.8rem;
+  padding-left: var(--default-padding);
+  padding-right: var(--default-padding);
 }
 
 .detail-right {
-  padding-right: 2.46875rem;
+  padding-left: var(--default-padding);
+  padding-right: var(--default-padding);
 }
 
 .detail-content {
   margin-top: 2.625rem;
+  padding-left: var(--default-padding);
+  padding-right: var(--default-padding);
+  display: grid;
+  grid-template-columns: 410px 1fr;
 }
 
 .detail-content:nth-child(2n - 1) {
   margin-top: 7rem;
 }
 
-@media screen and (max-width: 959px) {
+@media screen and (max-width: $min-laptop-width) {
   .detail-left {
-    padding-left: 0.3rem;
-    padding-right: 0.3rem;
+    grid-column: 1 / span 6;
   }
 
   .detail-right {
-    padding-top: 2.46875rem;
-    padding-right: 0.3rem;
-    padding-left: 0.3rem;
+    grid-column: 1 / span 6;
   }
 
   .detail-content {
@@ -56,6 +61,7 @@ body {
   }
 }
 
+/* TODO these should be inside of the detail and edit header components*/
 .detail-header .map-container {
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
@@ -94,13 +100,13 @@ h2 {
   padding: 0;
 }
 
-.phenophase-circle {
+/* .phenophase-circle {
   margin: 0.125rem 0.5rem 0.125rem 0.125rem;
   height: 0.625rem;
   width: 0.625rem;
   border-radius: 50%;
   display: inline-block;
-}
+} */
 
 snack-bar-container.info {
   color: #a3c5b2;
@@ -147,4 +153,8 @@ snack-bar-container.error {
 
 #phaenonet-body .font-weight-300 {
   font-weight: 300;
+}
+
+#phaenonet-body .no-margin-top {
+  margin-top: 0;
 }
