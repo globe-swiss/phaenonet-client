@@ -18,7 +18,7 @@
         formControlName="altitude"
         placeholder="{{ 'Höhe m ü. M.' | translate }}"
         type="text"
-        disabled
+        [disabled]="true"
       />
     </mat-form-field>
   </div>
@@ -49,14 +49,7 @@
     <mat-icon *ngIf="fileToUpload" class="add-image" matSuffix color="warn" (click)="removeUploadedFile()"
       >delete</mat-icon
     >
-    <input
-      hidden
-      (change)="onFileSelected($event.target.files)"
-      #fileInput
-      type="file"
-      id="file"
-      accept=".jpg,.jpeg,.png,"
-    />
+    <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" accept=".jpg,.jpeg,.png," />
   </mat-form-field>
   <mat-form-field class="full-width">
     <mat-label>{{ 'Umgebung' | translate }}</mat-label>

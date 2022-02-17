@@ -8,8 +8,7 @@
         <mat-form-field class="full-width detail-observation-date">
           <input
             matInput
-            [matDatepicker]="fakePicker"
-            [id]="item.id"
+            [id]="item.phenophase.id"
             placeholder="{{ item.phenophase.description_de | translate }}"
             [value]="item.observation.toNullable()?.date"
             readonly="true"
@@ -46,8 +45,8 @@
             >delete</mat-icon
           >
         </mat-form-field>
-        <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment">
-          {{ 'Kommentar' | translate }}: {{ staticComments[item.observation.toNullable()?.comment] | translate }}
+        <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment.toString() as comment">
+          {{ 'Kommentar' | translate }}: {{ staticComments[comment] | translate }}
         </div>
       </ng-container>
     </div>

@@ -8,7 +8,7 @@ import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
 import { IndividualService } from '../individual/individual.service';
-import { IdLike } from '../masterdata/masterdata-like';
+import { MaybeIdLike } from '../masterdata/masterdata-like';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
 import { SourceFilterType, SourceType } from '../masterdata/source-type';
@@ -146,7 +146,7 @@ export class MapOverviewComponent implements OnInit {
     void this.analytics.logEvent('map.view');
   }
 
-  openInfoWindow(marker: MapMarker, pos: google.maps.LatLngLiteral, individual: Individual & IdLike): void {
+  openInfoWindow(marker: MapMarker, pos: google.maps.LatLngLiteral, individual: Individual & MaybeIdLike): void {
     const baseUrl = individual.source === 'meteoswiss' ? '/stations' : '/individuals';
     const url = { url: [baseUrl, individual.id] };
 

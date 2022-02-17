@@ -9,3 +9,11 @@ button[mat-flat-button] {
   margin-top: 2.5rem;
   height: 70px;
 }
+
+/* fix for https://github.com/angular/components/issues/23784 */
+/* stylelint-disable selector-type-no-unknown */
+#phaenonet-body mat-card-actions.phaenonet-overwrite-mat-card-actions-center {
+  display: flex;
+  justify-content: center;
+}
+/* stylelint-enable selector-type-no-unknown */
