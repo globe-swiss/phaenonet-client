@@ -38,7 +38,7 @@
 <ng-template #notregistered>
   <ng-container *ngIf="item.sent; else notsent">
     <div class="detail-label">{{ 'Versendet am' | translate }} {{ item.sent | shortdate }}</div>
-    <div (click)="resendInvite()" style="cursor: pointer" class="mat-body-1 font-weight-300">
+    <div (click)="resendInvite()" style="cursor: pointer" class="mat-body-1">
       {{ 'Erneut senden' | translate }}
     </div>
   </ng-container>
