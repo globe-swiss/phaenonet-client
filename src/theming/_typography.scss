@@ -54,6 +54,27 @@ body {
   }
 }
 
+/*
+
+To select a specific font size from Angular in an element you can use:
+<div class="mat-body-1">...</div>
+
+To select a specific font size from Angular in a class you can use:
+.SomeClass {
+  @include mat.typography-level($phaenonet-typography, 'button');
+}
+
+The Fontsizes of Dani are mapped to the following Angular Typhography Level:
+mapping:
+H1 -> headline (mat-h1)
+H2 -> title (mat-h2)
+T1 -> body-1 (mat-body-1)
+T2 -> body-2 (mat-body-2), input (for input there is no css class)
+T3 -> subheading-1 (mat-h3), subheading-2 (mat-h4), caption (mat-caption)
+T4 -> button (for button there is no css clss)
+
+*/
+
 $phaenonet-typography: mat.define-typography-config(
   $font-family: '"Open Sans", "Roboto", sans-serif;',
   $headline:
