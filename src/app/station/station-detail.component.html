@@ -28,12 +28,14 @@
                 <input
                   matInput
                   [id]="item.phenophase.id"
+                  [matDatepicker]="fakePicker"
                   placeholder="{{ item.phenophase.description_de | translate }}"
                   [value]="item.observation.toNullable()?.date"
                   readonly="true"
                 />
               </mat-form-field>
-              <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment.toString() as comment">
+              <mat-datepicker #fakePicker></mat-datepicker>
+              <div class="detail-sub" *ngIf="item.observation.toNullable()?.comment?.toString() as comment">
                 {{ 'Kommentar' | translate }}: {{ staticComments[comment] | translate }}
               </div>
             </ng-container>

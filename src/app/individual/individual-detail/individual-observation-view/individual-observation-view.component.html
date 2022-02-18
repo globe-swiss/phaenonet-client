@@ -9,10 +9,12 @@
           <input
             matInput
             [id]="item.phenophase.id"
+            [matDatepicker]="fakePicker"
             placeholder="{{ item.phenophase.description_de | translate }}"
             [value]="item.observation.toNullable()?.date"
             readonly="true"
           />
+          <mat-datepicker #fakePicker></mat-datepicker>
           <mat-icon
             *ngIf="(isEditable$ | async) && item.observation.isNone() && item.limits.isEditable"
             matSuffix
@@ -45,7 +47,7 @@
             >delete</mat-icon
           >
         </mat-form-field>
-        <div class="detail-sub mat-body-2" *ngIf="item.observation.toNullable()?.comment.toString() as comment">
+        <div class="detail-sub mat-body-2" *ngIf="item.observation.toNullable()?.comment?.toString() as comment">
           {{ 'Kommentar' | translate }}: {{ staticComments[comment] | translate }}
         </div>
       </ng-container>
