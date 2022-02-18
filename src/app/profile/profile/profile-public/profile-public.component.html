@@ -1,9 +1,9 @@
 <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
-  <h3>{{ 'PROFIL' | translate }}</h3>
+  <h2>{{ 'PROFIL' | translate }}</h2>
 </div>
 <div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" *ngIf="user$ | async" class="detail-right">
   <div class="detail-label">{{ 'Öffentliches Profil von' | translate }}</div>
-  <div class="title-nickname">
+  <h1>
     {{ nickname$ | async }}
     <button
       mat-icon-button
@@ -20,5 +20,5 @@
       <mat-icon svgIcon="copylink"></mat-icon>
     </button>
     <app-user-subscription-button [userId]="userId" *ngIf="isLoggedIn"></app-user-subscription-button>
-  </div>
+  </h1>
 </div>

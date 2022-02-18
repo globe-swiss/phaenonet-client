@@ -5,14 +5,14 @@ module.exports = {
     invitesList: { css: 'app-invite-list' }
   },
   invitesList: {
-    openInviteList: locate({ css: 'app-invite-list app-invite-item :nth-child(1)' }),
+    openInviteList: locate({ css: 'app-invite-list app-invite-item :nth-child(1) [data-test-id=item_email]' }),
     acceptedInviteList: locate({ css: 'app-invite-list app-invite-item :nth-child(2)' }),
     getItem(num) {
       return locate(this.listItems).at(num);
     },
     withinItem: {
       image: { css: '.user-image' },
-      email: { css: 'h3 #email' },
+      email: { css: 'h2 #email' },
       subscription: { css: 'app-user-subscription-button' }
     },
     inviteButton: { css: 'app-invite-list button#invite' }

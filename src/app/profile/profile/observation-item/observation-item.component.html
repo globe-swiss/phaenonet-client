@@ -4,7 +4,7 @@
     <div class="detail-label">
       {{ item.species?.de | translate }}
     </div>
-    <h3>{{ item.individual.name }}</h3>
+    <div class="mat-body-1" data-test-id="observation-item_name">{{ item.individual.name }}</div>
     <div class="detail-label" *ngIf="item.individual.last_observation_date">
       {{ 'Letzte Beobachtung' | translate }},
       {{ getLastObservationDate() }}

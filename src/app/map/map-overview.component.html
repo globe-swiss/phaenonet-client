@@ -24,11 +24,11 @@
           <div fxLayout="row" [routerLink]="d.url" class="map-info-window">
             <img *ngIf="d.imgUrl$ | async" [src]="d.imgUrl$ | async" style="max-height: 100px" />
             <div fxLayout="column" style="margin-left: 15px; margin-right: 15px">
-              <div class="mat-small">
+              <div class="font-button">
                 {{ d.species.de | translate }}
               </div>
               <div class="map-info-content">{{ d.individual.name }}</div>
-              <div class="mat-small" *ngIf="d.phenophase">
+              <div class="font-button" *ngIf="d.phenophase">
                 {{ 'Letzte Beobachtung' | translate }},
                 {{ formatShortDate(d.individual.last_observation_date.toDate()) }}
               </div>

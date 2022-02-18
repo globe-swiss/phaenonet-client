@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import './theming/phaenonet-theme.scss';
 
 html,
@@ -6,7 +7,6 @@ body {
   width: 100%;
   margin: 0;
   font-family: 'Open Sans';
-  font-size: 16px;
   background: #f7f5f2;
   color: #262626;
 }
@@ -66,20 +66,16 @@ body {
 }
 
 .detail-label {
-  font-size: 0.8125rem;
+  @include mat.typography-level($phaenonet-typography, 'button');
   font-weight: 500;
   color: #868072;
-  letter-spacing: 0.08125rem;
   line-height: 1.125rem;
   margin-top: 1.125rem;
 }
 
-h3 {
-  font-size: 1.375rem;
-  font-weight: 400;
-  letter-spacing: 0.055rem;
-  line-height: 1.875rem;
+h2 {
   color: #868072;
+  text-transform: uppercase;
 }
 
 .full-width {
@@ -92,24 +88,10 @@ h3 {
   top: 0;
   left: 0;
 }
+
 // No padding in map info windows
 #phaenonet-body .gm-style .gm-style-iw-c {
   padding: 0;
-}
-
-//fixme: typos in following 3 selectors pahenonet, fix or remove
-#pahenonet-body button.gm-ui-hover-effect {
-  visibility: hidden;
-}
-
-/* clear the paddings  */
-#pahenonet-body .gm-style .gm-style-iw-c {
-  padding: 0;
-}
-
-/* remove the white space */
-#pahenonet-body .gm-style-iw .gm-style-iw-d {
-  overflow: auto !important;
 }
 
 .phenophase-circle {
@@ -136,4 +118,33 @@ snack-bar-container.error {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.font-button {
+  @include mat.typography-level($phaenonet-typography, 'button');
+}
+
+.detail-info-value {
+  @include mat.typography-level($phaenonet-typography, 'button');
+
+  color: #5d5d5d;
+  font-weight: var(--t4-bold-font-weight);
+}
+
+.detail-info-value-addition {
+  @include mat.typography-level($phaenonet-typography, 'button');
+
+  color: #5d5d5d;
+  font-weight: var(--t4-font-weight);
+}
+
+.phenophase-title {
+  @include mat.typography-level($phaenonet-typography, 'body-1');
+
+  padding-top: 0.125rem;
+  padding-bottom: 1.25rem;
+}
+
+#phaenonet-body .font-weight-300 {
+  font-weight: 300;
 }

@@ -1,3 +1,7 @@
+@use '~@angular/material' as mat;
+
+@import '../../../theming/typography';
+
 mat-toolbar.mat-toolbar {
   background-color: white;
   height: 100%;
@@ -16,10 +20,6 @@ mat-toolbar.mat-toolbar {
   align-self: center;
 }
 
-.menu-row #userarea {
-  align-self: center;
-}
-
 .logo {
   padding: 28px;
 
@@ -33,13 +33,7 @@ mat-toolbar.mat-toolbar {
   height: 100%;
 }
 
-#userarea {
-  cursor: pointer;
-}
-
 .nav-button {
-  font-size: 0.875rem;
-  letter-spacing: 0.13125rem;
-  font-weight: 500;
+  @include mat.typography-level($phaenonet-typography, 'button');
   color: #5d5d5d;
 }

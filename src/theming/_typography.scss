@@ -1,21 +1,134 @@
 @use '~@angular/material' as mat;
 
-//https://material.angular.io/guide/typography
-//https://stackoverflow.com/questions/49534841/overriding-angular-material-body-typography
+// Breakpoints
+// TODO for 16.2.2022 check these with Dani
+$min-desktop-width: 1200px;
+$min-laptop-width: 959px;
 
-// regular:   400
-// semi-bold: 500
-// bold:      700
+body {
+  font-size: 1em;
+  --h1-font-size: 1.875rem;
+  --h2-font-size: 1.125rem;
+  --t1-font-size: 1.375rem;
+  --t2-font-size: 1.125rem;
+  --t3-font-size: 1rem;
+  --t4-font-size: 0.875rem;
+
+  --h1-font-weight: 700;
+  --h2-font-weight: 700;
+  --t1-font-weight: 300;
+  --t2-font-weight: 300;
+  --t3-font-weight: 300;
+  --t4-font-weight: 300;
+  --t4-bold-font-weight: 700;
+
+  // ratios from the `old` font sizes
+  // TODO for 16.2.2022 check these with Dani
+  --h1--line-height: calc(1.5 / 1.125);
+  --h2--line-height: calc(1.5 / 1.125);
+  --t1--line-height: calc(1.375 / 1);
+  --t2--line-height: calc(1.375 / 1);
+  --t3--line-height: calc(1.375 / 0.5);
+  --t4--line-height: calc(2.1 / 1);
+}
+
+@media screen and (max-width: $min-desktop-width) {
+  body {
+    --h1-font-size: 1.75rem;
+    --h2-font-size: 1rem;
+    --t1-font-size: 1.25rem;
+    --t2-font-size: 1rem;
+    --t3-font-size: 0.875rem;
+    --t4-font-size: 0.75rem;
+  }
+}
+
+@media screen and (max-width: $min-laptop-width) {
+  body {
+    --h1-font-size: 1.5rem;
+    --h2-font-size: 0.75rem;
+    --t1-font-size: 1rem;
+    --t2-font-size: 0.75rem;
+    --t3-font-size: 0.625rem;
+    --t4-font-size: 0.5rem;
+  }
+}
+
+/*
+
+To select a specific font size from Angular in an element you can use:
+<div class="mat-body-1">...</div>
+
+To select a specific font size from Angular in a class you can use:
+.SomeClass {
+  @include mat.typography-level($phaenonet-typography, 'button');
+}
+
+The Fontsizes of Dani are mapped to the following Angular Typhography Level:
+mapping:
+H1 -> headline (mat-h1)
+H2 -> title (mat-h2)
+T1 -> body-1 (mat-body-1)
+T2 -> body-2 (mat-body-2), input (for input there is no css class)
+T3 -> subheading-1 (mat-h3), subheading-2 (mat-h4), caption (mat-caption)
+T4 -> button (for button there is no css clss)
+
+*/
 
 $phaenonet-typography: mat.define-typography-config(
   $font-family: '"Open Sans", "Roboto", sans-serif;',
-  $headline: mat.define-typography-level(1.125rem, 1.5rem, 700, $letter-spacing: 0.0072rem),
-  $title: mat.define-typography-level(1.125rem, 1.5rem, 700, $letter-spacing: 0.007rem),
-  $subheading-2: mat.define-typography-level(1.125rem, 1.5rem, 700, $letter-spacing: 0.18rem),
-  $subheading-1: mat.define-typography-level(0.8125rem, 1.5rem, 700, $letter-spacing: 0.18rem),
-  $body-1: mat.define-typography-level(1rem, 1.375rem, 300, $letter-spacing: 0rem),
-  $body-2: mat.define-typography-level(1rem, 1.375rem, 500, $letter-spacing: 0rem),
-  $button: mat.define-typography-level(1rem, 2.1rem, 500, $letter-spacing: 0.006rem),
-  $input: mat.define-typography-level(1.2rem, 1.5, 300, $letter-spacing: 0.1125rem),
-  $caption: mat.define-typography-level(0.5rem, 1.375rem, 300, $letter-spacing: 0.09rem)
+  $headline:
+    mat.define-typography-level(
+      $font-size: var(--h1-font-size),
+      $line-height: var(--h1--line-height),
+      $font-weight: var(--h1-font-weight)
+    ),
+  $title:
+    mat.define-typography-level(
+      $font-size: var(--h2-font-size),
+      $line-height: var(--h2--line-height),
+      $font-weight: var(--h2-font-weight)
+    ),
+  $subheading-2:
+    mat.define-typography-level(
+      $font-size: var(--t3-font-size),
+      $line-height: var(--t3--line-height),
+      $font-weight: var(--t3-font-weight)
+    ),
+  $subheading-1:
+    mat.define-typography-level(
+      $font-size: var(--t3-font-size),
+      $line-height: var(--t3--line-height),
+      $font-weight: var(--t3-font-weight)
+    ),
+  $body-1:
+    mat.define-typography-level(
+      $font-size: var(--t1-font-size),
+      $line-height: var(--t1--line-height),
+      $font-weight: var(--t1-font-weight)
+    ),
+  $body-2:
+    mat.define-typography-level(
+      $font-size: var(--t2-font-size),
+      $line-height: var(--t2--line-height),
+      $font-weight: var(--t2-font-weight)
+    ),
+  $button:
+    mat.define-typography-level(
+      $font-size: var(--t4-font-size),
+      $line-height: var(--t4--line-height),
+      $font-weight: var(--t4-font-weight)
+    ),
+  $input:
+    mat.define-typography-level(
+      $font-size: var(--t2-font-size),
+      $line-height: 1.5,
+      $font-weight: var(--t2-font-weight)
+    ),
+  $caption:
+    mat.define-typography-level(
+      $font-size: var(--t3-font-size),
+      $line-height: var(--t3--line-height),
+      $font-weight: var(--t3-font-weight)
+    )
 );

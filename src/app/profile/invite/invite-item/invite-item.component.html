@@ -16,12 +16,12 @@
     <div class="detail-label">
       {{ 'Einladung für' | translate }}
     </div>
-    <h3 id="email">{{ item.email }}</h3>
+    <div id="email" data-test-id="item_email" class="mat-body-1">{{ item.email }}</div>
     <ng-container *ngIf="item.register_date; else notregistered">
       <div class="detail-label">
         {{ 'Profil' | translate }} ({{ 'registriert am' | translate }} {{ item.register_date | shortdate }})
       </div>
-      <h3>{{ item.register_nick }}</h3>
+      <div class="mat-body-1">{{ item.register_nick }}</div>
     </ng-container>
   </div>
   <div fxLayout="column" style="margin-left: 25px; margin-right: 25px; align-self: center">
@@ -38,7 +38,9 @@
 <ng-template #notregistered>
   <ng-container *ngIf="item.sent; else notsent">
     <div class="detail-label">{{ 'Versendet am' | translate }} {{ item.sent | shortdate }}</div>
-    <h3 (click)="resendInvite()" style="cursor: pointer">{{ 'Erneut senden' | translate }}</h3>
+    <div (click)="resendInvite()" style="cursor: pointer" class="mat-body-1">
+      {{ 'Erneut senden' | translate }}
+    </div>
   </ng-container>
 </ng-template>
 

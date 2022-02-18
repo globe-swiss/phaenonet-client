@@ -8,18 +8,16 @@ import { MasterdataService } from '../../../masterdata/masterdata.service';
   templateUrl: './observation-item.component.html',
   styleUrls: ['./observation-item.component.scss']
 })
-export class ObservationItemComponent implements OnInit {
+export class ObservationItemComponent {
   @Input() item: IndividualPhenophase;
 
   constructor(private masterdataService: MasterdataService) {}
 
-  ngOnInit() {}
-
-  getColor(phenophase: string) {
+  getColor(phenophase: string): string {
     return this.masterdataService.getColor(phenophase);
   }
 
-  getLastObservationDate() {
+  getLastObservationDate(): string {
     return formatShortDate(this.item.individual.last_observation_date.toDate());
   }
 }
