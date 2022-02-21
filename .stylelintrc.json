@@ -1,6 +1,9 @@
 {
   "extends": ["stylelint-config-sass-guidelines", "stylelint-config-prettier-scss"],
   "rules": {
-    "color-hex-length": "long"
+    "color-hex-length": "long",
+    "selector-max-id": 1,
+    "selector-no-qualifying-type": null,
+    "order/properties-alphabetical-order": null
   }
 }
