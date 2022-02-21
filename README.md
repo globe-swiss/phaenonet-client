@@ -61,6 +61,14 @@ npx codeceptjs run --steps
 
 Test output will be located in `/e2e/output`.
 
+### Run stylelint checks
+
+To run all `stylelint` checks
+
+```commandline
+npx stylelint "**/*.scss"
+```
+
 ## Deploy to Firebase
 
 Whenever possible use the GitHub action [deploy](https://github.com/globe-swiss/phaenonet-client/actions/workflows/deploy.yml) and [channel](https://github.com/globe-swiss/phaenonet-client/actions/workflows/channel.yml) to deploy applications to Firebase.

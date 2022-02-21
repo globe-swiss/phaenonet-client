@@ -2,8 +2,13 @@
   "extends": ["stylelint-config-sass-guidelines", "stylelint-config-prettier-scss"],
   "rules": {
     "color-hex-length": "long",
-    "selector-max-id": 1,
+    "selector-max-id": 4,
+    "selector-max-compound-selectors": 4,
     "selector-no-qualifying-type": null,
-    "order/properties-alphabetical-order": null
+    "order/properties-alphabetical-order": null,
+    "color-named": null,
+    "selector-pseudo-element-no-unknown": null,
+    "max-nesting-depth": 3,
+    "shorthand-property-no-redundant-values": null
   }
 }
