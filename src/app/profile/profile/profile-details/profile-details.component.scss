@@ -3,7 +3,11 @@
 @import '../../../../theming/typography';
 
 .title-nickname {
-  display: flex;
+  button.badge {
+    vertical-align: text-top;
+    margin-top: -1rem;
+    width: 20px;
+  }
 }
 
 #logout-button {
@@ -12,9 +16,4 @@
 
 .detail-value {
   @include mat.typography-level($phaenonet-typography, 'body-2');
-}
-
-.badge {
-  vertical-align: 1rem;
-  width: 20px;
 }
