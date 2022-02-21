@@ -5,8 +5,7 @@
 $min-desktop-width: 1200px;
 $min-laptop-width: 959px;
 
-body {
-  font-size: 1em;
+:root {
   --h1-font-size: 1.875rem;
   --h2-font-size: 1.125rem;
   --t1-font-size: 1.375rem;
@@ -30,6 +29,8 @@ body {
   --t2--line-height: calc(1.375 / 1);
   --t3--line-height: calc(1.375 / 0.5);
   --t4--line-height: calc(2.1 / 1);
+
+  font-size: 1em;
 }
 
 @media screen and (max-width: $min-desktop-width) {

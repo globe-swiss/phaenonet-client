@@ -1,6 +1,6 @@
 @use '~@angular/material' as mat;
 
-@import '../../../../theming/phaenonet-theme.scss';
+@import '../../../../theming/phaenonet-theme';
 
 .activity-title {
   @include mat.typography-level($phaenonet-typography, 'body-1');
