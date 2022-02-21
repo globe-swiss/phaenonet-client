@@ -24,6 +24,7 @@ export class AuthService extends BaseService implements OnDestroy {
 
   private subscriptions = new Subscription();
   public user$: Observable<User>;
+  public firebaseUser$: Observable<firebase.User>;
 
   // store the URL so we can redirect after logging in
   redirectUrl: string;
@@ -37,13 +38,14 @@ export class AuthService extends BaseService implements OnDestroy {
   ) {
     super(alertService);
 
-    this.user$ = this.afAuth.authState.pipe(
+    this.firebaseUser$ = this.afAuth.authState.pipe(tap(() => this.fds.addRead('firebaseUser')));
+    this.user$ = this.firebaseUser$.pipe(
       switchMap(user => {
         if (user) {
           return this.afs
             .doc<User>(`users/${user.uid}`)
             .valueChanges()
-            .pipe(tap(() => this.fds.addRead('users (auth-state)')));
+            .pipe(tap(() => this.fds.addRead('users')));
         } else {
           this.resetClientSession();
           return of(null) as Observable<User>;

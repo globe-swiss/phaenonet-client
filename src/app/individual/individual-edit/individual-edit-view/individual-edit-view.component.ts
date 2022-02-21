@@ -77,7 +77,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.geoposService.altitude$.subscribe(altitude => this.altitudeInput.setValue(altitude)));
 
     this.selectableSpecies$ = this.masterdataService
-      .getObservableSpecies(this.userService.getRoles())
+      .getObservableSpecies(this.userService.roles$)
       .pipe(map(species => this.masterdataService.sortTranslatedMasterData(species)));
     this.selectableDescriptions$ = this.masterdataService.getDescriptions();
     this.selectableExpositions$ = this.masterdataService.getExpositions();

@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 import { combineLatest, from, Observable, of, Subscription } from 'rxjs';
-import { filter, first, map, switchMap, tap } from 'rxjs/operators';
+import { filter, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { Individual } from '../individual/individual';
@@ -20,7 +20,9 @@ import { User } from './user';
 @Injectable()
 export class UserService extends BaseResourceService<User> implements OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  private roles$: Observable<string[]>;
+  public publicUser$: Observable<PublicUser>;
+  public user$: Observable<User>;
+  public roles$: Observable<string[]>;
 
   constructor(
     private publicUserService: PublicUserService,
@@ -32,18 +34,18 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
     protected fds: FirestoreDebugService
   ) {
     super(alertService, afs, 'users', fds);
+
+    const sharedFirebaseUser$ = this.authService.firebaseUser$.pipe(shareReplay({ bufferSize: 1, refCount: true }));
+    this.publicUser$ = sharedFirebaseUser$.pipe(
+      switchMap(firebaseUser => this.publicUserService.get(firebaseUser.uid))
+    );
+    this.user$ = sharedFirebaseUser$.pipe(switchMap(firebaseUser => this.get(firebaseUser.uid)));
     // load roles or initialize roles array if public user document does not exist or roles array is not defined
-    this.roles$ = this.publicUserService
-      .get(this.authService.getUserId())
-      .pipe(map(publicUser => (publicUser && publicUser.roles ? publicUser.roles : [])));
+    this.roles$ = this.publicUser$.pipe(map(publicUser => (publicUser && publicUser.roles ? publicUser.roles : [])));
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
-  }
-
-  getUser(): Observable<User> {
-    return this.get(this.authService.getUserId());
   }
 
   followIndividual(target: string | Observable<Individual>): Observable<void> {
@@ -75,13 +77,13 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
   }
 
   isFollowingUser(target: string | Observable<PublicUser & IdLike>): Observable<boolean> {
-    return combineLatest([this.idObservable(target), this.getUser()]).pipe(
+    return combineLatest([this.idObservable(target), this.user$]).pipe(
       map(([id, user]) => (user.following_users ? user.following_users.includes(id) : false))
     );
   }
 
   isFollowingIndividual(target: string | Observable<Individual>): Observable<boolean> {
-    return combineLatest([this.individualObservable(target), this.getUser()]).pipe(
+    return combineLatest([this.individualObservable(target), this.user$]).pipe(
       map(([individual, user]) =>
         user.following_individuals ? user.following_individuals.includes(individual) : false
       )
@@ -129,10 +131,6 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
     } else {
       return target.pipe(map(x => x.individual));
     }
-  }
-
-  public getRoles(): Observable<string[]> {
-    return this.roles$;
   }
 
   public isRanger(): Observable<boolean> {
