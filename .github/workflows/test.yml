@@ -60,6 +60,7 @@ jobs:
           upload: true
           verbose: true
           parallel: 10
+          tool-timeout: 5minutes
   checks:
     name: run checks
     runs-on: ubuntu-latest
