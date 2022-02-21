@@ -48,11 +48,6 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
     this.subscriptions.unsubscribe();
   }
 
-  /** @deprecated use user$ instead */
-  getUser(): Observable<User> {
-    return this.user$;
-  }
-
   followIndividual(target: string | Observable<Individual>): Observable<void> {
     return this.individualObservable(target).pipe(
       first(),
@@ -82,13 +77,13 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
   }
 
   isFollowingUser(target: string | Observable<PublicUser & IdLike>): Observable<boolean> {
-    return combineLatest([this.idObservable(target), this.getUser()]).pipe(
+    return combineLatest([this.idObservable(target), this.user$]).pipe(
       map(([id, user]) => (user.following_users ? user.following_users.includes(id) : false))
     );
   }
 
   isFollowingIndividual(target: string | Observable<Individual>): Observable<boolean> {
-    return combineLatest([this.individualObservable(target), this.getUser()]).pipe(
+    return combineLatest([this.individualObservable(target), this.user$]).pipe(
       map(([individual, user]) =>
         user.following_individuals ? user.following_individuals.includes(individual) : false
       )
