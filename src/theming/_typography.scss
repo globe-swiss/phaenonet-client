@@ -44,17 +44,6 @@ $min-laptop-width: 959px;
   }
 }
 
-@media screen and (max-width: $min-laptop-width) {
-  body {
-    --h1-font-size: 1.75rem;
-    --h2-font-size: 1rem;
-    --t1-font-size: 1.25rem;
-    --t2-font-size: 1rem;
-    --t3-font-size: 0.875rem;
-    --t4-font-size: 0.75rem;
-  }
-}
-
 /*
 
 To select a specific font size from Angular in an element you can use:
