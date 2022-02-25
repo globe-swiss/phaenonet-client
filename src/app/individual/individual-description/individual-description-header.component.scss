@@ -25,9 +25,6 @@ button.navigation {
 }
 
 .individual-description {
-  &__basic-info {
-  }
-
   &__label {
     @include detail-label;
   }
@@ -54,6 +51,7 @@ button.navigation {
   &__creator-name {
     @include detail-value;
     @include mat.typography-level($phaenonet-typography, 'body-1');
+
     text-decoration: none;
   }
 

@@ -1,29 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
-import { first, map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { PublicUser } from 'src/app/open/public-user';
-import { Description } from '../../masterdata/description';
-import { Distance } from '../../masterdata/distance';
-import { Exposition } from '../../masterdata/exposition';
-import { Forest } from '../../masterdata/forest';
-import { Habitat } from '../../masterdata/habitat';
-import { Irrigation } from '../../masterdata/irrigation';
 import { MasterdataService } from '../../masterdata/masterdata.service';
 import { Phenophase } from '../../masterdata/phaenophase';
-import { Shade } from '../../masterdata/shade';
 import { Species } from '../../masterdata/species';
-import { AlertService } from '../../messaging/alert.service';
 import { PublicUserService } from '../../open/public-user.service';
-import {
-  ConfirmationDialogComponent,
-  ConfirmationDialogData
-} from '../../shared/confirmation-dialog/confirmation-dialog.component';
 import { formatShortDate } from '../../shared/formatDate';
 import { Individual } from '../individual';
-import { IndividualService } from '../individual.service';
 
 @Component({
   selector: 'app-individual-description-header',

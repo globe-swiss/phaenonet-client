@@ -7,9 +7,6 @@
     @include detail-card;
   }
 
-  &__header {
-  }
-
   &__content {
     @include detail-view-content;
   }

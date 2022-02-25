@@ -16,9 +16,7 @@
   padding-right: 20px;
   margin-left: auto;
   margin-right: auto;
-
   padding-top: 2.625rem;
-
   max-width: 1120px;
 }
 
@@ -55,12 +53,14 @@
 
 @mixin detail-label {
   @include mat.typography-level($phaenonet-typography, 'button');
+
   font-weight: 500;
   color: #868072;
 }
 
 @mixin detail-value {
   @include mat.typography-level($phaenonet-typography, 'button');
+
   color: #5d5d5d;
   font-weight: var(--t4-bold-font-weight);
 }
@@ -78,6 +78,7 @@
 
 @mixin detail-bottom-padding {
   padding-bottom: 60px;
+
   @media screen and (min-width: $min-desktop-width) {
     padding-bottom: 50px;
   }
