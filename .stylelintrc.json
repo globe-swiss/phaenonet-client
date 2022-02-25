@@ -12,6 +12,7 @@
     "shorthand-property-no-redundant-values": null,
     "at-rule-empty-line-before": null,
     "comment-whitespace-inside": "always",
-    "declaration-empty-line-before": null
+    "declaration-empty-line-before": null,
+    "indentation": null
   }
 }
