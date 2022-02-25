@@ -11,23 +11,39 @@ module.exports = {
     observations: { css: 'app-individual-observation-view' }
   },
   description: {
-    species: locate('.detail-label').inside('app-individual-description').at(1),
-    name: { css: 'app-individual-description [data-test-id=individual_name]' },
-    owner: { css: 'app-individual-description [data-test-id=individual_creator]' },
+    species: locate('.individual-description__label').inside('app-individual-description-header').at(1),
+    name: { css: '[data-test-id=individual_name]' },
+    owner: { css: '[data-test-id=individual_creator]' },
     lastObservationDate: locate('span').inside('app-individual-description div').at(3), // unstable
     descriptionFields: {
-      environment: locate('.detail-info-value').inside('app-individual-description').at(1),
-      altitude: locate('.detail-info-value').inside('app-individual-description').at(2),
-      exposition: locate('.detail-info-value').inside('app-individual-description').at(3),
-      gradient: locate('.detail-info-value').inside('app-individual-description').at(4),
-      shadow: locate('.detail-info-value').inside('app-individual-description').at(5),
-      watering: locate('.detail-info-value').inside('app-individual-description').at(6),
-      distance: locate('.detail-info-value').inside('app-individual-description').at(7),
-      habitat: locate('.detail-info-value').inside('app-individual-description').at(8),
-      forestType: locate('.detail-info-value').inside('app-individual-description').at(9)
+      environment: locate('.individual-description-basic-info__value')
+        .inside('app-individual-description-basic-info')
+        .at(1),
+      altitude: locate('.individual-description-basic-info__value')
+        .inside('app-individual-description-basic-info')
+        .at(2),
+      exposition: locate('.individual-description-basic-info__value')
+        .inside('app-individual-description-basic-info')
+        .at(3),
+      gradient: locate('.individual-description-basic-info__value')
+        .inside('app-individual-description-basic-info')
+        .at(4),
+      shadow: locate('.individual-description-basic-info__value').inside('app-individual-description-basic-info').at(5),
+      watering: locate('.individual-description-basic-info__value')
+        .inside('app-individual-description-basic-info')
+        .at(6),
+      distance: locate('.individual-description-basic-info__value')
+        .inside('app-individual-description-basic-info')
+        .at(7),
+      habitat: locate('.individual-description-basic-info__value')
+        .inside('app-individual-description-basic-info')
+        .at(8),
+      forestType: locate('.individual-description-basic-info__value')
+        .inside('app-individual-description-basic-info')
+        .at(9)
     },
-    editButton: { css: 'app-individual-description #edit-button' },
-    deleteButton: { css: 'app-individual-description #delete-button' },
+    editButton: { css: 'app-individual-description-buttons #edit-button' },
+    deleteButton: { css: 'app-individual-description-buttons #delete-button' },
     deleteConfirmationButton: { css: 'app-confirmation-dialog button[ng-reflect-dialog-result=true]' }
   },
   deleteIndividual() {
