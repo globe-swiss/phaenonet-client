@@ -1,9 +1,6 @@
 @use '~@angular/material' as mat;
 
-// Breakpoints
-// TODO for 16.2.2022 check these with Dani
-$min-desktop-width: 1200px;
-$min-laptop-width: 959px;
+@import './constants';
 
 :root {
   --h1-font-size: 1.875rem;
@@ -21,14 +18,12 @@ $min-laptop-width: 959px;
   --t4-font-weight: 300;
   --t4-bold-font-weight: 700;
 
-  // ratios from the `old` font sizes
-  // TODO for 16.2.2022 check these with Dani
   --h1--line-height: calc(1.5 / 1.125);
   --h2--line-height: calc(1.5 / 1.125);
   --t1--line-height: calc(1.375 / 1);
   --t2--line-height: calc(1.375 / 1);
   --t3--line-height: calc(1.375 / 0.5);
-  --t4--line-height: calc(2.1 / 1);
+  --t4--line-height: calc(1.375 / 1);
 
   font-size: 1em;
 }

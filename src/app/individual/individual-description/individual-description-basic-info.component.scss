@@ -1,0 +1,21 @@
+@use '~@angular/material' as mat;
+
+@import '../../../theming/typography';
+
+@import '../../../theming/mixins';
+
+.individual-description-basic-info {
+  &__label {
+    @include detail-label;
+  }
+
+  &__value {
+    @include detail-value;
+
+    padding-bottom: 10px;
+  }
+
+  &__value-addition {
+    @include detail-value-regular;
+  }
+}

@@ -1,0 +1,66 @@
+@use '~@angular/material' as mat;
+
+@import '../../../theming/typography';
+
+@import '../../../theming/mixins';
+
+button.badge {
+  transform: scale(0.7);
+  width: 20px;
+}
+
+button.navigation {
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-top: 0.5rem;
+  width: 12.5rem;
+}
+
+#edit-button {
+  margin-top: 4.125rem;
+}
+
+#delete-button {
+  color: #d37872;
+}
+
+.individual-description {
+  &__label {
+    @include detail-label;
+  }
+
+  &__name {
+    @include mat.typography-level($phaenonet-typography, 'body-1');
+    margin-bottom: 20px;
+  }
+
+  &__open-mobile-info {
+    @media screen and (min-width: $min-laptop-width) {
+      display: none;
+    }
+  }
+
+  &__phenophase-circle {
+    margin: 0.125rem 0.5rem 0.125rem 0.125rem;
+    height: 0.625rem;
+    width: 0.625rem;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  &__creator-name {
+    @include detail-value;
+    @include mat.typography-level($phaenonet-typography, 'body-1');
+
+    text-decoration: none;
+  }
+
+  &__value {
+    @include detail-value;
+    padding-bottom: 10px;
+  }
+
+  &__value-addition {
+    @include detail-value-regular;
+  }
+}

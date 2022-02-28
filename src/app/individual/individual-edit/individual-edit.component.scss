@@ -1,3 +1,23 @@
-.detail-view {
-  background-color: white;
+@import '../../../theming/mixins';
+
+.individual-edit {
+  @include detail-view;
+
+  &__card {
+    @include detail-card;
+  }
+
+  &__content {
+    @include detail-view-content;
+  }
+
+  &__left-content {
+    @include default-left-right-padding;
+    @include left-column;
+  }
+
+  &__right-content {
+    @include default-left-right-padding;
+    @include complete-right-column;
+  }
 }

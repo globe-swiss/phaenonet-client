@@ -1,0 +1,28 @@
+<div class="individual-description-buttons">
+  <div class="individual-description-buttons__container">
+    <button
+      class="navigation individual-description-buttons__button"
+      mat-flat-button
+      color="primary"
+      type="button"
+      id="edit-button"
+      [routerLink]="['/individuals', individualId, 'edit']"
+      *ngIf="isEditable$ | async"
+    >
+      {{ 'Objekt bearbeiten' | translate }}
+    </button>
+  </div>
+  <div class="individual-description-buttons__container">
+    <button
+      class="navigation individual-description-buttons__button"
+      mat-flat-button
+      color="accent"
+      type="button"
+      id="delete-button"
+      (click)="deleteIndividual()"
+      *ngIf="isEditable$ | async"
+    >
+      {{ 'Objekt löschen' | translate }}
+    </button>
+  </div>
+</div>

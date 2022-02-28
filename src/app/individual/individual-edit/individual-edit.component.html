@@ -1,18 +1,15 @@
-<div gdColumns="repeat(8, 1fr)">
-  <div gdColumn="2 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-view">
+<div class="individual-edit">
+  <div class="individual-edit__card">
     <app-individual-edit-header
-      gdColumn="1 / span 6"
-      class="detail-header"
+      class="individual-edit__header detail-header"
       [individual$]="detailSubject$"
     ></app-individual-edit-header>
-    <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
-      <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
+    <div class="individual-edit__content">
+      <div class="individual-edit__left-content">
         <h2 translate>OBJEKT ERFASSEN</h2>
       </div>
       <app-individual-edit-view
-        gdColumn="3 / span 4"
-        gdColumn.lt-md="1 / span 6"
-        class="detail-right"
+        class="individual-edit__right-content"
         [individual$]="detailSubject$"
         [createNewIndividual]="isNewIndividual"
       ></app-individual-edit-view>

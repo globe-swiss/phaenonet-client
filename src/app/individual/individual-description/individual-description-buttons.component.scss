@@ -1,0 +1,25 @@
+@use '~@angular/material' as mat;
+
+@import '../../../theming/typography';
+
+@import '../../../theming/mixins';
+
+.individual-description-buttons {
+  &__container {
+    @media screen and (max-width: $min-laptop-width) {
+      display: flex;
+    }
+  }
+
+  &__button {
+    padding-left: 40px;
+    padding-right: 40px;
+    margin-top: 0.5rem;
+    width: 12.5rem;
+
+    @media screen and (max-width: $min-laptop-width) {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}

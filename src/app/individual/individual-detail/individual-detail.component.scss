@@ -1,17 +1,54 @@
-.detail-view {
-  background-color: white;
-}
+@import '../../../theming/mixins';
 
-.individual-subscription-button {
-  position: relative;
-  margin-left: 90%;
-  bottom: 28px;
-  width: 70px;
-  height: 0;
-}
+.individual-detail {
+  @include detail-view;
 
-@media screen and (max-width: 959px) {
-  .individual-subscription-button {
-    margin-left: 70%;
+  &__card {
+    @include detail-card;
+  }
+
+  &__subscription-button {
+    position: relative;
+    bottom: 28px;
+    width: 70px;
+    height: 0;
+    margin-left: 90%;
+    top: -56px;
+
+    @media screen and (max-width: $min-desktop-width) {
+      margin-left: 70%;
+    }
+  }
+
+  &__content {
+    @include detail-view-content;
+  }
+
+  &__description-header {
+    @include default-left-right-padding;
+    @include left-column;
+    @include detail-bottom-padding;
+  }
+
+  &__basic-info {
+    @include default-left-right-padding;
+    @include left-column;
+    @include detail-bottom-padding;
+  }
+
+  &__buttons {
+    @include default-left-right-padding;
+    @include left-column;
+    @include flex-last-on-mobile;
+  }
+
+  &__observation-view {
+    @include default-left-right-padding;
+    @include complete-right-column;
+  }
+
+  &__right-content {
+    @include default-left-right-padding;
+    @include complete-right-column;
   }
 }
