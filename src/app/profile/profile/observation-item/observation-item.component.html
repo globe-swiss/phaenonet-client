@@ -1,23 +1,36 @@
-<div fxLayout="row" [routerLink]="['/' + item.type + 's', item.individual.id]" class="latest-individual-observation">
-  <img class="individual-image" *ngIf="item.imgUrl$ | async" [src]="item.imgUrl$ | async" />
-  <div class="clip-text" fxLayout="column" style="margin-left: 25px; margin-right: 25px; margin-top: 15px">
-    <div class="detail-label">
-      {{ item.species?.de | translate }}
+<div
+  [routerLink]="['/' + item.type + 's', item.individual.id]"
+  class="observation-item"
+  data-test-id="observation-item"
+>
+  <img
+    class="observation-item__image"
+    data-test-id="observation-item__image"
+    *ngIf="item.imgUrl$ | async"
+    [src]="item.imgUrl$ | async"
+  />
+  <div class="observation-item__description" fxLayout="column">
+    <div class="observation-item__name">
+      <div class="observation-item__label" data-test-id="observation-item__species">
+        {{ item.species?.de | translate }}
+      </div>
+      <div class="observation-item__value" data-test-id="observation-item_name">{{ item.individual.name }}</div>
     </div>
-    <div class="mat-body-1" data-test-id="observation-item_name">{{ item.individual.name }}</div>
-    <div class="detail-label" *ngIf="item.individual.last_observation_date">
-      {{ 'Letzte Beobachtung' | translate }},
-      {{ getLastObservationDate() }}
-    </div>
-    <div class="detail-label" *ngIf="!item.individual.last_observation_date">
-      {{ 'Noch keine Beobachtungen' | translate }}
-    </div>
-    <div class="phenophase-title" *ngIf="item.lastPhenophase">
-      <span
-        class="phenophase-circle"
-        [ngStyle]="{ 'background-color': getColor(item.individual.last_phenophase) }"
-      ></span>
-      {{ item.lastPhenophase.de | translate }}
+    <div class="observation-item__observation">
+      <div class="observation-item__label" *ngIf="item.individual.last_observation_date">
+        {{ 'Letzte Beobachtung' | translate }},
+        {{ getLastObservationDate() }}
+      </div>
+      <div class="observation-item__label" *ngIf="!item.individual.last_observation_date">
+        {{ 'Noch keine Beobachtungen' | translate }}
+      </div>
+      <div class="observation-item__value" *ngIf="item.lastPhenophase">
+        <span
+          class="observation-item__phenophase-circle"
+          [ngStyle]="{ 'background-color': getColor(item.individual.last_phenophase) }"
+        ></span>
+        {{ item.lastPhenophase.de | translate }}
+      </div>
     </div>
   </div>
 </div>

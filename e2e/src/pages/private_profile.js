@@ -18,13 +18,13 @@ module.exports = {
     logoutButton: { css: 'app-profile-details .detail-right #logout-button' }
   },
   observations: {
-    listItems: locate({ css: '.latest-individual-observation' }),
+    listItems: { css: '[data-test-id=observation-item]' },
     getItem(num) {
       return locate(this.listItems).at(num);
     },
     withinItem: {
-      image: { css: '.individual-image' },
-      species: locate({ css: '.detail-label' }).at(1),
+      image: { css: '[data-test-id=observation-item__image]' },
+      species: { css: '[data-test-id=observation-item__species]' },
       name: { css: '[data-test-id=observation-item_name]' }
     }
   }
