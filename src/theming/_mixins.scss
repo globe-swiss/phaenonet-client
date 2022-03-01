@@ -34,7 +34,6 @@
 
   display: grid;
   grid-template-columns: calc(410px - 2 * var(--default-padding)) 1fr;
-  grid-template-rows: repeat(4, min-content);
 
   @media screen and (max-width: $min-desktop-width) {
     display: flex;
@@ -63,6 +62,13 @@
 
   color: #5d5d5d;
   font-weight: var(--t4-bold-font-weight);
+}
+
+@mixin detail-value-t2 {
+  @include mat.typography-level($phaenonet-typography, 'body-2');
+
+  /* color: #5d5d5d; */
+  /* font-weight: var(--t4-bold-font-weight); */
 }
 
 @mixin detail-value-regular {
