@@ -30,7 +30,7 @@
 @mixin detail-view-content {
   @include default-left-right-padding();
 
-  margin-top: 40px;
+  /* margin-top: 40px; */
 
   display: grid;
   grid-template-columns: calc(410px - 2 * var(--default-padding)) 1fr;

@@ -31,10 +31,24 @@
     <div class="profile-details__value">{{ email }}</div>
     <div class="profile-details__label">{{ 'Sprache' | translate }}</div>
     <div class="profile-details__value">{{ locale$ | async | translate }}</div>
-    <button mat-flat-button type="submit" id="edit-button" [routerLink]="['/profile', userId, 'edit']" translate>
+    <button
+      class="profile-details__button"
+      mat-flat-button
+      type="submit"
+      id="edit-button"
+      [routerLink]="['/profile', userId, 'edit']"
+      translate
+    >
       Profil bearbeiten
     </button>
-    <button mat-flat-button color="accent" type="submit" id="logout-button" (click)="logout()">
+    <button
+      class="profile-details__button"
+      mat-flat-button
+      color="accent"
+      type="submit"
+      id="logout-button"
+      (click)="logout()"
+    >
       {{ 'Logout' | translate }}
     </button>
   </div>
