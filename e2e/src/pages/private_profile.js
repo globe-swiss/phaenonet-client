@@ -7,15 +7,15 @@ module.exports = {
     activities: { css: 'app-activity-list' }
   },
   profile: {
-    title: { css: 'app-profile-details .detail-left h2' },
-    nickname: { css: 'app-profile-details .detail-right .title-nickname' },
-    name: { css: 'app-profile-details .detail-right :nth-child(4)' },
-    surname: { css: 'app-profile-details .detail-right :nth-child(6)' },
-    email: { css: 'app-profile-details .detail-right :nth-child(8)' },
-    language: { css: 'app-profile-details .detail-right :nth-child(10)' },
-    profileLinkButton: { css: 'app-profile-details .detail-right .title-nickname button' },
-    profileEditButton: { css: 'app-profile-details .detail-right #edit-button' },
-    logoutButton: { css: 'app-profile-details .detail-right #logout-button' }
+    title: { css: 'app-profile-details [data-test-id=profile-details-title]' },
+    nickname: { css: 'app-profile-details [data-test-id=profile-details-nickname]' },
+    name: { css: 'app-profile-details [data-test-id=profile-details-firstname]' },
+    surname: { css: 'app-profile-details [data-test-id=profile-details-lastname]' },
+    email: { css: 'app-profile-details [data-test-id=profile-details-email]' },
+    language: { css: 'app-profile-details [data-test-id=profile-details-locale]' },
+    profileLinkButton: { css: 'app-profile-details [data-test-id=profile-details-link-button]' },
+    profileEditButton: { css: 'app-profile-details [data-test-id=profile-details-edit-button]' },
+    logoutButton: { css: 'app-profile-details [data-test-id=profile-details-logout-button]' }
   },
   observations: {
     listItems: { css: '[data-test-id=observation-item]' },

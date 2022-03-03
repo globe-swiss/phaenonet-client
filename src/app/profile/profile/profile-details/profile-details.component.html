@@ -1,10 +1,10 @@
 <div class="profile-details">
-  <div class="profile-details__title">
+  <div class="profile-details__title" data-test-id="profile-details-title">
     <h2 translate>PROFIL</h2>
   </div>
   <div *ngIf="user$ | async" class="profile_details__content">
     <div class="profile-details__label">{{ 'Hallo' | translate }}</div>
-    <h1 class="profile-details__nick">
+    <h1 class="profile-details__nick" data-test-id="profile-details-nickname">
       {{ nickname$ | async }}
       <span class="profile-details__ranger-badge">
         <button
@@ -19,19 +19,24 @@
         </button>
       </span>
       <span class="profile-details__badge">
-        <button mat-icon-button [app-copy-clipboard]="profileLink" (copied)="notifyCopied()">
+        <button
+          mat-icon-button
+          [app-copy-clipboard]="profileLink"
+          (copied)="notifyCopied()"
+          data-test-id="profile-details-link-button"
+        >
           <mat-icon svgIcon="copylink"></mat-icon>
         </button>
       </span>
     </h1>
     <div class="profile-details__label">{{ 'Vorname' | translate }}</div>
-    <div class="profile-details__value">{{ firstname$ | async }}</div>
+    <div class="profile-details__value" data-test-id="profile-details-firstname">{{ firstname$ | async }}</div>
     <div class="profile-details__label">{{ 'Nachname' | translate }}</div>
-    <div class="profile-details__value">{{ lastname$ | async }}</div>
+    <div class="profile-details__value" data-test-id="profile-details-lastname">{{ lastname$ | async }}</div>
     <div class="profile-details__label">{{ 'E-Mail' | translate }}</div>
-    <div class="profile-details__value">{{ email }}</div>
+    <div class="profile-details__value" data-test-id="profile-details-email">{{ email }}</div>
     <div class="profile-details__label">{{ 'Sprache' | translate }}</div>
-    <div class="profile-details__value">{{ locale$ | async | translate }}</div>
+    <div class="profile-details__value" data-test-id="profile-details-locale">{{ locale$ | async | translate }}</div>
     <button
       class="profile-details__button"
       mat-flat-button
@@ -39,6 +44,7 @@
       id="edit-button"
       [routerLink]="['/profile', userId, 'edit']"
       translate
+      data-test-id="profile-details-edit-button"
     >
       Profil bearbeiten
     </button>
@@ -49,6 +55,7 @@
       type="submit"
       id="logout-button"
       (click)="logout()"
+      data-test-id="profile-details-logout-button"
     >
       {{ 'Logout' | translate }}
     </button>
