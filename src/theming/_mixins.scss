@@ -41,6 +41,19 @@
   }
 }
 
+@mixin profile-detail-bottom-padding {
+  padding-bottom: 200px;
+  @media screen and (max-width: $min-desktop-width) {
+    padding-bottom: 70px;
+  }
+}
+
+@mixin profile-detail-right-column {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+}
+
 @mixin left-column {
   grid-column: 1;
 }
@@ -109,6 +122,7 @@
 
   max-width: 705px;
   @media screen and (max-width: $min-desktop-width) {
+    margin-bottom: 15px;
     // TODO Check with Dani
     max-width: 500px;
   }
@@ -140,5 +154,19 @@
   padding-bottom: 20px;
   @media screen and (max-width: $min-desktop-width) {
     padding-bottom: 5px;
+  }
+}
+
+@mixin button {
+  /* align-self: center; */
+  /* width: 100%; */
+  max-width: 350px;
+  /* margin-left: 15px;
+    margin-right: 15px; */
+  @media screen and (max-width: $min-desktop-width) {
+    width: calc(100% - 30px);
+    align-self: center;
+    margin-left: 15px;
+    margin-right: 15px;
   }
 }

@@ -13,6 +13,7 @@
             'PhenoRanger sind speziell ausgebildete Personen, welche Daten zu zusätzlichen Arten erfassen können. Für weitere Informationen, oder um selbst PhenoRanger zu werden, wenden Sie sich an pheno.rangers@wsl.ch.'
               | translate
           }}"
+          *ngIf="isRanger$ | async"
         >
           <mat-icon svgIcon="ranger-badge"></mat-icon>
         </button>
@@ -42,7 +43,7 @@
       Profil bearbeiten
     </button>
     <button
-      class="profile-details__button"
+      class="profile-details__button profile-details__button--logout"
       mat-flat-button
       color="accent"
       type="submit"

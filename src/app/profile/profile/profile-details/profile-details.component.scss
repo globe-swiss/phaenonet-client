@@ -12,16 +12,17 @@
   }
 } */
 
-#logout-button {
+/* #logout-button {
   color: #d37872;
-}
+} */
 
-.detail-value {
+/* .detail-value {
   @include mat.typography-level($phaenonet-typography, 'body-2');
-}
+} */
 
 .profile-details {
   @include detail-view-content;
+  @include profile-detail-bottom-padding;
 
   &__title {
     @include left-column;
@@ -62,16 +63,11 @@
   }
 
   &__button {
-    /* align-self: center; */
-    /* width: 100%; */
-    max-width: 350px;
-    /* margin-left: 15px;
-    margin-right: 15px; */
-    @media screen and (max-width: $min-desktop-width) {
-      width: calc(100% - 30px);
-      align-self: center;
-      margin-left: 15px;
-      margin-right: 15px;
+    @include button;
+
+    &--logout {
+      color: #d37872;
+      margin-top: 0;
     }
   }
 }
