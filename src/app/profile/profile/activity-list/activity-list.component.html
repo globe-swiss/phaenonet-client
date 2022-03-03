@@ -1,7 +1,17 @@
-<div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
-  <h2 translate>AKTIVITÄTEN</h2>
-</div>
-<div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
-  <app-activity-item *ngFor="let activity of activities$ | async" [activity]="activity"></app-activity-item>
-  <button mat-flat-button color="accent" (click)="showAllActivities()" translate>Mehr anzeigen</button>
+<div class="activity-list">
+  <div class="activity-list__title">
+    <h2 translate>AKTIVITÄTEN</h2>
+  </div>
+  <div class="activity-list__content">
+    <app-activity-item *ngFor="let activity of activities$ | async" [activity]="activity"></app-activity-item>
+    <button
+      class="activity-list__button activity-list__button--more"
+      mat-flat-button
+      color="accent"
+      (click)="showAllActivities()"
+      translate
+    >
+      Mehr anzeigen
+    </button>
+  </div>
 </div>
