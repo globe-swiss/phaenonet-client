@@ -1,20 +1,3 @@
-/* @use '~@angular/material' as mat;
-
-@import '../../../../theming/typography';
-
-.title-nickname {
-  @include mat.typography-level($phaenonet-typography, 'headline');
-}
-
-#logout-button {
-  color: #d37872;
-}
-
-.badge {
-  vertical-align: 1rem;
-  width: 20px;
-} */
-
 @use '~@angular/material' as mat;
 
 @import '../../../../theming/mixins';
