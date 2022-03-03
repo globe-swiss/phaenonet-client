@@ -170,3 +170,18 @@
     margin-right: 15px;
   }
 }
+
+@mixin ranger-badge {
+  button {
+    vertical-align: text-top;
+    margin-top: -1rem;
+    width: 20px;
+  }
+}
+
+@mixin badge {
+  button {
+    vertical-align: text-top;
+    background-color: white;
+  }
+}

@@ -34,22 +34,12 @@
     flex-direction: column;
   }
 
-  &__nick {
-  }
-
   &__ranger-badge {
-    button {
-      vertical-align: text-top;
-      margin-top: -1rem;
-      width: 20px;
-    }
+    @include ranger-badge;
   }
 
   &__badge {
-    button {
-      vertical-align: text-top;
-      background-color: white;
-    }
+    @include badge;
   }
 
   &__label {

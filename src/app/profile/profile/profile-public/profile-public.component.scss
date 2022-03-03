@@ -1,4 +1,4 @@
-@use '~@angular/material' as mat;
+/* @use '~@angular/material' as mat;
 
 @import '../../../../theming/typography';
 
@@ -13,4 +13,39 @@
 .badge {
   vertical-align: 1rem;
   width: 20px;
+} */
+
+@use '~@angular/material' as mat;
+
+@import '../../../../theming/mixins';
+
+@import '../../../../theming/typography';
+
+.profile-public {
+  @include detail-view-content;
+  @include profile-detail-bottom-padding;
+
+  &__title {
+    @include left-column;
+  }
+
+  &__content {
+    @include profile-detail-right-column;
+  }
+
+  &__ranger-badge {
+    @include ranger-badge;
+  }
+
+  &__badge {
+    @include badge;
+  }
+
+  &__button {
+    @include button;
+
+    &--more {
+      margin-top: 0;
+    }
+  }
 }

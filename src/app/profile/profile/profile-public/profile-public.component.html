@@ -1,24 +1,32 @@
-<div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
-  <h2>{{ 'PROFIL' | translate }}</h2>
-</div>
-<div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" *ngIf="user$ | async" class="detail-right">
-  <div class="detail-label">{{ 'Öffentliches Profil von' | translate }}</div>
-  <h1>
-    {{ nickname$ | async }}
-    <button
-      mat-icon-button
-      class="badge"
-      matTooltip="{{
-        'PhenoRanger sind speziell ausgebildete Personen, welche Daten zu zusätzlichen Arten erfassen können. Für weitere Informationen, oder um selbst PhenoRanger zu werden, wenden Sie sich an pheno.rangers@wsl.ch.'
-          | translate
-      }}"
-      *ngIf="isRanger$ | async"
-    >
-      <mat-icon svgIcon="ranger-badge"></mat-icon>
-    </button>
-    <button mat-icon-button [app-copy-clipboard]="profileLink" (copied)="notifyCopied()">
-      <mat-icon svgIcon="copylink"></mat-icon>
-    </button>
-    <app-user-subscription-button [userId]="userId" *ngIf="isLoggedIn"></app-user-subscription-button>
-  </h1>
+<div class="profile-public">
+  <div class="profile-public__title">
+    <h2>{{ 'PROFIL' | translate }}</h2>
+  </div>
+  <div *ngIf="user$ | async" class="profile-publice__content">
+    <div class="profile-publice__label">{{ 'Öffentliches Profil von' | translate }}</div>
+    <h1 class="profile-public__nick">
+      {{ nickname$ | async }}
+      <span class="profile-public__ranger-badge">
+        <button
+          mat-icon-button
+          class="badge"
+          matTooltip="{{
+            'PhenoRanger sind speziell ausgebildete Personen, welche Daten zu zusätzlichen Arten erfassen können. Für weitere Informationen, oder um selbst PhenoRanger zu werden, wenden Sie sich an pheno.rangers@wsl.ch.'
+              | translate
+          }}"
+          *ngIf="isRanger$ | async"
+        >
+          <mat-icon svgIcon="ranger-badge"></mat-icon>
+        </button>
+      </span>
+      <span class="profile-public__badge">
+        <button mat-icon-button [app-copy-clipboard]="profileLink" (copied)="notifyCopied()">
+          <mat-icon svgIcon="copylink"></mat-icon>
+        </button>
+      </span>
+      <span>
+        <app-user-subscription-button [userId]="userId" *ngIf="isLoggedIn"></app-user-subscription-button>
+      </span>
+    </h1>
+  </div>
 </div>
