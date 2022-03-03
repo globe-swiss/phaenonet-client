@@ -1,27 +1,33 @@
-.latest-individual-observation {
-  margin-bottom: 1.875rem;
-  cursor: pointer;
-  background-color: white;
-  border-radius: 1rem;
+@use '~@angular/material' as mat;
 
-  img {
-    border-top-left-radius: 1rem;
-    border-bottom-left-radius: 1rem;
-  }
-}
+@import '../../../../theming/typography';
 
-.individual-image {
-  max-width: 180px;
-  object-fit: cover;
-}
+@import '../../../../theming/mixins';
 
-@media screen and (max-width: 959px) {
-  .individual-image {
-    max-width: 120px;
-    object-fit: cover;
+.observation-item {
+  @include teaser-card;
+
+  &__image {
+    @include teaser-image;
   }
 
-  .activity {
-    margin-bottom: 1rem;
+  &__description {
+    @include teaser-description;
+  }
+
+  &__label {
+    @include detail-label;
+  }
+
+  &__value {
+    @include mat.typography-level($phaenonet-typography, 'body-1');
+  }
+
+  &__phenophase-circle {
+    @include phenophase-circle;
+  }
+
+  &__name {
+    @include teaser-name;
   }
 }

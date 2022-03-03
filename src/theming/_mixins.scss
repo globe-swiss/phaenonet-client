@@ -83,3 +83,56 @@
     padding-bottom: 50px;
   }
 }
+
+@mixin phenophase-circle {
+  margin: 0.125rem 0.5rem 0.125rem 0.125rem;
+  height: 0.625rem;
+  width: 0.625rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+@mixin teaser-card {
+  margin-bottom: 1.875rem;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 1rem;
+
+  display: flex;
+  flex-direction: row;
+
+  max-width: 705px;
+  @media screen and (max-width: $min-desktop-width) {
+    // TODO Check with Dani
+    max-width: 500px;
+  }
+}
+
+@mixin teaser-image {
+  object-fit: cover;
+
+  width: 180px;
+  height: 180px;
+
+  @media screen and (max-width: $min-desktop-width) {
+    width: 110px;
+    height: 110px;
+  }
+
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+@mixin teaser-description {
+  margin: 30px 25px;
+  @media screen and (max-width: $min-desktop-width) {
+    margin: 8px 10px;
+  }
+}
+
+@mixin teaser-name {
+  padding-bottom: 20px;
+  @media screen and (max-width: $min-desktop-width) {
+    padding-bottom: 5px;
+  }
+}

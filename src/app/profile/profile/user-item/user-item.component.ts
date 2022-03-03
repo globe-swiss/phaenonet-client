@@ -7,6 +7,6 @@ import { PublicUser } from '../../../open/public-user';
   templateUrl: './user-item.component.html',
   styleUrls: ['./user-item.component.scss']
 })
-export class FollowUserComponent {
+export class UserItemComponent {
   @Input() item: PublicUser & MaybeIdLike;
 }

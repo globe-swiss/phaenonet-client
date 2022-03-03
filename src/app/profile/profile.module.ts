@@ -14,7 +14,7 @@ import { ObservationListComponent } from './profile/observation-list/observation
 import { ProfileDetailsComponent } from './profile/profile-details/profile-details.component';
 import { ProfilePublicComponent } from './profile/profile-public/profile-public.component';
 import { ProfileComponent } from './profile/profile.component';
-import { FollowUserComponent } from './profile/user-item/user-item.component';
+import { UserItemComponent } from './profile/user-item/user-item.component';
 import { InviteComponent } from './invite/invite.component';
 import { InviteItemComponent } from './invite/invite-item/invite-item.component';
 import { InviteListComponent } from './invite/invite-list/invite-list.component';
@@ -34,7 +34,7 @@ import { InviteDialogComponent } from './invite/invite-dialog/invite-dialog.comp
     ProfilePublicComponent,
     ChangeEmailDialogComponent,
     FollowListComponent,
-    FollowUserComponent,
+    UserItemComponent,
     InviteComponent,
     InviteItemComponent,
     InviteListComponent,
