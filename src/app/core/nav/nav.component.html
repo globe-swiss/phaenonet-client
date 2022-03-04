@@ -1,21 +1,29 @@
-<mat-toolbar id="nav-component">
-  <mat-toolbar-row>
-    <div gdColumns="repeat(8, 1fr)" class="menu-row">
-      <div gdColumn="2" gdColumn.lt-md="1" class="logo">
-        <a href="https://www.phaenonet.ch/{{ lang() }}/" target="_blank">
-          <img gdArea="logo" src="/assets/img/Bildmarke-Phaenonet_rgb.png" alt="PhaenoNet Logo"
-        /></a>
-      </div>
-      <div gdColumn="3 / span 5" gdColumn.lt-md="2 / span 7" fxLayoutAlign="flex-end" id="buttons">
-        <div class="left-border" *ngIf="isLoggedIn()">
-          <button mat-button class="nav-button" [routerLink]="['profile']">{{ 'Profil' | translate }}</button>
+<div class="nav-component">
+  <mat-toolbar id="nav-component">
+    <mat-toolbar-row>
+      <div class="nav-component__row">
+        <div class="nav-component__logo">
+          <a href="https://www.phaenonet.ch/{{ lang() }}/" target="_blank">
+            <img src="/assets/img/Bildmarke-Phaenonet_rgb.png" alt="PhaenoNet Logo"
+          /></a>
         </div>
-        <div class="left-border" *ngIf="!isLoggedIn()">
-          <button mat-button class="nav-button" [routerLink]="['auth/login']">{{ 'Anmelden' | translate }}</button>
+        <div class="nav-component__buttons">
+          <div class="left-border" *ngIf="isLoggedIn()">
+            <button mat-button class="nav-component__button" [routerLink]="['profile']">
+              {{ 'Profil' | translate }}
+            </button>
+          </div>
+          <div class="left-border" *ngIf="!isLoggedIn()">
+            <button mat-button class="nav-component__button" [routerLink]="['auth/login']">
+              {{ 'Anmelden' | translate }}
+            </button>
+          </div>
+          <button mat-button class="nav-component__button" [routerLink]="['map']">{{ 'Karte' | translate }}</button>
+          <button mat-button class="nav-component__button" [routerLink]="['statistics']">
+            {{ 'Auswertung' | translate }}
+          </button>
         </div>
-        <button mat-button class="nav-button" [routerLink]="['map']">{{ 'Karte' | translate }}</button>
-        <button mat-button class="nav-button" [routerLink]="['statistics']">{{ 'Auswertung' | translate }}</button>
       </div>
-    </div>
-  </mat-toolbar-row>
-</mat-toolbar>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>
