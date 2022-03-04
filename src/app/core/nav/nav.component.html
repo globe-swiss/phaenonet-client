@@ -4,22 +4,34 @@
       <div class="nav-component__row">
         <div class="nav-component__logo">
           <a href="https://www.phaenonet.ch/{{ lang() }}/" target="_blank">
-            <img src="/assets/img/Bildmarke-Phaenonet_rgb.png" alt="PhaenoNet Logo"
+            <img src="/assets/img/Bildmarke-Phaenonet_rgb.png" alt="PhaenoNet Logo" data-test-id="nav-logo"
           /></a>
         </div>
         <div class="nav-component__buttons">
           <div class="left-border" *ngIf="isLoggedIn()">
-            <button mat-button class="nav-component__button" [routerLink]="['profile']">
+            <button mat-button class="nav-component__button" [routerLink]="['profile']" data-test-id="nav-button-login">
               {{ 'Profil' | translate }}
             </button>
           </div>
           <div class="left-border" *ngIf="!isLoggedIn()">
-            <button mat-button class="nav-component__button" [routerLink]="['auth/login']">
+            <button
+              mat-button
+              class="nav-component__button"
+              [routerLink]="['auth/login']"
+              data-test-id="nav-button-login"
+            >
               {{ 'Anmelden' | translate }}
             </button>
           </div>
-          <button mat-button class="nav-component__button" [routerLink]="['map']">{{ 'Karte' | translate }}</button>
-          <button mat-button class="nav-component__button" [routerLink]="['statistics']">
+          <button mat-button class="nav-component__button" [routerLink]="['map']" data-test-id="nav-button-map">
+            {{ 'Karte' | translate }}
+          </button>
+          <button
+            mat-button
+            class="nav-component__button"
+            [routerLink]="['statistics']"
+            data-test-id="nav-button-statistics"
+          >
             {{ 'Auswertung' | translate }}
           </button>
         </div>

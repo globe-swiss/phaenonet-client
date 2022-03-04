@@ -1,6 +1,6 @@
 module.exports = {
-  logoImage: { css: 'app-nav div.logo img' },
-  signinProfileButton: { xpath: '//app-nav//div[@id="buttons"]/div/button' },
-  KarteButton: { xpath: '//app-nav//div[@id="buttons"]/button[1]' },
-  AuswertungButton: { xpath: '//app-nav//div[@id="buttons"]/button[1]' }
+  logoImage: { css: 'app-nav [data-test-id=nav-logo]' },
+  signinProfileButton: { css: 'app-nav [data-test-id=nav-button-login]' },
+  KarteButton: { css: 'app-nav [data-test-id=nav-button-map]' },
+  AuswertungButton: { css: 'app-nav [data-test-id=nav-button-statistics]' }
 };
