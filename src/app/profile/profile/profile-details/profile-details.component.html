@@ -1,37 +1,63 @@
-<div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
-  <h2 translate>PROFIL</h2>
-</div>
-<div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" *ngIf="user$ | async" class="detail-right">
-  <div class="detail-label">{{ 'Hallo' | translate }}</div>
-  <h1 class="title-nickname">
-    {{ nickname$ | async }}
+<div class="profile-details">
+  <div class="profile-details__title" data-test-id="profile-details-title">
+    <h2 translate>PROFIL</h2>
+  </div>
+  <div *ngIf="user$ | async" class="profile_details__content">
+    <div class="profile-details__label">{{ 'Hallo' | translate }}</div>
+    <h1 class="profile-details__nick" data-test-id="profile-details-nickname">
+      {{ nickname$ | async }}
+      <span class="profile-details__ranger-badge">
+        <button
+          mat-icon-button
+          matTooltip="{{
+            'PhenoRanger sind speziell ausgebildete Personen, welche Daten zu zusätzlichen Arten erfassen können. Für weitere Informationen, oder um selbst PhenoRanger zu werden, wenden Sie sich an pheno.rangers@wsl.ch.'
+              | translate
+          }}"
+          *ngIf="isRanger$ | async"
+        >
+          <mat-icon svgIcon="ranger-badge"></mat-icon>
+        </button>
+      </span>
+      <span class="profile-details__badge">
+        <button
+          mat-icon-button
+          [app-copy-clipboard]="profileLink"
+          (copied)="notifyCopied()"
+          data-test-id="profile-details-link-button"
+        >
+          <mat-icon svgIcon="copylink"></mat-icon>
+        </button>
+      </span>
+    </h1>
+    <div class="profile-details__label">{{ 'Vorname' | translate }}</div>
+    <div class="profile-details__value" data-test-id="profile-details-firstname">{{ firstname$ | async }}</div>
+    <div class="profile-details__label">{{ 'Nachname' | translate }}</div>
+    <div class="profile-details__value" data-test-id="profile-details-lastname">{{ lastname$ | async }}</div>
+    <div class="profile-details__label">{{ 'E-Mail' | translate }}</div>
+    <div class="profile-details__value" data-test-id="profile-details-email">{{ email }}</div>
+    <div class="profile-details__label">{{ 'Sprache' | translate }}</div>
+    <div class="profile-details__value" data-test-id="profile-details-locale">{{ locale$ | async | translate }}</div>
     <button
-      mat-icon-button
-      class="badge"
-      matTooltip="{{
-        'PhenoRanger sind speziell ausgebildete Personen, welche Daten zu zusätzlichen Arten erfassen können. Für weitere Informationen, oder um selbst PhenoRanger zu werden, wenden Sie sich an pheno.rangers@wsl.ch.'
-          | translate
-      }}"
-      *ngIf="isRanger$ | async"
+      class="profile-details__button"
+      mat-flat-button
+      type="submit"
+      id="edit-button"
+      [routerLink]="['/profile', userId, 'edit']"
+      translate
+      data-test-id="profile-details-edit-button"
     >
-      <mat-icon svgIcon="ranger-badge"></mat-icon>
+      Profil bearbeiten
     </button>
-    <button mat-icon-button [app-copy-clipboard]="profileLink" (copied)="notifyCopied()">
-      <mat-icon svgIcon="copylink"></mat-icon>
+    <button
+      class="profile-details__button profile-details__button--logout"
+      mat-flat-button
+      color="accent"
+      type="submit"
+      id="logout-button"
+      (click)="logout()"
+      data-test-id="profile-details-logout-button"
+    >
+      {{ 'Logout' | translate }}
     </button>
-  </h1>
-  <div class="detail-label">{{ 'Vorname' | translate }}</div>
-  <div class="detail-value">{{ firstname$ | async }}</div>
-  <div class="detail-label">{{ 'Nachname' | translate }}</div>
-  <div class="detail-value">{{ lastname$ | async }}</div>
-  <div class="detail-label">{{ 'E-Mail' | translate }}</div>
-  <div class="detail-value">{{ email }}</div>
-  <div class="detail-label">{{ 'Sprache' | translate }}</div>
-  <div class="detail-value">{{ locale$ | async | translate }}</div>
-  <button mat-flat-button type="submit" id="edit-button" [routerLink]="['/profile', userId, 'edit']" translate>
-    Profil bearbeiten
-  </button>
-  <button mat-flat-button color="accent" type="submit" id="logout-button" (click)="logout()">
-    {{ 'Logout' | translate }}
-  </button>
+  </div>
 </div>

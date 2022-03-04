@@ -22,6 +22,7 @@
 
   &__content {
     @include detail-view-content;
+    grid-template-rows: repeat(4, min-content);
   }
 
   &__description-header {

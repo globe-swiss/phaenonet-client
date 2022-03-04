@@ -1,19 +1,47 @@
 @use '~@angular/material' as mat;
 
+@import '../../../../theming/mixins';
+
 @import '../../../../theming/typography';
 
-.title-nickname {
-  button.badge {
-    vertical-align: text-top;
-    margin-top: -1rem;
-    width: 20px;
+.profile-details {
+  @include detail-view-content;
+  @include profile-detail-bottom-padding;
+
+  &__title {
+    @include left-column;
   }
-}
 
-#logout-button {
-  color: #d37872;
-}
+  &__content {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+  }
 
-.detail-value {
-  @include mat.typography-level($phaenonet-typography, 'body-2');
+  &__ranger-badge {
+    @include ranger-badge;
+  }
+
+  &__badge {
+    @include badge;
+  }
+
+  &__label {
+    @include detail-label;
+    line-height: 1.125rem;
+    margin-top: 1.125rem;
+  }
+
+  &__value {
+    @include detail-value-t2;
+  }
+
+  &__button {
+    @include button;
+
+    &--logout {
+      color: #d37872;
+      margin-top: 0;
+    }
+  }
 }

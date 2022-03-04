@@ -1,7 +1,19 @@
-<div gdColumn="1 / span 2" class="detail-left"><h2 translate>ABONNEMENTE</h2></div>
-<div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
-  <app-user-item *ngFor="let item of followedUsers$ | async" [item]="item"></app-user-item>
-  <app-observation-item *ngFor="let item of followedIndividuals$ | async" [item]="item"></app-observation-item>
-  <button mat-flat-button color="primary" routerLink="invites" translate>Einladungen</button>
-  <button mat-flat-button color="accent" (click)="showMore()" translate>Mehr anzeigen</button>
+<div class="follow-list">
+  <div class="follow-list__title"><h2 translate>ABONNEMENTE</h2></div>
+  <div class="follow-list__content">
+    <app-user-item *ngFor="let item of followedUsers$ | async" [item]="item"></app-user-item>
+    <app-observation-item *ngFor="let item of followedIndividuals$ | async" [item]="item"></app-observation-item>
+    <button class="follow-list__button" mat-flat-button color="primary" routerLink="invites" translate>
+      Einladungen
+    </button>
+    <button
+      class="follow-list__button follow-list__button--more"
+      mat-flat-button
+      color="accent"
+      (click)="showMore()"
+      translate
+    >
+      Mehr anzeigen
+    </button>
+  </div>
 </div>
