@@ -13,7 +13,6 @@
     width: 70px;
     height: 0;
     margin-left: 90%;
-    top: -56px;
 
     @media screen and (max-width: $min-desktop-width) {
       margin-left: 70%;
@@ -23,6 +22,7 @@
   &__content {
     @include detail-view-content;
     grid-template-rows: repeat(4, min-content);
+    margin-top: 40px;
   }
 
   &__description-header {

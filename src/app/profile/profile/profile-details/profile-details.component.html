@@ -2,7 +2,7 @@
   <div class="profile-details__title" data-test-id="profile-details-title">
     <h2 translate>PROFIL</h2>
   </div>
-  <div *ngIf="user$ | async" class="profile_details__content">
+  <div *ngIf="user$ | async" class="profile-details__content">
     <div class="profile-details__label">{{ 'Hallo' | translate }}</div>
     <h1 class="profile-details__nick" data-test-id="profile-details-nickname">
       {{ nickname$ | async }}

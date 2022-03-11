@@ -54,6 +54,11 @@
 
 @mixin left-column {
   grid-column: 1;
+  @media screen and (max-width: $min-desktop-width) {
+    h2 {
+      margin-bottom: 30px;
+    }
+  }
 }
 
 @mixin complete-right-column {
