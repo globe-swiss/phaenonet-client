@@ -1,3 +1,37 @@
+@use '~@angular/material' as mat;
+
+@import '../../../theming/mixins';
+
+@import '../../../theming/typography';
+
 mat-icon {
   cursor: pointer;
+}
+
+.profile-edit {
+  @include detail-view;
+
+  @media screen and (max-width: $min-desktop-width) {
+    max-width: 550px;
+  }
+
+  &__content {
+    @include detail-view-content;
+  }
+
+  &__title {
+    @include left-column;
+  }
+
+  &__right-column {
+    @include profile-detail-right-column;
+  }
+
+  &__form-field {
+    display: block;
+  }
+
+  &__button {
+    @include button;
+  }
 }
