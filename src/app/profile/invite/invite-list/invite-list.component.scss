@@ -9,6 +9,12 @@
 
   &__title {
     @include left-column;
+
+    &:not(:first-of-type) {
+      @include for-tablet-down {
+        padding-top: 40px;
+      }
+    }
   }
 
   &__right-column {

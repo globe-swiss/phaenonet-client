@@ -11,7 +11,7 @@ mat-icon {
 .profile-edit {
   @include detail-view;
 
-  @media screen and (max-width: $min-desktop-width) {
+  @include for-tablet-down {
     max-width: 550px;
   }
 

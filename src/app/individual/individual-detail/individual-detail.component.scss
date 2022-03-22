@@ -14,7 +14,7 @@
     height: 0;
     margin-left: 90%;
 
-    @media screen and (max-width: $min-desktop-width) {
+    @include for-tagblet-down {
       margin-left: 70%;
     }
   }
