@@ -28,7 +28,7 @@
 }
 
 @mixin detail-view-content {
-  @include default-left-right-padding();
+  /* @include default-left-right-padding(); */
 
   display: grid;
   grid-template-columns: calc(410px - 2 * var(--default-padding)) 1fr;
@@ -111,6 +111,18 @@
   display: inline-block;
 }
 
+@mixin mobile-max-width {
+  @media screen and (max-width: $min-desktop-width) {
+    max-width: 550px;
+  }
+}
+
+@mixin mobile-no-left-padding {
+  @media screen and (max-width: $min-desktop-width) {
+    padding-left: 0;
+  }
+}
+
 @mixin teaser-card {
   margin-bottom: 1.875rem;
   cursor: pointer;
@@ -120,11 +132,11 @@
   display: flex;
   flex-direction: row;
 
-  max-width: 705px;
+  /* max-width: 705px; */
   @media screen and (max-width: $min-desktop-width) {
     margin-bottom: 15px;
     // TODO Check with Dani
-    max-width: 500px;
+    /* max-width: 500px; */
   }
 }
 
