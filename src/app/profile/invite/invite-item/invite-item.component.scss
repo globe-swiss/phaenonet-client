@@ -27,7 +27,7 @@
   }
 }
 
-@media screen and (max-width: 959px) {
+@include for-tablet-down {
   .user-image {
     display: block;
   }

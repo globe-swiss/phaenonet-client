@@ -14,7 +14,7 @@
     height: 0;
     margin-left: 90%;
 
-    @include for-tagblet-down {
+    @include for-tablet-down {
       margin-left: 70%;
     }
   }

@@ -6,6 +6,12 @@
   }
 }
 
+@mixin for-phone {
+  @media screen and (max-width: $min-laptop-width) {
+    @content;
+  }
+}
+
 @mixin default-left-right-padding {
   padding-left: var(--default-padding);
   padding-right: var(--default-padding);

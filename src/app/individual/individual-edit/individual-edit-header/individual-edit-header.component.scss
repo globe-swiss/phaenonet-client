@@ -1,3 +1,5 @@
+@import '../../../../theming/mixins';
+
 .image-container {
   width: 100%;
   height: 402px;
@@ -21,7 +23,7 @@
   height: 70px;
 }
 
-@media screen and (max-width: 959px) {
+@include for-tablet-down {
   .detail-header-fab {
     margin-left: 70%;
   }

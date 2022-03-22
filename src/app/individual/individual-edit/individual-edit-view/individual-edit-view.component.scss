@@ -1,8 +1,10 @@
+@import '../../../../theming/mixins';
+
 .geopos-width {
   width: 70%;
 }
 
-@media screen and (max-width: 959px) {
+@include for-tablet-down {
   .geopos-width {
     width: 100%;
   }
@@ -13,7 +15,7 @@
   padding-left: 2rem;
 }
 
-@media screen and (max-width: 959px) {
+@include for-tablet-down {
   .gradient-info-img {
     height: 50px;
     padding-left: 1rem;
