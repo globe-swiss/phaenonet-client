@@ -1,35 +1,31 @@
-<div fxLayout="row" class="invite-card">
+<div class="invite-card">
   <img
-    class="user-image"
+    class="invite-card__image"
     src="assets/img/user_placeholder.svg"
     [style.cursor]="item.register_user ? 'pointer' : 'default'"
     [routerLink]="item.register_user ? ['/profile', item.register_user] : []"
   />
   <div
-    class="clip-text"
-    fxLayout="column"
-    fxFlex="grow"
-    style="margin-left: 25px; margin-right: 25px; margin-top: 15px"
+    class="invite-card__description"
     [style.cursor]="item.register_user ? 'pointer' : 'default'"
     [routerLink]="item.register_user ? ['/profile', item.register_user] : []"
   >
-    <div class="detail-label">
+    <div class="invite-card__label">
       {{ 'Einladung für' | translate }}
     </div>
-    <div id="email" data-test-id="item_email" class="mat-body-1">{{ item.email }}</div>
-    <ng-container *ngIf="item.register_date; else notregistered">
-      <div class="detail-label">
-        {{ 'Profil' | translate }} ({{ 'registriert am' | translate }} {{ item.register_date | shortdate }})
-      </div>
-      <div class="mat-body-1">{{ item.register_nick }}</div>
-    </ng-container>
+    <div id="email" data-test-id="item_email" class="invite-card__value">{{ item.email }}</div>
+    <div class="invite-card__label" *ngIf="item.register_date; else notregistered">
+      {{ 'Profil' | translate }} ({{ 'registriert am' | translate }} {{ item.register_date | shortdate }})
+    </div>
+    <div class="invite-card__value invite-card__value--last">{{ item.register_nick }}</div>
   </div>
-  <div fxLayout="column" style="margin-left: 25px; margin-right: 25px; align-self: center">
+  <div class="invite-card__buttons">
     <app-user-subscription-button
       *ngIf="item.register_date"
       [userId]="item.register_user"
+      class="invite-card__button"
     ></app-user-subscription-button>
-    <button *ngIf="!item.register_date" mat-fab color="primary" (click)="resendInvite()">
+    <button *ngIf="!item.register_date" mat-fab color="primary" (click)="resendInvite()" class="invite-card__button">
       <mat-icon svgIcon="resend-mail"></mat-icon>
     </button>
   </div>
@@ -37,8 +33,10 @@
 
 <ng-template #notregistered>
   <ng-container *ngIf="item.sent; else notsent">
-    <div class="detail-label">{{ 'Versendet am' | translate }} {{ item.sent | shortdate }}</div>
-    <div (click)="resendInvite()" style="cursor: pointer" class="mat-body-1">{{ 'Erneut senden' | translate }}</div>
+    <div class="invite-card__label">{{ 'Versendet am' | translate }} {{ item.sent | shortdate }}</div>
+    <div (click)="resendInvite()" style="cursor: pointer" class="invite-card__value invite-card__value--last">
+      {{ 'Erneut senden' | translate }}
+    </div>
   </ng-container>
 </ng-template>
 
