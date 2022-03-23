@@ -4,7 +4,7 @@
   width: 70%;
 }
 
-@include for-tablet-down {
+@include for-tablet-and-smaller {
   .geopos-width {
     width: 100%;
   }
@@ -15,7 +15,7 @@
   padding-left: 2rem;
 }
 
-@include for-tablet-down {
+@include for-tablet-and-smaller {
   .gradient-info-img {
     height: 50px;
     padding-left: 1rem;

@@ -11,7 +11,7 @@
     @include left-column;
 
     &:not(:first-of-type) {
-      @include for-tablet-down {
+      @include for-tablet-and-smaller {
         padding-top: 40px;
       }
     }
@@ -23,5 +23,9 @@
 
   &__content {
     @include profile-detail-right-column;
+  }
+
+  &__button {
+    @include button;
   }
 }

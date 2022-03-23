@@ -14,7 +14,7 @@
     height: 0;
     margin-left: 90%;
 
-    @include for-tablet-down {
+    @include for-tablet-and-smaller {
       margin-left: 70%;
     }
   }

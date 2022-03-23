@@ -7,7 +7,7 @@
 .invite-component {
   @include detail-view;
 
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     max-width: 550px;
   }
 }

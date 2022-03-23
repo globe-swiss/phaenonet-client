@@ -23,7 +23,7 @@
   height: 70px;
 }
 
-@include for-tablet-down {
+@include for-tablet-and-smaller {
   .detail-header-fab {
     margin-left: 70%;
   }

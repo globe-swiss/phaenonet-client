@@ -30,7 +30,7 @@
   font-size: 1em;
 }
 
-@include for-tablet-down {
+@include for-tablet-and-smaller {
   body {
     --h1-font-size: 1.75rem;
     --h2-font-size: 1rem;

@@ -13,7 +13,16 @@
     <ng-container *ngIf="(acceptedInvites$ | async)?.length > 0">
       <app-invite-item *ngFor="let invite of acceptedInvites$ | async" [item]="invite"></app-invite-item>
     </ng-container>
-    <button id="invite" mat-flat-button color="primary" (click)="invite()" translate>Jetzt einladen</button>
+    <button
+      class="invite-list-component__button"
+      id="invite"
+      mat-flat-button
+      color="primary"
+      (click)="invite()"
+      translate
+    >
+      Jetzt einladen
+    </button>
   </div>
 
   <ng-template #noinvites>

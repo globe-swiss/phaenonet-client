@@ -1,6 +1,6 @@
 @import './constants';
 
-@mixin for-tablet-down {
+@mixin for-tablet-and-smaller {
   @media screen and (max-width: $min-desktop-width) {
     @content;
   }
@@ -40,12 +40,10 @@
 }
 
 @mixin detail-view-content {
-  /* @include default-left-right-padding(); */
-
   display: grid;
   grid-template-columns: calc(410px - 2 * var(--default-padding)) 1fr;
 
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     display: flex;
     flex-direction: column;
   }
@@ -53,7 +51,7 @@
 
 @mixin profile-detail-bottom-padding {
   padding-bottom: 200px;
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     padding-bottom: 70px;
   }
 }
@@ -66,7 +64,7 @@
 
 @mixin left-column {
   grid-column: 1;
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     h2 {
       margin-bottom: 30px;
     }
@@ -102,7 +100,7 @@
 }
 
 @mixin flex-last-on-mobile {
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     order: 100;
   }
 }
@@ -110,7 +108,7 @@
 @mixin detail-bottom-padding {
   padding-bottom: 60px;
 
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     padding-bottom: 50px;
   }
 }
@@ -124,13 +122,13 @@
 }
 
 @mixin mobile-max-width {
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     max-width: 550px;
   }
 }
 
 @mixin mobile-no-left-padding {
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     padding-left: 0;
   }
 }
@@ -144,11 +142,8 @@
   display: flex;
   flex-direction: row;
 
-  /* max-width: 705px; */
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     margin-bottom: 15px;
-    // TODO Check with Dani
-    /* max-width: 500px; */
   }
 }
 
@@ -158,7 +153,7 @@
   width: 180px;
   height: 180px;
 
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     width: 110px;
     height: 110px;
   }
@@ -169,21 +164,21 @@
 
 @mixin teaser-description {
   margin: 30px 25px;
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     margin: 8px 10px;
   }
 }
 
 @mixin teaser-name {
   padding-bottom: 20px;
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     padding-bottom: 5px;
   }
 }
 
 @mixin button {
   max-width: 350px;
-  @include for-tablet-down {
+  @include for-tablet-and-smaller {
     width: calc(100% - 30px);
     align-self: center;
     margin-left: 15px;
