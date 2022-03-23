@@ -9,13 +9,12 @@ import { SharedModule } from '../shared/shared.module';
 import { IndividualDescriptionBasicInfoComponent } from './individual-description/individual-description-basic-info.component';
 import { IndividualDescriptionButtonsComponent } from './individual-description/individual-description-buttons.component';
 import { IndividualDescriptionHeaderComponent } from './individual-description/individual-description-header.component';
-import { DetailHeaderComponent } from './individual-detail/individual-detail-header/individual-detail-header.component';
 import { IndividualDetailComponent } from './individual-detail/individual-detail.component';
 import { ObservationViewComponent } from './individual-detail/individual-observation-view/individual-observation-view.component';
-import { GeoposService } from './individual-edit/individual-edit-header/geopos.service';
-import { EditHeaderComponent } from './individual-edit/individual-edit-header/individual-edit-header.component';
+import { GeoposService } from './individual-header/geopos.service';
 import { IndividualEditViewComponent } from './individual-edit/individual-edit-view/individual-edit-view.component';
 import { IndividualEditComponent } from './individual-edit/individual-edit.component';
+import { IndividualHeaderComponent } from './individual-header/individual-header.component';
 import { IndividualRoutingModule } from './individual-routing.module';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
 
@@ -33,16 +32,15 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
     IndividualEditComponent,
     IndividualDetailComponent,
     PhenophaseDialogComponent,
-    DetailHeaderComponent,
     IndividualDescriptionHeaderComponent,
     IndividualDescriptionBasicInfoComponent,
     IndividualDescriptionButtonsComponent,
     ObservationViewComponent,
-    EditHeaderComponent,
+    IndividualHeaderComponent,
     IndividualEditViewComponent
   ],
   providers: [GeoposService],
-  exports: [DetailHeaderComponent],
+  exports: [IndividualHeaderComponent],
   entryComponents: [PhenophaseDialogComponent, ConfirmationDialogComponent]
 })
 export class IndividualModule {}

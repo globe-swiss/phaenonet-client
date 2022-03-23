@@ -13,19 +13,17 @@ export class GeoposService {
 
   elevator = new google.maps.ElevationService();
 
-  constructor() {}
-
-  init() {
+  init(): void {
     this.update(new google.maps.LatLng(this.initialGeopos));
   }
 
-  update(latLng: google.maps.LatLng) {
+  update(latLng: google.maps.LatLng): void {
     this.geopos.next(latLng.toJSON());
     this.center.next(latLng.toJSON());
     this.updateAltitude(latLng);
   }
 
-  private updateAltitude(latLng: google.maps.LatLng) {
+  private updateAltitude(latLng: google.maps.LatLng): void {
     this.elevator.getElevationForLocations({ locations: [latLng] }, (results, status) => {
       if (status === 'OK') {
         if (results[0]) {
@@ -35,11 +33,11 @@ export class GeoposService {
     });
   }
 
-  getAltitude() {
+  getAltitude(): number {
     return this.altitude.value;
   }
 
-  getGeoPos() {
+  getGeoPos(): google.maps.LatLngLiteral {
     return this.geopos.value;
   }
 }

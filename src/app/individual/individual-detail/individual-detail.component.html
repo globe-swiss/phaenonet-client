@@ -1,14 +1,15 @@
 <div class="individual-detail" *ngIf="(detailSubject$ | async) !== null">
   <div class="individual-detail__card">
-    <app-individual-detail-header
+    detail
+    <app-individual-header
       class="individual-detail__header detail-header"
       [individual$]="detailSubject$"
-    ></app-individual-detail-header>
+      edit_detail="detail"
+    ></app-individual-header>
     <div class="individual-detail__subscription-button" *ngIf="isLoggedIn && (isOwn$ | async) === false">
       <app-individual-subscription-button [individual$]="detailSubject$"></app-individual-subscription-button>
     </div>
     <div class="individual-detail__content">
-      <!-- <div class="individual-detail__left-column"> -->
       <app-individual-description-header
         *ngIf="detailSubject$ | async"
         class="individual-detail__description-header"
