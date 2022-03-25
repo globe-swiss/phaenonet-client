@@ -3,7 +3,7 @@
     <app-individual-header
       class="individual-detail__header"
       [individual$]="detailSubject$"
-      edit="detail"
+      mode="detail"
     ></app-individual-header>
     <div class="individual-detail__subscription-button" *ngIf="isLoggedIn && (isOwn$ | async) === false">
       <app-individual-subscription-button [individual$]="detailSubject$"></app-individual-subscription-button>

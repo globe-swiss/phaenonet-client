@@ -1,6 +1,6 @@
 <div gdColumns="repeat(8, 1fr)" *ngIf="(detailSubject$ | async) !== null">
   <div gdColumn="2 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-view">
-    <app-individual-header gdColumn="1 / span 6" [individual$]="detailSubject$" edit="detail"></app-individual-header>
+    <app-individual-header gdColumn="1 / span 6" [individual$]="detailSubject$" mode="detail"></app-individual-header>
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
       <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject$ | async" class="detail-left">
         <div class="detail-label detail-label-standort">{{ 'Standort' | translate }}</div>

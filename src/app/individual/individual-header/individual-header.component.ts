@@ -17,7 +17,8 @@ export class IndividualHeaderComponent implements OnInit {
 
   geopos$: Observable<google.maps.LatLngLiteral>;
 
-  @Input() edit: 'edit' | 'detail';
+  @Input() mode: 'edit' | 'detail';
+  edit: boolean;
 
   zoom: number;
 
@@ -30,8 +31,6 @@ export class IndividualHeaderComponent implements OnInit {
 
   displayLocateMe: boolean;
 
-  edit: boolean;
-
   constructor(
     private geoposService: GeoposService,
     private individualService: IndividualService,
@@ -40,7 +39,7 @@ export class IndividualHeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.edit = this.edit_detail === 'edit';
+    this.edit = this.mode === 'edit';
 
     const config = {
       displayLocateMe: this.edit ? true : false,
