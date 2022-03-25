@@ -16,14 +16,6 @@ button.navigation {
   width: 12.5rem;
 }
 
-#edit-button {
-  margin-top: 4.125rem;
-}
-
-#delete-button {
-  color: #d37872;
-}
-
 .individual-description {
   &__label {
     @include detail-label;
