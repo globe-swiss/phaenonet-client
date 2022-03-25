@@ -1,10 +1,9 @@
 <div class="individual-detail" *ngIf="(detailSubject$ | async) !== null">
   <div class="individual-detail__card">
-    detail
     <app-individual-header
-      class="individual-detail__header detail-header"
+      class="individual-detail__header"
       [individual$]="detailSubject$"
-      edit_detail="detail"
+      edit="detail"
     ></app-individual-header>
     <div class="individual-detail__subscription-button" *ngIf="isLoggedIn && (isOwn$ | async) === false">
       <app-individual-subscription-button [individual$]="detailSubject$"></app-individual-subscription-button>

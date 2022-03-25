@@ -140,7 +140,7 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
           icon: this.masterdataService.individualToIcon(detail)
         } as google.maps.MarkerOptions);
 
-        this.analytics.logEvent('station.view', {
+        void this.analytics.logEvent('station.view', {
           current: detail.year === this.masterdataService.getPhenoYear(),
           year: detail.year
         });

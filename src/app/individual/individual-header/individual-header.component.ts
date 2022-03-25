@@ -17,7 +17,7 @@ export class IndividualHeaderComponent implements OnInit {
 
   geopos$: Observable<google.maps.LatLngLiteral>;
 
-  @Input() edit_detail: 'edit' | 'detail';
+  @Input() edit: 'edit' | 'detail';
 
   zoom: number;
 
