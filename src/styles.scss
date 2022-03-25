@@ -43,7 +43,7 @@ body {
   margin-top: 7rem;
 }
 
-@media screen and (max-width: $min-laptop-width) {
+@include for-phone {
   .detail-left {
     grid-column: 1 / span 6;
   }

@@ -1,3 +1,5 @@
+@import '../../theming/mixins';
+
 .statistics-overview {
   height: 74vh;
 }
@@ -15,7 +17,7 @@
       margin-top: 2rem;
     }
 
-    @media screen and (max-width: 959px) {
+    @include for-tablet-and-smaller {
       .mat-form-field {
         width: 6rem;
         font-size: var(--t3-size);

@@ -1,34 +1,39 @@
+@use '~@angular/material' as mat;
+
+@import '../../../../theming/typography';
+
+@import '../../../../theming/mixins';
+
 .invite-card {
-  margin-bottom: 1.875rem;
-  background-color: white;
-  border-radius: 1rem;
-  cursor: default;
+  @include teaser-card;
 
-  img {
-    border-top-left-radius: 1rem;
-    border-bottom-left-radius: 1rem;
+  &__image {
+    @include teaser-image;
   }
-}
 
-.user-image {
-  max-width: 180px;
-  object-fit: cover;
-}
-
-@media screen and (max-width: 1279px) {
-  .user-image {
-    display: none;
+  &__description {
+    @include teaser-description;
   }
-}
 
-@media screen and (max-width: 959px) {
-  .user-image {
-    display: block;
+  &__label {
+    @include detail-label;
   }
-}
 
-@media screen and (max-width: 620px) {
-  .user-image {
-    display: none;
+  &__value {
+    @include teaser-name;
+  }
+
+  &__value--last {
+    padding-bottom: 0;
+  }
+
+  &__buttons {
+    margin-left: auto;
+    display: flex;
+    padding-right: 25px;
+  }
+
+  &__button {
+    align-self: center;
   }
 }

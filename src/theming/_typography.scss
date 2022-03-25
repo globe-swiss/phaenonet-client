@@ -2,6 +2,8 @@
 
 @import './constants';
 
+@import './mixins';
+
 :root {
   --h1-font-size: 1.875rem;
   --h2-font-size: 1.125rem;
@@ -28,7 +30,7 @@
   font-size: 1em;
 }
 
-@media screen and (max-width: $min-desktop-width) {
+@include for-tablet-and-smaller {
   body {
     --h1-font-size: 1.75rem;
     --h2-font-size: 1rem;

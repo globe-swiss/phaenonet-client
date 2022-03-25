@@ -1,27 +1,36 @@
-<div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
-  <h2 translate>OFFENE EINLADUNGEN</h2>
-</div>
-<div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
-  <ng-container *ngIf="(openInvites$ | async)?.length > 0; else noinvites">
-    <app-invite-item *ngFor="let invite of openInvites$ | async" [item]="invite"></app-invite-item>
-  </ng-container>
-</div>
-
-<div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" class="detail-left">
-  <h2 translate>ANGENOMMENE EINLADUNGEN</h2>
-</div>
-<div gdColumn="3 / span 4" gdColumn.lt-md="1 / span 6" class="detail-right">
-  <ng-container *ngIf="(acceptedInvites$ | async)?.length > 0">
-    <app-invite-item *ngFor="let invite of acceptedInvites$ | async" [item]="invite"></app-invite-item>
-  </ng-container>
-  <button id="invite" mat-flat-button color="primary" (click)="invite()" translate>Jetzt einladen</button>
-</div>
-
-<ng-template #noinvites>
-  <div>
-    <img src="assets/img/illu_noinvites.png" style="display: block; margin-left: auto; margin-right: auto" />
-    <p style="text-align: center" class="detail-label" data-test-ide="invite_list_no_invites">
-      Es sind noch keine Einladungen vorhanden
-    </p>
+<div class="invite-list-component">
+  <div class="invite-list-component__title">
+    <h2 translate>OFFENE EINLADUNGEN</h2>
   </div>
-</ng-template>
+  <div class="invite-list-component__content" *ngIf="(openInvites$ | async)?.length > 0; else noinvites">
+    <app-invite-item *ngFor="let invite of openInvites$ | async" [item]="invite"></app-invite-item>
+  </div>
+
+  <div class="invite-list-component__title">
+    <h2 translate>ANGENOMMENE EINLADUNGEN</h2>
+  </div>
+  <div class="invite-list-component__content">
+    <ng-container *ngIf="(acceptedInvites$ | async)?.length > 0">
+      <app-invite-item *ngFor="let invite of acceptedInvites$ | async" [item]="invite"></app-invite-item>
+    </ng-container>
+    <button
+      class="invite-list-component__button"
+      id="invite"
+      mat-flat-button
+      color="primary"
+      (click)="invite()"
+      translate
+    >
+      Jetzt einladen
+    </button>
+  </div>
+
+  <ng-template #noinvites>
+    <div class="invite-list-component__content">
+      <img src="assets/img/illu_noinvites.png" style="display: block; margin-left: auto; margin-right: auto" />
+      <p style="text-align: center" class="detail-label" data-test-ide="invite_list_no_invites">
+        Es sind noch keine Einladungen vorhanden
+      </p>
+    </div>
+  </ng-template>
+</div>

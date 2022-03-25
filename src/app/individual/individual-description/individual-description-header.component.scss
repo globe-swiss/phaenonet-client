@@ -35,7 +35,7 @@ button.navigation {
   }
 
   &__open-mobile-info {
-    @media screen and (min-width: $min-laptop-width) {
+    @include for-phone {
       display: none;
     }
   }

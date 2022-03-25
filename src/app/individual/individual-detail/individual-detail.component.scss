@@ -14,7 +14,7 @@
     height: 0;
     margin-left: 90%;
 
-    @media screen and (max-width: $min-desktop-width) {
+    @include for-tablet-and-smaller {
       margin-left: 70%;
     }
   }

@@ -9,7 +9,7 @@
     *ngIf="item.imgUrl$ | async"
     [src]="item.imgUrl$ | async"
   />
-  <div class="observation-item__description" fxLayout="column">
+  <div class="observation-item__description">
     <div class="observation-item__name">
       <div class="observation-item__label" data-test-id="observation-item__species">
         {{ item.species?.de | translate }}

@@ -1,5 +1,17 @@
 @import './constants';
 
+@mixin for-tablet-and-smaller {
+  @media screen and (max-width: $min-desktop-width) {
+    @content;
+  }
+}
+
+@mixin for-phone {
+  @media screen and (max-width: $min-laptop-width) {
+    @content;
+  }
+}
+
 @mixin default-left-right-padding {
   padding-left: var(--default-padding);
   padding-right: var(--default-padding);
@@ -28,12 +40,10 @@
 }
 
 @mixin detail-view-content {
-  @include default-left-right-padding();
-
   display: grid;
   grid-template-columns: calc(410px - 2 * var(--default-padding)) 1fr;
 
-  @media screen and (max-width: $min-desktop-width) {
+  @include for-tablet-and-smaller {
     display: flex;
     flex-direction: column;
   }
@@ -41,7 +51,7 @@
 
 @mixin profile-detail-bottom-padding {
   padding-bottom: 200px;
-  @media screen and (max-width: $min-desktop-width) {
+  @include for-tablet-and-smaller {
     padding-bottom: 70px;
   }
 }
@@ -54,7 +64,7 @@
 
 @mixin left-column {
   grid-column: 1;
-  @media screen and (max-width: $min-desktop-width) {
+  @include for-tablet-and-smaller {
     h2 {
       margin-bottom: 30px;
     }
@@ -90,7 +100,7 @@
 }
 
 @mixin flex-last-on-mobile {
-  @media screen and (max-width: $min-desktop-width) {
+  @include for-tablet-and-smaller {
     order: 100;
   }
 }
@@ -98,7 +108,7 @@
 @mixin detail-bottom-padding {
   padding-bottom: 60px;
 
-  @media screen and (min-width: $min-desktop-width) {
+  @include for-tablet-and-smaller {
     padding-bottom: 50px;
   }
 }
@@ -111,6 +121,18 @@
   display: inline-block;
 }
 
+@mixin mobile-max-width {
+  @include for-tablet-and-smaller {
+    max-width: 550px;
+  }
+}
+
+@mixin mobile-no-left-padding {
+  @include for-tablet-and-smaller {
+    padding-left: 0;
+  }
+}
+
 @mixin teaser-card {
   margin-bottom: 1.875rem;
   cursor: pointer;
@@ -120,11 +142,8 @@
   display: flex;
   flex-direction: row;
 
-  max-width: 705px;
-  @media screen and (max-width: $min-desktop-width) {
+  @include for-tablet-and-smaller {
     margin-bottom: 15px;
-    // TODO Check with Dani
-    max-width: 500px;
   }
 }
 
@@ -134,7 +153,7 @@
   width: 180px;
   height: 180px;
 
-  @media screen and (max-width: $min-desktop-width) {
+  @include for-tablet-and-smaller {
     width: 110px;
     height: 110px;
   }
@@ -145,21 +164,21 @@
 
 @mixin teaser-description {
   margin: 30px 25px;
-  @media screen and (max-width: $min-desktop-width) {
+  @include for-tablet-and-smaller {
     margin: 8px 10px;
   }
 }
 
 @mixin teaser-name {
   padding-bottom: 20px;
-  @media screen and (max-width: $min-desktop-width) {
+  @include for-tablet-and-smaller {
     padding-bottom: 5px;
   }
 }
 
 @mixin button {
   max-width: 350px;
-  @media screen and (max-width: $min-desktop-width) {
+  @include for-tablet-and-smaller {
     width: calc(100% - 30px);
     align-self: center;
     margin-left: 15px;
