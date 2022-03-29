@@ -7,7 +7,7 @@ module.exports = {
   },
   components: {
     navigation: { css: 'app-nav' },
-    header: { css: 'app-individual-edit-header' },
+    header: { css: 'app-individual-header' },
     form: { css: 'app-individual-edit-view' }
   },
   species: {
@@ -85,7 +85,7 @@ module.exports = {
     I.selectDropdownValue(this.habitat.dropdown, this.habitat.options.woods);
     I.selectDropdownValue(this.forestType.dropdown, this.forestType.options.mixedForest);
   },
-  locateMeButton: { css: 'app-individual-edit-header button' },
+  locateMeButton: { css: 'app-individual-header button' },
   saveButton: { css: 'button[type=submit]' },
   mapMarker: { css: 'google-map img' }
 };

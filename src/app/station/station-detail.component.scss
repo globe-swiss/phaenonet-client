@@ -1,50 +1,73 @@
+@use '~@angular/material' as mat;
+
 @import '../../theming/mixins';
 
-@import '../../theming/palettes';
+@import '../../theming/typography';
 
-.geopos-width {
-  width: 70%;
-}
+.station-detail {
+  @include detail-view;
 
-#edit-button {
-  margin-top: 4.125rem;
-}
-
-.species-group {
-  margin-top: 2.5625rem;
-}
-
-h4 {
-  color: #868072;
-}
-
-.detail-label-standort {
-  margin-top: 0;
-}
-
-.detail-header-fab {
-  margin-left: 90%;
-  bottom: 28px;
-  width: 70px;
-  height: 70px;
-}
-
-@include for-tablet-and-smaller {
-  .detail-header-fab {
-    margin-left: 70%;
+  &__card {
+    @include detail-card;
   }
-}
 
-.detail-sub {
-  font-style: italic;
-  margin-top: -1.25rem;
-  padding-bottom: 1.25rem;
-}
+  &__description-header {
+    @include default-left-right-padding;
+    @include left-column;
+    @include detail-bottom-padding;
+  }
 
-.following {
-  color: #1dff6e; //mat-color($phaenonet-p, A700);
-}
+  &__content {
+    @include detail-view-content;
+    grid-template-rows: repeat(4, min-content);
+    margin-top: 40px;
+  }
 
-.detail-view {
-  background-color: white;
+  &__label {
+    @include detail-label;
+  }
+
+  &__name {
+    @include mat.typography-level($phaenonet-typography, 'body-1');
+    margin-bottom: 20px;
+  }
+
+  &__value {
+    @include detail-value;
+    padding-bottom: 10px;
+  }
+
+  &__value-addition {
+    @include detail-value-regular;
+  }
+
+  &__observation-view {
+    @include default-left-right-padding;
+    @include complete-right-column;
+  }
+
+  &__observation-content {
+    @include default-left-right-padding;
+    @include complete-right-column;
+
+    h2 {
+      padding-bottom: 2rem;
+    }
+  }
+
+  &__observation-species {
+    @include mat.typography-level($phaenonet-typography, 'body-2');
+    padding-top: 2rem;
+  }
+
+  &__form-field {
+    width: 100%;
+  }
+
+  &__detail-sub {
+    @include detail-value-t2;
+    font-style: italic;
+    margin-top: -1.25rem;
+    padding-bottom: 1.25rem;
+  }
 }

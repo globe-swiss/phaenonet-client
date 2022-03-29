@@ -47,9 +47,4 @@
     @include default-left-right-padding;
     @include complete-right-column;
   }
-
-  &__right-content {
-    @include default-left-right-padding;
-    @include complete-right-column;
-  }
 }

@@ -1,6 +1,8 @@
 <div class="individual-description__basic-info">
   <div>
-    <div class="individual-description__label">{{ (species$ | async)?.de | translate }}</div>
+    <div class="individual-description__label" data-test-id="individual_species">
+      {{ (species$ | async)?.de | translate }}
+    </div>
     <div class="individual-description__name" data-test-id="individual_name">
       {{ (individual$ | async).name }}
     </div>

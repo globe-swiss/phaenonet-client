@@ -1,0 +1,8 @@
+@import './../../theming/mixins';
+
+.not-found {
+  &__card {
+    @include detail-view;
+    @include mobile-max-width;
+  }
+}
