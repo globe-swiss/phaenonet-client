@@ -1,10 +1,6 @@
 <div gdColumns="repeat(8, 1fr)" *ngIf="(detailSubject$ | async) !== null">
   <div gdColumn="2 / span 6" gdColumn.lt-md="1 / span 8" gdColumns="repeat(6, 1fr)" class="detail-view">
-    <app-individual-detail-header
-      gdColumn="1 / span 6"
-      class="detail-header"
-      [individual$]="detailSubject$"
-    ></app-individual-detail-header>
+    <app-individual-header gdColumn="1 / span 6" [individual$]="detailSubject$" mode="detail"></app-individual-header>
     <div gdColumn="1 / span 6" gdColumns="repeat(6, 1fr)" class="detail-content">
       <div gdColumn="1 / span 2" gdColumn.lt-md="1 / span 6" *ngIf="detailSubject$ | async" class="detail-left">
         <div class="detail-label detail-label-standort">{{ 'Standort' | translate }}</div>
@@ -24,7 +20,7 @@
           <div *ngFor="let item of groupedItem.phenophaseObservations">
             <ng-container *ngIf="item.observation.isSome()">
               <div class="detail-label">{{ item.phenophase.de | translate }}</div>
-              <mat-form-field class="full-width detail-observation-date">
+              <mat-form-field class="full-width">
                 <input
                   matInput
                   [id]="item.phenophase.id"

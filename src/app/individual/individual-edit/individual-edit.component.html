@@ -1,9 +1,10 @@
 <div class="individual-edit">
   <div class="individual-edit__card">
-    <app-individual-edit-header
-      class="individual-edit__header detail-header"
+    <app-individual-header
+      class="individual-edit__header"
       [individual$]="detailSubject$"
-    ></app-individual-edit-header>
+      mode="edit"
+    ></app-individual-header>
     <div class="individual-edit__content">
       <div class="individual-edit__left-content">
         <h2 translate>OBJEKT ERFASSEN</h2>

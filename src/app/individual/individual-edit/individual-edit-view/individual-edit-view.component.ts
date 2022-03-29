@@ -19,7 +19,7 @@ import { Shade } from '../../../masterdata/shade';
 import { Species } from '../../../masterdata/species';
 import { Individual } from '../../individual';
 import { IndividualService } from '../../individual.service';
-import { GeoposService } from '../individual-edit-header/geopos.service';
+import { GeoposService } from '../../individual-header/geopos.service';
 
 @Component({
   selector: 'app-individual-edit-view',
@@ -107,7 +107,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     this.processing$.next(true);
     this.individual$.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
-      const individual: Individual = { ...detail, ...this.createForm.value };
+      const individual = { ...detail, ...this.createForm.value } as Individual;
       individual.geopos = this.geoposService.getGeoPos();
       individual.altitude = this.geoposService.getAltitude();
 

@@ -17,6 +17,21 @@
   padding-right: var(--default-padding);
 }
 
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin flex-no-grow-shrink {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+@mixin flex-grow-shrink {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
 @mixin margin-between-description {
   &:nth-child(2n - 1) {
     margin-top: 7rem;
@@ -153,13 +168,13 @@
   width: 180px;
   height: 180px;
 
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+
   @include for-tablet-and-smaller {
     width: 110px;
     height: 110px;
   }
-
-  border-top-left-radius: 1rem;
-  border-bottom-left-radius: 1rem;
 }
 
 @mixin teaser-description {

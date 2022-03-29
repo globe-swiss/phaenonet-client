@@ -130,7 +130,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
     if (phenophase) {
       phaenoIndex = this.configStatic.phenophases[phenophase]?.icon_index;
     }
-    if (source === 'meteoswiss') {
+    if (source === 'meteoswiss' || !species) {
       return '/assets/img/map_pins/map_pin_meteoschweiz.png';
     } else {
       return `/assets/img/map_pins/${this.languageService.determineCurrentLang()}/map_pin_${species.toLowerCase()}_${phaenoIndex}.png`;
