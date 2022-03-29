@@ -6,12 +6,12 @@ module.exports = {
   },
   components: {
     navigation: { css: 'app-nav' },
-    header: { css: 'app-individual-detail-header' },
+    header: { css: 'app-individual-header[mode=detail]' },
     description: { css: 'app-individual-description' },
     observations: { css: 'app-individual-observation-view' }
   },
   description: {
-    species: locate('.individual-description__label').inside('app-individual-description-header').at(1),
+    species: { css: '[data-test-id=individual_species]' },
     name: { css: '[data-test-id=individual_name]' },
     owner: { css: '[data-test-id=individual_creator]' },
     lastObservationDate: locate('span').inside('app-individual-description div').at(3), // unstable

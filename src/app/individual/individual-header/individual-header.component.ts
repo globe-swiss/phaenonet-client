@@ -40,6 +40,8 @@ export class IndividualHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.edit = this.mode === 'edit';
+    const a = setTimeout(() => {});
+    console.log(a);
 
     const config = {
       displayLocateMe: this.edit ? true : false,
