@@ -1,8 +1,8 @@
 <h2 mat-dialog-title translate>BEOBACHTUNG ERFASSEN</h2>
-<div class="detail-label">{{ data.phenophase.de | translate }}</div>
-<div class="detail-label">{{ data.phenophase.description_de | translate }}</div>
+<div class="phenophase-dialog__label">{{ data.phenophase.de | translate }}</div>
+<div class="phenophase-dialog__label">{{ data.phenophase.description_de | translate }}</div>
 <div mat-dialog-content>
-  <mat-form-field class="full-width">
+  <mat-form-field class="phenophase-dialog__form-field">
     <mat-label translate>Datum</mat-label>
     <input
       matInput
@@ -16,7 +16,7 @@
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker [touchUi]="showTouchCalendar$ | async"></mat-datepicker>
   </mat-form-field>
-  <mat-form-field class="full-width" *ngIf="data.availableComments.length > 0">
+  <mat-form-field class="phenophase-dialog__form-field" *ngIf="data.availableComments.length > 0">
     <mat-label>{{ 'Kommentar' | translate }}</mat-label>
     <mat-select [(value)]="data.observation.toNullable().comment">
       <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>

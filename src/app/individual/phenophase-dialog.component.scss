@@ -1,0 +1,13 @@
+@import './../../theming/mixins';
+
+@import './../../theming/typography';
+
+.phenophase-dialog {
+  &__label {
+    @include detail-label;
+  }
+
+  &__form-field {
+    width: 100%;
+  }
+}

@@ -1,6 +1,6 @@
 @import './../../theming/mixins';
 
-.not-found {
+.logged-out {
   &__card {
     @include card-view;
   }

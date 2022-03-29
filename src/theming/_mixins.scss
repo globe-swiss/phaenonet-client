@@ -215,3 +215,12 @@
     background-color: white;
   }
 }
+
+@mixin card-view {
+  @include detail-view;
+  @include mobile-max-width;
+
+  max-width: 615px;
+  margin-top: 2.625rem;
+  border-radius: 1rem;
+}

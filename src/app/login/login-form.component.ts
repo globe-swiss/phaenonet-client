@@ -17,13 +17,15 @@ export class LoginFormComponent {
   loginFailed = false;
 
   @Output()
-  onLoginSuccess: EventEmitter<void> = new EventEmitter();
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
+  onLoginSuccess: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(private authService: AuthService, private alertService: AlertService) {}
 
   login(): void {
     this.loginFailed = false;
     this.authService
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,  @typescript-eslint/no-unsafe-call
       .login(this.loginForm.controls.email.value.trim(), this.loginForm.controls.password.value)
       .subscribe(user => {
         if (user) {
