@@ -98,6 +98,7 @@
         type="submit"
         (click)="register()"
         id="register-button"
+        class="register__button"
         [disabled]="registerForm.invalid || registerForm.pending"
       >
         {{ 'Jetzt registrieren' | translate }}

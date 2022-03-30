@@ -102,7 +102,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeLocale(event: MatSelectChange) {
+  changeLocale(event: MatSelectChange): void {
     this.languageService.changeLocale(event.value);
   }
 }

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import { Observable, ReplaySubject, of } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { filter, first, map, mergeAll } from 'rxjs/operators';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { Individual } from '../individual';
