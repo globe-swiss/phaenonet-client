@@ -29,7 +29,7 @@ export class ResetPasswordComponent implements OnInit {
   resetPassword(): void {
     this.authService.resetPassword(this.resetPasswordForm.controls.email.value).subscribe(_ => {
       this.resetPasswordEmailSent = true;
-      this.analytics.logEvent('passwordreset.submit');
+      void this.analytics.logEvent('passwordreset.submit');
     });
   }
 }

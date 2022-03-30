@@ -13,7 +13,8 @@ import { equalValidation } from '../shared/validation';
 
 @Component({
   selector: 'app-register',
-  templateUrl: './register.component.html'
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   registerForm = new FormGroup({
@@ -54,12 +55,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
           'Registration erfolgreich',
           'Sie haben sich erfolgreich bei PhaenoNet registriert.'
         );
-        this.analytics.logEvent('register.submit');
-        this.router.navigateByUrl('/');
+        void this.analytics.logEvent('register.submit');
+        void this.router.navigateByUrl('/');
       }
     });
     if (this.showRegisterForm()) {
-      this.analytics.logEvent('register.view');
+      void this.analytics.logEvent('register.view');
     }
   }
 
@@ -101,7 +102,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeLocale(event: MatSelectChange) {
+  changeLocale(event: MatSelectChange): void {
     this.languageService.changeLocale(event.value);
   }
 }

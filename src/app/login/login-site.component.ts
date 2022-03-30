@@ -4,7 +4,8 @@ import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
 
 @Component({
-  templateUrl: './login-site.component.html'
+  templateUrl: './login-site.component.html',
+  styleUrls: ['./login-site.component.scss']
 })
 export class LoginSiteComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router, private navService: NavService) {}
@@ -13,7 +14,7 @@ export class LoginSiteComponent implements OnInit {
     this.navService.setLocation('Anmeldung');
   }
 
-  onLoginSuccess() {
+  onLoginSuccess(): void {
     const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/profile';
     const url = this.router.parseUrl(redirect);
 
@@ -22,6 +23,6 @@ export class LoginSiteComponent implements OnInit {
       preserveFragment: true // fragement = hash without #, e.g. example.com#hello => hello
     };
 
-    this.router.navigateByUrl(url, navigationExtras);
+    void this.router.navigateByUrl(url, navigationExtras);
   }
 }

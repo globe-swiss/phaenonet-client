@@ -6,7 +6,8 @@ import { map } from 'rxjs/operators';
 import { PhenophaseObservation } from '../observation/phenophase-observation';
 
 @Component({
-  selector: 'phenophase-dialog',
+  selector: 'app-phenohase-dialog',
+  styleUrls: ['./phenophase-dialog.component.scss'],
   templateUrl: 'phenophase-dialog.component.html'
 })
 export class PhenophaseDialogComponent {

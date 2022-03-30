@@ -8,7 +8,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class LoginDialogComponent {
   constructor(private dialogRef: MatDialogRef<LoginDialogComponent>) {}
 
-  onLoginSuccess() {
+  onLoginSuccess(): void {
     this.dialogRef.close();
   }
 }

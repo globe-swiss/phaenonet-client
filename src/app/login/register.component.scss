@@ -1,0 +1,33 @@
+@use '~@angular/material' as mat;
+
+@import './../../theming/mixins';
+
+@import './../../theming/typography';
+
+.register {
+  @include detail-view;
+
+  &__content {
+    @include detail-view-content;
+  }
+
+  &__title {
+    @include left-column;
+  }
+
+  &__text {
+    @include mat.typography-level($phaenonet-typography, 'body-2');
+  }
+
+  &__right-column {
+    @include profile-detail-right-column;
+  }
+
+  &__form-field {
+    display: block;
+  }
+
+  &__button {
+    @include button;
+  }
+}
