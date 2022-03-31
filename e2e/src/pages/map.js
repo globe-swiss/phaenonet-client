@@ -3,16 +3,16 @@ module.exports = {
   components: {
     navigation: { css: 'app-nav' },
     map: { css: 'google-map' },
-    filter: { css: '.map-filter' },
-    actions: { css: '.map-actions' }
+    filter: { css: '.map-overview__map-filter' },
+    actions: { css: '.map-overview__map-actions' }
   },
   filter: {
     phenoyear: {
-      dropdown: { css: '.map-filter mat-select[formcontrolname=year]' },
-      placeholder: { css: '.map-filter mat-select[formcontrolname=year] .mat-select-placeholder' }
+      dropdown: { css: '.map-overview__map-filter mat-select[formcontrolname=year]' },
+      placeholder: { css: '.map-overview__map-filter mat-select[formcontrolname=year] .mat-select-placeholder' }
     },
     source: {
-      dropdown: { css: '.map-filter mat-select[formcontrolname="datasource"]' },
+      dropdown: { css: '.map-overview__map-filter mat-select[formcontrolname="datasource"]' },
       options: {
         all: 'all',
         phenonet: 'globe',
@@ -20,7 +20,7 @@ module.exports = {
       }
     },
     species: {
-      dropdown: { css: '.map-filter mat-select[formcontrolname="species"]' },
+      dropdown: { css: '.map-overview__map-filter mat-select[formcontrolname="species"]' },
       options: {
         hazel: 'HS',
         sycamore: 'BA'
@@ -29,6 +29,6 @@ module.exports = {
     }
   },
   mapMarker: { css: 'google-map map-marker' },
-  addObjectButton: { css: '.map-actions button' },
+  addObjectButton: { css: '.map-overview__map-actions button' },
   dismissButton: { css: 'button.dismissButton' }
 };
