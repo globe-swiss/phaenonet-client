@@ -70,20 +70,6 @@ h2 {
   width: 100%;
 }
 
-// Google Map Styles
-#phaenonet-body .gm-style-iw {
-  padding-left: 0;
-  padding-top: 0;
-  top: 0;
-  left: 0;
-}
-
-// No padding in map info windows
-#phaenonet-body .gm-style .gm-style-iw-c {
-  padding: 0;
-}
-// Google Map Styles end
-
 snack-bar-container.info {
   color: #a3c5b2;
 }
@@ -100,10 +86,6 @@ snack-bar-container.error {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.font-button {
-  @include mat.typography-level($phaenonet-typography, 'button');
 }
 
 .detail-info-value {

@@ -1,13 +1,5 @@
-<div gdColumns="repeat(8, 1fr)" class="map-container">
-  <google-map
-    class="map"
-    gdColumn="1 / span 8"
-    width="100%"
-    height="100%"
-    [center]="center"
-    [zoom]="zoom"
-    [options]="options"
-  >
+<div class="map-overview">
+  <google-map width="100%" height="100%" [center]="center" [zoom]="zoom" [options]="options">
     <map-marker
       #marker="mapMarker"
       *ngFor="let individualWithMarkerOpts of individualsWithMarkerOpts$ | async"
@@ -21,18 +13,20 @@
     <map-info-window>
       <ng-container *ngIf="(infoWindowType$ | async) === 'globe'">
         <ng-container *ngIf="globeInfoWindowData$ | async as d">
-          <div fxLayout="row" [routerLink]="d.url" class="map-info-window">
-            <img *ngIf="d.imgUrl$ | async" [src]="d.imgUrl$ | async" style="max-height: 100px" />
-            <div fxLayout="column" style="margin-left: 15px; margin-right: 15px">
-              <div class="font-button">
+          <div [routerLink]="d.url" class="map-overview__info-window">
+            <div class="map-overview__info-window-image-container">
+              <img class="map-overview__info-window-image" *ngIf="d.imgUrl$ | async" [src]="d.imgUrl$ | async" />
+            </div>
+            <div class="map-overview__info-window-text">
+              <div class="map-overview__info-window-label">
                 {{ d.species.de | translate }}
               </div>
-              <div class="map-info-content">{{ d.individual.name }}</div>
-              <div class="font-button" *ngIf="d.phenophase">
+              <div class="map-overview__info-window-value">{{ d.individual.name }}</div>
+              <div class="map-overview__info-window-label" *ngIf="d.phenophase">
                 {{ 'Letzte Beobachtung' | translate }},
                 {{ formatShortDate(d.individual.last_observation_date.toDate()) }}
               </div>
-              <div *ngIf="d.phenophase" class="map-info-content">
+              <div *ngIf="d.phenophase" class="map-overview__info-window-value">
                 {{ d.phenophase?.de | translate }}
               </div>
             </div>
@@ -42,10 +36,10 @@
 
       <ng-container *ngIf="(infoWindowType$ | async) === 'meteoswiss'">
         <ng-container *ngIf="meteoswissInfoWindowData$ | async as d">
-          <div fxLayout="row" [routerLink]="d.url" class="map-info-window">
+          <div class="map-overview__info-window" [routerLink]="d.url">
             <img src="assets/img/pic_placeholder.svg" style="max-height: 100px" />
-            <div fxLayout="column" style="margin-left: 15px; margin-right: 15px">
-              <div class="mat-small">
+            <div class="map-overview__info-window-text">
+              <div class="map-overview__info-window-caption">
                 {{ 'MeteoSchweiz' | translate }}
               </div>
               <div>{{ d.individual.name }}</div>
@@ -55,13 +49,13 @@
       </ng-container>
     </map-info-window>
   </google-map>
-  <div class="map-actions">
-    <button mat-fab class="extended-fab-button" color="primary" [routerLink]="'/individuals/new/edit'">
+  <div class="map-overview__map-actions">
+    <button mat-fab class="map-overview__extended-fab-button" color="primary" [routerLink]="'/individuals/new/edit'">
       <mat-icon>add</mat-icon>
       <span>{{ 'Objekt hinzufügen' | translate }}</span>
     </button>
   </div>
-  <div class="map-filter">
+  <div class="map-overview__map-filter">
     <div>
       <form [formGroup]="filter">
         <div id="form-year">
@@ -72,7 +66,6 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="seperator"></div>
         <div id="form-datasource">
           <mat-form-field>
             <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
@@ -83,7 +76,6 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="seperator"></div>
         <div id="form-species">
           <mat-form-field>
             <mat-label>{{ 'Art' | translate }}</mat-label>
