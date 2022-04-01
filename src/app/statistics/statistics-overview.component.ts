@@ -59,7 +59,7 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   availableYears: number[];
   selectableYears$: Observable<string[]>;
-  selectableDatasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger'];
+  selectableDatasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wsl_wald'];
   selectableAnalyticsTypes: AnalyticsType[] = ['species', 'altitude'];
   selectableSpecies$: Observable<Species[]>;
 

@@ -138,6 +138,6 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
   }
 
   public getSource(): Observable<SourceType> {
-    return this.roles$.pipe(map(roles => (roles.includes(Roles.RANGER) ? 'ranger' : 'globe')));
+    return this.roles$.pipe(map(roles => (roles.includes(Roles.RANGER) ? 'ranger' : 'globe'))); // todo: what about wald
   }
 }
