@@ -1,5 +1,5 @@
-<div class="not-found__card">
-  <mat-card>
+<div class="not-found">
+  <mat-card class="not-found__content">
     <mat-card-header>
       <mat-card-title>{{ 'Hier ist etwas schiefgelaufen.' | translate }}</mat-card-title>
       <mat-card-subtitle>{{
@@ -8,7 +8,7 @@
       }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-actions class="phaenonet-overwrite-mat-card-actions-center">
-      <button mat-flat-button color="accent" routerLink="/map">
+      <button class="not-found__button" mat-flat-button color="primary" routerLink="/map">
         {{ 'zurück zur Karte' | translate }}
       </button>
     </mat-card-actions>

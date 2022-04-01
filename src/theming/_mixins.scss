@@ -224,3 +224,8 @@
   margin-top: 2.625rem;
   border-radius: 1rem;
 }
+
+@mixin card-view-content {
+  border-radius: 1rem;
+  padding: 50px;
+}
