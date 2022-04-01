@@ -6,12 +6,12 @@ import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { first, map, share, startWith, switchMap } from 'rxjs/operators';
 import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
-import { Individual } from '../individual/individual';
+import { Individual, IndividualType } from '../individual/individual';
 import { IndividualService } from '../individual/individual.service';
 import { MaybeIdLike } from '../masterdata/masterdata-like';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
-import { SourceFilterType, SourceTypeType } from '../masterdata/source-type';
+import { SourceFilterType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 import { formatShortDate } from '../shared/formatDate';
 
@@ -56,7 +56,7 @@ export class MapOverviewComponent implements OnInit {
 
   globeInfoWindowData$ = new ReplaySubject<GlobeInfoWindowData>(1);
   stationInfoWindowData$ = new ReplaySubject<StationInfoWindowData>(1);
-  infoWindowType$ = new ReplaySubject<SourceTypeType>(1);
+  infoWindowType$ = new ReplaySubject<IndividualType>(1);
 
   years$: Observable<number[]> = this.masterdataService.availableYears$;
   species$: Observable<Species[]>;
