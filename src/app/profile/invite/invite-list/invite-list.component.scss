@@ -4,7 +4,7 @@
 
 @import '../../../../theming/typography';
 
-.invite-list-component {
+.invite-list {
   @include detail-view-content;
 
   &__title {
@@ -27,5 +27,9 @@
 
   &__button {
     @include button;
+  }
+
+  &__buttons {
+    @include buttons;
   }
 }

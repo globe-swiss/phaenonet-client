@@ -20,7 +20,11 @@
     @include button;
 
     &--more {
-      margin-top: 0;
+      @include button-first-on-mobile;
     }
+  }
+
+  &__buttons {
+    @include buttons;
   }
 }

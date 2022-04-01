@@ -33,5 +33,13 @@ mat-icon {
 
   &__button {
     @include button;
+
+    &--secondary {
+      @include button-first-on-mobile;
+    }
+  }
+
+  &__buttons {
+    @include buttons;
   }
 }

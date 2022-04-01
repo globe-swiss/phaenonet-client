@@ -3,17 +3,19 @@
   <div class="follow-list__content">
     <app-user-item *ngFor="let item of followedUsers$ | async" [item]="item"></app-user-item>
     <app-observation-item *ngFor="let item of followedIndividuals$ | async" [item]="item"></app-observation-item>
-    <button class="follow-list__button" mat-flat-button color="primary" routerLink="invites" translate>
-      Einladungen
-    </button>
-    <button
-      class="follow-list__button follow-list__button--more"
-      mat-flat-button
-      color="accent"
-      (click)="showMore()"
-      translate
-    >
-      Mehr anzeigen
-    </button>
+    <div class="follow-list__buttons">
+      <button class="follow-list__button" mat-flat-button color="primary" routerLink="invites" translate>
+        Einladungen
+      </button>
+      <button
+        class="follow-list__button follow-list__button--more"
+        mat-flat-button
+        color="accent"
+        (click)="showMore()"
+        translate
+      >
+        Mehr anzeigen
+      </button>
+    </div>
   </div>
 </div>

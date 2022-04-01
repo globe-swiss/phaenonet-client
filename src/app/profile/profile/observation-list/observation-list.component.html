@@ -10,23 +10,25 @@
       *ngFor="let item of latestIndividualObservations$ | async"
       [item]="item"
     ></app-observation-item>
-    <button
-      class="observation-list__button"
-      *ngIf="isOwner()"
-      mat-flat-button
-      color="primary"
-      [routerLink]="'/individuals/new/edit'"
-    >
-      <mat-icon>add</mat-icon>
-      <span>{{ 'Objekt hinzufügen' | translate }}</span>
-    </button>
-    <button
-      class="observation-list__button observation-list__button--more"
-      mat-flat-button
-      color="accent"
-      (click)="showMoreIndividuals()"
-    >
-      <span>{{ 'Mehr anzeigen' | translate }}</span>
-    </button>
+    <div class="observation-list__buttons">
+      <button
+        class="observation-list__button"
+        *ngIf="isOwner()"
+        mat-flat-button
+        color="primary"
+        [routerLink]="'/individuals/new/edit'"
+      >
+        <mat-icon>add</mat-icon>
+        <span>{{ 'Objekt hinzufügen' | translate }}</span>
+      </button>
+      <button
+        class="observation-list__button observation-list__button--more"
+        mat-flat-button
+        color="accent"
+        (click)="showMoreIndividuals()"
+      >
+        <span>{{ 'Mehr anzeigen' | translate }}</span>
+      </button>
+    </div>
   </div>
 </div>

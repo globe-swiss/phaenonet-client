@@ -39,7 +39,10 @@
 
     &--logout {
       color: #d37872;
-      margin-top: 0;
     }
+  }
+
+  &__buttons {
+    @include buttons;
   }
 }
