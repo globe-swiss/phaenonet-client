@@ -243,3 +243,7 @@
   border-radius: 1rem;
   padding: 50px;
 }
+
+@mixin dialog {
+  border-radius: 1rem;
+}

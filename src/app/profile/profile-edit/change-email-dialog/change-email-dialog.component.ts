@@ -6,6 +6,7 @@ import { ChangeEmailData } from './change-email-data';
 
 @Component({
   selector: 'app-change-email-dialog',
+  styleUrls: ['./change-email-dialog.component.scss'],
   templateUrl: './change-email-dialog.component.html'
 })
 export class ChangeEmailDialogComponent implements OnInit {
