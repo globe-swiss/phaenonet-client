@@ -46,6 +46,7 @@ export class IndividualDescriptionButtonsComponent {
   private confirmDeleteDialog() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '615px',
+      panelClass: 'phenonet-dialog-component',
       data: {
         title: 'OBJEKT LÖSCHEN',
         // eslint-disable-next-line max-len
@@ -80,6 +81,7 @@ export class IndividualDescriptionButtonsComponent {
   private deleteNotPossibleDialog() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '615px',
+      panelClass: 'phenonet-dialog-component',
       data: {
         title: 'LÖSCHEN NICHT MÖGLICH',
         // eslint-disable-next-line max-len

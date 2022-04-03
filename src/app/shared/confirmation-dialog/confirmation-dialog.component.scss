@@ -1,0 +1,15 @@
+@import './../../../theming/mixins';
+
+@import './../../../theming/typography';
+
+.confirmation-dialog {
+  border-radius: 1rem;
+
+  &__buttons {
+    @include buttons;
+  }
+
+  &__button {
+    @include button;
+  }
+}

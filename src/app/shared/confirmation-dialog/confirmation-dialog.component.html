@@ -1,12 +1,27 @@
-<h2 mat-dialog-title>{{ data.title | translate }}</h2>
-<mat-dialog-content class="mat-typography">
-  <p [innerHTML]="data.content | translate"></p>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-flat-button [mat-dialog-close]="true" color="{{ data.yesColor }}" cdkFocusInitial>
-    {{ data.yes | translate }}
-  </button>
-  <button *ngIf="data.no" mat-flat-button [mat-dialog-close]="false" color="{{ data.noColor }}">
-    {{ data.no | translate }}
-  </button>
-</mat-dialog-actions>
+<button class="phenonet-dialog-component-close-button" mat-button (click)="close()">X</button>
+<div class="confirmation-dialog">
+  <h2 mat-dialog-title>{{ data.title | translate }}</h2>
+  <mat-dialog-content class="mat-typography">
+    <p [innerHTML]="data.content | translate"></p>
+  </mat-dialog-content>
+  <mat-dialog-actions class="confirmation-dialog__buttons">
+    <button
+      class="confirmation-dialog__button"
+      mat-flat-button
+      [mat-dialog-close]="true"
+      color="{{ data.yesColor }}"
+      cdkFocusInitial
+    >
+      {{ data.yes | translate }}
+    </button>
+    <button
+      class="confirmation-dialog__button"
+      *ngIf="data.no"
+      mat-flat-button
+      [mat-dialog-close]="false"
+      color="{{ data.noColor }}"
+    >
+      {{ data.no | translate }}
+    </button>
+  </mat-dialog-actions>
+</div>
