@@ -3,7 +3,7 @@
 @import './../../theming/typography';
 
 .phenophase-dialog {
-  border-radius: 1rem;
+  @include dialog;
 
   &__label {
     @include detail-label;

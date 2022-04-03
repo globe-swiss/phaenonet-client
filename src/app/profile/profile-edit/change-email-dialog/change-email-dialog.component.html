@@ -1,33 +1,39 @@
-<h1 mat-dialog-title>{{ 'LOGIN E-MAIL ÄNDERN' | translate }}</h1>
-<div mat-dialog-content>
-  <form [formGroup]="changeEmailForm" fxLayout="column">
-    <mat-form-field class="full-width">
-      <mat-label>{{ 'Neue E-Mail' | translate }} </mat-label>
-      <input matInput type="text" formControlName="email" id="newemail" email required />
-      <mat-error>{{ 'auth/invalid-email.message' | translate }}</mat-error>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-      <mat-label>{{ 'Neue E-Mail bestätigen' | translate }} </mat-label>
-      <input matInput type="text" formControlName="emailConfirm" id="emailConfirm" email required />
-    </mat-form-field>
-    <mat-form-field class="full-width">
-      <mat-label>{{ 'Aktuelles Passwort' | translate }} </mat-label>
-      <input matInput type="password" formControlName="password" id="password" required />
-    </mat-form-field>
-    <mat-error *ngIf="changeEmailForm.hasError('emailMissmatch')">
-      {{ 'Die E-Mails stimmen nicht überein.' | translate }}
-    </mat-error>
-    <button
-      mat-flat-button
-      color="accent"
-      [mat-dialog-close]="{
-        email: changeEmailForm.controls.email.value,
-        password: changeEmailForm.controls.password.value
-      }"
-      type="submit"
-      [disabled]="changeEmailForm.invalid"
-    >
-      {{ 'Speichern' | translate }}
-    </button>
-  </form>
+<button class="phenonet-dialog-component-close-button" mat-button (click)="close()">X</button>
+<div class="change-email-dialog">
+  <h1 mat-dialog-title>{{ 'LOGIN E-MAIL ÄNDERN' | translate }}</h1>
+  <div mat-dialog-content>
+    <form [formGroup]="changeEmailForm" fxLayout="column">
+      <mat-form-field class="full-width">
+        <mat-label>{{ 'Neue E-Mail' | translate }} </mat-label>
+        <input matInput type="text" formControlName="email" id="newemail" email required />
+        <mat-error>{{ 'auth/invalid-email.message' | translate }}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>{{ 'Neue E-Mail bestätigen' | translate }} </mat-label>
+        <input matInput type="text" formControlName="emailConfirm" id="emailConfirm" email required />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>{{ 'Aktuelles Passwort' | translate }} </mat-label>
+        <input matInput type="password" formControlName="password" id="password" required />
+      </mat-form-field>
+      <mat-error *ngIf="changeEmailForm.hasError('emailMissmatch')">
+        {{ 'Die E-Mails stimmen nicht überein.' | translate }}
+      </mat-error>
+      <div class="change-email-dialog__buttons">
+        <button
+          mat-flat-button
+          color="accent"
+          [mat-dialog-close]="{
+            email: changeEmailForm.controls.email.value,
+            password: changeEmailForm.controls.password.value
+          }"
+          type="submit"
+          [disabled]="changeEmailForm.invalid"
+          class="change-email-dialog__button"
+        >
+          {{ 'Speichern' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

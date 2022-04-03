@@ -1,22 +1,28 @@
-<h1 mat-dialog-title>{{ 'PERSON EINLADEN' | translate }}</h1>
-<div mat-dialog-content>
-  <form [formGroup]="inviteForm" fxLayout="column">
-    <mat-form-field class="full-width">
-      <mat-label>{{ 'E-Mail' | translate }} </mat-label>
-      <input matInput type="text" formControlName="email" id="invitemail" autocomplete="off" email required />
-      <mat-error>{{ 'auth/invalid-email.message' | translate }}</mat-error>
-    </mat-form-field>
-    <button
-      id="send"
-      mat-flat-button
-      color="primary"
-      [mat-dialog-close]="{
-        email: inviteForm.controls.email.value
-      }"
-      type="submit"
-      [disabled]="inviteForm.invalid"
-    >
-      {{ 'Einladung senden' | translate }}
-    </button>
-  </form>
+<button class="phenonet-dialog-component-close-button" mat-button (click)="close()">X</button>
+<div class="invite-dialog">
+  <h1 mat-dialog-title>{{ 'PERSON EINLADEN' | translate }}</h1>
+  <div mat-dialog-content>
+    <form [formGroup]="inviteForm" fxLayout="column">
+      <mat-form-field class="full-width">
+        <mat-label>{{ 'E-Mail' | translate }} </mat-label>
+        <input matInput type="text" formControlName="email" id="invitemail" autocomplete="off" email required />
+        <mat-error>{{ 'auth/invalid-email.message' | translate }}</mat-error>
+      </mat-form-field>
+      <div class="invite-dialog__buttons">
+        <button
+          id="send"
+          mat-flat-button
+          color="primary"
+          [mat-dialog-close]="{
+            email: inviteForm.controls.email.value
+          }"
+          type="submit"
+          [disabled]="inviteForm.invalid"
+          class="invite-dialog__button"
+        >
+          {{ 'Einladung senden' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

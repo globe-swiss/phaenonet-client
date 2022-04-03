@@ -65,22 +65,23 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
   save() {
     this.detailSubject$.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
-      const user: User = { ...detail, ...this.editForm.value };
+      const user: User = { ...detail, ...this.editForm.value } as User;
 
       this.userService.upsert(user, this.detailId).subscribe(_ => {
-        this.router.navigate(['profile']);
+        void this.router.navigate(['profile']);
       });
     });
   }
 
   cancel() {
     this.languageService.changeLocale(this.initialLanguage);
-    this.router.navigate(['profile']);
+    void this.router.navigate(['profile']);
   }
 
   changePassword(): void {
     const dialogRef = this.dialog.open(ChangePasswordDialogComponent, {
-      width: '615px'
+      width: '615px',
+      panelClass: 'phenonet-dialog-component'
     });
 
     dialogRef.afterClosed().subscribe((result: ChangePasswordData) => {
@@ -92,17 +93,18 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
 
   changeEmail(): void {
     const dialogRef = this.dialog.open(ChangeEmailDialogComponent, {
-      width: '615px'
+      width: '615px',
+      panelClass: 'phenonet-dialog-component'
     });
 
     dialogRef.afterClosed().subscribe((result: ChangeEmailData) => {
       if (result) {
-        this.authService.changeEmail(result.email, result.password).then(_ => (this.email = result.email));
+        void this.authService.changeEmail(result.email, result.password).then(_ => (this.email = result.email));
       }
     });
   }
 
-  changeLocale(event: MatSelectChange) {
+  changeLocale(event: MatSelectChange): void {
     this.languageService.changeLocale(event.value);
   }
 

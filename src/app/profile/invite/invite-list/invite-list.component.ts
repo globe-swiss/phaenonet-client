@@ -34,7 +34,8 @@ export class InviteListComponent implements OnInit {
 
   invite(): void {
     const dialogRef = this.dialog.open(InviteDialogComponent, {
-      width: '615px'
+      width: '615px',
+      panelClass: 'phenonet-dialog-component'
     });
 
     dialogRef.afterClosed().subscribe((result: InviteDialogData) => {
