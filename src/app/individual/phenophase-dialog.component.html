@@ -1,33 +1,36 @@
-<h2 mat-dialog-title translate>BEOBACHTUNG ERFASSEN</h2>
-<div class="phenophase-dialog__label">{{ data.phenophase.de | translate }}</div>
-<div class="phenophase-dialog__label">{{ data.phenophase.description_de | translate }}</div>
-<div mat-dialog-content>
-  <mat-form-field class="phenophase-dialog__form-field">
-    <mat-label translate>Datum</mat-label>
-    <input
-      matInput
-      [matDatepicker]="picker"
-      [ngModel]="data.observation.toNullable().date"
-      (dateInput)="data.observation.toNullable().date = $event.value.toDate()"
-      [min]="data.limits.start_day"
-      [max]="data.limits.end_day"
-      readonly
-    />
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker [touchUi]="showTouchCalendar$ | async"></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field class="phenophase-dialog__form-field" *ngIf="data.availableComments.length > 0">
-    <mat-label>{{ 'Kommentar' | translate }}</mat-label>
-    <mat-select [(value)]="data.observation.toNullable().comment">
-      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-      <mat-option *ngFor="let element of data.availableComments" [value]="element.id">
-        {{ element.de | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-flat-button [mat-dialog-close]="data" color="accent" cdkFocusInitial>
-    {{ 'Speichern' | translate }}
-  </button>
+<button class="phenonet-dialog-component-close-button" mat-button (click)="close()">X</button>
+<div class="phenophase-dialog">
+  <h2 mat-dialog-title translate>BEOBACHTUNG ERFASSEN</h2>
+  <div class="phenophase-dialog__label">{{ data.phenophase.de | translate }}</div>
+  <div class="phenophase-dialog__label">{{ data.phenophase.description_de | translate }}</div>
+  <div mat-dialog-content>
+    <mat-form-field class="phenophase-dialog__form-field">
+      <mat-label translate>Datum</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [ngModel]="data.observation.toNullable().date"
+        (dateInput)="data.observation.toNullable().date = $event.value.toDate()"
+        [min]="data.limits.start_day"
+        [max]="data.limits.end_day"
+        readonly
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker [touchUi]="showTouchCalendar$ | async"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="phenophase-dialog__form-field" *ngIf="data.availableComments.length > 0">
+      <mat-label>{{ 'Kommentar' | translate }}</mat-label>
+      <mat-select [(value)]="data.observation.toNullable().comment">
+        <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+        <mat-option *ngFor="let element of data.availableComments" [value]="element.id">
+          {{ element.de | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions class="phenophase-dialog__buttons">
+    <button class="phenophase-dialog__button" mat-flat-button [mat-dialog-close]="data" color="accent" cdkFocusInitial>
+      {{ 'Speichern' | translate }}
+    </button>
+  </div>
 </div>

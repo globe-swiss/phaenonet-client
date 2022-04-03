@@ -3,11 +3,21 @@
 @import './../../theming/typography';
 
 .phenophase-dialog {
+  border-radius: 1rem;
+
   &__label {
     @include detail-label;
   }
 
   &__form-field {
     width: 100%;
+  }
+
+  &__buttons {
+    @include buttons;
+  }
+
+  &__button {
+    @include button;
   }
 }
