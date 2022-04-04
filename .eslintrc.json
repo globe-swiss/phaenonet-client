@@ -43,6 +43,7 @@
             "accessibility": "explicit"
           }
         ],
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
         "brace-style": ["error", "1tbs"],
         "id-blacklist": "off",
         "id-match": "off",
