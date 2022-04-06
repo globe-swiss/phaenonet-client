@@ -16,7 +16,6 @@ import { Phenophase } from '../masterdata/phaenophase';
 import { PhenophaseGroup } from '../masterdata/phaenophase-group';
 import { Observation } from '../observation/observation';
 import { ObservationService } from '../observation/observation.service';
-import { UserService } from '../profile/user.service';
 import { PhenophaseObservation } from './phenophase-observation';
 import { SpeciesPhenophaseObservations } from './species-phenophase-observations';
 
@@ -44,7 +43,6 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
     private masterdataService: MasterdataService,
     public dialog: MatDialog,
     private analytics: AngularFireAnalytics,
-    private userService: UserService,
     protected router: Router
   ) {
     super(individualService, route, router);
@@ -53,8 +51,6 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
   ngOnInit(): void {
     super.ngOnInit();
     this.navService.setLocation('Messstation');
-
-    this.isFollowing$ = this.userService.isFollowingIndividual(this.detailSubject$);
 
     this.detailSubject$
       .pipe(
