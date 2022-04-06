@@ -5,21 +5,15 @@
 @import '../../../theming/mixins';
 
 .individual-description-buttons {
-  &__container {
-    @include for-phone {
-      display: flex;
-    }
+  &__buttons {
+    @include buttons;
   }
 
   &__button {
-    padding-left: 40px;
-    padding-right: 40px;
-    margin-top: 0.5rem;
-    width: 12.5rem;
+    @include button;
 
-    @include for-phone {
-      margin-left: auto;
-      margin-right: auto;
+    &--secondary {
+      background-color: transparent;
     }
   }
 }

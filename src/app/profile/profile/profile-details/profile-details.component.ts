@@ -40,7 +40,7 @@ export class ProfileDetailsComponent implements OnInit {
     this.locale$ = user$.pipe(map(u => u.locale));
     this.isRanger$ = this.userService.isRanger();
 
-    this.analytics.logEvent('profile.details.view');
+    void this.analytics.logEvent('profile.details.view');
   }
 
   get profileLink(): string {

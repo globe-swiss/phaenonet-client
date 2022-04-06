@@ -43,7 +43,7 @@
     @include flex-last-on-mobile;
   }
 
-  &__observation-view {
+  &__right_pane {
     @include default-left-right-padding;
     @include complete-right-column;
   }
