@@ -4,9 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import _ from 'lodash';
-import { combineLatest, Observable, ReplaySubject } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { filter, first, map, mergeAll } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
 import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
@@ -17,7 +16,6 @@ import { Phenophase } from '../masterdata/phaenophase';
 import { PhenophaseGroup } from '../masterdata/phaenophase-group';
 import { Observation } from '../observation/observation';
 import { ObservationService } from '../observation/observation.service';
-import { User } from '../profile/user';
 import { UserService } from '../profile/user.service';
 import { PhenophaseObservation } from './phenophase-observation';
 import { SpeciesPhenophaseObservations } from './species-phenophase-observations';
@@ -27,18 +25,6 @@ import { SpeciesPhenophaseObservations } from './species-phenophase-observations
   styleUrls: ['./station-detail.component.scss']
 })
 export class StationDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
-  center = { lat: 46.818188, lng: 8.227512 };
-  zoom = 13;
-  options: google.maps.MapOptions = {
-    mapTypeId: google.maps.MapTypeId.TERRAIN,
-    mapTypeControl: false,
-    fullscreenControl: false,
-    streetViewControl: false,
-    draggable: false
-  };
-  markerOptions$ = new ReplaySubject<google.maps.MarkerOptions>(1);
-  geopos: google.maps.LatLngLiteral = { lat: 46.818188, lng: 8.227512 };
-
   availablePhenophases$: Observable<Phenophase[]>;
   availablePhenophaseGroups$: Observable<PhenophaseGroup[]>;
   availableComments$: Observable<Comment[]>;
@@ -46,12 +32,7 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
   phenophaseObservationsBySpecies$: Observable<SpeciesPhenophaseObservations[]>;
   lastObservation: Observation;
 
-  owner: string;
-
-  currentUser$: Observable<User>;
   isFollowing$: Observable<boolean>;
-
-  isLoggedIn: boolean;
 
   staticComments = {};
 
@@ -62,7 +43,6 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
     private observationService: ObservationService,
     private masterdataService: MasterdataService,
     public dialog: MatDialog,
-    private authService: AuthService,
     private analytics: AngularFireAnalytics,
     private userService: UserService,
     protected router: Router
@@ -74,10 +54,6 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
     super.ngOnInit();
     this.navService.setLocation('Messstation');
 
-    this.isLoggedIn = this.authService.isLoggedIn();
-
-    this.currentUser$ = this.authService.user$;
-
     this.isFollowing$ = this.userService.isFollowingIndividual(this.detailSubject$);
 
     this.detailSubject$
@@ -86,13 +62,6 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
         filter(station => station !== undefined)
       )
       .subscribe(detail => {
-        if (detail.geopos) {
-          this.geopos = detail.geopos;
-          this.center = detail.geopos;
-        }
-
-        this.owner = detail.user;
-
         this.individualObservations$ = this.observationService.listByIndividual(this.detailId);
         this.availableComments$ = this.masterdataService.getComments();
 
@@ -131,11 +100,6 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
           }),
           mergeAll()
         );
-
-        this.markerOptions$.next({
-          draggable: false,
-          icon: this.masterdataService.individualToIcon(detail)
-        } as google.maps.MarkerOptions);
 
         void this.analytics.logEvent('station.view', {
           current: detail.year === this.masterdataService.getPhenoYear(),
