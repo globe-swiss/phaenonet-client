@@ -24,4 +24,13 @@ export class PhenophaseDialogComponent {
   close(): void {
     this.dialogRef.close();
   }
+
+  deleteAndClose(): void {
+    this.data.observation = this.data.observation.map(osb => {
+      osb.date = null;
+      osb.comment = null;
+      return osb;
+    });
+    this.dialogRef.close();
+  }
 }

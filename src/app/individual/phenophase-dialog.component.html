@@ -32,5 +32,8 @@
     <button class="phenophase-dialog__button" mat-flat-button [mat-dialog-close]="data" color="accent" cdkFocusInitial>
       {{ 'Speichern' | translate }}
     </button>
+    <button class="phenophase-dialog__button" mat-flat-button (click)="deleteAndClose()" color="warn" cdkFocusInitial>
+      {{ 'Löschen' | translate }}
+    </button>
   </div>
 </div>
