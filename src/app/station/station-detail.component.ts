@@ -18,6 +18,7 @@ import { PhenophaseGroup } from '../masterdata/phaenophase-group';
 import { Observation } from '../observation/observation';
 import { ObservationService } from '../observation/observation.service';
 import { User } from '../profile/user';
+import { UserService } from '../profile/user.service';
 import { PhenophaseObservation } from './phenophase-observation';
 import { SpeciesPhenophaseObservations } from './species-phenophase-observations';
 
@@ -63,6 +64,7 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
     public dialog: MatDialog,
     private authService: AuthService,
     private analytics: AngularFireAnalytics,
+    private userService: UserService,
     protected router: Router
   ) {
     super(individualService, route, router);
@@ -76,6 +78,8 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
 
     this.currentUser$ = this.authService.user$;
 
+    this.isFollowing$ = this.userService.isFollowingIndividual(this.detailSubject$);
+
     this.detailSubject$
       .pipe(
         first(),
@@ -86,13 +90,6 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
           this.geopos = detail.geopos;
           this.center = detail.geopos;
         }
-
-        this.isFollowing$ = this.currentUser$.pipe(
-          filter(u => u !== null),
-          map(u =>
-            u.following_individuals ? u.following_individuals.find(id => id === detail.individual) !== undefined : false
-          )
-        );
 
         this.owner = detail.user;
 
