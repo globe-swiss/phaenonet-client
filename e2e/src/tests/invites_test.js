@@ -13,8 +13,9 @@ Scenario('test component present invites', ({ I, invitesPage }) => {
 Scenario('test component send invite', ({ I, invitesPage }) => {
   I.see('keine Einladungen vorhanden');
   I.click(invitesPage.invitesList.inviteButton);
+  I.wait(1);
   I.fillField(invitesPage.invitesDialog.textfield, 'verylongunusedemailadress@example.com');
   I.click(invitesPage.invitesDialog.sendButton);
-  I.retry(10).see('verylongunusedemailadress@example.com', invitesPage.invitesList.openInviteList);
+  I.waitForText('verylongunusedemailadress@example.com', 5, invitesPage.invitesList.openInviteList);
   I.seeElement(invitesPage.invitesList.inviteButton);
 });

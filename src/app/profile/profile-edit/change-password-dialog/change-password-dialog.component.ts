@@ -5,8 +5,9 @@ import { equalValidation } from '../../../shared/validation';
 import { ChangePasswordData } from './change-password-data';
 
 @Component({
-  selector: 'change-password-dialog',
-  templateUrl: 'change-password-dialog.component.html'
+  selector: 'app-change-password-dialog',
+  templateUrl: './change-password-dialog.component.html',
+  styleUrls: ['./change-password-dialog.component.scss']
 })
 export class ChangePasswordDialogComponent implements OnInit {
   changePasswordForm = new FormGroup({

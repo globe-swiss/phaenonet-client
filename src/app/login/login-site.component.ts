@@ -4,8 +4,7 @@ import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
 
 @Component({
-  templateUrl: './login-site.component.html',
-  styleUrls: ['./login-site.component.scss']
+  templateUrl: './login-site.component.html'
 })
 export class LoginSiteComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router, private navService: NavService) {}

@@ -1,11 +1,11 @@
-<div class="logged-out__card">
-  <mat-card>
+<div class="logged-out">
+  <mat-card class="logged-out__content">
     <mat-card-header>
       <mat-card-title>{{ 'Bis bald' | translate }}</mat-card-title>
       <mat-card-subtitle>{{ 'Sie haben sich erfolgreich ausgeloggt' | translate }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-actions class="phaenonet-overwrite-mat-card-actions-center">
-      <button mat-flat-button color="accent" [routerLink]="[loginUrl]">
+      <button mat-flat-button color="primary" [routerLink]="[loginUrl]" class="logged-out__button">
         {{ 'Einloggen' | translate }}
       </button>
     </mat-card-actions>

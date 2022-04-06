@@ -6,7 +6,6 @@ a[mat-flat-button] {
 }
 
 button[mat-flat-button] {
-  margin-top: 2.5rem;
   height: 70px;
 }
 
@@ -22,4 +21,19 @@ button[mat-flat-button] {
 
 #phaenonet-body .mat-form-field-underline {
   background-color: #f7f5f2;
+}
+
+#phaenonet-body .phenonet-dialog-component mat-dialog-container {
+  border-radius: 1rem;
+  position: relative;
+  padding: 30px;
+}
+
+#phaenonet-body .phenonet-dialog-component mat-dialog-container .phenonet-dialog-component-close-button.mat-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 30px;
+  line-height: 14px;
+  font-size: 1.5rem;
 }

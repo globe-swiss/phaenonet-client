@@ -1,8 +1,8 @@
-@import './../../../../theming/mixins';
+@import './../../../theming/mixins';
 
-@import './../../../../theming/typography';
+@import './../../../theming/typography';
 
-.invite-dialog {
+.confirmation-dialog {
   @include dialog;
 
   &__buttons {

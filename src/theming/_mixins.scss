@@ -201,6 +201,20 @@
   }
 }
 
+@mixin buttons {
+  margin-top: 2.5rem;
+  display: flex;
+  @include for-tablet-and-smaller {
+    flex-direction: column;
+  }
+}
+
+@mixin button-first-on-mobile {
+  @include for-tablet-and-smaller {
+    order: -1;
+  }
+}
+
 @mixin ranger-badge {
   button {
     vertical-align: text-top;
@@ -222,5 +236,14 @@
 
   max-width: 615px;
   margin-top: 2.625rem;
+  border-radius: 1rem;
+}
+
+@mixin card-view-content {
+  border-radius: 1rem;
+  padding: 50px;
+}
+
+@mixin dialog {
   border-radius: 1rem;
 }

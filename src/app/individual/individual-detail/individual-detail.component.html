@@ -15,19 +15,21 @@
         class="individual-detail__basic-info"
         [individual$]="detailSubject$"
       ></app-individual-description-basic-info>
-      <app-individual-description-buttons
-        *ngIf="detailSubject$ | async"
-        class="individual-detail__buttons"
-        [individual$]="detailSubject$"
-        [individualId]="detailId"
-        [isEditable$]="isEditable$"
-      ></app-individual-description-buttons>
-      <app-individual-observation-view
-        class="individual-detail__observation-view"
-        [individual$]="detailSubject$"
-        [individualId]="detailId"
-        [isEditable$]="isEditable$"
-      ></app-individual-observation-view>
+      <div class="individual-detail__right_pane">
+        <app-individual-observation-view
+          class="individual-detail__observation-view"
+          [individual$]="detailSubject$"
+          [individualId]="detailId"
+          [isEditable$]="isEditable$"
+        ></app-individual-observation-view>
+        <app-individual-description-buttons
+          *ngIf="detailSubject$ | async"
+          class="individual-detail__buttons"
+          [individual$]="detailSubject$"
+          [individualId]="detailId"
+          [isEditable$]="isEditable$"
+        ></app-individual-description-buttons>
+      </div>
     </div>
   </div>
 </div>

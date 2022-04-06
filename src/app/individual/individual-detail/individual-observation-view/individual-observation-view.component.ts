@@ -101,6 +101,7 @@ export class ObservationViewComponent implements OnInit {
   editPhenophaseDate(phenophaseObservation: PhenophaseObservation): void {
     const dialogRef = this.dialog.open(PhenophaseDialogComponent, {
       width: '615px',
+      panelClass: 'phenonet-dialog-component',
       data: {
         phenophase: phenophaseObservation.phenophase,
         limits: phenophaseObservation.limits,
@@ -153,11 +154,11 @@ export class ObservationViewComponent implements OnInit {
   deletePhenophaseDate(phenophaseObservation: PhenophaseObservation): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '615px',
+      panelClass: 'phenonet-dialog-component',
       data: {
         title: 'Löschen bestätigen',
         content: 'Möchten Sie diese Beobachtung wirklich löschen?',
         yes: 'Löschen',
-        no: 'Abbrechen',
         yesColor: 'warn'
       } as ConfirmationDialogData
     });

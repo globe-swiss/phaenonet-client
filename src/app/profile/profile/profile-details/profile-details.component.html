@@ -37,27 +37,29 @@
     <div class="profile-details__value" data-test-id="profile-details-email">{{ email }}</div>
     <div class="profile-details__label">{{ 'Sprache' | translate }}</div>
     <div class="profile-details__value" data-test-id="profile-details-locale">{{ locale$ | async | translate }}</div>
-    <button
-      class="profile-details__button"
-      mat-flat-button
-      type="submit"
-      id="edit-button"
-      [routerLink]="['/profile', userId, 'edit']"
-      translate
-      data-test-id="profile-details-edit-button"
-    >
-      Profil bearbeiten
-    </button>
-    <button
-      class="profile-details__button profile-details__button--logout"
-      mat-flat-button
-      color="accent"
-      type="submit"
-      id="logout-button"
-      (click)="logout()"
-      data-test-id="profile-details-logout-button"
-    >
-      {{ 'Logout' | translate }}
-    </button>
+    <div class="profile-details__buttons">
+      <button
+        class="profile-details__button"
+        mat-flat-button
+        type="submit"
+        id="edit-button"
+        [routerLink]="['/profile', userId, 'edit']"
+        translate
+        data-test-id="profile-details-edit-button"
+      >
+        Profil bearbeiten
+      </button>
+      <button
+        class="profile-details__button profile-details__button--logout"
+        mat-flat-button
+        color="accent"
+        type="submit"
+        id="logout-button"
+        (click)="logout()"
+        data-test-id="profile-details-logout-button"
+      >
+        {{ 'Logout' | translate }}
+      </button>
+    </div>
   </div>
 </div>

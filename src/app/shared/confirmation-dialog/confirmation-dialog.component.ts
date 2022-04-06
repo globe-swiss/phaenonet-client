@@ -12,6 +12,7 @@ export interface ConfirmationDialogData {
 
 @Component({
   selector: 'app-confirmation-dialog',
+  styleUrls: ['./confirmation-dialog.component.scss'],
   templateUrl: './confirmation-dialog.component.html'
 })
 export class ConfirmationDialogComponent {

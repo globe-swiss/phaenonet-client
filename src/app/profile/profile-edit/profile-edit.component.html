@@ -61,20 +61,28 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <button
-        mat-flat-button
-        color="primary"
-        type="submit"
-        (click)="save()"
-        id="save-button"
-        [disabled]="editForm.invalid"
-        class="profile-edit__button"
-      >
-        {{ 'Speichern' | translate }}
-      </button>
-      <button mat-flat-button (click)="cancel()" id="cancel-button" class="profile-edit__button">
-        {{ 'Abbrechen' | translate }}
-      </button>
+      <div class="profile-edit__buttons">
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          (click)="save()"
+          id="save-button"
+          [disabled]="editForm.invalid"
+          class="profile-edit__button"
+        >
+          {{ 'Speichern' | translate }}
+        </button>
+        <button
+          mat-flat-button
+          color="accent"
+          (click)="cancel()"
+          id="cancel-button"
+          class="profile-edit__button profile-edit__button--secondary"
+        >
+          {{ 'Abbrechen' | translate }}
+        </button>
+      </div>
     </form>
   </div>
 </div>

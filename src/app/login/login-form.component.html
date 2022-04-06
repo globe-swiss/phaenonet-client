@@ -1,50 +1,55 @@
-<mat-card *ngIf="showLoginForm()">
-  <mat-card-header>
-    <mat-card-title>
-      {{ title() | translate }}
-    </mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <form [formGroup]="loginForm" fxLayout="column">
-      <mat-form-field>
-        <mat-label>{{ 'E-Mail' | translate }} </mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="email"
-          autofocus
-          id="email"
-          placeholder="{{ 'E-Mail' | translate }}"
-          required
-        />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>{{ 'Passwort' | translate }} </mat-label>
-        <input matInput type="password" formControlName="password" id="password" required />
-      </mat-form-field>
-      <p *ngIf="loginFailed">
-        <mat-error>{{ 'Anmeldung fehlgeschlagen' | translate }}</mat-error>
-      </p>
-      <button
-        mat-flat-button
-        color="primary"
-        type="submit"
-        (click)="login()"
-        id="login-button"
-        [disabled]="loginForm.invalid"
-      >
-        {{ 'Anmelden' | translate }}
-      </button>
-    </form>
-  </mat-card-content>
-  <mat-card-footer>
-    <div fxLayout="column">
-      <div fxLayout="row" fxLayoutAlign="start">
-        <a mat-button [routerLink]="'/auth/reset-password'">{{ 'Passwort vergessen?' | translate }}</a>
+<div class="login-form">
+  <mat-card *ngIf="showLoginForm()" class="login-form__content">
+    <mat-card-header>
+      <mat-card-title>
+        {{ title() | translate }}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm" class="login-form__form">
+        <mat-form-field>
+          <mat-label>{{ 'E-Mail' | translate }} </mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="email"
+            autofocus
+            id="email"
+            placeholder="{{ 'E-Mail' | translate }}"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'Passwort' | translate }} </mat-label>
+          <input matInput type="password" formControlName="password" id="password" required />
+        </mat-form-field>
+        <p *ngIf="loginFailed">
+          <mat-error>{{ 'Anmeldung fehlgeschlagen' | translate }}</mat-error>
+        </p>
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          (click)="login()"
+          id="login-button"
+          [disabled]="loginForm.invalid"
+          class="login-form__button"
+        >
+          {{ 'Anmelden' | translate }}
+        </button>
+      </form>
+    </mat-card-content>
+    <mat-card-footer>
+      <div>
+        <a class="login-form__link" mat-button [routerLink]="'/auth/reset-password'">{{
+          'Passwort vergessen?' | translate
+        }}</a>
       </div>
-      <div fxLayout="row" fxLayoutAlign="start">
-        <a mat-button [routerLink]="'/auth/register'">{{ 'Noch keinen Account? Jetzt registrieren!' | translate }}</a>
+      <div>
+        <a class="login-form__link" mat-button [routerLink]="'/auth/register'">{{
+          'Noch keinen Account? Jetzt registrieren!' | translate
+        }}</a>
       </div>
-    </div>
-  </mat-card-footer>
-</mat-card>
+    </mat-card-footer>
+  </mat-card>
+</div>

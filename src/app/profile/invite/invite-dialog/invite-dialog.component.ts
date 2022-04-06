@@ -8,7 +8,7 @@ import { InviteDialogData } from './invite-dialog-data';
   templateUrl: './invite-dialog.component.html',
   styleUrls: ['./invite-dialog.component.scss']
 })
-export class InviteDialogComponent implements OnInit {
+export class InviteDialogComponent {
   inviteForm = new FormGroup({
     email: new FormControl('')
   });
@@ -17,8 +17,6 @@ export class InviteDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<InviteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: InviteDialogData
   ) {}
-
-  ngOnInit(): void {}
 
   close(): void {
     this.dialogRef.close();

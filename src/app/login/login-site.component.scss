@@ -1,7 +1,0 @@
-@import './../../theming/mixins';
-
-.login-site {
-  &__card {
-    @include card-view;
-  }
-}

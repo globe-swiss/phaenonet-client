@@ -46,13 +46,13 @@ export class IndividualDescriptionButtonsComponent {
   private confirmDeleteDialog() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '615px',
+      panelClass: 'phenonet-dialog-component',
       data: {
         title: 'OBJEKT LÖSCHEN',
         // eslint-disable-next-line max-len
         content:
           'Möchten Sie das Objekt definitiv löschen? In Zukunft können Sie keine Daten mehr zu diesem Objekt eingeben. Daten zu diesem Objekt aus vergangenen Jahren bleiben erhalten.',
         yes: 'Objekt löschen',
-        no: 'Abbrechen',
         yesColor: 'warn'
       } as ConfirmationDialogData
     });
@@ -80,12 +80,12 @@ export class IndividualDescriptionButtonsComponent {
   private deleteNotPossibleDialog() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '615px',
+      panelClass: 'phenonet-dialog-component',
       data: {
         title: 'LÖSCHEN NICHT MÖGLICH',
         // eslint-disable-next-line max-len
         content:
           'Das Objekt kann nicht gelöscht werden, weil im aktuellen Jahr Beobachtungen erfasst wurden. Löschen Sie zuerst die Beobachtungen, um das Objekt löschen zu können.<br /><br />Wenn Sie die Beobachtungen im aktuellen Jahr behalten wollen, löschen Sie das Objekt erst im kommenden Jahr.',
-        yes: 'zurück zum Objekt',
         yesColor: 'accent'
       } as ConfirmationDialogData
     });
