@@ -74,16 +74,19 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
           this.staticComments[element.id] = element.de;
         });
 
-        const observationsBySpecies = _.groupBy(observations, 'species');
+        // group by species and individual name
+        const observationsBySpecies = _.groupBy(observations, o => [o.species, o.individual_name]);
 
         return combineLatest(
-          _.map(observationsBySpecies, (os, speciesId) => {
+          _.map(observationsBySpecies, (os, keys) => {
+            const [speciesId, individualName] = keys.split(','); // unpack species and individual name
             return combineLatest([
               this.masterdataService.getSpeciesValue(speciesId),
               this.masterdataService.getPhenophases(speciesId)
             ]).pipe(
               map(([species, availablePhenophasesBySpecies]) => {
                 return {
+                  individualName: individualName,
                   species: species,
                   phenophaseObservations: availablePhenophasesBySpecies.map(phenophase => {
                     return {
@@ -97,7 +100,16 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
           })
         );
       }),
-      mergeAll()
+      mergeAll(),
+      // natural sort by species and individual name - does not consider translations
+      map(x =>
+        x.sort((v1, v2) =>
+          (v1.species.de + v1.individualName).localeCompare(v2.species.de + v2.individualName, undefined, {
+            numeric: true,
+            sensitivity: 'base'
+          })
+        )
+      )
     );
   }
 }
