@@ -62,49 +62,46 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
         filter(station => station !== undefined)
       )
       .subscribe(detail => {
-        this.individualObservations$ = this.observationService.listByIndividual(this.detailId);
-        this.availableComments$ = this.masterdataService.getComments();
-
-        // combine the available phenophases with the existing observations
-        this.phenophaseObservationsBySpecies$ = combineLatest([
-          this.individualObservations$,
-          this.availableComments$
-        ]).pipe(
-          map(([observations, comments]) => {
-            comments.forEach(element => {
-              this.staticComments[element.id] = element.de;
-            });
-
-            const observationsBySpecies = _.groupBy(observations, 'species');
-
-            return combineLatest(
-              _.map(observationsBySpecies, (os, speciesId) => {
-                return combineLatest([
-                  this.masterdataService.getSpeciesValue(speciesId),
-                  this.masterdataService.getPhenophases(speciesId)
-                ]).pipe(
-                  map(([species, availablePhenophasesBySpecies]) => {
-                    return {
-                      species: species,
-                      phenophaseObservations: availablePhenophasesBySpecies.map(phenophase => {
-                        return {
-                          phenophase: phenophase,
-                          observation: findFirst((o: Observation) => o.phenophase === phenophase.id)(os)
-                        } as PhenophaseObservation;
-                      })
-                    } as SpeciesPhenophaseObservations;
-                  })
-                );
-              })
-            );
-          }),
-          mergeAll()
-        );
-
         void this.analytics.logEvent('station.view', {
           current: detail.year === this.masterdataService.getPhenoYear(),
           year: detail.year
         });
       });
+
+    this.individualObservations$ = this.observationService.listByIndividual(this.detailId);
+    this.availableComments$ = this.masterdataService.getComments();
+
+    // combine the available phenophases with the existing observations
+    this.phenophaseObservationsBySpecies$ = combineLatest([this.individualObservations$, this.availableComments$]).pipe(
+      map(([observations, comments]) => {
+        comments.forEach(element => {
+          this.staticComments[element.id] = element.de;
+        });
+
+        const observationsBySpecies = _.groupBy(observations, 'species');
+
+        return combineLatest(
+          _.map(observationsBySpecies, (os, speciesId) => {
+            return combineLatest([
+              this.masterdataService.getSpeciesValue(speciesId),
+              this.masterdataService.getPhenophases(speciesId)
+            ]).pipe(
+              map(([species, availablePhenophasesBySpecies]) => {
+                return {
+                  species: species,
+                  phenophaseObservations: availablePhenophasesBySpecies.map(phenophase => {
+                    return {
+                      phenophase: phenophase,
+                      observation: findFirst((o: Observation) => o.phenophase === phenophase.id)(os)
+                    } as PhenophaseObservation;
+                  })
+                } as SpeciesPhenophaseObservations;
+              })
+            );
+          })
+        );
+      }),
+      mergeAll()
+    );
   }
 }
