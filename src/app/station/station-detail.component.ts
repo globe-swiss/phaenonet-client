@@ -75,18 +75,20 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
         });
 
         // group by species and individual name
-        const observationsBySpecies = _.groupBy(observations, o => [o.species, o.individual_name]);
+        const observationsBySpecies = _.groupBy(observations, o => [o.species, o.tree_id]);
 
         return combineLatest(
           _.map(observationsBySpecies, (os, keys) => {
-            const [speciesId, individualName] = keys.split(','); // unpack species and individual name
+            const [speciesId, treeId] = keys.split(','); // unpack species and individual name
+            console.log(treeId);
+
             return combineLatest([
               this.masterdataService.getSpeciesValue(speciesId),
               this.masterdataService.getPhenophases(speciesId)
             ]).pipe(
               map(([species, availablePhenophasesBySpecies]) => {
                 return {
-                  individualName: individualName,
+                  treeId: treeId,
                   species: species,
                   phenophaseObservations: availablePhenophasesBySpecies.map(phenophase => {
                     return {
@@ -104,7 +106,7 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
       // natural sort by species and individual name - does not consider translations
       map(x =>
         x.sort((v1, v2) =>
-          (v1.species.de + v1.individualName).localeCompare(v2.species.de + v2.individualName, undefined, {
+          (v1.species.de + v1.treeId).localeCompare(v2.species.de + v2.treeId, undefined, {
             numeric: true,
             sensitivity: 'base'
           })

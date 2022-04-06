@@ -132,7 +132,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
     }
     if (source === 'meteoswiss') {
       return '/assets/img/map_pins/map_pin_meteoschweiz.png';
-    } else if (source === 'wsl_wald') {
+    } else if (source === 'wld') {
       return '/assets/img/map_pins/map_pin_generic.png'; // fixme: correct asset
     } else {
       return `/assets/img/map_pins/${this.languageService.determineCurrentLang()}/map_pin_${species.toLowerCase()}_${phaenoIndex}.png`;

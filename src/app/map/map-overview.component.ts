@@ -60,7 +60,7 @@ export class MapOverviewComponent implements OnInit {
 
   years$: Observable<number[]> = this.masterdataService.availableYears$;
   species$: Observable<Species[]>;
-  datasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wsl_wald'];
+  datasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wld'];
 
   selectedYear: AbstractControl;
   filter: FormGroup;

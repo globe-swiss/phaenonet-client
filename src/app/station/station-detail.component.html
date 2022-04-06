@@ -17,7 +17,7 @@
         <h2>{{ 'Phänophasen' | translate }}</h2>
         <div *ngFor="let groupedItem of phenophaseObservationsBySpecies$ | async">
           <div class="station-detail__observation-species">
-            {{ groupedItem.species.de | translate }} {{ groupedItem.individualName }}
+            {{ groupedItem.species.de | translate }} {{ groupedItem.treeId }}
           </div>
           <div *ngFor="let item of groupedItem.phenophaseObservations">
             <ng-container *ngIf="item.observation.isSome()">
