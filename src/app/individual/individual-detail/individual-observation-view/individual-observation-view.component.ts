@@ -159,7 +159,6 @@ export class ObservationViewComponent implements OnInit {
         title: 'Löschen bestätigen',
         content: 'Möchten Sie diese Beobachtung wirklich löschen?',
         yes: 'Löschen',
-        no: 'Abbrechen',
         yesColor: 'warn'
       } as ConfirmationDialogData
     });
