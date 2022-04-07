@@ -90,11 +90,11 @@ export class IndividualHeaderComponent implements OnInit {
       map(i => i.geopos)
     );
 
-    const editGeopos$ = this.individual$.pipe(
+    const detailGeopos$ = this.individual$.pipe(
       filter(i => i !== undefined),
       map(i => i.geopos)
     );
-    this.geopos$ = this.edit ? editGeopos$ : this.geoposService.geopos$;
+    this.geopos$ = this.edit ? this.geoposService.geopos$ : detailGeopos$;
     this.imageUrl$ = this.individual$.pipe(
       filter(individual => individual !== undefined),
       map(individual => this.individualService.getImageUrl(individual, true)),

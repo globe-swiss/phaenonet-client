@@ -14,10 +14,6 @@ import { Observation } from '../../../observation/observation';
 import { ObservationService } from '../../../observation/observation.service';
 import { PhenophaseObservation } from '../../../observation/phenophase-observation';
 import { PhenophaseObservationsGroup } from '../../../observation/phenophase-observations-group';
-import {
-  ConfirmationDialogComponent,
-  ConfirmationDialogData
-} from '../../../shared/confirmation-dialog/confirmation-dialog.component';
 import { Individual } from '../../individual';
 import { PhenophaseDialogComponent } from '../../phenophase-dialog.component';
 
@@ -147,24 +143,8 @@ export class ObservationViewComponent implements OnInit {
               });
             });
           });
-      }
-    });
-  }
-
-  deletePhenophaseDate(phenophaseObservation: PhenophaseObservation): void {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '615px',
-      panelClass: 'phenonet-dialog-component',
-      data: {
-        title: 'Löschen bestätigen',
-        content: 'Möchten Sie diese Beobachtung wirklich löschen?',
-        yes: 'Löschen',
-        yesColor: 'warn'
-      } as ConfirmationDialogData
-    });
-
-    dialogRef.afterClosed().subscribe((result: boolean) => {
-      if (result) {
+      } else if (!result?.observation.toNullable().date) {
+        // delete observation
         phenophaseObservation.observation.map(po =>
           this.observationService
             .delete((<IdLike>(<unknown>po)).id)

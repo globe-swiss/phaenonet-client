@@ -38,14 +38,6 @@
             (click)="editPhenophaseDate(item)"
             >edit</mat-icon
           >
-          <mat-icon
-            *ngIf="(isEditable$ | async) && item.observation.isSome()"
-            matSuffix
-            color="warn"
-            class="individual-observation-view__edit-phenophase"
-            (click)="deletePhenophaseDate(item)"
-            >delete</mat-icon
-          >
         </mat-form-field>
         <div
           class="individual-observation-view__detail-sub"
