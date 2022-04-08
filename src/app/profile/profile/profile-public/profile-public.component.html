@@ -24,9 +24,7 @@
           <mat-icon svgIcon="copylink"></mat-icon>
         </button>
       </span>
-      <span>
-        <app-user-subscription-button [userId]="userId" *ngIf="isLoggedIn"></app-user-subscription-button>
-      </span>
     </h1>
+    <app-user-subscription-button mode="BUTTON" [userId]="userId" *ngIf="isLoggedIn"></app-user-subscription-button>
   </div>
 </div>

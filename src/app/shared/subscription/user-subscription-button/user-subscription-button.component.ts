@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { AlertService } from 'src/app/messaging/alert.service';
-import { PublicUserService } from 'src/app/open/public-user.service';
 import { UserService } from 'src/app/profile/user.service';
 
 @Component({
@@ -14,15 +14,26 @@ export class UserSubscriptionButtonComponent implements OnInit {
   @Input() userId: string;
   isFollowing$: Observable<boolean>;
 
+  @Input()
+  mode: 'FAB' | 'BUTTON' = 'FAB';
+
+  displayFabSubscribed$: Observable<boolean>;
+  displayFabNotSubscribed$: Observable<boolean>;
+  displayButtonSubscribed$: Observable<boolean>;
+  displayButtonNotSubscribed$: Observable<boolean>;
+
   constructor(
     private userService: UserService,
-    private publicUserService: PublicUserService,
     private analytics: AngularFireAnalytics,
     private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
-    this.isFollowing$ = this.userService.isFollowingUser(this.userId);
+    this.isFollowing$ = this.userService.isFollowingUser(this.userId).pipe(shareReplay(1));
+    this.displayFabSubscribed$ = this.isFollowing$.pipe(map(following => following && this.mode === 'FAB'));
+    this.displayFabNotSubscribed$ = this.isFollowing$.pipe(map(following => !following && this.mode === 'FAB'));
+    this.displayButtonSubscribed$ = this.isFollowing$.pipe(map(following => following && this.mode === 'BUTTON'));
+    this.displayButtonNotSubscribed$ = this.isFollowing$.pipe(map(following => !following && this.mode === 'BUTTON'));
   }
 
   follow(): void {

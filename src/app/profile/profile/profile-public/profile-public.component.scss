@@ -24,11 +24,10 @@
     @include badge;
   }
 
-  &__button {
-    @include button;
-
-    &--more {
-      margin-top: 0;
+  app-user-subscription-button ::ng-deep button {
+    margin-top: 60px;
+    @include for-tablet-and-smaller {
+      margin-top: 30px;
     }
   }
 }
