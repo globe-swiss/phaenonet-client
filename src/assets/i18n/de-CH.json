@@ -16,6 +16,7 @@
   "globe": "PhaenoNet",
   "meteoswiss": "MeteoSchweiz",
   "ranger": "PhenoRangers",
+  "wld": "PhaenoWald",
   "species": "Art",
   "altitude": "Höhe",
 
@@ -53,6 +54,7 @@
   "IBM": "Buchengallmücke",
   "ISS": "Schwammspinner",
   "IWA": "Waldameise",
+  "GE": "Gemeine Esche",
 
   "alt1": "bis 499m",
   "alt2": "500 - 799m",
