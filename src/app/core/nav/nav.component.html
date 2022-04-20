@@ -8,21 +8,26 @@
           /></a>
         </div>
         <div class="nav-component__buttons">
-          <div class="left-border" *ngIf="isLoggedIn()">
-            <button mat-button class="nav-component__button" [routerLink]="['profile']" data-test-id="nav-button-login">
-              {{ 'Profil' | translate }}
-            </button>
-          </div>
-          <div class="left-border" *ngIf="!isLoggedIn()">
-            <button
-              mat-button
-              class="nav-component__button"
-              [routerLink]="['auth/login']"
-              data-test-id="nav-button-login"
-            >
-              {{ 'Anmelden' | translate }}
-            </button>
-          </div>
+          <button
+            class="left-border"
+            *ngIf="isLoggedIn()"
+            mat-button
+            class="nav-component__button"
+            [routerLink]="['profile']"
+            data-test-id="nav-button-login"
+          >
+            {{ 'Profil' | translate }}
+          </button>
+          <button
+            mat-button
+            class="nav-component__button"
+            [routerLink]="['auth/login']"
+            data-test-id="nav-button-login"
+            class="left-border"
+            *ngIf="!isLoggedIn()"
+          >
+            {{ 'Anmelden' | translate }}
+          </button>
           <button mat-button class="nav-component__button" [routerLink]="['map']" data-test-id="nav-button-map">
             {{ 'Karte' | translate }}
           </button>
