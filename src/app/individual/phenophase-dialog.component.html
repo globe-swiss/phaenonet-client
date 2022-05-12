@@ -1,4 +1,4 @@
-<button class="phenonet-dialog-component-close-button" mat-button (click)="close()">X</button>
+<button class="phenonet-dialog-component-close-button" mat-button [mat-dialog-close]="data">X</button>
 <div class="phenophase-dialog">
   <h2 mat-dialog-title translate>BEOBACHTUNG ERFASSEN</h2>
   <div class="phenophase-dialog__label">{{ data.phenophase.de | translate }}</div>

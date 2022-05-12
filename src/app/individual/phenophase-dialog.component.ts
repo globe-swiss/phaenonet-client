@@ -21,10 +21,6 @@ export class PhenophaseDialogComponent {
     private breakpointObserver: BreakpointObserver
   ) {}
 
-  close(): void {
-    this.dialogRef.close();
-  }
-
   deleteAndClose(): void {
     this.data.observation = this.data.observation.map(osb => {
       osb.date = null;
