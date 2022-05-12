@@ -3,6 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Observation } from '../observation/observation';
 import { PhenophaseObservation } from '../observation/phenophase-observation';
 
 @Component({
@@ -15,14 +16,28 @@ export class PhenophaseDialogComponent {
     .observe('(max-height: 700px)')
     .pipe(map(result => result.matches));
 
+  originalDate: Observation['date'];
+  originalComment: Observation['comment'];
+
   constructor(
     public dialogRef: MatDialogRef<PhenophaseDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: PhenophaseObservation,
     private breakpointObserver: BreakpointObserver
-  ) {}
+  ) {
+    const original = this.data.observation.getOrElse(null);
+    if (original) {
+      this.originalDate = original.date;
+      this.originalComment = original.comment;
+    }
+  }
 
   close(): void {
-    this.dialogRef.close();
+    this.data.observation = this.data.observation.map(osb => {
+      osb.date = this.originalDate;
+      osb.comment = this.originalComment;
+      return osb;
+    });
+    this.dialogRef.close(this.data);
   }
 
   deleteAndClose(): void {
