@@ -133,7 +133,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
     if (source === 'meteoswiss') {
       return '/assets/img/map_pins/map_pin_meteoschweiz.png';
     } else if (source === 'wld') {
-      return '/assets/img/map_pins/map_pin_generic.png'; // fixme: correct asset
+      return '/assets/img/map_pins/map_pin_wld.png';
     } else {
       return `/assets/img/map_pins/${this.languageService.determineCurrentLang()}/map_pin_${species.toLowerCase()}_${phaenoIndex}.png`;
     }
@@ -142,7 +142,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
   individualToIcon(individual: Individual): google.maps.Icon {
     let icon: google.maps.Icon;
     const icon_path = this.getIndividualIconPath(individual.species, individual.source, individual.last_phenophase);
-    if (individual.source === 'meteoswiss') {
+    if (individual.type === 'station') {
       // fixme: check if better to distinguish on individual type
       icon = {
         url: icon_path,
