@@ -143,7 +143,6 @@ export class MasterdataService extends BaseService implements OnDestroy {
     let icon: google.maps.Icon;
     const icon_path = this.getIndividualIconPath(individual.species, individual.source, individual.last_phenophase);
     if (individual.type === 'station') {
-      // fixme: check if better to distinguish on individual type
       icon = {
         url: icon_path,
         scaledSize: new google.maps.Size(60, 60)
