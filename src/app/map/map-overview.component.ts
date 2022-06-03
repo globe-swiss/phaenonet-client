@@ -6,12 +6,12 @@ import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { first, map, share, startWith, switchMap } from 'rxjs/operators';
 import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
-import { Individual } from '../individual/individual';
+import { Individual, IndividualType } from '../individual/individual';
 import { IndividualService } from '../individual/individual.service';
 import { MaybeIdLike } from '../masterdata/masterdata-like';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
-import { SourceFilterType, SourceType } from '../masterdata/source-type';
+import { SourceFilterType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 import { formatShortDate } from '../shared/formatDate';
 
@@ -23,7 +23,7 @@ class GlobeInfoWindowData {
   imgUrl$: Observable<string>;
 }
 
-class MeteoswissInfoWindowData {
+class StationInfoWindowData {
   individual: Individual;
   url: string[];
 }
@@ -55,12 +55,12 @@ export class MapOverviewComponent implements OnInit {
   infoWindowDatas$: Observable<GlobeInfoWindowData[]>;
 
   globeInfoWindowData$ = new ReplaySubject<GlobeInfoWindowData>(1);
-  meteoswissInfoWindowData$ = new ReplaySubject<MeteoswissInfoWindowData>(1);
-  infoWindowType$ = new ReplaySubject<SourceType>(1);
+  stationInfoWindowData$ = new ReplaySubject<StationInfoWindowData>(1);
+  infoWindowType$ = new ReplaySubject<IndividualType>(1);
 
   years$: Observable<number[]> = this.masterdataService.availableYears$;
   species$: Observable<Species[]>;
-  datasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger'];
+  datasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wld'];
 
   selectedYear: AbstractControl;
   filter: FormGroup;
@@ -147,13 +147,11 @@ export class MapOverviewComponent implements OnInit {
   }
 
   openInfoWindow(marker: MapMarker, pos: google.maps.LatLngLiteral, individual: Individual & MaybeIdLike): void {
-    const baseUrl = individual.source === 'meteoswiss' ? '/stations' : '/individuals';
+    const baseUrl = individual.type === 'station' ? '/stations' : '/individuals';
     const url = { url: [baseUrl, individual.id] };
 
-    if (individual.source === 'meteoswiss') {
-      this.meteoswissInfoWindowData$.next({ ...{ individual: individual }, ...url } as MeteoswissInfoWindowData);
-
-      this.infoWindowType$.next('meteoswiss');
+    if (individual.type === 'station') {
+      this.stationInfoWindowData$.next({ ...{ individual: individual }, ...url } as StationInfoWindowData);
     } else {
       combineLatest([
         this.masterdataService.getSpeciesValue(individual.species),
@@ -177,8 +175,8 @@ export class MapOverviewComponent implements OnInit {
           })
         )
         .subscribe(i => this.globeInfoWindowData$.next(i));
-      this.infoWindowType$.next('globe');
     }
+    this.infoWindowType$.next(individual.type);
 
     this.infoWindow.open(marker);
 

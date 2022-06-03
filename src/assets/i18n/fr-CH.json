@@ -25,6 +25,7 @@
   "globe": "PhaenoNet",
   "meteoswiss": "MétéoSuisse",
   "ranger": "PhenoRangers",
+  "wld": "PhaenoWaldWSL",
   "MeteoSchweiz": "MétéoSuisse",
   "species": "Espèce",
   "altitude": "Altitude",
@@ -139,6 +140,7 @@
   "IBM": "Cécidomyie du hêtre",
   "ISS": "Bombyx disparate",
   "IWA": "Fourmis des bois",
+  "GE": "Frêne commun",
 
   "Bergahorn": "Érable sycomore",
   "Buschwindröschen": "Anémone des bois",
@@ -174,6 +176,7 @@
   "Buchengallmücke": "Cécidomyie du hêtre",
   "Schwammspinner": "Bombyx disparate",
   "Waldameise": "Fourmis des bois",
+  "Gemeine Esche": "Frêne commun",
 
   "alt1": "499 m",
   "alt2": "500 - 799 m",

@@ -11,7 +11,7 @@
     >
     </map-marker>
     <map-info-window>
-      <ng-container *ngIf="(infoWindowType$ | async) === 'globe'">
+      <ng-container *ngIf="(infoWindowType$ | async) === 'individual'">
         <ng-container *ngIf="globeInfoWindowData$ | async as d">
           <div [routerLink]="d.url" class="map-overview__info-window">
             <div class="map-overview__info-window-image-container">
@@ -34,13 +34,13 @@
         </ng-container>
       </ng-container>
 
-      <ng-container *ngIf="(infoWindowType$ | async) === 'meteoswiss'">
-        <ng-container *ngIf="meteoswissInfoWindowData$ | async as d">
+      <ng-container *ngIf="(infoWindowType$ | async) === 'station'">
+        <ng-container *ngIf="stationInfoWindowData$ | async as d">
           <div class="map-overview__info-window" [routerLink]="d.url">
             <img src="assets/img/pic_placeholder.svg" style="max-height: 100px" />
             <div class="map-overview__info-window-text">
               <div class="map-overview__info-window-caption">
-                {{ 'MeteoSchweiz' | translate }}
+                {{ d.individual.source | translate }}
               </div>
               <div>{{ d.individual.name }}</div>
             </div>

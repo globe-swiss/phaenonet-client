@@ -30,7 +30,7 @@ Scenario('test regression on map markers for 2018', async ({ I, mapPage }) => {
   I.waitForInvisible(mapPage.filter.phenoyear.placeholder, 10);
   I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
   I.wait(2);
-  I.seeNumberOfElements(mapPage.mapMarker, 378); // 2018, all, all
+  I.seeNumberOfElements(mapPage.mapMarker, 387); // 2018, all, all
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.options.phenonet);
   I.wait(2);
   I.seeNumberOfElements(mapPage.mapMarker, 231); // 2018, phenonet, all
@@ -45,7 +45,7 @@ Scenario('test regression on map markers for 2018', async ({ I, mapPage }) => {
   I.seeNumberOfElements(mapPage.mapMarker, 30); // 2018, phenonet, sycamore
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.options.all);
   I.wait(2);
-  I.seeNumberOfElements(mapPage.mapMarker, 152); // 2018, all, sycamore
+  I.seeNumberOfElements(mapPage.mapMarker, 154); // 2018, all, sycamore
 });
 
 // missing tests

@@ -14,4 +14,5 @@ export class Observation {
   created: Date;
   modified: Date;
   source: SourceType;
+  tree_id?: string;
 }

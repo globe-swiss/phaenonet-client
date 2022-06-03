@@ -5,8 +5,8 @@ Scenario('test quantil regression on 2018', ({ I, statisticsPage }) => {
   I.visit(statisticsPage.url);
   I.wait(2);
   I.selectDropdownValue(statisticsPage.filter.phenoyear.dropdown, 2018);
-  I.seeNumberOfElements(statisticsPage.quantilbar, 72); // 2018, all, species, all
-  I.seeNumberOfElements(statisticsPage.label, 35);
+  I.seeNumberOfElements(statisticsPage.quantilbar, 81); // 2018, all, species, all
+  I.seeNumberOfElements(statisticsPage.label, 37);
   I.selectDropdownValue(statisticsPage.filter.source.dropdown, statisticsPage.filter.source.options.phenonet);
   I.seeNumberOfElements(statisticsPage.quantilbar, 55); // 2018, phenonet, species, all
   I.seeNumberOfElements(statisticsPage.label, 29);

@@ -2,6 +2,8 @@ import firebase from 'firebase/compat/app';
 import { SourceType } from '../masterdata/source-type';
 import Timestamp = firebase.firestore.Timestamp;
 
+export type IndividualType = 'individual' | 'station';
+
 export class Individual {
   name: string;
   geopos: google.maps.LatLngLiteral;
@@ -25,6 +27,6 @@ export class Individual {
   last_phenophase?: string;
   created: Timestamp;
   modified: Timestamp;
-  type: 'individual' | 'station';
+  type: IndividualType;
   image_urls: string[];
 }

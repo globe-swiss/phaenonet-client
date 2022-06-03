@@ -130,8 +130,10 @@ export class MasterdataService extends BaseService implements OnDestroy {
     if (phenophase) {
       phaenoIndex = this.configStatic.phenophases[phenophase]?.icon_index;
     }
-    if (source === 'meteoswiss' || !species) {
+    if (source === 'meteoswiss') {
       return '/assets/img/map_pins/map_pin_meteoschweiz.png';
+    } else if (source === 'wld') {
+      return '/assets/img/map_pins/map_pin_wld.png';
     } else {
       return `/assets/img/map_pins/${this.languageService.determineCurrentLang()}/map_pin_${species.toLowerCase()}_${phaenoIndex}.png`;
     }
@@ -140,7 +142,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
   individualToIcon(individual: Individual): google.maps.Icon {
     let icon: google.maps.Icon;
     const icon_path = this.getIndividualIconPath(individual.species, individual.source, individual.last_phenophase);
-    if (individual.source === 'meteoswiss') {
+    if (individual.type === 'station') {
       icon = {
         url: icon_path,
         scaledSize: new google.maps.Size(60, 60)
@@ -171,7 +173,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
       map(([species, roles]) => {
         if (roles.includes(Roles.RANGER)) {
           // PhaenoRanger user can enter data for ranger and globe species
-          return species.filter(s => s.sources.includes('globe') || s.sources.includes('ranger'));
+          return species.filter(s => s.sources.includes('globe') || s.sources.includes('ranger')); // fixme: all species should have the complete roles -> only check for ranger!
         } else {
           // normal PhaenoNet User can enter globe species only
           return species.filter(s => s.sources.includes('globe'));

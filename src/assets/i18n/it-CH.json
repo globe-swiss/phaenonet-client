@@ -27,6 +27,7 @@
   "globe": "PhaenoNet",
   "meteoswiss": "MeteoSvizzera",
   "ranger": "PhenoRangers",
+  "wld": "PhaenoWaldWSL",
   "MeteoSchweiz": "MeteoSvizzera",
   "species": "Specie",
   "altitude": "Quota",
@@ -139,6 +140,7 @@
   "IBM": "Cecidomia del faggio",
   "ISS": "Bombice dispari",
   "IWA": "Formica del legno",
+  "GE": "Frassino comune",
 
   "Bergahorn": "Acero di monte",
   "Buschwindröschen": "Anemone bianca",
@@ -174,6 +176,7 @@
   "Buchengallmücke": "Cecidomia del faggio",
   "Schwammspinner": "Bombice dispari",
   "Waldameise": "Formica del legno",
+  "Gemeine Esche": "Frassino comune",
 
   "alt1": "a 499 m",
   "alt2": "500 - 799 m",

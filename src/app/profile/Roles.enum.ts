@@ -1,3 +1,4 @@
 export enum Roles {
-  RANGER = 'ranger'
+  RANGER = 'ranger',
+  WSL_WALD = 'wld'
 }
