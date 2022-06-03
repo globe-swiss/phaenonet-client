@@ -5,7 +5,7 @@ Scenario('test quantil regression on 2018', ({ I, statisticsPage }) => {
   I.visit(statisticsPage.url);
   I.wait(2);
   I.selectDropdownValue(statisticsPage.filter.phenoyear.dropdown, 2018);
-  I.seeNumberOfElements(statisticsPage.quantilbar, 79); // 2018, all, species, all
+  I.seeNumberOfElements(statisticsPage.quantilbar, 81); // 2018, all, species, all
   I.seeNumberOfElements(statisticsPage.label, 37);
   I.selectDropdownValue(statisticsPage.filter.source.dropdown, statisticsPage.filter.source.options.phenonet);
   I.seeNumberOfElements(statisticsPage.quantilbar, 55); // 2018, phenonet, species, all
@@ -38,5 +38,5 @@ Scenario('test all year view', ({ I, statisticsPage }) => {
   I.visit(statisticsPage.url);
   I.wait(2);
   I.selectDropdownValue(statisticsPage.filter.phenoyear.dropdown, 'all');
-  I.seeNumberOfElements(statisticsPage.label, 39);
+  I.seeNumberOfElements(statisticsPage.label, 26);
 });
