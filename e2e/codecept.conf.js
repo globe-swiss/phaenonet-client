@@ -6,14 +6,14 @@
 
 exports.config = {
   tests: './src/tests/*_test.js',
+  timeout: 30,
   output: './output',
   helpers: {
     Playwright: {
       url: 'http://localhost:4200',
       show: false,
       browser: 'chromium',
-      video: true,
-      waitForTimeout: 5000
+      video: true
     },
     Mochawesome: {
       uniqueScreenshotNames: false,
