@@ -34,8 +34,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@master
-      - uses: actions/setup-node@v2
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Install Dependencies
@@ -53,7 +53,7 @@ jobs:
       - name: Build
         run: npx ng build "${{ env.PROJECT == 'phaenonet' && '--c=production' || '' }}"
       - name: Upload Artifact
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.PROJECT }}
           path: dist
@@ -63,13 +63,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
       - name: Download Artifact
-        uses: actions/download-artifact@master
+        uses: actions/download-artifact@v3
         with:
           name: ${{ env.PROJECT }}
           path: dist
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Install sentry-cli
@@ -96,9 +96,9 @@ jobs:
     environment: ${{ github.event.inputs.project || 'phaenonet-test' }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
       - name: Checkout rules
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: globe-swiss/phaenonet-client-security
           path: security
@@ -111,14 +111,14 @@ jobs:
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
           create_credentials_file: true
       - name: Download Artifact
-        uses: actions/download-artifact@master
+        uses: actions/download-artifact@v3
         with:
           name: ${{ env.PROJECT }}
           path: dist
       - name: Remove source maps (prod)
         run: rm ./dist/**/*.map
         if: ${{ env.PROJECT == 'phaenonet' }}
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: install firebase-tools
@@ -133,7 +133,7 @@ jobs:
       contents: write
     steps:
       - name: Tag commit
-        uses: tvdias/github-tagger@v0.0.1
+        uses: tvdias/github-tagger@v0.0.2
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
           tag: ${{ env.TAG }}
@@ -144,8 +144,8 @@ jobs:
     if: ${{ github.event.inputs.project == 'phaenonet' }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@master
-      - uses: actions/setup-node@v2
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: build & upload docs
