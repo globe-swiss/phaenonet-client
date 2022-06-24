@@ -43,25 +43,6 @@ export class IndividualService extends BaseResourceService<Individual> {
     return super.upsert(individual, `${individual.year}_${individual.individual}`);
   }
 
-  listByYear(year: number): Observable<(Individual & IdLike)[]> {
-    const cachedObservable$ = this.individualsByYear$$.get(year);
-    if (cachedObservable$ !== undefined) {
-      return cachedObservable$;
-    } else {
-      const obs$ = this.afs
-        .collection<Individual>(this.collectionName, ref =>
-          ref.where('year', '==', year).orderBy('last_observation_date', 'desc')
-        )
-        .valueChanges({ idField: 'id' })
-        .pipe(
-          tap(x => this.fds.addRead(`${this.collectionName} (listByYear)`, x.length)),
-          shareReplay(1)
-        );
-      this.individualsByYear$$.set(year, obs$);
-      return obs$;
-    }
-  }
-
   /**
    * Get the list of individuals (unordered).
    * @param userId the userId, can be public or self.

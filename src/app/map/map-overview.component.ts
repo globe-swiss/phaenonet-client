@@ -3,7 +3,7 @@ import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { first, map, share, startWith, switchMap } from 'rxjs/operators';
+import { first, map, startWith, switchMap } from 'rxjs/operators';
 import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
 import { Individual, IndividualType } from '../individual/individual';
@@ -14,6 +14,7 @@ import { Phenophase } from '../masterdata/phaenophase';
 import { SourceFilterType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 import { formatShortDate } from '../shared/formatDate';
+import { MapCacheService } from './map-cache.service';
 
 class GlobeInfoWindowData {
   individual: Individual;
@@ -70,6 +71,7 @@ export class MapOverviewComponent implements OnInit {
   constructor(
     private navService: NavService,
     private individualService: IndividualService,
+    private individualCacheService: MapCacheService,
     private masterdataService: MasterdataService,
     private formPersistanceService: FormPersistenceService,
     private analytics: AngularFireAnalytics
@@ -126,7 +128,7 @@ export class MapOverviewComponent implements OnInit {
         const datasource = this.filter.controls.datasource.value as SourceFilterType;
         const species = this.filter.controls.species.value as string;
 
-        return this.individualService.listByYear(year).pipe(
+        return this.individualCacheService.getIndividuals(year).pipe(
           map(individuals => {
             if (datasource !== 'all') {
               individuals = individuals.filter(i => i.source === datasource);
@@ -148,8 +150,7 @@ export class MapOverviewComponent implements OnInit {
           return { individual: individual, markerOptions: markerOptions } as IndividualWithMarkerOpt;
         });
         return ret;
-      }),
-      share()
+      })
     );
 
     void this.analytics.logEvent('map.view');
