@@ -122,10 +122,11 @@ export class MapCacheService {
   }
 
   private checkVersion(): void {
-    if (localStorage.getItem(this.CACHE_VERSION_KEY) != String(this.CACHE_VERSION)) {
+    const current_version = localStorage.getItem(this.CACHE_VERSION_KEY);
+    if (current_version && current_version != String(this.CACHE_VERSION)) {
       console.log('Cache version changed -> clear localstorage');
       localStorage.clear();
-      localStorage.setItem(this.CACHE_VERSION_KEY, String(this.CACHE_VERSION));
     }
+    localStorage.setItem(this.CACHE_VERSION_KEY, String(this.CACHE_VERSION));
   }
 }
