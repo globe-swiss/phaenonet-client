@@ -6,23 +6,20 @@ import {
   DocumentData
 } from '@angular/fire/compat/firestore';
 import { Timestamp } from '@firebase/firestore';
+import * as Sentry from '@sentry/angular';
 import { compress, decompress } from 'lz-string';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { Individual } from '../individual/individual';
 import { IdLike } from '../masterdata/masterdata-like';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
-
 @Injectable()
 export class MapCacheService {
   private readonly CACHE_VERSION = 1;
   private readonly CACHE_VERSION_KEY = 'mapCacheVersion';
-  private readonly CACHE_PREFIX = 'cacheind';
-  private readonly CACHETS_PREFIX = 'cachets';
-  private cached_data$: BehaviorSubject<(Individual & IdLike)[]> = new BehaviorSubject(
-    new Array<Individual & IdLike>()
-  );
-  private cache_ts: Map<number, number> = new Map();
+  private readonly CACHE_PREFIX = 'mapdata';
+  private cachedData$: BehaviorSubject<(Individual & IdLike)[]> = new BehaviorSubject(new Array<Individual & IdLike>());
   private cache_subscription: Subscription = new Subscription();
 
   constructor(protected afs: AngularFirestore, protected fds: FirestoreDebugService) {
@@ -33,89 +30,93 @@ export class MapCacheService {
     this.cache_subscription.unsubscribe();
     // ignore if year is not set
     if (year > 0) {
-      console.log(`load map cache for ${year}`);
-      let mapCache: (Individual & IdLike)[];
-      try {
-        mapCache = this.loadLocalCache(year);
-      } catch (error) {
-        console.log('Error loading map cache');
-        console.log(error);
+      const cacheTs = this.loadCache(year);
+      console.log(`loaded map cache for ${year}, ${this.cachedData$.value.length} individuals`);
+      this.cache_subscription = this.setupDocumentListener(year, cacheTs).subscribe();
+    }
+    return this.cachedData$;
+  }
 
-        mapCache = new Array<Individual & IdLike>();
-        this.removeCache(year);
+  /**
+   * Load map data from local cache.
+   * @param year the year
+   * @returns last modified timestamp, null if cache is empty
+   */
+  private loadCache(year: number): number | null {
+    try {
+      const localData = localStorage.getItem(`${this.CACHE_PREFIX}_${year}`);
+      // do not process and push data if local storage was empty
+      if (localData) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const [cacheTs, localIndividuals] = JSON.parse(decompress(localData) as string) as [
+          number,
+          (Individual & IdLike)[]
+        ];
+        // restore timestamp objects
+        localIndividuals.map(x => {
+          ['created', 'modified', 'last_observation_date'].forEach(field => {
+            if (x[field]) {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              x[field] = new Timestamp(x[field].seconds, x[field].nanosecods);
+            }
+          });
+        });
+        this.cachedData$ = new BehaviorSubject(localIndividuals);
+        return cacheTs;
+      } else {
+        this.cachedData$ = new BehaviorSubject(new Array<Individual & IdLike>());
+        return null;
       }
-      this.cached_data$ = new BehaviorSubject(mapCache);
-      this.cache_subscription = this.setupCacheListener(year).subscribe();
-    }
-    return this.cached_data$;
-  }
+    } catch (error) {
+      console.log(error);
+      if (environment.sentryEnabled) {
+        Sentry.captureException(error);
+      }
 
-  private loadLocalCache(year: number): (Individual & IdLike)[] {
-    const localData = localStorage.getItem(`${this.CACHE_PREFIX}_${year}`);
-    // do not process and push data if local storage was empty
-    if (localData) {
-      const cachedData = JSON.parse(decompress(localData)) as (Individual & IdLike)[];
-      // restore timestamp objects
-      cachedData.map(x => {
-        if (x['last_observation_date']) {
-          x['last_observation_date'] = new Timestamp(
-            x['last_observation_date']['seconds'],
-            x['last_observation_date']['nanoseconds']
-          );
-        }
-      });
-      return cachedData;
-    } else {
-      return [];
+      this.removeCache(year);
+      this.cachedData$ = new BehaviorSubject(new Array<Individual & IdLike>());
+      return null;
     }
   }
 
-  private updateCache(year: number, individuals: (Individual & IdLike)[]): void {
-    console.log(`update cache for ${year}`);
-
-    this.cached_data$.next(individuals);
-    localStorage.setItem(`${this.CACHE_PREFIX}_${year}`, compress(JSON.stringify(individuals)));
-  }
-
-  private updateCacheMillis(year: number, ts: number): void {
-    this.cache_ts.set(year, Math.max(ts + 0.001, this.getCacheMillis(year))); // add split second to avoid reloading last document
-    localStorage.setItem(`${this.CACHETS_PREFIX}_${year}`, ts.toString());
-  }
-
-  private getCacheMillis(year: number): number {
-    let ts = this.cache_ts.get(year);
-    if (!ts) {
-      ts = +localStorage.getItem(`${this.CACHETS_PREFIX}_${year}`);
-    }
-    return ts;
+  private updateCache(year: number, lastModified: number, individuals: (Individual & IdLike)[]): void {
+    this.cachedData$.next(individuals);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    localStorage.setItem(`${this.CACHE_PREFIX}_${year}`, compress(JSON.stringify([lastModified, individuals])));
   }
 
   private removeCache(year: number) {
     localStorage.removeItem(`${this.CACHE_PREFIX}_${year}`);
-    localStorage.removeItem(`${this.CACHETS_PREFIX}_${year}`);
   }
 
-  private setupCacheListener(year: number): Observable<DocumentChangeAction<Individual>[]> {
-    console.log(
-      `listen to changes from changes from ${Timestamp.fromMillis(this.getCacheMillis(year))
-        .toDate()
-        .toUTCString()} for ${year}`
-    );
-
+  /**
+   * Listen to individual document changes starting from a given timestamp.
+   * @param year the year
+   * @param cacheTs the timestamp from when to start listening, null if initial
+   * @returns Observable with document changes
+   */
+  private setupDocumentListener(year: number, cacheTs: number): Observable<DocumentChangeAction<Individual>[]> {
     return this.afs
-      .collection<Individual>('individuals', ref => this.getIndividualQuery(year, ref))
+      .collection<Individual>('individuals', ref => this.getIndividualQuery(year, cacheTs, ref))
       .stateChanges()
       .pipe(
         tap(actions => this.processActions(year, actions)),
-        tap(x => this.fds.addRead(`individuals (setupCache-update)`, x.length))
+        tap(x => this.fds.addRead(`individuals (mapCache)`, x.length))
       );
   }
 
-  private getIndividualQuery(year: number, individual_collection_ref: CollectionReference<DocumentData>) {
+  private getIndividualQuery(
+    year: number,
+    cacheTs: number,
+    individual_collection_ref: CollectionReference<DocumentData>
+  ) {
     let query = individual_collection_ref.where('year', '==', year);
     // if chache is initialized load all (include individuals without modified field)
-    if (this.getCacheMillis(year)) {
-      query = query.where('modified', '>', Timestamp.fromMillis(this.getCacheMillis(year)));
+    if (cacheTs) {
+      console.log(
+        `listen to changes from changes from ${Timestamp.fromMillis(cacheTs).toDate().toUTCString()} for ${year}`
+      );
+      query = query.where('modified', '>', Timestamp.fromMillis(cacheTs + 0.01));
     }
     return query;
   }
@@ -123,21 +124,21 @@ export class MapCacheService {
   private processActions(year: number, actions: DocumentChangeAction<Individual>[]): void {
     // do not process empty action arrays
     if (actions.length > 0) {
-      let cached_data = this.cached_data$.value;
+      let cachedData = this.cachedData$.value;
+      let lastModified = Number.NEGATIVE_INFINITY;
       actions.forEach(action => {
         // remove old record from cache
-        cached_data = cached_data.filter(x => x['id'] != action.payload.doc.id);
-        const modified = action.payload.doc.data()['modified'];
+        cachedData = cachedData.filter(x => x.id != action.payload.doc.id);
+        const individual = action.payload.doc.data();
         // only add individuals that have observations (map requirement)
-        if (action.type != 'removed' && action.payload.doc.data()['last_observation_date']) {
-          cached_data.push({ id: action.payload.doc.id, ...action.payload.doc.data() });
-          // ignore cache ts if modified is not set
-          if (modified) {
-            this.updateCacheMillis(year, (modified as Timestamp).toMillis());
-          }
+        if (action.type != 'removed' && individual.last_observation_date) {
+          cachedData.push({ id: action.payload.doc.id, ...individual });
+        }
+        if (individual.modified) {
+          lastModified = Math.max(lastModified, individual.modified.toMillis());
         }
       });
-      this.updateCache(year, cached_data);
+      this.updateCache(year, lastModified, cachedData);
     }
   }
 
