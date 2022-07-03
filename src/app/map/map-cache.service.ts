@@ -6,11 +6,13 @@ import {
   DocumentData
 } from '@angular/fire/compat/firestore';
 import { Timestamp } from '@firebase/firestore';
+import { compress, decompress } from 'lz-string';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Individual } from '../individual/individual';
 import { IdLike } from '../masterdata/masterdata-like';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
+
 @Injectable()
 export class MapCacheService {
   private readonly CACHE_VERSION = 1;
@@ -32,18 +34,29 @@ export class MapCacheService {
     // ignore if year is not set
     if (year > 0) {
       console.log(`load map cache for ${year}`);
-      this.cached_data$ = new BehaviorSubject(this.loadLocalCache(year));
+      let mapCache: (Individual & IdLike)[];
+      try {
+        mapCache = this.loadLocalCache(year);
+      } catch (error) {
+        console.log('Error loading map cache');
+        console.log(error);
+
+        mapCache = new Array<Individual & IdLike>();
+        this.removeCache(year);
+      }
+      this.cached_data$ = new BehaviorSubject(mapCache);
       this.cache_subscription = this.setupCacheListener(year).subscribe();
     }
     return this.cached_data$;
   }
 
   private loadLocalCache(year: number): (Individual & IdLike)[] {
-    const localData = JSON.parse(localStorage.getItem(`${this.CACHE_PREFIX}_${year}`)) as (Individual & IdLike)[];
+    const localData = localStorage.getItem(`${this.CACHE_PREFIX}_${year}`);
     // do not process and push data if local storage was empty
     if (localData) {
+      const cachedData = JSON.parse(decompress(localData)) as (Individual & IdLike)[];
       // restore timestamp objects
-      localData.map(x => {
+      cachedData.map(x => {
         if (x['last_observation_date']) {
           x['last_observation_date'] = new Timestamp(
             x['last_observation_date']['seconds'],
@@ -51,8 +64,17 @@ export class MapCacheService {
           );
         }
       });
+      return cachedData;
+    } else {
+      return [];
     }
-    return localData ? localData : [];
+  }
+
+  private updateCache(year: number, individuals: (Individual & IdLike)[]): void {
+    console.log(`update cache for ${year}`);
+
+    this.cached_data$.next(individuals);
+    localStorage.setItem(`${this.CACHE_PREFIX}_${year}`, compress(JSON.stringify(individuals)));
   }
 
   private updateCacheMillis(year: number, ts: number): void {
@@ -68,11 +90,9 @@ export class MapCacheService {
     return ts;
   }
 
-  private updateCache(year: number, individuals: (Individual & IdLike)[]): void {
-    console.log(`update cache for ${year}`);
-
-    this.cached_data$.next(individuals);
-    localStorage.setItem(`${this.CACHE_PREFIX}_${year}`, JSON.stringify(individuals));
+  private removeCache(year: number) {
+    localStorage.removeItem(`${this.CACHE_PREFIX}_${year}`);
+    localStorage.removeItem(`${this.CACHETS_PREFIX}_${year}`);
   }
 
   private setupCacheListener(year: number): Observable<DocumentChangeAction<Individual>[]> {
