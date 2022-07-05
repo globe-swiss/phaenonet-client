@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  HostListener,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,8 +7,8 @@ import * as d3Scale from 'd3-scale';
 import * as d3 from 'd3-selection';
 import * as d3Time from 'd3-time';
 import moment from 'moment';
-import { Observable } from 'rxjs';
-import { filter, first, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { first, map, switchMap, tap } from 'rxjs/operators';
 import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
 import { MasterdataService } from '../masterdata/masterdata.service';
@@ -54,7 +46,7 @@ const allYear = 'all';
   templateUrl: './statistics-overview.component.html',
   styleUrls: ['./statistics-overview.component.scss']
 })
-export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
+export class StatisticsOverviewComponent implements OnInit, OnDestroy {
   @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef;
 
   availableYears: number[];
@@ -65,6 +57,8 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   selectedYear: AbstractControl;
   filter: FormGroup;
+  private redraw$ = new Subject();
+  private subscription = new Subscription();
 
   private margin: Margin = { top: 20, right: 20, bottom: 30, left: 160 };
 
@@ -105,10 +99,6 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.navService.setLocation('Auswertungen');
-    this.selectableSpecies$ = this.masterdataService.getSpecies().pipe(
-      map(species => this.masterdataService.sortTranslatedMasterData(species)),
-      map(species => [allSpecies].concat(species))
-    );
     void this.analytics.logEvent('statistics.view');
 
     if (!this.formPersistanceService.statisticFilter) {
@@ -126,57 +116,86 @@ export class StatisticsOverviewComponent implements OnInit, AfterViewInit {
       this.selectedYear = this.formPersistanceService.statisticFilter.controls.year;
     }
 
+    this.selectableSpecies$ = this.filter.valueChanges.pipe(
+      switchMap(() => this.masterdataService.getSpecies()),
+      map(species => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const datasource = this.filter.controls.datasource.value;
+        if (datasource == 'all') {
+          return species;
+        } else {
+          // set all species if current species filter if invalid
+          if (
+            this.filter.controls.species.value != allSpecies.id &&
+            species.filter(s => s.id == this.filter.controls.species.value && s.sources.includes(datasource)).length ==
+              0
+          ) {
+            this.filter.controls.species.setValue(allSpecies.id);
+          }
+          return species.filter(s => s.sources.includes(datasource));
+        }
+      }),
+      map(species => this.masterdataService.sortTranslatedMasterData(species)),
+      map(species => [allSpecies].concat(species)),
+      tap(species => {
+        const formAnalyticsType = this.filter.controls.analyticsType.value as AnalyticsType;
+        const formSpecies = this.filter.controls.species.value as string;
+        const formYear = this.filter.controls.year.value as string;
+        // set to valid single species if analytics type is 'altitude' and 'all' species is selected
+        if (
+          (formAnalyticsType === 'altitude' && formSpecies === allSpecies.id) ||
+          (formYear === allYear && formSpecies === allSpecies.id)
+        ) {
+          this.filter.controls.species.setValue(species[1].id);
+        }
+
+        // anaytics type altitude is not allowed for all year view
+        if (formYear === allYear && formAnalyticsType === 'altitude') {
+          this.filter.controls.analyticsType.setValue('species');
+        }
+      }),
+      tap(() => this.redraw$.next())
+    );
+
     this.selectableYears$ = this.masterdataService.availableYears$.pipe(
       tap(years => (this.availableYears = years)),
       map(years => [allYear, ...years.map(year => String(year))])
     );
+
+    this.subscription.add(
+      this.redraw$
+        .pipe(
+          switchMap(() => {
+            const year = this.filter.controls.year.value as string;
+            const datasource = this.filter.controls.datasource.value as SourceFilterType;
+            const analyticsType = this.filter.controls.analyticsType.value as AnalyticsType;
+            const species = this.filter.controls.species.value as string;
+
+            this.year = year === allYear ? null : parseInt(year, 10);
+
+            // only report an event if filter is not the default
+            if (this.year !== this.masterdataService.getPhenoYear() || datasource !== 'all' || species !== 'all') {
+              void this.analytics.logEvent('statistics.filter', {
+                year: this.year,
+                source: datasource,
+                species: species,
+                type: analyticsType,
+                current: this.year === this.masterdataService.getPhenoYear()
+              });
+            }
+            return this.statisticsService.listByYear(year, analyticsType, datasource, species);
+          }),
+          map(results => {
+            this.data = results;
+            this.drawChart();
+          })
+        )
+        .subscribe()
+    );
   }
 
-  ngAfterViewInit(): void {
-    this.filter.valueChanges
-      .pipe(
-        startWith(this.filter.getRawValue()),
-        filter(form => form.year),
-        switchMap(form => {
-          const year = form.year as string;
-          const datasource = form.datasource as SourceFilterType;
-          let analyticsType = form.analyticsType as AnalyticsType;
-          let species = form.species as string;
-
-          this.year = year === allYear ? null : parseInt(year, 10);
-
-          // set to single species if altitude and all species
-          if (
-            (analyticsType === 'altitude' && form.species === allSpecies.id) ||
-            (year === allYear && form.species === allSpecies.id)
-          ) {
-            species = 'BA';
-            this.filter.controls.species.setValue('BA', { emitEvent: false });
-          }
-
-          if (year === allYear) {
-            analyticsType = 'species';
-            this.filter.controls.analyticsType.setValue(this.selectableAnalyticsTypes[0], { emitEvent: false });
-          }
-
-          // only report an event if filter is not the default
-          if (this.year !== this.masterdataService.getPhenoYear() || datasource !== 'all' || species !== 'all') {
-            void this.analytics.logEvent('statistics.filter', {
-              year: this.year,
-              source: datasource,
-              species: species,
-              type: analyticsType,
-              current: this.year === this.masterdataService.getPhenoYear()
-            });
-          }
-          return this.statisticsService.listByYear(year, analyticsType, datasource, species);
-        }),
-        map(results => {
-          this.data = results;
-          this.drawChart();
-        })
-      )
-      .subscribe();
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   private toKey(analytics: Analytics) {
