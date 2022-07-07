@@ -48,7 +48,7 @@ export class MapCacheService {
       // do not process and push data if local storage was empty
       if (localData) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        const [cacheTs, localIndividuals] = JSON.parse(decompress(localData) as string) as [
+        const [cacheTs, localIndividuals] = JSON.parse(decompress(localData)) as [
           number,
           (Individual & IdLike)[]
         ];
@@ -56,7 +56,7 @@ export class MapCacheService {
         localIndividuals.map(x => {
           ['created', 'modified', 'last_observation_date'].forEach(field => {
             if (x[field]) {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
               x[field] = new Timestamp(x[field].seconds, x[field].nanosecods);
             }
           });
