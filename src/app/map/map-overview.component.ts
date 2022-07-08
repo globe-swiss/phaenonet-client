@@ -97,7 +97,7 @@ export class MapOverviewComponent implements OnInit {
     }
 
     this.species$ = this.filter.controls.datasource.valueChanges.pipe(
-      startWith(),
+      startWith(''),
       switchMap(() => this.masterdataService.getSpecies()),
       map(species => {
         const datasource = this.filter.controls.datasource.value as SourceFilterType;
@@ -120,7 +120,7 @@ export class MapOverviewComponent implements OnInit {
     );
 
     this.individualsWithMarkerOpts$ = this.filter.valueChanges.pipe(
-      startWith(),
+      startWith(''),
       switchMap(() => {
         const year = +(this.filter.controls.year.value as string);
         const datasource = this.filter.controls.datasource.value as SourceFilterType;

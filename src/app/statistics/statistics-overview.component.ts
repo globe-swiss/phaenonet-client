@@ -8,7 +8,7 @@ import * as d3 from 'd3-selection';
 import * as d3Time from 'd3-time';
 import moment from 'moment';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { first, map, switchMap, tap } from 'rxjs/operators';
+import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
 import { MasterdataService } from '../masterdata/masterdata.service';
@@ -117,6 +117,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
     }
 
     this.selectableSpecies$ = this.filter.valueChanges.pipe(
+      startWith(''),
       switchMap(() => this.masterdataService.getSpecies()),
       map(species => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
