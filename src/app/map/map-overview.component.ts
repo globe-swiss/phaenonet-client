@@ -96,27 +96,36 @@ export class MapOverviewComponent implements OnInit {
       this.selectedYear = this.formPersistanceService.mapFilter.controls.year;
     }
 
-    this.species$ = this.masterdataService.getSpecies().pipe(
+    this.species$ = this.filter.controls.datasource.valueChanges.pipe(
+      startWith(''),
+      switchMap(() => this.masterdataService.getSpecies()),
+      map(species => {
+        const datasource = this.filter.controls.datasource.value as SourceFilterType;
+        if (datasource == 'all') {
+          return species;
+        } else {
+          // set all species if current species filter if invalid
+          if (
+            this.filter.controls.species.value != allSpecies.id &&
+            species.filter(s => s.id == this.filter.controls.species.value && s.sources.includes(datasource)).length ==
+              0
+          ) {
+            this.filter.controls.species.setValue(allSpecies.id);
+          }
+          return species.filter(s => s.sources.includes(datasource));
+        }
+      }),
       map(species => this.masterdataService.sortTranslatedMasterData(species)),
       map(species => [allSpecies].concat(species))
     );
 
     this.individualsWithMarkerOpts$ = this.filter.valueChanges.pipe(
-      startWith(this.filter.getRawValue()),
-      switchMap(form => {
-        const year = +form.year;
-        const datasource = form.datasource as SourceFilterType;
-        const species = form.species as string;
+      startWith(''),
+      switchMap(() => {
+        const year = +(this.filter.controls.year.value as string);
+        const datasource = this.filter.controls.datasource.value as SourceFilterType;
+        const species = this.filter.controls.species.value as string;
 
-        // only report an event if filter is not the default
-        if (year !== this.masterdataService.getPhenoYear() || datasource !== 'all' || species !== 'ALL') {
-          void this.analytics.logEvent('map.filter', {
-            year: year,
-            source: datasource,
-            species: species,
-            current: year === this.masterdataService.getPhenoYear()
-          });
-        }
         return this.individualService.listByYear(year).pipe(
           map(individuals => {
             if (datasource !== 'all') {
