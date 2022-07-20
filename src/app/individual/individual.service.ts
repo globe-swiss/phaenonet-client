@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { combineLatest, from, Observable, of } from 'rxjs';
-import { first, map, mergeAll, shareReplay, tap } from 'rxjs/operators';
+import { first, map, mergeAll, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { IdLike } from '../masterdata/masterdata-like';
@@ -41,25 +41,6 @@ export class IndividualService extends BaseResourceService<Individual> {
     }
 
     return super.upsert(individual, `${individual.year}_${individual.individual}`);
-  }
-
-  listByYear(year: number): Observable<(Individual & IdLike)[]> {
-    const cachedObservable$ = this.individualsByYear$$.get(year);
-    if (cachedObservable$ !== undefined) {
-      return cachedObservable$;
-    } else {
-      const obs$ = this.afs
-        .collection<Individual>(this.collectionName, ref =>
-          ref.where('year', '==', year).orderBy('last_observation_date', 'desc')
-        )
-        .valueChanges({ idField: 'id' })
-        .pipe(
-          tap(x => this.fds.addRead(`${this.collectionName} (listByYear)`, x.length)),
-          shareReplay(1)
-        );
-      this.individualsByYear$$.set(year, obs$);
-      return obs$;
-    }
   }
 
   /**

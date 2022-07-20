@@ -38,6 +38,8 @@ function sanitizeTransactionName(transaction: string) {
 
 if (environment.production) {
   enableProdMode();
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  window.console.log = () => {};
 }
 
 function loadConfig() {
