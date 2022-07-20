@@ -18,6 +18,6 @@ RUN npm ci --only=prod
 COPY ./codecept.conf.js /tests/
 COPY ./src /tests/src
 
-ENTRYPOINT ["wait-for-it", "phaenonet-app:4200", "-t", "120", "--", "npx", "codeceptjs"]
+ENTRYPOINT ["wait-for-it", "phaenonet-app:4200", "-s", "-t", "240", "--", "npx", "codeceptjs"]
 
 CMD ["run", "--override", "{ \"helpers\": { \"Playwright\": { \"url\": \"http://phaenonet-app:4200\" }}}", "--reporter", "mochawesome"]
