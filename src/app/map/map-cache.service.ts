@@ -14,17 +14,23 @@ import { environment } from 'src/environments/environment';
 import { Individual } from '../individual/individual';
 import { IdLike } from '../masterdata/masterdata-like';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
+
+/**
+ * Initially loads all changes for each selected year and
+ * updates local cache. After initial loading
+ * any changes to the collection will update the local cache.
+ *
+ * Offline deletes however will only update the cache while online.
+ * As these deletes are very rare anyway the cache should be cleared
+ * via `clearCache()` method if an individual was not found.
+ */
 @Injectable()
 export class MapCacheService {
-  private readonly CACHE_VERSION = 1;
-  private readonly CACHE_VERSION_KEY = 'mapCacheVersion';
   private readonly CACHE_PREFIX = 'mapdata';
   private cachedData$: BehaviorSubject<(Individual & IdLike)[]> = new BehaviorSubject(new Array<Individual & IdLike>());
   private cache_subscription: Subscription = new Subscription();
 
-  constructor(protected afs: AngularFirestore, protected fds: FirestoreDebugService) {
-    this.checkVersion();
-  }
+  constructor(protected afs: AngularFirestore, protected fds: FirestoreDebugService) {}
 
   getIndividuals(year: number): Observable<(Individual & IdLike)[]> {
     this.cache_subscription.unsubscribe();
@@ -48,10 +54,7 @@ export class MapCacheService {
       // do not process and push data if local storage was empty
       if (localData) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        const [cacheTs, localIndividuals] = JSON.parse(decompress(localData)) as [
-          number,
-          (Individual & IdLike)[]
-        ];
+        const [cacheTs, localIndividuals] = JSON.parse(decompress(localData)) as [number, (Individual & IdLike)[]];
         // restore timestamp objects
         localIndividuals.map(x => {
           ['created', 'modified', 'last_observation_date'].forEach(field => {
@@ -142,12 +145,11 @@ export class MapCacheService {
     }
   }
 
-  private checkVersion(): void {
-    const current_version = localStorage.getItem(this.CACHE_VERSION_KEY);
-    if (current_version && current_version != String(this.CACHE_VERSION)) {
-      console.log('Cache version changed -> clear localstorage');
-      localStorage.clear();
+  public clearCache(): void {
+    if (this.cachedData$.value.length > 0) {
+      const year = this.cachedData$.value[0].year;
+      console.log(`Clear Cache for ${year}`);
+      this.removeCache(year);
     }
-    localStorage.setItem(this.CACHE_VERSION_KEY, String(this.CACHE_VERSION));
   }
 }
