@@ -1,7 +1,7 @@
-import { FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { UntypedFormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export function equalValidation(a: string, b: string, errorKey: string): ValidatorFn {
-  return (formGroup: FormGroup): ValidationErrors | null => {
+  return (formGroup: UntypedFormGroup): ValidationErrors | null => {
     if (formGroup.get(a).value === formGroup.get(b).value) {
       return null;
     } else {

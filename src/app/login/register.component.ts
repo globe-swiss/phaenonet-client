@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -17,17 +17,17 @@ import { equalValidation } from '../shared/validation';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  registerForm = new FormGroup({
-    nickname: new FormControl('', {
+  registerForm = new UntypedFormGroup({
+    nickname: new UntypedFormControl('', {
       updateOn: 'blur',
       asyncValidators: this.publicUserService.uniqueNicknameValidator()
     }),
-    firstname: new FormControl(''),
-    lastname: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    passwordConfirm: new FormControl(''),
-    locale: new FormControl('de-CH')
+    firstname: new UntypedFormControl(''),
+    lastname: new UntypedFormControl(''),
+    email: new UntypedFormControl(''),
+    password: new UntypedFormControl(''),
+    passwordConfirm: new UntypedFormControl(''),
+    locale: new UntypedFormControl('de-CH')
   });
 
   registerFailed = false;
