@@ -30,7 +30,7 @@
     "@angular/router": "^14.1.0",
     "@mat-datetimepicker/core": "^10.0.0",
     "@mat-datetimepicker/moment": "^10.0.0",
-    "@ngx-translate/core": "^13.0.0",
+    "@ngx-translate/core": "^14.0.0",
     "@sentry/angular": "^6.14.3",
     "@sentry/tracing": "^6.14.3",
     "browser-update": "^3.3.30",
