@@ -1,13 +1,20 @@
 @use '~@angular/material' as mat;
 
-@import '../../../../theming/phaenonet-theme';
+@import '../../../../theming/mixins';
 
-.activity-title {
-  @include mat.typography-level($phaenonet-typography, 'body-1');
-  padding-top: 0.125rem;
-}
+@import '../../../../theming/typography';
 
-.activity {
-  margin-bottom: 2.125rem;
-  cursor: pointer;
+.activity-item {
+  &__value {
+    @include mat.typography-level($phaenonet-typography, 'body-1');
+  }
+
+  &__label {
+    @include detail-label;
+  }
+
+  &__card {
+    margin-bottom: 2.125rem;
+    cursor: pointer;
+  }
 }

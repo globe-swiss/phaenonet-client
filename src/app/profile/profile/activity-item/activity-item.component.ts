@@ -1,22 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Activity } from '../../../activity/activity';
-import { formatShortDateTime } from '../../../shared/formatDate';
 import { MasterdataService } from '../../../masterdata/masterdata.service';
+import { formatShortDateTime } from '../../../shared/formatDate';
 
 @Component({
   selector: 'app-activity-item',
   templateUrl: './activity-item.component.html',
   styleUrls: ['./activity-item.component.scss']
 })
-export class ActivityItemComponent implements OnInit {
+export class ActivityItemComponent {
   @Input() activity: Activity;
   formatShortDateTime = formatShortDateTime;
 
   constructor(private masterdataService: MasterdataService) {}
 
-  ngOnInit() {}
-
-  getIcon() {
+  getIcon(): string {
     return this.masterdataService.getIndividualIconPath(
       this.activity.species,
       this.activity.source,
@@ -24,7 +22,7 @@ export class ActivityItemComponent implements OnInit {
     );
   }
 
-  getDate() {
+  getDate(): string {
     return formatShortDateTime(this.activity.activity_date.toDate());
   }
 }
