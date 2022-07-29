@@ -41,7 +41,6 @@ import { InviteDialogComponent } from './invite/invite-dialog/invite-dialog.comp
     InviteDialogComponent
   ],
   providers: [],
-  exports: [],
-  entryComponents: [ChangePasswordDialogComponent]
+  exports: []
 })
 export class ProfileModule {}

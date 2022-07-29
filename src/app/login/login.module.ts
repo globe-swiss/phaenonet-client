@@ -21,7 +21,6 @@ import { ResetPasswordComponent } from './reset-password.component';
     ResetPasswordComponent,
     RegisterComponent
   ],
-  providers: [],
-  entryComponents: [LoginDialogComponent]
+  providers: []
 })
 export class LoginModule {}
