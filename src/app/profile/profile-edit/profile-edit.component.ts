@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,11 +22,11 @@ import { ChangePasswordDialogComponent } from './change-password-dialog/change-p
   styleUrls: ['./profile-edit.component.scss']
 })
 export class ProfileEditComponent extends BaseDetailComponent<User> implements OnInit, OnDestroy {
-  editForm = new FormGroup({
-    nickname: new FormControl('', { asyncValidators: this.publicUserService.uniqueNicknameValidator() }),
-    firstname: new FormControl(''),
-    lastname: new FormControl(''),
-    locale: new FormControl('de-CH')
+  editForm = new UntypedFormGroup({
+    nickname: new UntypedFormControl('', { asyncValidators: this.publicUserService.uniqueNicknameValidator() }),
+    firstname: new UntypedFormControl(''),
+    lastname: new UntypedFormControl(''),
+    locale: new UntypedFormControl('de-CH')
   });
   private subscriptions = new Subscription();
   private initialLanguage: string;

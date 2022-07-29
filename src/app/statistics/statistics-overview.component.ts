@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
@@ -56,7 +56,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
   selectableSpecies$: Observable<Species[]>;
 
   selectedYear: AbstractControl;
-  filter: FormGroup;
+  filter: UntypedFormGroup;
   private redraw$ = new Subject();
   private subscription = new Subscription();
 
@@ -102,12 +102,12 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
     void this.analytics.logEvent('statistics.view');
 
     if (!this.formPersistanceService.statisticFilter) {
-      this.selectedYear = new FormControl();
-      this.filter = new FormGroup({
+      this.selectedYear = new UntypedFormControl();
+      this.filter = new UntypedFormGroup({
         year: this.selectedYear,
-        datasource: new FormControl(this.selectableDatasources[0]),
-        analyticsType: new FormControl(this.selectableAnalyticsTypes[0]),
-        species: new FormControl(allSpecies.id)
+        datasource: new UntypedFormControl(this.selectableDatasources[0]),
+        analyticsType: new UntypedFormControl(this.selectableAnalyticsTypes[0]),
+        species: new UntypedFormControl(allSpecies.id)
       });
       this.masterdataService.phenoYear$.pipe(first()).subscribe(year => this.selectedYear.patchValue(String(year)));
       this.formPersistanceService.statisticFilter = this.filter;
@@ -155,7 +155,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
           this.filter.controls.analyticsType.setValue('species');
         }
       }),
-      tap(() => this.redraw$.next())
+      tap(() => this.redraw$.next(true))
     );
 
     this.selectableYears$ = this.masterdataService.availableYears$.pipe(

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { first, map, startWith, switchMap } from 'rxjs/operators';
@@ -64,7 +64,7 @@ export class MapOverviewComponent implements OnInit {
   datasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wld'];
 
   selectedYear: AbstractControl;
-  filter: FormGroup;
+  filter: UntypedFormGroup;
 
   formatShortDate = formatShortDate;
 
@@ -85,11 +85,11 @@ export class MapOverviewComponent implements OnInit {
     this.navService.setLocation('Karte');
 
     if (!this.formPersistanceService.mapFilter) {
-      this.selectedYear = new FormControl();
-      this.filter = new FormGroup({
+      this.selectedYear = new UntypedFormControl();
+      this.filter = new UntypedFormGroup({
         year: this.selectedYear,
-        datasource: new FormControl(this.datasources[0]),
-        species: new FormControl(allSpecies.id)
+        datasource: new UntypedFormControl(this.datasources[0]),
+        species: new UntypedFormControl(allSpecies.id)
       });
       this.masterdataService.phenoYear$.pipe(first()).subscribe(year => this.selectedYear.patchValue(year));
       this.formPersistanceService.mapFilter = this.filter;

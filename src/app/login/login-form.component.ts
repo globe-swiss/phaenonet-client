@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { AlertService } from '../messaging/alert.service';
 
@@ -9,9 +9,9 @@ import { AlertService } from '../messaging/alert.service';
   styleUrls: ['./login-form.component.scss']
 })
 export class LoginFormComponent {
-  loginForm = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl('')
+  loginForm = new UntypedFormGroup({
+    email: new UntypedFormControl(''),
+    password: new UntypedFormControl('')
   });
 
   loginFailed = false;

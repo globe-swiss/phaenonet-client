@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { InviteDialogData } from './invite-dialog-data';
 
@@ -9,8 +9,8 @@ import { InviteDialogData } from './invite-dialog-data';
   styleUrls: ['./invite-dialog.component.scss']
 })
 export class InviteDialogComponent {
-  inviteForm = new FormGroup({
-    email: new FormControl('')
+  inviteForm = new UntypedFormGroup({
+    email: new UntypedFormControl('')
   });
 
   constructor(

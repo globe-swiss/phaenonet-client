@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { equalValidation } from '../../../shared/validation';
 import { ChangeEmailData } from './change-email-data';
@@ -10,10 +10,10 @@ import { ChangeEmailData } from './change-email-data';
   templateUrl: './change-email-dialog.component.html'
 })
 export class ChangeEmailDialogComponent implements OnInit {
-  changeEmailForm = new FormGroup({
-    email: new FormControl(''),
-    emailConfirm: new FormControl(''),
-    password: new FormControl('')
+  changeEmailForm = new UntypedFormGroup({
+    email: new UntypedFormControl(''),
+    emailConfirm: new UntypedFormControl(''),
+    password: new UntypedFormControl('')
   });
 
   constructor(

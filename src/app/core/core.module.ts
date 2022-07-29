@@ -20,8 +20,7 @@ import { NavService } from './nav/nav.service';
   imports: [SharedModule, AuthModule],
   exports: [AuthModule, MaterialModule, NavComponent, AppSnackBarComponent, TranslateModule],
   declarations: [NavComponent, AppSnackBarComponent, AlertComponent],
-  providers: [AlertService, AuthService, ExceptionService, LanguageService, NavService, TranslateService],
-  entryComponents: [AlertComponent]
+  providers: [AlertService, AuthService, ExceptionService, LanguageService, NavService, TranslateService]
 })
 export class CoreModule {
   constructor(

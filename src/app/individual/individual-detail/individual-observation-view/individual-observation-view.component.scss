@@ -5,6 +5,10 @@
 .individual-observation-view {
   margin-top: 2.5625rem;
 
+  .mat-icon {
+    overflow: visible;
+  }
+
   &__label {
     @include detail-label;
   }

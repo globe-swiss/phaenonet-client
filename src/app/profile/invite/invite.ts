@@ -1,5 +1,4 @@
-import firebase from 'firebase/compat/app';
-import Timestamp = firebase.firestore.Timestamp;
+import { Timestamp } from '@angular/fire/firestore';
 
 export class Invite {
   user: string;

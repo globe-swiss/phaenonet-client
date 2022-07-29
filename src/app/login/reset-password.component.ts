@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
@@ -9,8 +9,8 @@ import { NavService } from '../core/nav/nav.service';
   templateUrl: './reset-password.component.html'
 })
 export class ResetPasswordComponent implements OnInit {
-  resetPasswordForm = new FormGroup({
-    email: new FormControl('')
+  resetPasswordForm = new UntypedFormGroup({
+    email: new UntypedFormControl('')
   });
 
   resetPasswordEmailSent = false;

@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import firebase from 'firebase/compat/app';
+import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import { combineLatest, from, Observable, of, Subscription } from 'rxjs';
 import { filter, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
@@ -51,28 +51,28 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
   followIndividual(target: string | Observable<Individual>): Observable<void> {
     return this.individualObservable(target).pipe(
       first(),
-      switchMap(id => this.followUnfollow({ following_individuals: firebase.firestore.FieldValue.arrayUnion(id) }))
+      switchMap(id => this.followUnfollow({ following_individuals: arrayUnion(id) }))
     );
   }
 
   unfollowIndividual(target: string | Observable<Individual>): Observable<void> {
     return this.individualObservable(target).pipe(
       first(),
-      switchMap(id => this.followUnfollow({ following_individuals: firebase.firestore.FieldValue.arrayRemove(id) }))
+      switchMap(id => this.followUnfollow({ following_individuals: arrayRemove(id) }))
     );
   }
 
   followUser(target: string | Observable<PublicUser & IdLike>): Observable<void> {
     return this.idObservable(target).pipe(
       first(),
-      switchMap(id => this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayUnion(id) }))
+      switchMap(id => this.followUnfollow({ following_users: arrayUnion(id) }))
     );
   }
 
   unfollowUser(target: string | Observable<PublicUser & IdLike>): Observable<void> {
     return this.idObservable(target).pipe(
       first(),
-      switchMap(id => this.followUnfollow({ following_users: firebase.firestore.FieldValue.arrayRemove(id) }))
+      switchMap(id => this.followUnfollow({ following_users: arrayRemove(id) }))
     );
   }
 
