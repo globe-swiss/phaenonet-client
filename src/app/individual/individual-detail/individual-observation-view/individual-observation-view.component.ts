@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { MatDialog } from '@angular/material/dialog';
-import firebase from 'firebase/compat/app';
+import { deleteField } from '@angular/fire/firestore';
 import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
 import { combineLatest, Observable } from 'rxjs';
@@ -115,7 +115,7 @@ export class ObservationViewComponent implements OnInit {
             result.observation.map(observation => {
               // fix undefined comment #28
               if (observation.comment === undefined) {
-                observation.comment = firebase.firestore.FieldValue.delete();
+                observation.comment = deleteField();
               }
               // if this is a new observation the created date is not set
               if (!observation.created) {

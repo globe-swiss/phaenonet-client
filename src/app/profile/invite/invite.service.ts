@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import firebase from 'firebase/compat/app';
+import { increment } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -44,7 +44,7 @@ export class InviteService extends BaseResourceService<Invite> {
 
   resendInvite(invite: Invite, id: string) {
     if (!invite.sent || new Date().getTime() - invite.sent.toDate().getTime() > 10 * 60 * 1000) {
-      invite.resend = firebase.firestore.FieldValue.increment(1);
+      invite.resend = increment(1);
       this.upsert(invite, id);
     } else {
       this.alertService.infoMessage(

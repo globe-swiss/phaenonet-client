@@ -1,6 +1,5 @@
-import firebase from 'firebase/compat/app';
+import { FieldValue } from '@angular/fire/firestore';
 import { SourceType } from '../masterdata/source-type';
-import FieldValue = firebase.firestore.FieldValue;
 
 export class Observation {
   date: Date;

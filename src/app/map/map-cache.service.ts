@@ -5,7 +5,7 @@ import {
   DocumentChangeAction,
   DocumentData
 } from '@angular/fire/compat/firestore';
-import { Timestamp } from '@firebase/firestore';
+import { Timestamp } from '@angular/fire/firestore';
 import * as Sentry from '@sentry/angular';
 import { compress, decompress } from 'lz-string';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';

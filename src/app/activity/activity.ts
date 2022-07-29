@@ -1,6 +1,5 @@
-import firebase from 'firebase/compat/app';
+import { Timestamp } from '@angular/fire/firestore';
 import { SourceType } from '../masterdata/source-type';
-import Timestamp = firebase.firestore.Timestamp;
 
 export class Activity {
   action?: string;
