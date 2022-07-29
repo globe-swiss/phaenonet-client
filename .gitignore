@@ -3,8 +3,9 @@
 # security rules
 /security
 
-# e2e tests
+# tool output
 /e2e/output
+sme.html
 
 # compiled output
 /dist
