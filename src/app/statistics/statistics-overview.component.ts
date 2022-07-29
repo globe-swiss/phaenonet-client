@@ -155,7 +155,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
           this.filter.controls.analyticsType.setValue('species');
         }
       }),
-      tap(() => this.redraw$.next())
+      tap(() => this.redraw$.next(true))
     );
 
     this.selectableYears$ = this.masterdataService.availableYears$.pipe(
