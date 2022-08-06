@@ -134,10 +134,12 @@ To manually deploy a test version:
 npx ng build && npx firebase deploy --project phaenonet-test
 ```
 
-### Manually deploy application to production
+### Manually deploy application version to production
 
 ```commandline
-npx ng build --c=production && npx firebase deploy --project phaenonet
+git checkout v<version>
+npx firebase login
+rm -r node_modules && npm ci --also=dev && npx ng build --c=production && npx firebase deploy --project phaenonet
 ```
 
 ## Related resources
