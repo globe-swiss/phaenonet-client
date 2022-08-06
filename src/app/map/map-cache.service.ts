@@ -137,7 +137,7 @@ export class MapCacheService {
         if (action.type != 'removed' && individual.last_observation_date) {
           cachedData.push({ id: action.payload.doc.id, ...individual });
         }
-        if (individual.modified) {
+        if (individual.modified instanceof Timestamp) {
           lastModified = Math.max(lastModified, individual.modified.toMillis());
         }
       });
