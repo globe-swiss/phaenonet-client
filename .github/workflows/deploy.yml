@@ -51,7 +51,7 @@ jobs:
           echo "set release version: ${{ env.VERSION }}"
           sed -ri "s|'#VERSION#'|'${{ env.VERSION }}'|" src/environments/environment*.ts
       - name: Build
-        run: npx ng build "${{ env.PROJECT == 'phaenonet' && '--c=production' || '' }}"
+        run: npx ng build ${{ env.PROJECT == 'phaenonet' && '--c=production' || '' }}
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
