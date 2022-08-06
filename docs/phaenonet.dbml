@@ -15,6 +15,8 @@ enum locale {
 enum source {
   globe
   meteoswiss
+  ranger
+  wld
 }
 
 table activities {
@@ -122,10 +124,11 @@ enum individual_type {
 }
 
 table observations {
-  id string [note: 'individual_year_species_phenophase']
+  id string [note: 'ids have different patterns depending on the source']
   date date
   individual string [ref: > individuals.individual, note: 'many-to-many relationship']
   individual_id string [ref: > individuals.id]
+  tree_id string [null, note: 'optional tree id/name within a station (currently only on wld source)']
   phenophase string [note: 'definitions/config_static/phenophases']
   source source
   species string [note: 'definitions/config_static/species']
