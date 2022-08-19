@@ -172,10 +172,10 @@ export class MasterdataService extends BaseService implements OnDestroy {
     return combineLatest([this.getSpecies(), roles]).pipe(
       map(([species, roles]) => {
         if (roles.includes(Roles.RANGER)) {
-          // PhaenoRanger user can enter data for ranger and globe species
-          return species.filter(s => s.sources.includes('globe') || s.sources.includes('ranger')); // fixme: all species should have the complete roles -> only check for ranger!
+          // PhaenoRanger user can enter data for ranger species
+          return species.filter(s => s.sources.includes('ranger'));
         } else {
-          // normal PhaenoNet User can enter globe species only
+          // normal PhaenoNet User can enter globe species
           return species.filter(s => s.sources.includes('globe'));
         }
       })
