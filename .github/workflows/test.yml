@@ -57,6 +57,46 @@ jobs:
         with:
           name: dist-pr-build
           path: dist
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: cache-deps
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
+      - name: Build test version
+        run: npx ng test
+        env:
+          JEST_JUNIT_OUTPUT_DIR: reports
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: Unit Tests # Name of the check run which will be created
+          path: reports/junit.xml # Path to test results
+          reporter: jest-junit # Format of test results
+        if: ${{ always() }}
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: reports/lcov.info
+          flags: unittests
+        if: ${{ always() }}
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: reports/lcov.info
+        if: ${{ always() }}
   e2e-tests:
     concurrency: e2e-test
     name: E2E-tests

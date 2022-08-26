@@ -53,8 +53,7 @@
     },
     {
       "files": ["src/**/*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended", "plugin:prettier/recommended"],
-      "rules": {}
+      "extends": ["plugin:@angular-eslint/template/recommended", "plugin:prettier/recommended"]
     },
     {
       "files": ["e2e/**/*.js"],
@@ -70,6 +69,14 @@
       "rules": {
         "no-undef": "off" // until plugin:codeceptjs/recommended is supported by codacy
       }
+    },
+    {
+      "files": ["src/**/*.spec.ts"],
+      "env": {
+        "jest/globals": true
+      },
+      "plugins": ["jest"],
+      "extends": ["plugin:jest/recommended"]
     }
   ]
 }
