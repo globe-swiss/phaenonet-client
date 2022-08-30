@@ -60,7 +60,7 @@ export class MapCacheService {
           ['created', 'modified', 'last_observation_date'].forEach(field => {
             if (x[field]) {
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
-              x[field] = new Timestamp(x[field].seconds, x[field].nanosecods);
+              x[field] = new Timestamp(x[field].seconds, 0);
             }
           });
         });
