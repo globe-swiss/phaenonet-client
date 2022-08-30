@@ -9,11 +9,12 @@ import { Timestamp } from '@angular/fire/firestore';
 import * as Sentry from '@sentry/angular';
 import { compress, decompress } from 'lz-string';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Individual } from '../individual/individual';
 import { IdLike } from '../masterdata/masterdata-like';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
+import { LocalService } from '../shared/local.service';
 
 /**
  * Initially loads all changes for each selected year and
@@ -28,87 +29,99 @@ import { FirestoreDebugService } from '../shared/firestore-debug.service';
 export class MapCacheService {
   private readonly CACHE_PREFIX = 'mapdata';
   private cachedData$: BehaviorSubject<(Individual & IdLike)[]> = new BehaviorSubject(new Array<Individual & IdLike>());
-  private cache_subscription: Subscription = new Subscription();
+  private changeListenerSubscription: Subscription = new Subscription();
 
-  constructor(protected afs: AngularFirestore, protected fds: FirestoreDebugService) {}
+  constructor(
+    protected afs: AngularFirestore,
+    protected fds: FirestoreDebugService,
+    private localService: LocalService
+  ) {}
 
-  getIndividuals(year: number): Observable<(Individual & IdLike)[]> {
-    this.cache_subscription.unsubscribe();
+  getIndividuals(year?: number): Observable<(Individual & IdLike)[]> {
     // ignore if year is not set
     if (year > 0) {
-      const cacheTs = this.loadCache(year);
-      console.log(`loaded map cache for ${year}, ${this.cachedData$.value.length} individuals`);
-      this.cache_subscription = this.setupDocumentListener(year, cacheTs).subscribe();
+      // read local cache and initialize observable
+      const { cacheTs, cachedData } = this.loadCache(year);
+      console.log(`loaded map cache for ${year}, ${cachedData.length} individuals`);
+
+      this.changeListenerSubscription.unsubscribe();
+      this.cachedData$.next(cachedData);
+      // subscribe to changes starting with at the last modification in the local cache
+      this.changeListenerSubscription = this.setupChangeListener(year, cacheTs).subscribe(x =>
+        this.cachedData$.next(x)
+      );
     }
     return this.cachedData$;
   }
 
   /**
-   * Load map data from local cache.
+   * Load map data from local cache into cachedData$.
    * @param year the year
    * @returns last modified timestamp, null if cache is empty
    */
-  private loadCache(year: number): number | null {
+  private loadCache(year: number): {
+    cacheTs?: number;
+    cachedData?: (Individual & IdLike)[];
+  } {
+    let cachedData = new Array<Individual & IdLike>();
+    let cacheTs: number = null;
     try {
-      const localData = localStorage.getItem(`${this.CACHE_PREFIX}_${year}`);
+      const localData = this.localService.localStorageGet(`${this.CACHE_PREFIX}_${year}`);
       // do not process and push data if local storage was empty
       if (localData) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        const [cacheTs, localIndividuals] = JSON.parse(decompress(localData)) as [number, (Individual & IdLike)[]];
+        [cacheTs, cachedData] = this.parseCompressedCache(localData);
         // restore timestamp objects
-        localIndividuals.map(x => {
-          ['created', 'modified', 'last_observation_date'].forEach(field => {
-            if (x[field]) {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
-              x[field] = new Timestamp(x[field].seconds, 0);
-            }
-          });
-        });
-        this.cachedData$ = new BehaviorSubject(localIndividuals);
-        return cacheTs;
-      } else {
-        this.cachedData$ = new BehaviorSubject(new Array<Individual & IdLike>());
-        return null;
+        console.log(cachedData);
+        cachedData = cachedData.map(individual => this.restoreIndividualTimestamps(individual));
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       if (environment.sentryEnabled) {
         Sentry.captureException(error);
       }
 
-      this.removeCache(year);
-      this.cachedData$ = new BehaviorSubject(new Array<Individual & IdLike>());
-      return null;
+      // clear cache on error and restart fresh
+      this.removeLocalCache(year);
+      cachedData = new Array<Individual & IdLike>();
+      cacheTs = null;
     }
+    return { cacheTs: cacheTs, cachedData: cachedData };
   }
 
-  private updateCache(year: number, lastModified: number, individuals: (Individual & IdLike)[]): void {
-    this.cachedData$.next(individuals);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    localStorage.setItem(`${this.CACHE_PREFIX}_${year}`, compress(JSON.stringify([lastModified, individuals])));
+  private restoreIndividualTimestamps<T extends Individual>(individual: T): T {
+    ['created', 'modified', 'last_observation_date'].forEach(field => {
+      if (individual[field]) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
+        individual[field] = new Timestamp(individual[field].seconds, 0);
+      }
+    });
+    return individual;
   }
 
-  private removeCache(year: number) {
-    localStorage.removeItem(`${this.CACHE_PREFIX}_${year}`);
+  private parseCompressedCache(localData: string): [number, (Individual & IdLike)[]] {
+    return JSON.parse(decompress(localData)) as [number, (Individual & IdLike)[]];
   }
 
   /**
-   * Listen to individual document changes starting from a given timestamp.
+   * Listen to individual document changes starting from a given timestamp and return the actions.
    * @param year the year
    * @param cacheTs the timestamp from when to start listening, null if initial
    * @returns Observable with document changes
    */
-  private setupDocumentListener(year: number, cacheTs: number): Observable<DocumentChangeAction<Individual>[]> {
+  private setupChangeListener(year: number, cacheTs: number): Observable<(Individual & IdLike)[]> {
     return this.afs
-      .collection<Individual>('individuals', ref => this.getIndividualQuery(year, cacheTs, ref))
+      .collection<Individual>('individuals', ref => this.constructChangeListenerQuery(year, cacheTs, ref))
       .stateChanges()
       .pipe(
-        tap(actions => this.processActions(year, actions)),
-        tap(x => this.fds.addRead(`individuals (mapCache)`, x.length))
+        tap(x => this.fds.addRead(`individuals (mapCache)`, x.length)),
+        filter(actions => actions.length > 0), // filter empty action arrays
+        map(actions => this.processActions(actions)),
+        tap(({ cacheTs, cachedData }) => this.updateLocalCache(year, cacheTs, cachedData)),
+        map(({ cachedData }) => cachedData)
       );
   }
 
-  private getIndividualQuery(
+  private constructChangeListenerQuery(
     year: number,
     cacheTs: number,
     individual_collection_ref: CollectionReference<DocumentData>
@@ -124,11 +137,19 @@ export class MapCacheService {
     return query;
   }
 
-  private processActions(year: number, actions: DocumentChangeAction<Individual>[]): void {
+  /**
+   * Processes change action from Firestore and merges it with the current cached data.
+   * @param actions array of actions from Firestore. MUST not be empty.
+   * @returns complete updated set if cached individuals & timestamp if the last change in the data set
+   */
+  private processActions(actions: DocumentChangeAction<Individual>[]): {
+    cacheTs: number;
+    cachedData: (Individual & IdLike)[];
+  } {
     // do not process empty action arrays
     if (actions.length > 0) {
       let cachedData = this.cachedData$.value;
-      let lastModified = Number.NEGATIVE_INFINITY;
+      let cacheTs = Number.NEGATIVE_INFINITY;
       actions.forEach(action => {
         // remove old record from cache
         cachedData = cachedData.filter(x => x.id != action.payload.doc.id);
@@ -138,18 +159,35 @@ export class MapCacheService {
           cachedData.push({ id: action.payload.doc.id, ...individual });
         }
         if (individual.modified instanceof Timestamp) {
-          lastModified = Math.max(lastModified, individual.modified.toMillis());
+          cacheTs = Math.max(cacheTs, individual.modified.toMillis());
         }
       });
-      this.updateCache(year, lastModified, cachedData);
+      return { cacheTs: cacheTs, cachedData: cachedData };
+    } else {
+      throw Error('empty action arrays must be filtered');
     }
   }
 
-  public clearCache(): void {
+  private updateLocalCache(year: number, lastModified: number, individuals: (Individual & IdLike)[]): void {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    this.localService.localStorageSet(
+      `${this.CACHE_PREFIX}_${year}`,
+      compress(JSON.stringify([lastModified, individuals]))
+    );
+  }
+
+  private removeLocalCache(year: number) {
+    this.localService.localStorageRemove(`${this.CACHE_PREFIX}_${year}`);
+  }
+
+  /**
+   * Clears local cache for the currently loaded year.
+   */
+  public clearLocalCache(): void {
     if (this.cachedData$.value.length > 0) {
       const year = this.cachedData$.value[0].year;
       console.log(`Clear Cache for ${year}`);
-      this.removeCache(year);
+      this.removeLocalCache(year);
     }
   }
 }

@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
+import { LocalService } from '../shared/local.service';
 
 @Injectable()
 export class LanguageService implements OnDestroy {
@@ -14,7 +15,8 @@ export class LanguageService implements OnDestroy {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private translateService: TranslateService,
-    private authService: AuthService
+    private authService: AuthService,
+    private localService: LocalService
   ) {
     this.subscriptions.add(
       this.authService.user$.pipe(filter(user => !!user)).subscribe(user => this.changeLocale(user.locale))
@@ -39,12 +41,12 @@ export class LanguageService implements OnDestroy {
     }
     moment.locale(locale);
     this.translateService.use(locale);
-    localStorage.setItem(this.LOCALSTORAGE_KEY, locale);
+    this.localService.localStorageSet(this.LOCALSTORAGE_KEY, locale);
     this.document.documentElement.lang = locale;
   }
 
   determineCurrentLang(): string {
-    let userLang = localStorage.getItem(this.LOCALSTORAGE_KEY);
+    let userLang = this.localService.localStorageGet(this.LOCALSTORAGE_KEY);
     if (userLang != null) {
       userLang = this.parseLang(userLang);
     }

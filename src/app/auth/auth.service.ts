@@ -11,6 +11,7 @@ import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { User } from '../profile/user';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
+import { LocalService } from '../shared/local.service';
 import { LoginResult } from './login-result';
 
 export const LOGIN_URL = '/auth/login';
@@ -34,7 +35,8 @@ export class AuthService extends BaseService implements OnDestroy {
     private router: Router,
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
-    private fds: FirestoreDebugService
+    private fds: FirestoreDebugService,
+    private localService: LocalService
   ) {
     super(alertService);
 
@@ -98,7 +100,7 @@ export class AuthService extends BaseService implements OnDestroy {
   }
 
   resetClientSession(): void {
-    localStorage.removeItem(LOCALSTORAGE_LOGIN_RESULT_KEY);
+    this.localService.localStorageRemove(LOCALSTORAGE_LOGIN_RESULT_KEY);
   }
 
   resetPassword(email: string): Observable<void> {
@@ -240,11 +242,11 @@ export class AuthService extends BaseService implements OnDestroy {
   }
 
   private getLoginCache(): LoginResult | null {
-    const json = localStorage.getItem(LOCALSTORAGE_LOGIN_RESULT_KEY);
+    const json = this.localService.localStorageGet(LOCALSTORAGE_LOGIN_RESULT_KEY);
     return json ? (JSON.parse(json) as LoginResult) : null;
   }
 
   private setLoginCache(loginResult: LoginResult): void {
-    localStorage.setItem(LOCALSTORAGE_LOGIN_RESULT_KEY, JSON.stringify(loginResult));
+    this.localService.localStorageSet(LOCALSTORAGE_LOGIN_RESULT_KEY, JSON.stringify(loginResult));
   }
 }

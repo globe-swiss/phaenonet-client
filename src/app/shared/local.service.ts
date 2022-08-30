@@ -6,18 +6,24 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class LocalService {
+  private LOCALSTORAGE = 'localStorage';
   private localStorageMsgSent = false;
 
+  localStorageRemove(key: string): void {
+    if (this.storageAvailable(this.LOCALSTORAGE)) {
+      localStorage.removeItem(key);
+    }
+  }
+
   localStorageGet(key: string): string | undefined {
-    if (this.storageAvailable('localStorage')) {
+    if (this.storageAvailable(this.LOCALSTORAGE)) {
       return localStorage.getItem(key);
     } else return undefined;
   }
 
-  localStorageSet(key: string, data: string): boolean {
-    if (this.storageAvailable('localStorage')) {
+  localStorageSet(key: string, data: string): void {
+    if (this.storageAvailable(this.LOCALSTORAGE)) {
       localStorage.setItem(key, data);
-      return true;
     } else {
       console.error('Localstorage not available');
       /* istanbul ignore next */
@@ -25,7 +31,6 @@ export class LocalService {
         Sentry.captureMessage('Localstorage not available', { level: Sentry.Severity.Debug });
         this.localStorageMsgSent = true;
       }
-      return false;
     }
   }
 
