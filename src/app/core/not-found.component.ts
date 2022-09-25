@@ -12,6 +12,6 @@ export class NotFoundComponent implements OnInit {
 
   ngOnInit(): void {
     this.navService.setLocation('Hier ist etwas schiefgelaufen.');
-    this.mapCacheService.clearCache(); // try to clear cache if clicked on deleted individual
+    this.mapCacheService.clearLocalCache(); // try to clear cache if clicked on deleted individual
   }
 }

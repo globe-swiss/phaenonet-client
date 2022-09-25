@@ -108,7 +108,7 @@ module.exports = {
   // resetModules: false,
 
   // A path to a custom resolver
-  // resolver: undefined,
+  resolver: '<rootDir>/jest/jest.resolver.js',
 
   // Automatically restore mock state and implementation before every test
   restoreMocks: true,
@@ -128,7 +128,7 @@ module.exports = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: ['<rootDir>/setup-jest.ts']
+  setupFilesAfterEnv: ['<rootDir>/jest/setup-jest.ts']
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,

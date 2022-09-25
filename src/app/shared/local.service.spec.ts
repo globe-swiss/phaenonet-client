@@ -13,15 +13,35 @@ describe('Service: Local', () => {
     expect(fixture).toBeTruthy();
   });
 
+  describe('localStorageRemove', () => {
+    it('should handle write storage when unavailable', () => {
+      jest.spyOn(console, 'error').mockReturnValue();
+      jest.spyOn(fixture, 'storageAvailable').mockReturnValue(false);
+      const localStorageSpy = jest.spyOn(localStorage, 'removeItem');
+
+      fixture.localStorageRemove(KEY);
+
+      expect(localStorageSpy).not.toHaveBeenCalled();
+    });
+
+    it('should handle write on storage available', () => {
+      jest.spyOn(fixture, 'storageAvailable').mockReturnValue(true);
+      const localStorageSpy = jest.spyOn(localStorage, 'removeItem');
+
+      fixture.localStorageRemove(KEY);
+
+      expect(localStorageSpy).toHaveBeenCalledWith(KEY);
+    });
+  });
+
   describe('localStorageSet', () => {
     it('should handle write storage when unavailable', () => {
       jest.spyOn(console, 'error').mockReturnValue();
       jest.spyOn(fixture, 'storageAvailable').mockReturnValue(false);
       const localStorageSpy = jest.spyOn(localStorage, 'setItem');
 
-      const result = fixture.localStorageSet(KEY, VALUE);
+      fixture.localStorageSet(KEY, VALUE);
 
-      expect(result).toBeFalsy();
       expect(localStorageSpy).not.toHaveBeenCalled();
     });
 
@@ -29,9 +49,8 @@ describe('Service: Local', () => {
       jest.spyOn(fixture, 'storageAvailable').mockReturnValue(true);
       const localStorageSpy = jest.spyOn(localStorage, 'setItem');
 
-      const result = fixture.localStorageSet(KEY, VALUE);
+      fixture.localStorageSet(KEY, VALUE);
 
-      expect(result).toBeTruthy();
       expect(localStorageSpy).toHaveBeenCalledWith(KEY, VALUE);
     });
   });
@@ -60,13 +79,13 @@ describe('Service: Local', () => {
   });
 
   describe('storageAvailable', () => {
-    it.skip('should handle localStorage unavailabe', () => {
-      window.localStorage = undefined; // how to set localstore to undefined?
+    // it.skip('should handle localStorage unavailabe', () => {
+    //   window.localStorage = undefined; // how to set localstore to undefined?
 
-      const result = fixture.storageAvailable('localStorage');
+    //   const result = fixture.storageAvailable('localStorage');
 
-      expect(result).toEqual(false);
-    });
+    //   expect(result).toEqual(false);
+    // });
 
     it('should handle localStorage write error', () => {
       jest.spyOn(localStorage, 'setItem').mockImplementation(() => {
