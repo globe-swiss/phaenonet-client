@@ -60,9 +60,9 @@ npx firebase login
 
 Consult the official documentation for the [Firebase CLI](https://firebase.google.com/docs/cli) for further information.
 
-API information [init.json](https://phaenonet-test.web.app/__/firebase/init.json) must be copied to the folder `/app/src/local/`.
+API information [init.json](https://phaenonet-test.web.app/__/firebase/init.json) must be copied to the folder `/app/src/local/`. `curl https://phaenonet-test.web.app/__/firebase/init.json > src/local/init.json`
 
-Firestore and Storage rules need to be checked out from a separate project [phaenonet-client-security](https://github.com/globe-swiss/phaenonet-client-security) into the `/security` folder.
+Firestore and Storage rules need to be checked out from a separate project [phaenonet-client-security](https://github.com/globe-swiss/phaenonet-client-security) into the `/security` folder. `git clone git@github.com:globe-swiss/phaenonet-client-security.git security`
 
 ### Serve locally
 

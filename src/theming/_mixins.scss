@@ -247,3 +247,9 @@
 @mixin dialog {
   border-radius: 1rem;
 }
+
+@mixin year-select {
+  margin-left: auto;
+  font-weight: bold;
+  margin-bottom: 30px;
+}

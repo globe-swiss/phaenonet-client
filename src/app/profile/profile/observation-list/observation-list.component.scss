@@ -27,4 +27,8 @@
   &__buttons {
     @include buttons;
   }
+
+  &__year {
+    @include year-select;
+  }
 }

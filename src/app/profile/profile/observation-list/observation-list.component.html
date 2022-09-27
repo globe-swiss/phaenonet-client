@@ -6,28 +6,31 @@
     </h2>
   </div>
   <div *ngIf="userId" class="observation-list__content">
-    <app-observation-item
-      *ngFor="let item of latestIndividualObservations$ | async"
-      [item]="item"
-    ></app-observation-item>
+    <div class="observation-list__year">
+      <mat-select [value]="selectedYear | async" (selectionChange)="selectYear($event)">
+        <mat-option [value]="year" *ngFor="let year of avaiableYears() | async">{{ year }}</mat-option>
+      </mat-select>
+    </div>
+    <div *ngIf="(latestIndividualObservationsMap$ | async)?.length > 0">
+      <div *ngFor="let item of latestIndividualObservationsMap$ | async">
+        <div *ngIf="item.length > 0">
+          <div *ngIf="item[1].length > 1">
+            <app-observation-species-item [items]="item[1]" [species]="item[0]" [userId]="userId"
+              [year]="selectedYear | async">
+            </app-observation-species-item>
+          </div>
+          <div *ngIf="!(item[1].length > 1)">
+            <app-observation-item [item]="item[1][0]"> </app-observation-item>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="observation-list__buttons">
-      <button
-        class="observation-list__button"
-        *ngIf="isOwner()"
-        mat-flat-button
-        color="primary"
-        [routerLink]="'/individuals/new/edit'"
-      >
+      <button class="observation-list__button" *ngIf="isOwner()" mat-flat-button color="primary"
+        [routerLink]="'/individuals/new/edit'">
         <mat-icon>add</mat-icon>
         <span>{{ 'Objekt hinzufügen' | translate }}</span>
-      </button>
-      <button
-        class="observation-list__button observation-list__button--more"
-        mat-flat-button
-        color="accent"
-        (click)="showMoreIndividuals()"
-      >
-        <span>{{ 'Mehr anzeigen' | translate }}</span>
       </button>
     </div>
   </div>

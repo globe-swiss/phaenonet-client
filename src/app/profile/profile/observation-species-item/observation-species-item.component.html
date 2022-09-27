@@ -1,0 +1,19 @@
+<div class="observation-item" [routerLink]="['/profile', userId, 'species', species, 'year', year]">
+  <img class="observation-item__image" data-test-id="observation-item__image" [src]="getIconPath()" />
+  <div class="observation-item__description">
+    <div class="observation-item__name">
+      <div class="observation-item__label" data-test-id="observation-item__species">Gruppe</div>
+      <div class="observation-item__value" data-test-id="observation-item_name">{{ getSpecies().de | translate }}</div>
+    </div>
+    <div class="observation-item__observation">
+      <div class="observation-item__label" *ngIf="getLastActivity()">
+        {{ 'Letzte Aktivität' | translate }},
+        {{ getLastActivity() }}
+      </div>
+      <div class="observation-item__label" *ngIf="!getLastActivity()">{{ 'Noch keine Aktivität' | translate }}</div>
+    </div>
+  </div>
+  <div class="observation-item__quantity-container">
+    <div class="observation-item__quantity">{{ items.length }}</div>
+  </div>
+</div>

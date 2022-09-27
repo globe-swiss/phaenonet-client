@@ -1,0 +1,61 @@
+@use '@angular/material' as mat;
+
+@import '../../../../theming/typography';
+
+@import '../../../../theming/mixins';
+
+.observation-item {
+  @include teaser-card;
+
+  &__image_container {
+    width: 50px;
+    height: 50px;
+  }
+
+  &__image {
+    @include teaser-image;
+    width: 70px;
+    height: 70px;
+    padding: 36px 55px;
+  }
+
+  &__description {
+    @include teaser-description;
+  }
+
+  &__label {
+    @include detail-label;
+  }
+
+  &__value {
+    @include mat.typography-level($phaenonet-typography, 'body-1');
+  }
+
+  &__phenophase-circle {
+    @include phenophase-circle;
+  }
+
+  &__name {
+    @include teaser-name;
+  }
+
+  &__quantity-container {
+    margin-left: auto;
+    align-self: center;
+    width: 47px;
+    height: 47px;
+    display: flex;
+    border-radius: 50%;
+    background-color: green;
+    align-items: center;
+    justify-content: center;
+    margin-right: 47px;
+    background-color: #b6cc99;
+  }
+
+  &__quantity {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
