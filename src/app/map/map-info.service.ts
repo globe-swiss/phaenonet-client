@@ -1,0 +1,98 @@
+import { Injectable } from '@angular/core';
+import { Timestamp } from '@angular/fire/firestore';
+import { MapMarker } from '@angular/google-maps';
+import { combineLatest, defer, iif, Observable, of, ReplaySubject } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
+import { Individual } from '../individual/individual';
+import { IndividualService } from '../individual/individual.service';
+import { IdLike } from '../masterdata/masterdata-like';
+import { MasterdataService } from '../masterdata/masterdata.service';
+import { Phenophase } from '../masterdata/phaenophase';
+import { Species } from '../masterdata/species';
+
+export interface IndividualInfoWindowData {
+  marker: MapMarker;
+  type: string;
+  individual_name: string;
+  last_observation_date: Timestamp;
+  species_name: string;
+  phenophase_name?: string;
+  url: string[];
+  imgUrl$: Observable<string>;
+}
+
+export interface StationInfoWindowData {
+  marker: MapMarker;
+  type: string;
+  individual_name: string;
+  source: string;
+  url: string[];
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MapInfoService {
+  private loadInfoSubject = new ReplaySubject<string>(1);
+  public readonly infoWindowData$: Observable<IndividualInfoWindowData | StationInfoWindowData>;
+
+  constructor(private individualService: IndividualService, private masterdataService: MasterdataService) {
+    this.infoWindowData$ = this.loadInfoSubject.pipe(
+      switchMap(id => this.individualService.getWithId(id)),
+      switchMap(individual =>
+        iif(
+          () => individual.type === 'individual',
+          defer(() => this.getIndividualInfo(individual)),
+          defer(() => of(this.getStationInfo(individual)))
+        )
+      )
+    );
+  }
+
+  /**
+   * Loads the data for the information window and exposes it to `infoWindowData$`.
+   * @param individualId the individual to load
+   *
+   */
+  public loadInfo(individualId: string) {
+    this.loadInfoSubject.next(individualId);
+  }
+
+  private getIndividualInfo(individual: Individual & IdLike) {
+    if (individual.type === 'individual') {
+      return combineLatest([
+        this.masterdataService.getSpeciesValue(individual.species),
+        this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase)
+      ]).pipe(map(([species, phenophase]) => this.getIndividualInfoInt(individual, species, phenophase)));
+    }
+  }
+
+  private getIndividualInfoInt(individual: Individual & IdLike, species: Species, phenophase: Phenophase) {
+    return {
+      type: individual.type,
+      individual_name: individual.name,
+      last_observation_date: individual.last_observation_date,
+      species_name: species.de,
+      phenophase_name: phenophase.de,
+      imgUrl$: this.individualService.getImageUrl(individual, true).pipe(
+        first(),
+        map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
+      ),
+      url: this.getRoutingUrl(individual)
+    } as IndividualInfoWindowData;
+  }
+
+  private getStationInfo(individual: Individual & IdLike) {
+    return {
+      type: individual.type,
+      individual_name: individual.name,
+      source: individual.source,
+      url: this.getRoutingUrl(individual)
+    } as StationInfoWindowData;
+  }
+
+  private getRoutingUrl(individual: Individual & IdLike) {
+    const baseUrl = individual.type === 'station' ? '/stations' : '/individuals';
+    return [baseUrl, individual.id];
+  }
+}

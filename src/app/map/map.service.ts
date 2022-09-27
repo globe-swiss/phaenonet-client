@@ -1,0 +1,80 @@
+import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
+import { first, map, tap } from 'rxjs/operators';
+import { Individual, IndividualType, MapIndividual } from '../individual/individual';
+import { IdLike } from '../masterdata/masterdata-like';
+import { MasterdataService } from '../masterdata/masterdata.service';
+import { SourceFilterType, SourceType } from '../masterdata/source-type';
+import { FirestoreDebugService } from '../shared/firestore-debug.service';
+
+interface MapData {
+  data: {
+    [individual_id: string]: {
+      g: google.maps.LatLngLiteral;
+      so: SourceType;
+      sp?: string;
+      ss?: string[];
+      p?: string;
+      t: IndividualType;
+    };
+  };
+}
+
+export interface IndividualWithMarkerOpt {
+  individualId: string;
+  geopos: google.maps.LatLngLiteral;
+  markerOptions: google.maps.MarkerOptions;
+}
+
+@Injectable()
+export class MapService {
+  constructor(
+    protected afs: AngularFirestore,
+    protected fds: FirestoreDebugService,
+    private masterdataService: MasterdataService
+  ) {}
+
+  getMapIndividuals(year: number): Observable<MapIndividual[]> {
+    return this.afs
+      .collection('maps')
+      .doc<MapData>(year.toString())
+      .valueChanges()
+      .pipe(
+        first(), // do not subscribe to changes
+        map(x => this.convertIndividuals(x)),
+        tap(() => this.fds.addRead('maps'))
+      );
+  }
+
+  private convertIndividuals(mapData: MapData): MapIndividual[] {
+    const result = Array<MapIndividual & IdLike>();
+    Object.entries(mapData.data).forEach(([k, v]) => {
+      result.push(new MapIndividual(k, v.g, v.so, v.t, v.sp, v.ss, v.p));
+    });
+    return result;
+  }
+
+  public filterByDatasource(individuals: MapIndividual[], datasource: SourceFilterType): MapIndividual[] {
+    return individuals.filter(i => i.source === datasource);
+  }
+
+  public filterBySpecies(individuals: MapIndividual[], species: string): MapIndividual[] {
+    return individuals.filter(i => {
+      return (i.station_species && i.station_species.indexOf(species) !== -1) || species === i.species;
+    });
+  }
+
+  public getMapMarkers(individuals: MapIndividual[]): IndividualWithMarkerOpt[] {
+    const ret = individuals.map(individual => {
+      const icon = this.masterdataService.individualToIcon(individual as unknown as Individual);
+      const markerOptions: google.maps.MarkerOptions = { draggable: false, icon: icon };
+      return {
+        individualId: individual.id,
+        geopos: individual.geopos,
+        markerOptions: markerOptions
+      } as IndividualWithMarkerOpt;
+    });
+    return ret;
+  }
+}

@@ -55,21 +55,13 @@
           "order": "DESCENDING"
         }
       ]
-    },
-    {
-      "collectionGroup": "individuals",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "year",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "modified",
-          "order": "ASCENDING"
-        }
-      ]
     }
   ],
-  "fieldOverrides": []
+  "fieldOverrides": [
+    {
+      "collectionGroup": "maps",
+      "fieldPath": "data",
+      "indexes": []
+    }
+  ]
 }

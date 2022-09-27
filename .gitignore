@@ -2,6 +2,7 @@
 
 # jest
 /reports
+junit.xml
 
 # security rules
 /security
