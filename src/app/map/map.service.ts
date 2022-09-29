@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
-import { Individual, IndividualType, MapIndividual } from '../individual/individual';
+import { IndividualType, MapIndividual } from '../individual/individual';
 import { IdLike } from '../masterdata/masterdata-like';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { SourceFilterType, SourceType } from '../masterdata/source-type';
@@ -66,8 +66,8 @@ export class MapService {
   }
 
   public getMapMarkers(individuals: MapIndividual[]): IndividualWithMarkerOpt[] {
-    const ret = individuals.map(individual => {
-      const icon = this.masterdataService.individualToIcon(individual as unknown as Individual);
+    return individuals.map(individual => {
+      const icon = this.masterdataService.individualToIcon(individual);
       const markerOptions: google.maps.MarkerOptions = { draggable: false, icon: icon };
       return {
         individualId: individual.id,
@@ -75,6 +75,5 @@ export class MapService {
         markerOptions: markerOptions
       } as IndividualWithMarkerOpt;
     });
-    return ret;
   }
 }

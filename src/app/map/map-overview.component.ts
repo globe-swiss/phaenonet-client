@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
+import { MapIndividual } from '../individual/individual';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { SourceFilterType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
@@ -81,15 +82,19 @@ export class MapOverviewComponent implements OnInit {
       map(species => [allSpecies].concat(species))
     );
 
-    this.mapMarkers$ = this.filter.valueChanges.pipe(
-      startWith(''),
-      switchMap(() =>
-        this.getMapMarkers(
-          this.filter.controls.year.value,
-          this.filter.controls.datasource.value,
-          this.filter.controls.species.value
-        )
-      )
+    // load map values once per year and filter on the result
+    this.mapMarkers$ = combineLatest([
+      this.filter.controls.year.valueChanges.pipe(
+        switchMap(year => this.mapService.getMapIndividuals(year)),
+        startWith([])
+      ),
+      this.filter.controls.datasource.valueChanges.pipe(startWith(this.filter.controls.datasource.value)),
+      this.filter.controls.species.valueChanges.pipe(startWith(this.filter.controls.species.value))
+    ]).pipe(
+      map(([individuals, datasourceFilterValue, speciesFilterValue]) =>
+        this.filterMapIndividuals(individuals, datasourceFilterValue, speciesFilterValue)
+      ),
+      map(individuals => this.mapService.getMapMarkers(individuals))
     );
   }
 
@@ -117,20 +122,14 @@ export class MapOverviewComponent implements OnInit {
     }
   }
 
-  private getMapMarkers(
-    year: number,
+  private filterMapIndividuals(
+    individuals: MapIndividual[],
     datasource: SourceFilterType,
     species: string
-  ): Observable<IndividualWithMarkerOpt[]> {
-    return this.mapService.getMapIndividuals(year).pipe(
-      map(individuals =>
-        datasource !== 'all' ? this.mapService.filterByDatasource(individuals, datasource) : individuals
-      ),
-      map(individuals =>
-        species !== allSpecies.id ? this.mapService.filterBySpecies(individuals, species) : individuals
-      ),
-      map(individuals => this.mapService.getMapMarkers(individuals))
-    );
+  ): MapIndividual[] {
+    individuals = datasource !== 'all' ? this.mapService.filterByDatasource(individuals, datasource) : individuals;
+    individuals = species !== allSpecies.id ? this.mapService.filterBySpecies(individuals, species) : individuals;
+    return individuals;
   }
 
   private getSelectableSpecies(datasource: SourceFilterType): Observable<Species[]> {
