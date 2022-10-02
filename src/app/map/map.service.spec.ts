@@ -51,14 +51,13 @@ describe('MapService', () => {
       const result = await firstValueFrom(fixture.getMapIndividuals(2000));
       expect(result).toBeInstanceOf(Array);
       expect(result.length).toEqual(2);
-      result.forEach(mapIndividual => expect(mapIndividual).toBeInstanceOf(MapIndividual));
     });
 
     it('should call covertIndividuals with MapData', async () => {
       await firstValueFrom(fixture.getMapIndividuals(2000));
       const args = capture(fixtureSpy['convertIndividuals']).first()[0];
 
-      verify(fixtureSpy.convertIndividuals(anything())).times(1);
+      verify(fixtureSpy.convertIndividuals(anything())).once();
       expect(args).toEqual(mapData);
     });
 
@@ -66,7 +65,7 @@ describe('MapService', () => {
       await firstValueFrom(fixture.getMapIndividuals(2000));
       const args = capture(fdsMock.addRead).first()[0];
 
-      verify(fdsMock.addRead(anything())).times(1);
+      verify(fdsMock.addRead(anything())).once();
       expect(args).toEqual('maps');
     });
   });
@@ -84,8 +83,24 @@ describe('MapService', () => {
       const result = fixture['convertIndividuals'](mapData as never);
 
       expect(result).toEqual([
-        new MapIndividual('id1', { lat: 1, lng: 2 }, 'wld', 'station', 'sp', ['ss'], 'p'),
-        new MapIndividual('id2', { lat: 1, lng: 2 }, 'wld', 'individual', 'sp', ['ss'], 'p')
+        {
+          id: 'id1',
+          geopos: { lat: 1, lng: 2 },
+          source: 'wld',
+          type: 'station',
+          species: 'sp',
+          station_species: ['ss'],
+          last_phenophase: 'p'
+        },
+        {
+          id: 'id2',
+          geopos: { lat: 1, lng: 2 },
+          source: 'wld',
+          type: 'individual',
+          species: 'sp',
+          station_species: ['ss'],
+          last_phenophase: 'p'
+        }
       ]);
     });
   });
@@ -136,7 +151,7 @@ describe('MapService', () => {
   });
 
   describe('getMapMarker', () => {
-    const ICON = 'foo' as unknown as google.maps.Icon;
+    const ICON = { url: 'foo' } as google.maps.Icon;
     const INDIVIDUAL = { id: 'id', geopos: 'geopos' } as unknown as MapIndividual;
     const DATA = [INDIVIDUAL, INDIVIDUAL];
     beforeEach(() => {

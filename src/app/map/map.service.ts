@@ -50,7 +50,15 @@ export class MapService {
   public convertIndividuals(mapData: MapData): MapIndividual[] {
     const result = Array<MapIndividual & IdLike>();
     Object.entries(mapData.data).forEach(([k, v]) => {
-      result.push(new MapIndividual(k, v.g, v.so, v.t, v.sp, v.ss, v.p));
+      result.push({
+        id: k,
+        geopos: v.g,
+        source: v.so,
+        type: v.t,
+        species: v.sp,
+        station_species: v.ss,
+        last_phenophase: v.p
+      });
     });
     return result;
   }

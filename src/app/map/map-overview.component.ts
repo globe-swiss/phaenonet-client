@@ -35,10 +35,12 @@ export class MapOverviewComponent implements OnInit {
     minZoom: 8
   };
 
+  // map marker and info window observables
   mapMarkers$: Observable<IndividualWithMarkerOpt[]>;
   infoWindowData$: Observable<IndividualInfoWindowData | StationInfoWindowData>;
   private markerClicked: MapMarker; // last marker clicked
 
+  // filter from and value lists
   filter: FormGroup<{
     year: FormControl<number>;
     datasource: FormControl<SourceFilterType>;

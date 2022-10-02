@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import { Timestamp } from '@angular/fire/firestore';
-import { firstValueFrom, of, ReplaySubject, switchMap } from 'rxjs';
+import { firstValueFrom, Observable, of, ReplaySubject, switchMap } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 import { Individual } from '../individual/individual';
 import { IndividualService } from '../individual/individual.service';
@@ -39,8 +39,8 @@ describe('Service: MapInfo', () => {
 
   it('should create mapInfo service', () => {
     expect(fixture).toBeDefined();
-    expect(fixture.infoWindowData$).toBeDefined();
-    expect(fixture['loadInfoSubject']).toBeInstanceOf(ReplaySubject);
+    expect(fixture.infoWindowData$).toBeInstanceOf(Observable);
+    expect(fixture['individualIdSubject']).toBeInstanceOf(ReplaySubject);
   });
 
   describe('loadInfo', () => {
@@ -58,7 +58,7 @@ describe('Service: MapInfo', () => {
       verify(fixtureSpy['getIndividualInfo'](INDIVIDUAL)).once();
       verify(fixtureSpy['getStationInfo'](anything())).never();
 
-      expect(result).toBeTruthy();
+      expect(result).toBeTruthy(); // matching mock if getIndividualInfo
     });
 
     it('should publish a station', async () => {
@@ -69,7 +69,7 @@ describe('Service: MapInfo', () => {
       verify(fixtureSpy['getIndividualInfo'](INDIVIDUAL)).never();
       verify(fixtureSpy['getStationInfo'](anything())).once();
 
-      expect(result).toBeTruthy();
+      expect(result).toBeTruthy(); // matching mock if getStationInfo
     });
   });
 
@@ -129,13 +129,13 @@ describe('Service: MapInfo', () => {
       const routingUrlArg = capture(fixtureSpy['getRoutingUrl']).first()[0];
 
       verify(fixtureSpy['getRoutingUrl'](anything())).once();
+      expect(routingUrlArg).toEqual(STATION);
 
       expect(result).toBeDefined();
       expect(result.type).toEqual(STATION.type);
       expect(result.individual_name).toEqual(STATION.name);
       expect(result.source).toEqual(STATION.source);
       expect(result.url).toBeTruthy();
-      expect(routingUrlArg).toEqual(STATION);
     });
 
     it('should throw exception on unexpected type', () => {

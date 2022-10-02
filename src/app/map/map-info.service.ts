@@ -16,7 +16,7 @@ export interface IndividualInfoWindowData {
   individual_name: string;
   last_observation_date: Timestamp;
   species_name: string;
-  phenophase_name?: string;
+  phenophase_name: string;
   url: string[];
   imgUrl$: Observable<string>;
 }
@@ -33,11 +33,11 @@ export interface StationInfoWindowData {
   providedIn: 'root'
 })
 export class MapInfoService {
-  private loadInfoSubject = new ReplaySubject<string>(1);
+  private individualIdSubject = new ReplaySubject<string>(1);
   public readonly infoWindowData$: Observable<IndividualInfoWindowData | StationInfoWindowData>;
 
   constructor(private individualService: IndividualService, private masterdataService: MasterdataService) {
-    this.infoWindowData$ = this.loadInfoSubject.pipe(
+    this.infoWindowData$ = this.individualIdSubject.pipe(
       switchMap(id => this.individualService.getWithId(id)),
       switchMap(individual =>
         iif(
@@ -55,7 +55,7 @@ export class MapInfoService {
    *
    */
   public loadInfo(individualId: string) {
-    this.loadInfoSubject.next(individualId);
+    this.individualIdSubject.next(individualId);
   }
 
   private getIndividualInfo(individual: Individual & IdLike): Observable<IndividualInfoWindowData> {
