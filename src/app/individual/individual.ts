@@ -32,6 +32,7 @@ export class Individual {
 }
 
 export class MapIndividual implements IdLike {
+  id: string;
   geopos: google.maps.LatLngLiteral;
   source: SourceType;
   species?: string;
@@ -56,5 +57,4 @@ export class MapIndividual implements IdLike {
     this.last_phenophase = last_phenophase;
     this.type = type;
   }
-  id: string;
 }

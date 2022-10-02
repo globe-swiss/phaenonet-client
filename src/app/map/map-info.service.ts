@@ -43,7 +43,7 @@ export class MapInfoService {
         iif(
           () => individual.type === 'individual',
           defer(() => this.getIndividualInfo(individual)),
-          defer(() => of(this.getStationInfo(individual)))
+          defer(() => this.getStationInfo(individual))
         )
       )
     );
@@ -58,16 +58,22 @@ export class MapInfoService {
     this.loadInfoSubject.next(individualId);
   }
 
-  private getIndividualInfo(individual: Individual & IdLike) {
+  private getIndividualInfo(individual: Individual & IdLike): Observable<IndividualInfoWindowData> {
     if (individual.type === 'individual') {
       return combineLatest([
         this.masterdataService.getSpeciesValue(individual.species),
         this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase)
       ]).pipe(map(([species, phenophase]) => this.getIndividualInfoInt(individual, species, phenophase)));
+    } else {
+      throw new Error(`Unexpected individual type: Expected 'individual', got '${individual.type}'`);
     }
   }
 
-  private getIndividualInfoInt(individual: Individual & IdLike, species: Species, phenophase: Phenophase) {
+  private getIndividualInfoInt(
+    individual: Individual & IdLike,
+    species: Species,
+    phenophase: Phenophase
+  ): IndividualInfoWindowData {
     return {
       type: individual.type,
       individual_name: individual.name,
@@ -82,13 +88,17 @@ export class MapInfoService {
     } as IndividualInfoWindowData;
   }
 
-  private getStationInfo(individual: Individual & IdLike) {
-    return {
-      type: individual.type,
-      individual_name: individual.name,
-      source: individual.source,
-      url: this.getRoutingUrl(individual)
-    } as StationInfoWindowData;
+  private getStationInfo(individual: Individual & IdLike): Observable<StationInfoWindowData> {
+    if (individual.type === 'station') {
+      return of({
+        type: individual.type,
+        individual_name: individual.name,
+        source: individual.source,
+        url: this.getRoutingUrl(individual)
+      } as StationInfoWindowData);
+    } else {
+      throw new Error(`Unexpected individual type: Expected 'station', got '${individual.type}'`);
+    }
   }
 
   private getRoutingUrl(individual: Individual & IdLike) {

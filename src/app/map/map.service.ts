@@ -47,7 +47,7 @@ export class MapService {
       );
   }
 
-  private convertIndividuals(mapData: MapData): MapIndividual[] {
+  public convertIndividuals(mapData: MapData): MapIndividual[] {
     const result = Array<MapIndividual & IdLike>();
     Object.entries(mapData.data).forEach(([k, v]) => {
       result.push(new MapIndividual(k, v.g, v.so, v.t, v.sp, v.ss, v.p));
