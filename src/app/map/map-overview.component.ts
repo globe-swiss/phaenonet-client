@@ -87,8 +87,9 @@ export class MapOverviewComponent implements OnInit {
     // load map values once per year and filter on the result
     this.mapMarkers$ = combineLatest([
       this.filter.controls.year.valueChanges.pipe(
-        switchMap(year => this.mapService.getMapIndividuals(year)),
-        startWith([])
+        // start with an value to trigger loading of data
+        startWith(this.filter.controls.year.value),
+        switchMap(year => this.mapService.getMapIndividuals(year))
       ),
       this.filter.controls.datasource.valueChanges.pipe(startWith(this.filter.controls.datasource.value)),
       this.filter.controls.species.valueChanges.pipe(startWith(this.filter.controls.species.value))
