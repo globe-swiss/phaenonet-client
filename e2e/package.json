@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@codeceptjs/ui": "^0.4.6",
+    "@codeceptjs/ui": "^0.4.7",
     "codeceptjs": "^3.3.3",
     "mocha": "^10.0.0",
     "mochawesome": "^7.1.3",
