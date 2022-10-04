@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as Sentry from '@sentry/angular';
+import { compress, decompress } from 'lz-string';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -59,6 +60,20 @@ export class LocalService {
         storage &&
         storage.length !== 0
       );
+    }
+  }
+
+  public localstoreSetObjectCompressed<T>(key: string, obj: T): void {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    this.localStorageSet(key, compress(JSON.stringify(obj)));
+  }
+
+  public localstoraGetObjectCompressed<T>(key: string): T | null {
+    const localData = this.localStorageGet(key);
+    if (localData) {
+      return JSON.parse(decompress(localData)) as T;
+    } else {
+      return null;
     }
   }
 }

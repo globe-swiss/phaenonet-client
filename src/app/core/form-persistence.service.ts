@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
+import { SourceFilterType } from '../masterdata/source-type';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormPersistenceService {
-  public mapFilter: UntypedFormGroup;
-  public statisticFilter: UntypedFormGroup;
+  public mapFilter: FormGroup<{
+    year: FormControl<number>;
+    datasource: FormControl<SourceFilterType>;
+    species: FormControl<string>;
+  }>;
+  public statisticFilter: FormGroup;
 }

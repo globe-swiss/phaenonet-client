@@ -79,6 +79,7 @@ describe('Service: Local', () => {
   });
 
   describe('storageAvailable', () => {
+    // eslint-disable-next-line jest/no-commented-out-tests
     // it.skip('should handle localStorage unavailabe', () => {
     //   window.localStorage = undefined; // how to set localstore to undefined?
 
@@ -101,6 +102,23 @@ describe('Service: Local', () => {
       const result = fixture.storageAvailable('localStorage');
 
       expect(result).toEqual(true);
+    });
+  });
+
+  describe('localstorage*ObjectCompressed', () => {
+    it('should set/get object', () => {
+      const key = 'test';
+      const obj = { foo: 'bar' };
+
+      fixture.localstoreSetObjectCompressed(key, obj);
+      const result = fixture.localstoraGetObjectCompressed(key);
+
+      expect(result).toEqual(obj);
+    });
+
+    it('should gracefully return null on missing key', () => {
+      const result = fixture.localstoraGetObjectCompressed('not-found');
+      expect(result).toBeNull();
     });
   });
 });

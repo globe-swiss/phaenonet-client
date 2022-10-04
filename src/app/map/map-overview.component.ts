@@ -1,38 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import { AbstractControl, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { first, map, startWith, switchMap } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
-import { Individual, IndividualType } from '../individual/individual';
-import { IndividualService } from '../individual/individual.service';
-import { MaybeIdLike } from '../masterdata/masterdata-like';
+import { MapIndividual } from '../individual/individual';
 import { MasterdataService } from '../masterdata/masterdata.service';
-import { Phenophase } from '../masterdata/phaenophase';
 import { SourceFilterType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
-import { formatShortDate } from '../shared/formatDate';
-import { MapCacheService } from './map-cache.service';
+import { TypeGuard } from '../shared/type-guard.pipe';
+import { IndividualInfoWindowData, MapInfoService, StationInfoWindowData } from './map-info.service';
+import { IndividualWithMarkerOpt, MapService } from './map.service';
 
-class GlobeInfoWindowData {
-  individual: Individual;
-  species: Species;
-  phenophase?: Phenophase;
-  url: string[];
-  imgUrl$: Observable<string>;
-}
-
-class StationInfoWindowData {
-  individual: Individual;
-  url: string[];
-}
-
-class IndividualWithMarkerOpt {
-  individual: Individual;
-  markerOptions: google.maps.MarkerOptions;
-}
+type InfoWindowData = IndividualInfoWindowData | StationInfoWindowData;
 
 const allSpecies = { id: 'ALL', de: 'Alle' } as Species;
 
@@ -43,66 +24,120 @@ const allSpecies = { id: 'ALL', de: 'Alle' } as Species;
 export class MapOverviewComponent implements OnInit {
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
 
-  center = { lat: 46.818188, lng: 8.227512 };
-  zoom = 9;
-  options: google.maps.MapOptions = {
+  // Initial Map values
+  readonly center = { lat: 46.818188, lng: 8.227512 };
+  readonly zoom = 9;
+  readonly options: google.maps.MapOptions = {
     mapTypeId: google.maps.MapTypeId.TERRAIN,
     mapTypeControl: false,
     fullscreenControl: false,
     streetViewControl: false,
     minZoom: 8
   };
-  individualsWithMarkerOpts$: Observable<IndividualWithMarkerOpt[]>;
-  infoWindowDatas$: Observable<GlobeInfoWindowData[]>;
 
-  globeInfoWindowData$ = new ReplaySubject<GlobeInfoWindowData>(1);
-  stationInfoWindowData$ = new ReplaySubject<StationInfoWindowData>(1);
-  infoWindowType$ = new ReplaySubject<IndividualType>(1);
+  // map marker and info window observables
+  mapMarkers$: Observable<IndividualWithMarkerOpt[]>;
+  infoWindowData$: Observable<IndividualInfoWindowData | StationInfoWindowData>;
+  private markerClicked: MapMarker; // last marker clicked
 
-  years$: Observable<number[]> = this.masterdataService.availableYears$;
-  species$: Observable<Species[]>;
-  datasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wld'];
+  // filter from and value lists
+  filter: FormGroup<{
+    year: FormControl<number>;
+    datasource: FormControl<SourceFilterType>;
+    species: FormControl<string>;
+  }>;
+  yearFilterValues$: Observable<number[]>;
+  speciesFilterValues$: Observable<Species[]>;
+  readonly datasourceFilterValues: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wld'];
 
-  selectedYear: AbstractControl;
-  filter: UntypedFormGroup;
-
-  formatShortDate = formatShortDate;
+  // type guards to enable strict type checking in HTML on infoWindowData$
+  isIndividualInfoWindowData: TypeGuard<InfoWindowData, IndividualInfoWindowData> = (
+    data: InfoWindowData
+  ): data is IndividualInfoWindowData => data?.type === 'individual';
+  isStationInfoWindowData: TypeGuard<InfoWindowData, StationInfoWindowData> = (
+    data: InfoWindowData
+  ): data is StationInfoWindowData => data?.type === 'station';
 
   constructor(
     private navService: NavService,
-    private individualService: IndividualService,
-    private individualCacheService: MapCacheService,
+    private mapService: MapService,
     private masterdataService: MasterdataService,
     private formPersistanceService: FormPersistenceService,
-    private analytics: AngularFireAnalytics
+    private mapInfoService: MapInfoService
   ) {}
+
+  ngOnInit(): void {
+    this.navService.setLocation('Karte');
+
+    // open info window on the last marker that was clicked when new data is available
+    this.infoWindowData$ = this.mapInfoService.infoWindowData$.pipe(
+      tap(() => this.infoWindow.open(this.markerClicked))
+    );
+
+    this.initFilters();
+
+    this.yearFilterValues$ = this.masterdataService.availableYears$;
+    this.speciesFilterValues$ = this.filter.controls.datasource.valueChanges.pipe(
+      startWith(''),
+      switchMap(() => this.getSelectableSpecies(this.filter.controls.datasource.value)),
+      map(species => this.masterdataService.sortTranslatedMasterData(species)),
+      map(species => [allSpecies].concat(species))
+    );
+
+    // load map values once per year and filter on the result
+    this.mapMarkers$ = combineLatest([
+      this.filter.controls.year.valueChanges.pipe(
+        // start with an value to trigger loading of data
+        startWith(this.filter.controls.year.value),
+        switchMap(year => this.mapService.getMapIndividuals(year))
+      ),
+      this.filter.controls.datasource.valueChanges.pipe(startWith(this.filter.controls.datasource.value)),
+      this.filter.controls.species.valueChanges.pipe(startWith(this.filter.controls.species.value))
+    ]).pipe(
+      map(([individuals, datasourceFilterValue, speciesFilterValue]) =>
+        this.filterMapIndividuals(individuals, datasourceFilterValue, speciesFilterValue)
+      ),
+      map(individuals => this.mapService.getMapMarkers(individuals))
+    );
+  }
 
   getColor(phenophase: string): string | null {
     return this.masterdataService.getColor(phenophase);
   }
 
-  ngOnInit(): void {
-    this.navService.setLocation('Karte');
+  openInfoWindow(marker: MapMarker, individualId: string): void {
+    this.markerClicked = marker;
+    this.mapInfoService.loadInfo(individualId);
+  }
 
+  private initFilters(): void {
     if (!this.formPersistanceService.mapFilter) {
-      this.selectedYear = new UntypedFormControl();
-      this.filter = new UntypedFormGroup({
-        year: this.selectedYear,
-        datasource: new UntypedFormControl(this.datasources[0]),
-        species: new UntypedFormControl(allSpecies.id)
+      const selectedYear = new FormControl<number>(Number.NaN);
+      this.filter = new FormGroup({
+        year: selectedYear,
+        datasource: new FormControl<SourceFilterType>(this.datasourceFilterValues[0]),
+        species: new FormControl<string>(allSpecies.id)
       });
-      this.masterdataService.phenoYear$.pipe(first()).subscribe(year => this.selectedYear.patchValue(year));
+      this.masterdataService.phenoYear$.pipe(first()).subscribe(year => selectedYear.patchValue(year));
       this.formPersistanceService.mapFilter = this.filter;
     } else {
       this.filter = this.formPersistanceService.mapFilter;
-      this.selectedYear = this.formPersistanceService.mapFilter.controls.year;
     }
+  }
 
-    this.species$ = this.filter.controls.datasource.valueChanges.pipe(
-      startWith(''),
-      switchMap(() => this.masterdataService.getSpecies()),
+  private filterMapIndividuals(
+    individuals: MapIndividual[],
+    datasource: SourceFilterType,
+    species: string
+  ): MapIndividual[] {
+    individuals = datasource !== 'all' ? this.mapService.filterByDatasource(individuals, datasource) : individuals;
+    individuals = species !== allSpecies.id ? this.mapService.filterBySpecies(individuals, species) : individuals;
+    return individuals;
+  }
+
+  private getSelectableSpecies(datasource: SourceFilterType): Observable<Species[]> {
+    return this.masterdataService.getSpecies().pipe(
       map(species => {
-        const datasource = this.filter.controls.datasource.value as SourceFilterType;
         if (datasource == 'all') {
           return species;
         } else {
@@ -116,85 +151,7 @@ export class MapOverviewComponent implements OnInit {
           }
           return species.filter(s => s.sources.includes(datasource));
         }
-      }),
-      map(species => this.masterdataService.sortTranslatedMasterData(species)),
-      map(species => [allSpecies].concat(species))
-    );
-
-    this.individualsWithMarkerOpts$ = this.filter.valueChanges.pipe(
-      startWith(''),
-      switchMap(() => {
-        const year = +(this.filter.controls.year.value as string);
-        const datasource = this.filter.controls.datasource.value as SourceFilterType;
-        const species = this.filter.controls.species.value as string;
-
-        return this.individualCacheService.getIndividuals(year).pipe(
-          map(individuals => {
-            if (datasource !== 'all') {
-              individuals = individuals.filter(i => i.source === datasource);
-            }
-            if (species !== allSpecies.id) {
-              individuals = individuals.filter(i => {
-                return (i.station_species && i.station_species.indexOf(species) !== -1) || species === i.species;
-              });
-            }
-
-            return individuals;
-          })
-        );
-      }),
-      map(individuals => {
-        const ret = individuals.map(individual => {
-          const icon = this.masterdataService.individualToIcon(individual);
-          const markerOptions: google.maps.MarkerOptions = { draggable: false, icon: icon };
-          return { individual: individual, markerOptions: markerOptions } as IndividualWithMarkerOpt;
-        });
-        return ret;
       })
     );
-
-    void this.analytics.logEvent('map.view');
-  }
-
-  openInfoWindow(marker: MapMarker, pos: google.maps.LatLngLiteral, individual: Individual & MaybeIdLike): void {
-    const baseUrl = individual.type === 'station' ? '/stations' : '/individuals';
-    const url = { url: [baseUrl, individual.id] };
-
-    if (individual.type === 'station') {
-      this.stationInfoWindowData$.next({ ...{ individual: individual }, ...url } as StationInfoWindowData);
-    } else {
-      combineLatest([
-        this.masterdataService.getSpeciesValue(individual.species),
-        this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase)
-      ])
-        .pipe(
-          first(),
-          map(([species, phenophase]) => {
-            return {
-              ...{
-                individual: individual,
-                species: species,
-                phenophase: phenophase,
-                imgUrl$: this.individualService.getImageUrl(individual, true).pipe(
-                  first(),
-                  map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))
-                )
-              },
-              ...url
-            } as GlobeInfoWindowData;
-          })
-        )
-        .subscribe(i => this.globeInfoWindowData$.next(i));
-    }
-    this.infoWindowType$.next(individual.type);
-
-    this.infoWindow.open(marker);
-
-    void this.analytics.logEvent('map.click-pin', {
-      id: individual.id,
-      individual: individual.individual,
-      year: individual.year,
-      source: individual.source
-    });
   }
 }

@@ -22,7 +22,7 @@ import { CoreModule } from './core/core.module';
 import { httpInterceptorProviders } from './http-interceptors';
 import { IndividualService } from './individual/individual.service';
 import { LoginModule } from './login/login.module';
-import { MapCacheService } from './map/map-cache.service';
+import { MapService } from './map/map.service';
 import { MasterdataService } from './masterdata/masterdata.service';
 import { UserService } from './profile/user.service';
 import { GlobalErrorHandler } from './shared/GlobalErrorHandler';
@@ -85,7 +85,7 @@ registerLocaleData(localeIt, 'it');
     MasterdataService,
     UserService,
     IndividualService,
-    MapCacheService,
+    MapService,
     // workaround for https://github.com/firebase/firebase-js-sdk/issues/1674 remove when fixed in the SDK
     { provide: SETTINGS, useValue: { experimentalForceLongPolling: true, merge: true } }
     // { provide: DEBUG_MODE, useValue: true }

@@ -19,6 +19,7 @@ import { ShortdatePipe } from './shortdate.pipe';
 import { ShortdatetimePipe } from './shortdatetime.pipe';
 import { IndividualSubscriptionButtonComponent } from './subscription/individual-subscription-button/individual-subscription-button.component';
 import { UserSubscriptionButtonComponent } from './subscription/user-subscription-button/user-subscription-button.component';
+import { TypeGuardPipe } from './type-guard.pipe';
 
 /**
  * The `SharedModule` is used to group common services and modules like {@link TranslateModule}.
@@ -46,7 +47,8 @@ import { UserSubscriptionButtonComponent } from './subscription/user-subscriptio
     ShortdatetimePipe,
     LimitToPipe,
     UserSubscriptionButtonComponent,
-    IndividualSubscriptionButtonComponent
+    IndividualSubscriptionButtonComponent,
+    TypeGuardPipe
   ],
   exports: [
     CommonModule,
@@ -66,7 +68,8 @@ import { UserSubscriptionButtonComponent } from './subscription/user-subscriptio
     ShortdatetimePipe,
     LimitToPipe,
     UserSubscriptionButtonComponent,
-    IndividualSubscriptionButtonComponent
+    IndividualSubscriptionButtonComponent,
+    TypeGuardPipe
   ],
   providers: [LoadingGuard]
 })

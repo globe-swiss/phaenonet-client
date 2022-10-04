@@ -1,9 +1,10 @@
 import { Timestamp } from '@angular/fire/firestore';
+import { IdLike } from '../masterdata/masterdata-like';
 import { SourceType } from '../masterdata/source-type';
 
 export type IndividualType = 'individual' | 'station';
 
-export class Individual {
+export interface Individual {
   name: string;
   geopos: google.maps.LatLngLiteral;
   altitude: number;
@@ -17,8 +18,8 @@ export class Individual {
   distance: string;
   shade: string;
   source: SourceType;
-  species: string;
-  station_species: string[];
+  species?: string;
+  station_species?: string[];
   user: string;
   watering: string;
   year: number;
@@ -28,4 +29,14 @@ export class Individual {
   modified: Timestamp;
   type: IndividualType;
   image_urls: string[];
+}
+
+export interface MapIndividual extends IdLike {
+  id: string;
+  geopos: google.maps.LatLngLiteral;
+  source: SourceType;
+  species?: string;
+  station_species?: string[];
+  last_phenophase?: string;
+  type: IndividualType;
 }

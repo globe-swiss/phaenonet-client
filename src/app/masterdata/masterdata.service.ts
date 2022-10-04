@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 import configStatic_import from '../../assets/config_static.json';
 import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
-import { Individual } from '../individual/individual';
+import { Individual, MapIndividual } from '../individual/individual';
 import { AlertService } from '../messaging/alert.service';
 import { Roles } from '../profile/Roles.enum';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
@@ -139,7 +139,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
     }
   }
 
-  individualToIcon(individual: Individual): google.maps.Icon {
+  individualToIcon(individual: Individual | MapIndividual): google.maps.Icon {
     let icon: google.maps.Icon;
     const icon_path = this.getIndividualIconPath(individual.species, individual.source, individual.last_phenophase);
     if (individual.type === 'station') {
