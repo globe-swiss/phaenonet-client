@@ -23,7 +23,7 @@ table activities {
   id string [pk]
   action activity_action
   activity_date date
-  followers array[string] [ref: < users.id, note: 'many-to-many relationship']
+  followers array[string]
   individual_id string [ref: > individuals.id]
   individual_name string
   observation_id string [ref: > observations.id]
@@ -42,6 +42,8 @@ table activities {
 
   note: 'Activities (observations) tracked by users.'
 }
+
+ref activity_followers: activities.followers <> users.id
 
 enum activity_action {
   create
@@ -86,6 +88,22 @@ table definitions {
   note: 'Applications specific definitions and states.'
 }
 
+
+table maps {
+  id string [pk, note: 'id is year, the attributes are stored in a map for each individual (data.<individual_id>)']
+  g map [note: 'see individuals.geopos']
+  p string [note: 'see indivduals.last_phenophase']
+  so string [note: 'see individuals.source']
+  sp string [null, note: 'see individuals.species']
+  ss array[string] [null, note: 'see individuals.station_species']
+  t string [note: 'see individuals.type']
+
+  note: '''
+    Contains one document per year containing all individual information needed to display on the map.
+    The attributes are wrapped in a field "data" which needs to be extempted from single field index creation due to the size of the document.
+  '''
+}
+
 table individuals {
   id string [pk, note: 'year_individual']
   altitude number
@@ -103,6 +121,7 @@ table individuals {
   shade string [note: 'definitions/config_static/shade']
   source source
   species string [note: 'definitions/config_static/species']
+  station_species array[string] [note: 'definitions/config_static/species']
   type individual_type
   user string [ref: < users.id]
   watering string [note: 'definitions/config_static/watering']
@@ -126,7 +145,7 @@ enum individual_type {
 table observations {
   id string [note: 'ids have different patterns depending on the source']
   date date
-  individual string [ref: > individuals.individual, note: 'many-to-many relationship']
+  individual string
   individual_id string [ref: > individuals.id]
   tree_id string [null, note: 'optional tree id/name within a station (currently only on wld source)']
   phenophase string [note: 'definitions/config_static/phenophases']
@@ -139,6 +158,8 @@ table observations {
 
   note: 'Observed phenological phases for individuals and stations.'
 }
+
+ref observations_individuals: observations.individual <> individuals.individual
 
 table nicknames {
   id string [pk, ref: - users.nickname]
@@ -161,13 +182,16 @@ table users {
   locale locale
   firstname string [null]
   lastname string [null]
-  following_individuals array[string] [null, ref: > individuals.individual, note: 'many-to-many relationship']
-  following_users array[string] [null, ref: > users.id, note: 'many-to-many relationship']
+  following_individuals array[string] [null]
+  following_users array[string] [null]
   created timestamp
   modified timestamp
 
   note: 'Private user information.'
 }
+
+ref following_individuals: users.following_individuals <> individuals.individual
+ref following_users: users.following_users <> users.id
 
 tablegroup users {
   nicknames
@@ -193,10 +217,12 @@ table invites {
 
 table invites_lookup {
   id string [pk, ref: > invites.email]
-  invites array[string] [ref: > users.id, note: 'many-to-many relationship']
+  invites array[string]
 
   note: 'Reverse lookup table for finding the invite initiator(s).'
 }
+
+ref invites_users: invites_lookup.invites <> users.id
 
 tablegroup invites {
   invites
