@@ -3,7 +3,7 @@ import { Timestamp } from '@angular/fire/firestore';
 import { MapMarker } from '@angular/google-maps';
 import { combineLatest, defer, iif, Observable, of, ReplaySubject } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
-import { Individual } from '../individual/individual';
+import { Individual, SensorLiveData } from '../individual/individual';
 import { IndividualService } from '../individual/individual.service';
 import { IdLike } from '../masterdata/masterdata-like';
 import { MasterdataService } from '../masterdata/masterdata.service';
@@ -14,6 +14,8 @@ export interface IndividualInfoWindowData {
   marker: MapMarker;
   type: string;
   individual_name: string;
+  hasLiveData: boolean;
+  sensor?: SensorLiveData;
   last_observation_date: Timestamp;
   species_name: string;
   phenophase_name: string;
@@ -78,6 +80,8 @@ export class MapInfoService {
       type: individual.type,
       individual_name: individual.name,
       last_observation_date: individual.last_observation_date,
+      hasLiveData: individual?.deveui?.length > 0 ? true : false,
+      sensor: individual.sensor,
       species_name: species.de,
       phenophase_name: phenophase.de,
       imgUrl$: this.individualService.getImageUrl(individual, true).pipe(

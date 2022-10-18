@@ -21,6 +21,13 @@
     border-top-right-radius: 1rem;
   }
 
+  &__graph {
+    @include flex-grow-shrink;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    height: 100%;
+  }
+
   &__map--with-image ::ng-deep .map-container {
     border-top-right-radius: 0;
   }
@@ -39,6 +46,40 @@
     height: 100%;
   }
 
+  &__select {
+    width: 15rem;
+
+    mat-form-field {
+      margin-bottom: 0px;
+      background-color: white;
+      border-radius: 20px;
+      padding: 8px 8px 0 8px;
+      width: calc(100% - 16px);
+    }
+
+    svg {
+      padding: 10px;
+      overflow: hidden;
+    }
+  }
+
+  &__select-map {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  &__select-graph {
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  &__grap-selection {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+  }
+
   &__fab {
     margin-left: 90%;
     bottom: 28px;
@@ -47,5 +88,23 @@
     @include for-tablet-and-smaller {
       margin-left: 70%;
     }
+  }
+}
+
+::ng-deep #phaenonet-body .individual-header__select {
+  .mat-form-field-underline {
+    background-color: deeppink;
+    display: none;
+  }
+
+  .mat-form-field-wrapper {
+    margin-bottom: 8px;
+    padding-bottom: 0;
+    padding-left: 11px;
+  }
+
+  .mat-form-field-label-wrapper {
+    top: -0.65em;
+    padding-top: 0.65em;
   }
 }

@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+
+@import '../../theming/typography';
+
+.sensor-badge {
+  display: flex;
+  align-items: center;
+  background-color: #c2bfb8;
+  border-radius: 15px;
+  width: min-content;
+  padding-top: 4px;
+  padding-bottom: 4px;
+
+  &__icon {
+    height: 14px;
+    padding-left: 8px;
+    padding-right: 5px;
+  }
+
+  &__text {
+    @include mat.typography-level($phaenonet-typography, 'button');
+
+    &:last-of-type {
+      padding-right: 10px;
+    }
+  }
+}

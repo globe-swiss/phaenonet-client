@@ -17,6 +17,7 @@ export class ActivityItemComponent {
   getIcon(): string {
     return this.masterdataService.getIndividualIconPath(
       this.activity.species,
+      false,
       this.activity.source,
       this.activity.phenophase
     );

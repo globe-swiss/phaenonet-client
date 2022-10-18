@@ -21,6 +21,10 @@ button.navigation {
     @include detail-label;
   }
 
+  &__sensor-badge {
+    padding-top: 15px;
+  }
+
   &__name {
     @include mat.typography-level($phaenonet-typography, 'body-1');
     margin-bottom: 20px;

@@ -39,4 +39,7 @@
       <mat-icon svgIcon="ranger-badge"></mat-icon>
     </button>
   </div>
+  <div *ngIf="(individual$ | async)?.sensor as sensor" class="individual-description__sensor-badge">
+    <app-sensors-badge [sensorLiveData]="sensor"></app-sensors-badge>
+  </div>
 </div>

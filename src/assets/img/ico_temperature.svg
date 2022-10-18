@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21.926" height="27.999" viewBox="0 0 21.926 27.999">
+  <defs>
+    <filter id="Path_139" x="0" y="0" width="21.926" height="27.999" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Path_141" x="0.872" y="0.872" width="20.183" height="26.249" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur-2"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="ico_temperature" transform="translate(9 6)">
+    <g transform="matrix(1, 0, 0, 1, -9, -6)" filter="url(#Path_139)">
+      <path id="Path_139-2" data-name="Path 139" d="M1.963,0A1.094,1.094,0,0,1,3.054,1.091V6.4a2.072,2.072,0,0,1,.611.652,1.967,1.967,0,0,1,.261.984,1.945,1.945,0,0,1-.575,1.382v.006a1.962,1.962,0,0,1-2.776,0V9.418A1.945,1.945,0,0,1,0,8.036a1.967,1.967,0,0,1,.261-.984L.273,7.04a2,2,0,0,1,.6-.64V1.091A1.094,1.094,0,0,1,1.963,0Zm.219,6.9V1.091a.219.219,0,1,0-.439,0V6.9l-.326.19a1.091,1.091,0,1,0,1.091,0L2.182,6.9Z" transform="translate(9 6)" fill="#fff"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, -9, -6)" filter="url(#Path_141)">
+      <path id="Path_141-2" data-name="Path 141" d="M2.182,6.9V1.091a.219.219,0,1,0-.439,0V6.9l-.326.19a1.091,1.091,0,1,0,1.091,0L2.182,6.9Z" transform="translate(9 6)" fill="#868072"/>
+    </g>
+  </g>
+</svg>

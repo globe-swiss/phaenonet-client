@@ -9,6 +9,8 @@ export interface Individual {
   geopos: google.maps.LatLngLiteral;
   altitude: number;
   description: string;
+  deveui?: string;
+  sensor?: SensorLiveData;
   exposition: string;
   forest: string;
   gradient: number;
@@ -31,6 +33,22 @@ export interface Individual {
   image_urls: string[];
 }
 
+export interface SensorLiveData {
+  ah: number; // air humidity
+  at: number; // air temperature
+  sh: number; // soil humidity
+  st: number; // soil temperature
+  ts: string; // last update
+}
+
+export function isMapindividual(individual: MapIndividual | Individual): individual is MapIndividual {
+  return (individual as MapIndividual).has_sensor !== undefined;
+}
+
+export function hasSensor(individual: MapIndividual | Individual): boolean {
+  return isMapindividual(individual) ? individual.has_sensor : individual.sensor !== undefined;
+}
+
 export interface MapIndividual extends IdLike {
   id: string;
   geopos: google.maps.LatLngLiteral;
@@ -38,5 +56,6 @@ export interface MapIndividual extends IdLike {
   species?: string;
   station_species?: string[];
   last_phenophase?: string;
+  has_sensor: boolean;
   type: IndividualType;
 }

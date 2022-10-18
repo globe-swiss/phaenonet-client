@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 import configStatic_import from '../../assets/config_static.json';
 import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
-import { Individual, MapIndividual } from '../individual/individual';
+import { hasSensor, Individual, isMapindividual, MapIndividual } from '../individual/individual';
 import { AlertService } from '../messaging/alert.service';
 import { Roles } from '../profile/Roles.enum';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
@@ -125,7 +125,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
     }
   }
 
-  getIndividualIconPath(species: string, source?: string, phenophase?: string): string {
+  getIndividualIconPath(species: string, has_sensor: boolean = false, source?: string, phenophase?: string): string {
     let phaenoIndex = 1;
     if (phenophase) {
       phaenoIndex = this.configStatic.phenophases[phenophase]?.icon_index;
@@ -135,13 +135,21 @@ export class MasterdataService extends BaseService implements OnDestroy {
     } else if (source === 'wld') {
       return '/assets/img/map_pins/map_pin_wld.png';
     } else {
-      return `/assets/img/map_pins/${this.languageService.determineCurrentLang()}/map_pin_${species.toLowerCase()}_${phaenoIndex}.png`;
+      const lang = `${this.languageService.determineCurrentLang()}`;
+      const generated = has_sensor ? 'generated/' : '';
+      const iconName = `map_pin_${species.toLowerCase()}_${phaenoIndex}${has_sensor ? '_+' : ''}.png`;
+      return `/assets/img/map_pins/${lang}/${generated}${iconName}`;
     }
   }
 
   individualToIcon(individual: Individual | MapIndividual): google.maps.Icon {
     let icon: google.maps.Icon;
-    const icon_path = this.getIndividualIconPath(individual.species, individual.source, individual.last_phenophase);
+    const icon_path = this.getIndividualIconPath(
+      individual.species,
+      hasSensor(individual),
+      individual.source,
+      individual.last_phenophase
+    );
     if (individual.type === 'station') {
       icon = {
         url: icon_path,

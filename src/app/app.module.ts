@@ -25,6 +25,7 @@ import { LoginModule } from './login/login.module';
 import { MapService } from './map/map.service';
 import { MasterdataService } from './masterdata/masterdata.service';
 import { UserService } from './profile/user.service';
+import { SensorsService } from './sensors/sensors.service';
 import { GlobalErrorHandler } from './shared/GlobalErrorHandler';
 import { SentryMissingTranslationHandler } from './shared/SentryMissingTranslationHandler';
 import { SharedModule } from './shared/shared.module';
@@ -85,6 +86,7 @@ registerLocaleData(localeIt, 'it');
     MasterdataService,
     UserService,
     IndividualService,
+    SensorsService,
     MapService,
     // workaround for https://github.com/firebase/firebase-js-sdk/issues/1674 remove when fixed in the SDK
     { provide: SETTINGS, useValue: { experimentalForceLongPolling: true, merge: true } }

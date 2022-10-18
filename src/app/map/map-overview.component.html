@@ -17,10 +17,11 @@
           <div class="map-overview__info-window-text">
             <div class="map-overview__info-window-label">
               {{ d.species_name | translate }}
+              <app-sensors-badge [sensorLiveData]="d.sensor"></app-sensors-badge>
             </div>
             <div class="map-overview__info-window-value">{{ d.individual_name }}</div>
             <div class="map-overview__info-window-label" *ngIf="d.phenophase_name">
-              {{ 'Letzte Beobachtung' | translate }},
+              {{ 'Letzte Beobachtung' | translate }}:
               {{ d.last_observation_date | shortdate }}
             </div>
             <div *ngIf="d.phenophase_name" class="map-overview__info-window-value">

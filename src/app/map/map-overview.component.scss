@@ -38,6 +38,12 @@
 
   &__info-window-label {
     @include mat.typography-level($phaenonet-typography, 'button');
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    app-sensors-badge {
+      margin-left: 20px;
+    }
   }
 
   &__info-window-value {

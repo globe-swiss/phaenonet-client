@@ -47,8 +47,8 @@
     <input matInput id="fotos" type="text" value="{{ fileToUpload?.name }}" readonly="true" />
     <mat-icon class="add-image" matSuffix color="primary" (click)="fileInput.click()">add_circle</mat-icon>
     <mat-icon *ngIf="fileToUpload" class="add-image" matSuffix color="warn" (click)="removeUploadedFile()"
-      >delete</mat-icon
-    >
+      >delete
+    </mat-icon>
     <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" accept=".jpg,.jpeg,.png," />
   </mat-form-field>
   <mat-form-field class="full-width">
