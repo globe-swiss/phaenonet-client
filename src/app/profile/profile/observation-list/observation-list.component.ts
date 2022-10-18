@@ -7,6 +7,7 @@ import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { AuthService } from '../../../auth/auth.service';
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
 import { IndividualService } from '../../../individual/individual.service';
+import { gropupBy } from 'src/app/shared/group-by';
 
 @Component({
   selector: 'app-observation-list',
@@ -27,16 +28,6 @@ export class ObservationListComponent implements OnInit {
     private masterdataService: MasterdataService
   ) {}
 
-  gropupBy<T, K>(arr: Array<T>, key: (t: T) => K): Map<K, T[]> {
-    const extractedKeys: [K, T][] = arr.map(t => [key(t), t]);
-    const keys: K[] = Array.from(new Set(extractedKeys.map(e => e[0])));
-    const keysWithTs: [K, T[]][] = keys.map(k => [
-      k,
-      extractedKeys.filter(element => element[0] === k).map(element => element[1])
-    ]);
-    return new Map(keysWithTs);
-  }
-
   avaiableYears() {
     return this.masterdataService.availableYears$;
   }
@@ -47,7 +38,7 @@ export class ObservationListComponent implements OnInit {
       switchMap(year =>
         this.individualService.getIndividualPhenohases(this.individualService.listByUserAndYear(this.userId, year))
       ),
-      map(individuals => this.gropupBy(individuals, individual => individual.species.id)),
+      map(individuals => gropupBy(individuals, individual => individual.species.id)),
       map(individuals => Array.from(individuals)),
       map(individuals => individuals.sort((l, r) => this.languageService.sortTranslated(l[0], r[0])))
     );

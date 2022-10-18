@@ -103,12 +103,10 @@ export class ObservationViewComponent implements OnInit {
     this.years$ = this.individual$.pipe(
       switchMap(individual => this.individualService.getAllIndividualForAllYears(individual.individual)),
       map(individuals =>
-        individuals.map(i => {
-          return {
-            year: i.year,
-            composedId: `${i.year}_${i.individual}`
-          };
-        })
+        individuals.map(i => ({
+          year: i.year,
+          composedId: `${i.year}_${i.individual}`
+        }))
       )
     );
   }
