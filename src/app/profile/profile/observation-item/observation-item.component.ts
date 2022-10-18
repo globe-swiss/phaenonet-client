@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { formatShortDate } from '../../../shared/formatDate';
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
 import { MasterdataService } from '../../../masterdata/masterdata.service';
@@ -10,6 +10,7 @@ import { MasterdataService } from '../../../masterdata/masterdata.service';
 })
 export class ObservationItemComponent {
   @Input() item: IndividualPhenophase;
+  @Input() year: number;
 
   constructor(private masterdataService: MasterdataService) {}
 

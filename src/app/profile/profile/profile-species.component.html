@@ -1,5 +1,5 @@
 <div *ngIf="(data$ | async) !== null" class="profile-species">
-  <div *ngIf="detailId" class="profile-species-component">
+  <div class="profile-species-component">
     <a [routerLink]="['/profile', (data$ | async).id]" class="profile-species-component__title">
       <h2>{{ 'Zurück' | translate }}</h2>
     </a>
@@ -14,7 +14,7 @@
       </div>
     </div>
     <div *ngFor="let item of latestIndividualObservations$ | async" class="profile-species-component__content">
-      <app-observation-item [item]="item"> </app-observation-item>
+      <app-observation-item [item]="item" [year]="(data$ | async)?.year"> </app-observation-item>
     </div>
     <div *ngIf="!((latestIndividualObservations$ | async)?.length > 0)" class="profile-species-component__no-entries">
       Keine Beobachtungen in {{ (data$ | async).year }}

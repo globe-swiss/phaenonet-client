@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import _ from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
-import { filter, first, map, mergeAll } from 'rxjs/operators';
+import { filter, first, map, mergeAll, switchMap } from 'rxjs/operators';
 import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
@@ -30,6 +31,8 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
   individualObservations$: Observable<Observation[]>;
   phenophaseObservationsBySpecies$: Observable<SpeciesPhenophaseObservations[]>;
   lastObservation: Observation;
+  years$: Observable<{ year: number; composedId: string }[]>;
+  id$: Observable<string>;
 
   isFollowing$: Observable<boolean>;
 
@@ -64,7 +67,9 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
         });
       });
 
-    this.individualObservations$ = this.observationService.listByIndividual(this.detailId);
+    this.id$ = this.route.paramMap.pipe(map(params => params.get('id')));
+
+    this.individualObservations$ = this.id$.pipe(switchMap(id => this.observationService.listByIndividual(id)));
     this.availableComments$ = this.masterdataService.getComments();
 
     // combine the available phenophases with the existing observations
@@ -113,5 +118,27 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
         )
       )
     );
+
+    this.years$ = this.detailSubject$.pipe(
+      switchMap(individual => this.individualService.getAllIndividualForAllYears(individual.individual)),
+      map(individuals =>
+        individuals.map(i => {
+          return {
+            year: i.year,
+            composedId: `${i.year}_${i.individual}`
+          };
+        })
+      )
+    );
+  }
+
+  async selectYear(event: MatSelectChange) {
+    await this.router.navigate(['..', event.value as string], {
+      relativeTo: this.route
+    });
+  }
+
+  composedId(individual: Individual): string {
+    return `${individual.year}_${individual.individual}`;
   }
 }

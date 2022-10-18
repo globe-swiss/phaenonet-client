@@ -128,6 +128,13 @@ export class IndividualService extends BaseResourceService<Individual> {
     );
   }
 
+  getAllIndividualForAllYears(individualId: string): Observable<Individual[]> {
+    return this.afs
+      .collection<Individual>(this.collectionName, ref => ref.where('individual', '==', individualId))
+      .valueChanges({ idField: 'id' })
+      .pipe(tap(x => this.fds.addRead(`${this.collectionName} getAllIndividualsById`, x.length)));
+  }
+
   getPhenophaseNameIfDefined(individual: Individual): Observable<Phenophase> {
     // fixme: probably switch on individual.type
     try {

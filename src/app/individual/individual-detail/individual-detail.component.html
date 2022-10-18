@@ -19,7 +19,6 @@
         <app-individual-observation-view
           class="individual-detail__observation-view"
           [individual$]="detailSubject$"
-          [individualId]="detailId"
           [isEditable$]="isEditable$"
         ></app-individual-observation-view>
         <app-individual-description-buttons
@@ -28,7 +27,8 @@
           [individual$]="detailSubject$"
           [individualId]="detailId"
           [isEditable$]="isEditable$"
-        ></app-individual-description-buttons>
+        >
+        </app-individual-description-buttons>
       </div>
     </div>
   </div>
