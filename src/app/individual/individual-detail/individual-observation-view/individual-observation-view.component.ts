@@ -39,7 +39,7 @@ export class ObservationViewComponent implements OnInit {
     private masterdataService: MasterdataService,
     private analytics: AngularFireAnalytics,
     private userService: UserService,
-    private individualService: IndividualService,
+    public individualService: IndividualService,
     protected router: Router,
     protected route: ActivatedRoute
   ) {}
@@ -56,7 +56,7 @@ export class ObservationViewComponent implements OnInit {
       mergeAll()
     );
     const individualObservations$ = this.individual$.pipe(
-      switchMap(individual => this.observationService.listByIndividual(`${individual.year}_${individual.individual}`))
+      switchMap(individual => this.observationService.listByIndividual(this.individualService.composedId(individual)))
     );
     const availableComments$ = this.masterdataService.getComments();
 
@@ -105,14 +105,10 @@ export class ObservationViewComponent implements OnInit {
       map(individuals =>
         individuals.map(i => ({
           year: i.year,
-          composedId: `${i.year}_${i.individual}`
+          composedId: this.individualService.composedId(i)
         }))
       )
     );
-  }
-
-  composedId(individual: Individual): string {
-    return `${individual.year}_${individual.individual}`;
   }
 
   editPhenophaseDate(phenophaseObservation: PhenophaseObservation): void {
@@ -141,7 +137,7 @@ export class ObservationViewComponent implements OnInit {
               // if this is a new observation the created date is not set
               if (!observation.created) {
                 observation.individual = detail.individual;
-                observation.individual_id = this.composedId(detail);
+                observation.individual_id = this.individualService.composedId(detail);
                 observation.phenophase = result.phenophase.id;
                 observation.species = detail.species;
                 observation.year = detail.year;

@@ -1,7 +1,7 @@
 <div class="individual-observation-view__title">
   <h2>{{ 'Phänophasen' | translate }}</h2>
-  <div class="individual-observation-view__year">
-    <mat-select [value]="composedId(individual$ | async)" (selectionChange)="selectYear($event)">
+  <div class="individual-observation-view__year phenonet-year-select">
+    <mat-select [value]="individualService.composedId(individual$ | async)" (selectionChange)="selectYear($event)">
       <mat-option [value]="year.composedId" *ngFor="let year of years$ | async">{{ year.year }}</mat-option>
     </mat-select>
   </div>

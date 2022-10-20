@@ -41,7 +41,7 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
   constructor(
     private navService: NavService,
     protected route: ActivatedRoute,
-    protected individualService: IndividualService,
+    public individualService: IndividualService,
     private observationService: ObservationService,
     private masterdataService: MasterdataService,
     public dialog: MatDialog,
@@ -125,7 +125,7 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
         individuals.map(i => {
           return {
             year: i.year,
-            composedId: `${i.year}_${i.individual}`
+            composedId: this.individualService.composedId(i)
           };
         })
       )
@@ -136,9 +136,5 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
     await this.router.navigate(['..', event.value as string], {
       relativeTo: this.route
     });
-  }
-
-  composedId(individual: Individual): string {
-    return `${individual.year}_${individual.individual}`;
   }
 }

@@ -7,7 +7,7 @@
       <div class="profile-species-component__species">
         {{ (data$ | async).speciesText }}
       </div>
-      <div class="profile-species-component__year">
+      <div class="profile-species-component__year phenonet-year-select">
         <mat-select [value]="(data$ | async).year" (selectionChange)="selectYear($event)">
           <mat-option [value]="year" *ngFor="let year of (data$ | async).avaiableYears">{{ year }}</mat-option>
         </mat-select>

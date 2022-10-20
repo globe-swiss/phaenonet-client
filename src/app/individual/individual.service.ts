@@ -196,4 +196,8 @@ export class IndividualService extends BaseResourceService<Individual> {
       .delete()
       .catch(() => null); // ignore if image does not exist
   }
+
+  composedId(individual: Individual): string {
+    return `${individual.year}_${individual.individual}`;
+  }
 }
