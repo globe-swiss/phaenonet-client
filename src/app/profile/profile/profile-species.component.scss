@@ -1,0 +1,35 @@
+@import '../../../theming/mixins';
+
+.profile-species {
+  @include detail-view;
+
+  @include for-tablet-and-smaller {
+    max-width: 550px;
+  }
+
+  &-component {
+    @include detail-view-content;
+
+    &__title {
+      @include left-column;
+    }
+
+    &__year {
+      @include profile-detail-right-column;
+      @include year-select;
+    }
+
+    &__content {
+      @include profile-detail-right-column;
+    }
+
+    &__species-year {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__no-entries {
+      @include profile-detail-right-column;
+    }
+  }
+}

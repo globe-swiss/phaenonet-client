@@ -21,6 +21,19 @@
     cursor: pointer;
   }
 
+  &__year {
+    @include year-select;
+    margin-left: 40px;
+    margin-bottom: 0;
+    margin-top: -6px;
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
   &__add-phenophase--disabled {
     cursor: not-allowed;
     color: #f7f5f2;

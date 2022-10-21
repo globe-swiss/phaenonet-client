@@ -5,7 +5,7 @@ import { deleteField } from '@angular/fire/firestore';
 import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
 import { combineLatest, Observable } from 'rxjs';
-import { filter, first, map, mergeAll } from 'rxjs/operators';
+import { filter, first, map, switchMap, mergeAll } from 'rxjs/operators';
 import { UserService } from 'src/app/profile/user.service';
 import { altitudeLimits } from '../../../masterdata/altitude-limits';
 import { IdLike } from '../../../masterdata/masterdata-like';
@@ -16,6 +16,9 @@ import { PhenophaseObservation } from '../../../observation/phenophase-observati
 import { PhenophaseObservationsGroup } from '../../../observation/phenophase-observations-group';
 import { Individual } from '../../individual';
 import { PhenophaseDialogComponent } from '../../phenophase-dialog.component';
+import { IndividualService } from '../../individual.service';
+import { MatSelectChange } from '@angular/material/select';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-individual-observation-view',
@@ -24,18 +27,21 @@ import { PhenophaseDialogComponent } from '../../phenophase-dialog.component';
 })
 export class ObservationViewComponent implements OnInit {
   @Input() individual$: Observable<Individual>;
-  @Input() individualId: string;
   @Input() isEditable$: Observable<boolean>;
 
   phenophaseObservationsGroups$: Observable<PhenophaseObservationsGroup[]>;
   staticComments = {};
+  years$: Observable<{ year: number; composedId: string }[]>;
 
   constructor(
     private dialog: MatDialog,
     private observationService: ObservationService,
     private masterdataService: MasterdataService,
     private analytics: AngularFireAnalytics,
-    private userService: UserService
+    private userService: UserService,
+    public individualService: IndividualService,
+    protected router: Router,
+    protected route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +55,9 @@ export class ObservationViewComponent implements OnInit {
       map(i => this.masterdataService.getPhenophaseGroups(i.species)),
       mergeAll()
     );
-    const individualObservations$ = this.observationService.listByIndividual(this.individualId);
+    const individualObservations$ = this.individual$.pipe(
+      switchMap(individual => this.observationService.listByIndividual(this.individualService.composedId(individual)))
+    );
     const availableComments$ = this.masterdataService.getComments();
 
     // combine the available phenophases with the existing observations
@@ -92,6 +100,15 @@ export class ObservationViewComponent implements OnInit {
         });
       })
     );
+    this.years$ = this.individual$.pipe(
+      switchMap(individual => this.individualService.getAllIndividualForAllYears(individual.individual)),
+      map(individuals =>
+        individuals.map(i => ({
+          year: i.year,
+          composedId: this.individualService.composedId(i)
+        }))
+      )
+    );
   }
 
   editPhenophaseDate(phenophaseObservation: PhenophaseObservation): void {
@@ -120,7 +137,7 @@ export class ObservationViewComponent implements OnInit {
               // if this is a new observation the created date is not set
               if (!observation.created) {
                 observation.individual = detail.individual;
-                observation.individual_id = this.individualId;
+                observation.individual_id = this.individualService.composedId(detail);
                 observation.phenophase = result.phenophase.id;
                 observation.species = detail.species;
                 observation.year = detail.year;
@@ -151,6 +168,12 @@ export class ObservationViewComponent implements OnInit {
             .then(() => this.analytics.logEvent('observation.delete'))
         );
       }
+    });
+  }
+
+  async selectYear(event: MatSelectChange) {
+    await this.router.navigate(['..', event.value as string], {
+      relativeTo: this.route
     });
   }
 }

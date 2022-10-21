@@ -37,3 +37,8 @@ button[mat-flat-button] {
   line-height: 14px;
   font-size: 1.5rem;
 }
+
+#phaenonet-body .phenonet-year-select span {
+  @include mat.typography-level($phaenonet-typography, 'body-2');
+  font-weight: bold;
+}

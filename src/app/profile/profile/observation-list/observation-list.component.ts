@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { first, switchMap, tap } from 'rxjs/operators';
+import { MatSelectChange } from '@angular/material/select';
+import { Observable, ReplaySubject } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
+import { LanguageService } from 'src/app/core/language.service';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { AuthService } from '../../../auth/auth.service';
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
 import { IndividualService } from '../../../individual/individual.service';
+import { gropupBy } from 'src/app/shared/group-by';
 
 @Component({
   selector: 'app-observation-list',
@@ -15,28 +17,30 @@ import { IndividualService } from '../../../individual/individual.service';
 export class ObservationListComponent implements OnInit {
   @Input() userId: string;
 
-  latestIndividualObservations$: Observable<IndividualPhenophase[]>;
-  private fromYear$ = new BehaviorSubject<number>(9999);
-  private initialYear = 0;
+  latestIndividualObservationsMap$: Observable<Array<[string, IndividualPhenophase[]]>>;
+
+  selectedYear = new ReplaySubject<number>(1);
 
   constructor(
     private authService: AuthService,
     private individualService: IndividualService,
-    private masterdataService: MasterdataService,
-    private analytics: AngularFireAnalytics
+    private languageService: LanguageService,
+    private masterdataService: MasterdataService
   ) {}
 
+  avaiableYears() {
+    return this.masterdataService.availableYears$;
+  }
+
   ngOnInit(): void {
-    this.masterdataService.phenoYear$
-      .pipe(
-        first(),
-        tap(year => (this.initialYear = year))
-      )
-      .subscribe(year => this.fromYear$.next(year));
-    this.latestIndividualObservations$ = this.fromYear$.pipe(
+    this.masterdataService.phenoYear$.pipe(first()).subscribe(a => this.selectedYear.next(a));
+    this.latestIndividualObservationsMap$ = this.selectedYear.pipe(
       switchMap(year =>
-        this.individualService.getIndividualPhenohases(this.individualService.listByUser(this.userId, year))
-      )
+        this.individualService.getIndividualPhenohases(this.individualService.listByUserAndYear(this.userId, year))
+      ),
+      map(individuals => gropupBy(individuals, individual => individual.species.id)),
+      map(individuals => Array.from(individuals)),
+      map(individuals => individuals.sort((l, r) => this.languageService.sortTranslated(l[0], r[0])))
     );
   }
 
@@ -44,11 +48,7 @@ export class ObservationListComponent implements OnInit {
     return this.authService.getUserId() === this.userId;
   }
 
-  /**
-   * 1st click, show last year. 2nd click show all observations.
-   */
-  showMoreIndividuals(): void {
-    this.fromYear$.next(this.initialYear - this.fromYear$.value >= 1 ? 0 : this.fromYear$.value - 1);
-    void this.analytics.logEvent('profile.show-more-individuals');
+  selectYear(event: MatSelectChange): void {
+    this.selectedYear.next(event.value as number);
   }
 }

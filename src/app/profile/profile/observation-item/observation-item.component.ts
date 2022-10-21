@@ -10,6 +10,7 @@ import { MasterdataService } from '../../../masterdata/masterdata.service';
 })
 export class ObservationItemComponent {
   @Input() item: IndividualPhenophase;
+  @Input() year: number;
 
   constructor(private masterdataService: MasterdataService) {}
 

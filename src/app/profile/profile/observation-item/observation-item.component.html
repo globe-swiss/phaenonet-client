@@ -1,5 +1,6 @@
+<!-- <div> -->
 <div
-  [routerLink]="['/' + item.type + 's', item.individual.id]"
+  [routerLink]="['/' + item?.type + 's', item.individual.year + '_' + item.individual.individual]"
   class="observation-item"
   data-test-id="observation-item"
 >

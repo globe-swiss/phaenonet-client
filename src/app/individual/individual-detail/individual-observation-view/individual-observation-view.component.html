@@ -1,4 +1,11 @@
-<h2>{{ 'Phänophasen' | translate }}</h2>
+<div class="individual-observation-view__title">
+  <h2>{{ 'Phänophasen' | translate }}</h2>
+  <div class="individual-observation-view__year phenonet-year-select">
+    <mat-select [value]="individualService.composedId(individual$ | async)" (selectionChange)="selectYear($event)">
+      <mat-option [value]="year.composedId" *ngFor="let year of years$ | async">{{ year.year }}</mat-option>
+    </mat-select>
+  </div>
+</div>
 <div *ngFor="let groupedItem of phenophaseObservationsGroups$ | async" class="individual-observation-view">
   <ng-container *ngIf="(isEditable$ | async) || groupedItem.hasObservations">
     <div class="individual-observation-view__label">{{ groupedItem.phenophaseGroup.de | translate }}</div>
@@ -21,7 +28,8 @@
             class="individual-observation-view__add-phenophase"
             color="primary"
             (click)="editPhenophaseDate(item)"
-            >add_circle</mat-icon
+          >
+            add_circle</mat-icon
           >
           <mat-icon
             *ngIf="(isEditable$ | async) && item.observation.isNone() && !item.limits.isEditable"

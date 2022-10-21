@@ -125,7 +125,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
     }
   }
 
-  getIndividualIconPath(species: string, source: string, phenophase: string): string {
+  getIndividualIconPath(species: string, source?: string, phenophase?: string): string {
     let phaenoIndex = 1;
     if (phenophase) {
       phaenoIndex = this.configStatic.phenophases[phenophase]?.icon_index;

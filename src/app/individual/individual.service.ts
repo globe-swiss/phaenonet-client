@@ -58,6 +58,29 @@ export class IndividualService extends BaseResourceService<Individual> {
       .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByUser)`, x.length)));
   }
 
+  listByUserAndYear(userId: string, year: number, limit: number = 1000): Observable<(Individual & IdLike)[]> {
+    return this.afs
+      .collection<Individual>(this.collectionName, ref =>
+        ref.where('user', '==', userId).where('year', '==', year).limit(limit)
+      )
+      .valueChanges({ idField: 'id' })
+      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByUser)`, x.length)));
+  }
+
+  listByUserAndSpecies(
+    userId: string,
+    year: number,
+    species: string,
+    limit: number = 1000
+  ): Observable<(Individual & IdLike)[]> {
+    return this.afs
+      .collection<Individual>(this.collectionName, ref =>
+        ref.where('user', '==', userId).where('year', '==', year).where('species', '==', species).limit(limit)
+      )
+      .valueChanges({ idField: 'id' })
+      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByUser)`, x.length)));
+  }
+
   listByIds(individuals: string[], year: number, limit: number = 100): Observable<(Individual & IdLike)[]> {
     return this.afs
       .collection<Individual>(this.collectionName, ref =>
@@ -71,34 +94,45 @@ export class IndividualService extends BaseResourceService<Individual> {
   getIndividualPhenohases(individuals$: Observable<Individual[]>): Observable<IndividualPhenophase[]> {
     // combine the list of individuals with their phenophase
     return individuals$.pipe(
-      map(individuals =>
-        combineLatest(
-          individuals
-            .sort((l, r) => {
-              const l_hasnt_last_obs = l.last_observation_date ? false : true;
-              const r_hasnt_last_obs = r.last_observation_date ? false : true;
-              if (l_hasnt_last_obs && r_hasnt_last_obs) {
-                return 0;
-              }
-              if (l_hasnt_last_obs) {
-                return r.year - l.year + 0.1;
-              }
-              if (r_hasnt_last_obs) {
-                return r.year - l.year - 0.1;
-              } else {
-                return r.last_observation_date.toMillis() - l.last_observation_date.toMillis();
-              }
-            })
-            .map(individual =>
-              combineLatest([
-                this.masterdataService.getSpeciesValue(individual.species),
-                this.getPhenophaseNameIfDefined(individual)
-              ]).pipe(map(([species, phenophase]) => this.getIndividualPhenophase(individual, species, phenophase)))
-            )
-        )
-      ),
+      map(individuals => {
+        if (individuals.length > 0) {
+          return combineLatest(
+            individuals
+              .sort((l, r) => {
+                const l_hasnt_last_obs = l.last_observation_date ? false : true;
+                const r_hasnt_last_obs = r.last_observation_date ? false : true;
+                if (l_hasnt_last_obs && r_hasnt_last_obs) {
+                  return 0;
+                }
+                if (l_hasnt_last_obs) {
+                  return r.year - l.year + 0.1;
+                }
+                if (r_hasnt_last_obs) {
+                  return r.year - l.year - 0.1;
+                } else {
+                  return r.last_observation_date.toMillis() - l.last_observation_date.toMillis();
+                }
+              })
+              .map(individual => {
+                return combineLatest([
+                  this.masterdataService.getSpeciesValue(individual.species),
+                  this.getPhenophaseNameIfDefined(individual)
+                ]).pipe(map(([species, phenophase]) => this.getIndividualPhenophase(individual, species, phenophase)));
+              })
+          );
+        } else {
+          return of<IndividualPhenophase[]>([]);
+        }
+      }),
       mergeAll()
     );
+  }
+
+  getAllIndividualForAllYears(individualId: string): Observable<Individual[]> {
+    return this.afs
+      .collection<Individual>(this.collectionName, ref => ref.where('individual', '==', individualId))
+      .valueChanges({ idField: 'id' })
+      .pipe(tap((x: Individual[]) => this.fds.addRead(`${this.collectionName} getAllIndividualsById`, x.length)));
   }
 
   getPhenophaseNameIfDefined(individual: Individual): Observable<Phenophase> {
@@ -161,5 +195,9 @@ export class IndividualService extends BaseResourceService<Individual> {
       .ref(this.getImagePath(individual, false))
       .delete()
       .catch(() => null); // ignore if image does not exist
+  }
+
+  composedId(individual: Individual): string {
+    return `${individual.year}_${individual.individual}`;
   }
 }

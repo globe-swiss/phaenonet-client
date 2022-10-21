@@ -19,16 +19,20 @@ import { InviteComponent } from './invite/invite.component';
 import { InviteItemComponent } from './invite/invite-item/invite-item.component';
 import { InviteListComponent } from './invite/invite-list/invite-list.component';
 import { InviteDialogComponent } from './invite/invite-dialog/invite-dialog.component';
+import { ObservationSpeciesItemComponent } from './profile/observation-species-item/observation-species-item.component';
+import { ProfileSpeciesComponent } from './profile/profile-species.component';
 
 @NgModule({
   imports: [SharedModule, ProfileRoutingModule, IndividualModule, ActivityModule],
   declarations: [
     ProfileComponent,
+    ProfileSpeciesComponent,
     ProfileEditComponent,
     ChangePasswordDialogComponent,
     ActivityItemComponent,
     ActivityListComponent,
     ObservationItemComponent,
+    ObservationSpeciesItemComponent,
     ObservationListComponent,
     ProfileDetailsComponent,
     ProfilePublicComponent,

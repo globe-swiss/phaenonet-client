@@ -14,7 +14,17 @@
         </div>
       </div>
       <div class="station-detail__observation-content">
-        <h2>{{ 'Phänophasen' | translate }}</h2>
+        <div class="station-detail__title">
+          <h2>{{ 'Phänophasen' | translate }}</h2>
+          <div class="station-detail__year phenonet-year-select">
+            <mat-select
+              [value]="individualService.composedId(detailSubject$ | async)"
+              (selectionChange)="selectYear($event)"
+            >
+              <mat-option [value]="year.composedId" *ngFor="let year of years$ | async">{{ year.year }}</mat-option>
+            </mat-select>
+          </div>
+        </div>
         <div *ngFor="let groupedItem of phenophaseObservationsBySpecies$ | async">
           <div class="station-detail__observation-species">
             {{ groupedItem.species.de | translate }} {{ groupedItem.treeId }}
