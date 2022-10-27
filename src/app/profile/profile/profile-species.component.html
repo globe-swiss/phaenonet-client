@@ -17,7 +17,7 @@
       <app-observation-item [item]="item" [year]="(data$ | async)?.year"> </app-observation-item>
     </div>
     <div *ngIf="!((latestIndividualObservations$ | async)?.length > 0)" class="profile-species-component__no-entries">
-      Keine Beobachtungen in {{ (data$ | async).year }}
+      {{ 'Keine Beobachtungen in' | translate }} {{ (data$ | async).year }}
     </div>
   </div>
 </div>
