@@ -12,7 +12,7 @@ export class SentryMissingTranslationHandler implements MissingTranslationHandle
     // ignore numbers and missing translations is german
     if (params.translateService.currentLang !== 'de-CH' && !Number(params.key)) {
       if (environment.name === 'local') {
-        console.log(this.getMsg(params));
+        console.error(this.getMsg(params));
       }
       Sentry.captureMessage(this.getMsg(params));
     }
