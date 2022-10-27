@@ -52,7 +52,7 @@ export class ProfileSpeciesComponent implements OnInit {
 
         const id = params.get('id');
 
-        this.navService.setLocation('Species - ' + speciesText);
+        this.navService.setLocation('species');
 
         return { year, species, speciesText, id, avaiableYears };
       })
