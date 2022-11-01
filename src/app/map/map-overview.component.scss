@@ -12,6 +12,9 @@
   &__info-window {
     display: flex;
     flex-direction: row;
+    mat-icon {
+      align-self: center;
+    }
   }
 
   &__info-window-image-container {
@@ -28,6 +31,8 @@
   &__info-window-text {
     margin-left: 15px;
     margin-right: 15px;
+    padding-top: 5px;
+    padding-right: 10px;
   }
 
   &__info-window-label {

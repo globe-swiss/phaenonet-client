@@ -27,6 +27,7 @@
               {{ d.phenophase_name | translate }}
             </div>
           </div>
+          <mat-icon>chevron_right</mat-icon>
         </div>
       </ng-container>
       <ng-container *ngIf="infoWindowData$ | async | guardType: isStationInfoWindowData as d">
@@ -38,6 +39,7 @@
             </div>
             <div>{{ d.individual_name }}</div>
           </div>
+          <mat-icon>chevron_right</mat-icon>
         </div>
       </ng-container>
     </map-info-window>
