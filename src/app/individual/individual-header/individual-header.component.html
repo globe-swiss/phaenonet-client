@@ -1,9 +1,20 @@
 <div class="individual-header">
   <ng-container *ngIf="mapOrGraph === 'Map'">
-    <google-map class="individual-header__map" [class.individual-header__map--with-image]="imageUrl$ | async"
-      [width]="null" height="100%" [center]="geopos$ | async" [zoom]="zoom" [options]="options">
-      <map-marker #marker [position]="geopos$ | async" [options]="markerOptions$ | async"
-        (mapDragend)="updateGeopos($event)"></map-marker>
+    <google-map
+      class="individual-header__map"
+      [class.individual-header__map--with-image]="imageUrl$ | async"
+      [width]="null"
+      height="100%"
+      [center]="geopos$ | async"
+      [zoom]="zoom"
+      [options]="options"
+    >
+      <map-marker
+        #marker
+        [position]="geopos$ | async"
+        [options]="markerOptions$ | async"
+        (mapDragend)="updateGeopos($event)"
+      ></map-marker>
     </google-map>
     <div class="individual-header__image-container" *ngIf="imageUrl$ | async; let url">
       <img class="individual-header__image" [src]="url" />
@@ -13,8 +24,10 @@
     <svg id="individual-header-graph" width="100%" height="100%"></svg>
   </div>
   <div style="position: relative" *ngIf="(sensorData | async)?.length > 0">
-    <div class="individual-header__select"
-      [class]="mapOrGraph === 'Map' ? 'individual-header__select-map' : 'individual-header__select-graph'">
+    <div
+      class="individual-header__select"
+      [class]="mapOrGraph === 'Map' ? 'individual-header__select-map' : 'individual-header__select-graph'"
+    >
       <div clas="individual-header__form-datasource">
         <mat-form-field>
           <mat-label>{{ 'Ansicht' | translate }}</mat-label>
@@ -26,13 +39,17 @@
       </div>
       <div class="individual-header__grap-selection" *ngIf="mapOrGraph === 'Graph'">
         <mat-checkbox value="AirTemperature" (change)="onChange()" [(ngModel)]="displayAirTemperature">
-          {{ 'Luft Temperatur' | translate }}</mat-checkbox>
+          {{ 'Luft Temperatur' | translate }}</mat-checkbox
+        >
         <mat-checkbox value="AirHumidity" (change)="onChange()" [(ngModel)]="displayAirHumidity">
-          {{ 'Luft Feuchtigkeit' | translate }}</mat-checkbox>
+          {{ 'Luft Feuchtigkeit' | translate }}</mat-checkbox
+        >
         <mat-checkbox value="SoilTemperature" (change)="onChange()" [(ngModel)]="displaySoilTemperature" translate>
-          {{ 'Boden Temperatur' | translate }}</mat-checkbox>
+          {{ 'Boden Temperatur' | translate }}</mat-checkbox
+        >
         <mat-checkbox value="SoilHumidity" (change)="onChange()" [(ngModel)]="displaySoilHumidity">
-          {{ 'Boden Feuchtigkeit' | translate }}</mat-checkbox>
+          {{ 'Boden Feuchtigkeit' | translate }}</mat-checkbox
+        >
       </div>
     </div>
   </div>
