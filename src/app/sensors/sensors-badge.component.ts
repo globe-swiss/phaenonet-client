@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SensorLiveData } from '../individual/individual';
-import { IndividualInfoWindowData } from '../map/map-info.service';
 
 @Component({
   selector: 'app-sensors-badge',

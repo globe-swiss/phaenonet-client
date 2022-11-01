@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 import configStatic_import from '../../assets/config_static.json';
 import { BaseService } from '../core/base.service';
 import { LanguageService } from '../core/language.service';
-import { hasSensor, Individual, isMapindividual, MapIndividual } from '../individual/individual';
+import { hasSensor, Individual, MapIndividual } from '../individual/individual';
 import { AlertService } from '../messaging/alert.service';
 import { Roles } from '../profile/Roles.enum';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
