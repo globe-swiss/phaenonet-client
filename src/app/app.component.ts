@@ -54,5 +54,20 @@ export class AppComponent {
       'ranger-badge',
       this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/ico_phenorangers.svg')
     );
+
+    this.matIconRegistry.addSvgIcon(
+      'flyout-arrow',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/flyout_ico_arrow_right.svg')
+    );
+
+    this.matIconRegistry.addSvgIcon(
+      'arrow-left',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/ico_arrow_left.svg')
+    );
+
+    this.matIconRegistry.addSvgIcon(
+      'arrow-right',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/ico_arrow_right.svg')
+    );
   }
 }

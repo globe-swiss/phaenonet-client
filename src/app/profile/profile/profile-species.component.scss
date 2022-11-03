@@ -12,6 +12,21 @@
 
     &__title {
       @include left-column;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+
+      mat-icon {
+        --icon-size: 13px;
+        height: var(--icon-size);
+        width: var(--icon-size);
+        font-size: calc(var(--icon-size) - 3px);
+        padding-right: 0.75rem;
+      }
+
+      h2 {
+        margin-bottom: 0;
+      }
     }
 
     &__year {
