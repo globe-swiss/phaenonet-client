@@ -157,12 +157,12 @@ export class IndividualHeaderComponent implements OnInit {
   }
 
   scheduleDrawChart() {
-    combineLatest([this.sensorData, this.observations])
+    combineLatest([this.sensorData, this.observations, this.individual$])
       .pipe(first())
-      .subscribe(([s, o]) => this.drawChart(s, o));
+      .subscribe(([s, o, i]) => this.drawChart(s, o, i));
   }
 
-  drawChart(sensorData: DailySensorData[], observations: Observation[]) {
+  drawChart(sensorData: DailySensorData[], observations: Observation[], individual: Individual) {
     const svg = d3.select<SVGGraphicsElement, unknown>('#individual-header-graph');
 
     const boundingBox = svg.node()?.getBoundingClientRect();
@@ -176,7 +176,7 @@ export class IndividualHeaderComponent implements OnInit {
 
     const xScale = d3Scale
       .scaleTime()
-      .domain([new Date(2022, 0, 1), new Date(2022, 11, 31)])
+      .domain([new Date(individual.year, 0, 1), new Date(individual.year, 11, 31)])
       .range([0, width - (margin.left + margin.right)]);
     const xAxis = d3Axis.axisBottom(xScale);
     const tempScale = d3Scale
@@ -290,5 +290,13 @@ export class IndividualHeaderComponent implements OnInit {
       .style('text-anchor', 'middle')
       .attr('font-size', 12)
       .text('%');
+
+    svg
+      .append('text')
+      .attr('y', height + 20)
+      .attr('x', width / 2)
+      .style('text-anchor', 'middle')
+      .attr('font-size', 12)
+      .text(individual.year);
   }
 }
