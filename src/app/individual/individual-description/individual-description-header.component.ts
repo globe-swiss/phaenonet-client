@@ -6,8 +6,8 @@ import { MasterdataService } from '../../masterdata/masterdata.service';
 import { Phenophase } from '../../masterdata/phaenophase';
 import { Species } from '../../masterdata/species';
 import { PublicUserService } from '../../open/public-user.service';
-import { formatShortDate } from '../../shared/formatDate';
-import { Individual } from '../individual';
+import { formatShortDate, formatShortDateTime } from '../../shared/formatDate';
+import { Individual, SensorLiveData } from '../individual';
 
 @Component({
   selector: 'app-individual-description-header',
@@ -29,6 +29,11 @@ export class IndividualDescriptionHeaderComponent implements OnInit {
   isRanger$: Observable<boolean>;
 
   constructor(private masterdataService: MasterdataService, private publicUserService: PublicUserService) {}
+
+  public lastMeasurement(sensor: SensorLiveData) {
+    const asDate = new Date(sensor.ts.seconds * 1000);
+    return formatShortDateTime(asDate);
+  }
 
   ngOnInit(): void {
     this.publicUser$ = this.individual$.pipe(switchMap(i => this.publicUserService.get(i.user)));

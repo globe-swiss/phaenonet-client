@@ -38,7 +38,7 @@ export interface SensorLiveData {
   at: number; // air temperature
   sh: number; // soil humidity
   st: number; // soil temperature
-  ts: string; // last update
+  ts: { seconds: number; nanoseconds: number }; // last update
 }
 
 export function isMapindividual(individual: MapIndividual | Individual): individual is MapIndividual {
