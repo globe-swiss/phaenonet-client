@@ -1,7 +1,7 @@
 <div *ngIf="(data$ | async) !== null" class="profile-species">
   <div class="profile-species-component">
     <a [routerLink]="['/profile', (data$ | async).id]" class="profile-species-component__title">
-      <div class=profile-species-component__title_container >
+      <div class="profile-species-component__title_container">
         <mat-icon svgIcon="arrow-left"></mat-icon>
         <h2>
           {{ 'Zurück' | translate }}
