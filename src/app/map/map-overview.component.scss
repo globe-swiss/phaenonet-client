@@ -12,6 +12,7 @@
   &__info-window {
     display: flex;
     flex-direction: row;
+
     mat-icon {
       align-self: center;
     }
@@ -41,6 +42,7 @@
 
   &__info-window-value {
     @include mat.typography-level($phaenonet-typography, 'body-2');
+
     &:nth-child(2) {
       padding-bottom: 5px;
     }

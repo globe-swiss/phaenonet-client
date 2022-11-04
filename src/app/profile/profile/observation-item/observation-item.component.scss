@@ -18,9 +18,9 @@
   }
 
   &__image_container {
+    @include teaser-image;
     width: 180px;
     height: 180px;
-    @include teaser-image;
   }
 
   &__description {
