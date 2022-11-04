@@ -1,10 +1,12 @@
 <div *ngIf="(data$ | async) !== null" class="profile-species">
   <div class="profile-species-component">
     <a [routerLink]="['/profile', (data$ | async).id]" class="profile-species-component__title">
-      <mat-icon svgIcon="arrow-left"></mat-icon>
-      <h2>
-        {{ 'Zurück' | translate }}
-      </h2>
+      <div class=profile-species-component__title_container >
+        <mat-icon svgIcon="arrow-left"></mat-icon>
+        <h2>
+          {{ 'Zurück' | translate }}
+        </h2>
+      </div>
     </a>
     <div class="profile-species-component__species-year">
       <h2 class="profile-species-component__species">

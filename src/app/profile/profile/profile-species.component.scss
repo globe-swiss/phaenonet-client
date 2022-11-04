@@ -14,7 +14,7 @@
       @include left-column;
       text-decoration: none;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
 
       mat-icon {
         --icon-size: 13px;
@@ -27,6 +27,11 @@
       h2 {
         margin-bottom: 0;
       }
+    }
+
+    &__title_container {
+      display:flex;
+      align-items: center;
     }
 
     &__year {
