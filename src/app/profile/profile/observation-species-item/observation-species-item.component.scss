@@ -4,7 +4,7 @@
 
 @import '../../../../theming/mixins';
 
-.observation-item {
+.observation-species-item {
   @include teaser-card;
 
   mat-icon {
@@ -23,6 +23,11 @@
     width: 70px;
     height: 70px;
     padding: 36px 55px;
+    @include for-tablet-and-smaller {
+      width: 70px;
+      height: 70px;
+      padding: 20px 20px;
+    }
   }
 
   &__description {

@@ -1,20 +1,28 @@
-<div class="observation-item" [routerLink]="['/profile', userId, 'species', species, 'year', year]">
-  <img class="observation-item__image" data-test-id="observation-item__image" [src]="getIconPath()" />
-  <div class="observation-item__description">
-    <div class="observation-item__name">
-      <div class="observation-item__label" data-test-id="observation-item__species" translate>Gruppe</div>
-      <div class="observation-item__value" data-test-id="observation-item_name">{{ getSpecies().de | translate }}</div>
+<div class="observation-species-item" [routerLink]="['/profile', userId, 'species', species, 'year', year]">
+  <!-- <div class="observation-species-item__image-container"> -->
+  <img class="observation-species-item__image" data-test-id="observation-species-item__image" [src]="getIconPath()" />
+  <!-- </div> -->
+  <div class="observation-species-item__description">
+    <div class="observation-species-item__name">
+      <div class="observation-species-item__label" data-test-id="observation-species-item__species" translate>
+        Gruppe
+      </div>
+      <div class="observation-species-item__value" data-test-id="observation-species-item_name">
+        {{ getSpecies().de | translate }}
+      </div>
     </div>
-    <div class="observation-item__observation">
-      <div class="observation-item__label" *ngIf="getLastActivity()">
+    <div class="observation-species-item__observation">
+      <div class="observation-species-item__label" *ngIf="getLastActivity()">
         {{ 'Letzte Aktivität' | translate }},
         {{ getLastActivity() }}
       </div>
-      <div class="observation-item__label" *ngIf="!getLastActivity()">{{ 'Noch keine Aktivität' | translate }}</div>
+      <div class="observation-species-item__label" *ngIf="!getLastActivity()">
+        {{ 'Noch keine Aktivität' | translate }}
+      </div>
     </div>
   </div>
-  <div class="observation-item__quantity-container">
-    <div class="observation-item__quantity">{{ items.length }}</div>
+  <div class="observation-species-item__quantity-container">
+    <div class="observation-species-item__quantity">{{ items.length }}</div>
   </div>
   <mat-icon svgIcon="arrow-right"></mat-icon>
 </div>
