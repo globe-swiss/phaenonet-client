@@ -176,7 +176,7 @@ export class IndividualHeaderComponent implements OnInit {
 
     const xScale = d3Scale
       .scaleTime()
-      .domain([new Date(2022, 1, 1), new Date(2022, 11, 31)])
+      .domain([new Date(2022, 0, 1), new Date(2022, 11, 31)])
       .range([0, width - (margin.left + margin.right)]);
     const xAxis = d3Axis.axisBottom(xScale);
     const tempScale = d3Scale
