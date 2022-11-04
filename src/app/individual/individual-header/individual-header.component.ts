@@ -178,7 +178,7 @@ export class IndividualHeaderComponent implements OnInit {
       .scaleTime()
       .domain([new Date(individual.year, 0, 1), new Date(individual.year, 11, 31)])
       .range([0, width - (margin.left + margin.right)]);
-    const xAxis = d3Axis.axisBottom(xScale);
+    const xAxis = d3Axis.axisBottom(xScale).tickFormat(d3.timeFormat('%b'));
     const tempScale = d3Scale
       .scaleLinear()
       .domain(d3.extent(sensorData.flatMap(d => [d.soilTemperature, d.airTemperature])))
