@@ -62,6 +62,11 @@
       "collectionGroup": "maps",
       "fieldPath": "data",
       "indexes": []
+    },
+    {
+      "collectionGroup": "sensors",
+      "fieldPath": "data",
+      "indexes": []
     }
   ]
 }
