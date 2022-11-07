@@ -42,3 +42,15 @@ button[mat-flat-button] {
   @include mat.typography-level($phaenonet-typography, 'body-2');
   font-weight: bold;
 }
+
+#phaenonet-body .gm-style .gm-style-iw-c {
+  padding: 0;
+}
+
+#phaenonet-body .gm-style .gm-style-iw-d {
+  overflow: auto !important;
+}
+
+#phaenonet-body button.gm-ui-hover-effect {
+  display: none !important;
+}

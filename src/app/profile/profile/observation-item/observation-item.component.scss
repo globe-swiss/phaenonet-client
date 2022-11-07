@@ -7,8 +7,20 @@
 .observation-item {
   @include teaser-card;
 
+  mat-icon {
+    margin-left: auto;
+    align-self: center;
+    margin-right: 10px;
+  }
+
   &__image {
     @include teaser-image;
+  }
+
+  &__image_container {
+    @include teaser-image;
+    width: 180px;
+    height: 180px;
   }
 
   &__description {
