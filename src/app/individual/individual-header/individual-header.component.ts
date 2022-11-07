@@ -171,8 +171,8 @@ export class IndividualHeaderComponent implements OnInit {
 
     const margin: Margin = { top: 30, right: 10, bottom: 20, left: 50 };
 
-    const width = (boundingBox.width as number) - margin.left - margin.right;
-    const height = (boundingBox.height as number) - (margin.top + margin.bottom);
+    const width = boundingBox.width - margin.left - margin.right;
+    const height = boundingBox.height - (margin.top + margin.bottom);
 
     const xScale = d3Scale
       .scaleTime()
