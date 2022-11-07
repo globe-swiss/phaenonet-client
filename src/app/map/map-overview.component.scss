@@ -40,7 +40,7 @@
     @include mat.typography-level($phaenonet-typography, 'button');
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
 
     app-sensors-badge {
       margin-left: 20px;
