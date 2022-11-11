@@ -102,6 +102,7 @@ jobs:
           SENTRY_PROJECT: phaenonet-client
           ENVIRONMENT: ${{ env.PROJECT == 'phaenonet' && 'production' || 'test' }}
   deploy:
+    concurrency: deploy
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
