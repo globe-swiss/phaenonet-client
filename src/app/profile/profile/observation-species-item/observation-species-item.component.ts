@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { formatShortDate } from '../../../shared/formatDate';
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
 import { MasterdataService } from '../../../masterdata/masterdata.service';
+import { formatShortDate } from '../../../shared/formatDate';
 
 @Component({
   selector: 'app-observation-species-item',
@@ -20,11 +20,14 @@ export class ObservationSpeciesItemComponent {
     return this.masterdataService.getColor(phenophase);
   }
 
-  getLastActivity(): string | undefined {
-    const lastActivities = this.items
+  getLastObservationDate(): string | undefined {
+    const lastObservationsSeconds = this.items
       .filter(i => i.individual.last_observation_date)
-      .map(i => i.individual.last_observation_date?.seconds);
-    return lastActivities.length > 0 ? formatShortDate(new Date(Math.max(...lastActivities))) : undefined;
+      .map(i => i.individual.last_observation_date.seconds);
+
+    return lastObservationsSeconds.length > 0
+      ? formatShortDate(new Date(Math.max(...lastObservationsSeconds) * 1000))
+      : undefined;
   }
 
   getIconPath(): string {
