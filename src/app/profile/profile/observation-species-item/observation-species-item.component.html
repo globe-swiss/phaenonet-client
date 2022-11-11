@@ -13,11 +13,11 @@
     </div>
     <div class="observation-species-item__observation">
       <div class="observation-species-item__label" *ngIf="getLastActivity()">
-        {{ 'Letzte Aktivität' | translate }},
+        {{ 'Letzte Beobachtung' | translate }},
         {{ getLastActivity() }}
       </div>
       <div class="observation-species-item__label" *ngIf="!getLastActivity()">
-        {{ 'Noch keine Aktivität' | translate }}
+        {{ 'Noch keine Beobachtungen' | translate }}
       </div>
     </div>
   </div>
