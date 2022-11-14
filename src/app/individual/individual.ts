@@ -42,7 +42,7 @@ export interface SensorLiveData {
 }
 
 export function isMapindividual(individual: MapIndividual | Individual): individual is MapIndividual {
-  return (individual as MapIndividual).has_sensor !== undefined;
+  return (individual as MapIndividual).has_sensor === true;
 }
 
 export function hasSensor(individual: MapIndividual | Individual): boolean {

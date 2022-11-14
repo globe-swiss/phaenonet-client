@@ -27,7 +27,7 @@ export class SensorsService extends BaseResourceService<Sensors> {
           return v.map(this.#toDailySensorData);
         })
       )
-      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByIds)`, x.length)));
+      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (getSensorData)`, x.length)));
   }
 
   #toDailySensorData = (sensors: Sensors & { day: string }) => {
