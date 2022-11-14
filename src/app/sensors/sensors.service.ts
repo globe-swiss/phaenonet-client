@@ -21,7 +21,7 @@ export class SensorsService extends BaseResourceService<Sensors> {
       .pipe(
         map(sensors => {
           const data = sensors.data;
-          const keys = Object.keys(data).filter(k => k != 'year');
+          const keys = Object.keys(data);
 
           const v = keys.sort().map(key => ({ day: key, ...data[key] }));
           return v.map(this.#toDailySensorData);
