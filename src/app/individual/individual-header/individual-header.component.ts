@@ -27,6 +27,11 @@ export class IndividualHeaderComponent implements OnInit {
   @Input() individual$: ReplaySubject<Individual>;
   @ViewChild('mapContainer', { static: true }) mapContainer: ElementRef;
 
+  colors = {
+    soil: { temperature: '#96A68B', humidity: '#405240' },
+    air: { temperature: '#6B83BA', humidity: '#2C3A5C' }
+  };
+
   geopos$: Observable<google.maps.LatLngLiteral>;
 
   @Input() mode: 'edit' | 'detail';
@@ -228,7 +233,7 @@ export class IndividualHeaderComponent implements OnInit {
         .append('path')
         .datum(sensorData)
         .attr('fill', 'none')
-        .attr('stroke', 'red')
+        .attr('stroke', this.colors.air.temperature)
         .attr('stroke-width', 1.5)
         .attr('d', airTemperatureLine);
 
@@ -237,7 +242,7 @@ export class IndividualHeaderComponent implements OnInit {
         .append('path')
         .datum(sensorData)
         .attr('fill', 'none')
-        .attr('stroke', 'blueviolet')
+        .attr('stroke', this.colors.soil.temperature)
         .attr('stroke-width', 1.5)
         .attr('d', soilTemperatureLine)
         .enter();
@@ -247,7 +252,7 @@ export class IndividualHeaderComponent implements OnInit {
         .append('path')
         .datum(sensorData)
         .attr('fill', 'none')
-        .attr('stroke', 'gold')
+        .attr('stroke', this.colors.air.humidity)
         .attr('stroke-width', 1.5)
         .attr('d', airHumidityLine);
 
@@ -256,7 +261,7 @@ export class IndividualHeaderComponent implements OnInit {
         .append('path')
         .datum(sensorData)
         .attr('fill', 'none')
-        .attr('stroke', 'cadetblue')
+        .attr('stroke', this.colors.soil.humidity)
         .attr('stroke-width', 1.5)
         .attr('d', soilHumidityLine);
 
