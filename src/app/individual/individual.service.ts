@@ -64,7 +64,7 @@ export class IndividualService extends BaseResourceService<Individual> {
         ref.where('user', '==', userId).where('year', '==', year).limit(limit)
       )
       .valueChanges({ idField: 'id' })
-      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByUser)`, x.length)));
+      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByUserAndYear)`, x.length)));
   }
 
   listByUserAndSpecies(
@@ -78,7 +78,7 @@ export class IndividualService extends BaseResourceService<Individual> {
         ref.where('user', '==', userId).where('year', '==', year).where('species', '==', species).limit(limit)
       )
       .valueChanges({ idField: 'id' })
-      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByUser)`, x.length)));
+      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByUserAndSpecies)`, x.length)));
   }
 
   listByIds(individuals: string[], year: number, limit: number = 100): Observable<(Individual & IdLike)[]> {
