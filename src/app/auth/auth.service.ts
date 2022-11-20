@@ -3,7 +3,6 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import * as Sentry from '@sentry/angular';
 import firebase from 'firebase/compat/app';
 import { none } from 'fp-ts/lib/Option';
 import { from, Observable, of, Subscription } from 'rxjs';
@@ -78,7 +77,6 @@ export class AuthService extends BaseService implements OnDestroy {
 
   private handleUserLogin(firebaseResult: firebase.auth.UserCredential): Observable<User> {
     if (firebaseResult) {
-      Sentry.setUser({ id: firebaseResult.user.uid });
       this.user$.pipe(take(1)).subscribe(u => {
         this.handleLoginResult(new LoginResult('LOGIN_OK', firebaseResult.user, u));
       });
