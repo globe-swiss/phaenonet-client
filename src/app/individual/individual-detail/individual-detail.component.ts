@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { filter, first, map } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
 import { BaseDetailComponent } from '../../core/base-detail.component';
 import { NavService } from '../../core/nav/nav.service';
@@ -41,31 +41,16 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
 
     this.isLoggedIn = this.authService.isLoggedIn();
 
-    this.isEditable$ = this.detailSubject$.pipe(
-      filter(individual => individual !== undefined),
-      map(
-        individual =>
-          this.authService.getUserId() === individual.user && individual.year === this.masterdataService.getPhenoYear()
-      )
-    );
-
     this.isOwn$ = this.detailSubject$.pipe(
       filter(individual => individual !== undefined),
       map(individual => this.authService.getUserId() === individual.user)
     );
 
-    this.detailSubject$
-      .pipe(
-        first(),
-        filter(individual => individual !== undefined)
+    this.isEditable$ = combineLatest([this.detailSubject$, this.masterdataService.phenoYear$]).pipe(
+      filter(individual => individual !== undefined),
+      map(
+        ([individual, phenoYear]) => this.authService.getUserId() === individual.user && individual.year === phenoYear
       )
-      .subscribe(detail => {
-        this.analytics.logEvent('individual.view', {
-          own: this.authService.getUserId() === detail.user,
-          current: detail.year === this.masterdataService.getPhenoYear(),
-          year: detail.year,
-          species: detail.species
-        });
-      });
+    );
   }
 }

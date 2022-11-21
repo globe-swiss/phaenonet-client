@@ -128,11 +128,20 @@ export class IndividualService extends BaseResourceService<Individual> {
     );
   }
 
-  getAllIndividualForAllYears(individualId: string): Observable<Individual[]> {
+  /**
+   * Return list of individuals that may be shown in the individual- or station-detail view.
+   * Individuals are selectable if they have an observation date or if they are owned by the user and therefore "editable"
+   * @param individual the individual shown on the page
+   * @returns list of all selectable individuals
+   */
+  getSelectableIndividuals(individual: string, includeOwned: boolean): Observable<(Individual & IdLike)[]> {
     return this.afs
-      .collection<Individual>(this.collectionName, ref => ref.where('individual', '==', individualId))
+      .collection<Individual>(this.collectionName, ref => ref.where('individual', '==', individual))
       .valueChanges({ idField: 'id' })
-      .pipe(tap((x: Individual[]) => this.fds.addRead(`${this.collectionName} getAllIndividualsById`, x.length)));
+      .pipe(
+        tap(x => this.fds.addRead(`${this.collectionName} getSelectableIndividuals`, x.length)),
+        map(individuals => individuals.filter(i => includeOwned || i.last_observation_date))
+      );
   }
 
   getPhenophaseNameIfDefined(individual: Individual): Observable<Phenophase> {
