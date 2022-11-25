@@ -1,0 +1,24 @@
+<div class="individual-header-map">
+  <google-map
+    class="individual-header-map__map"
+    [class.individual-header__map--with-image]="imageUrl$ | async"
+    [width]="null"
+    height="100%"
+    [center]="geopos$ | async"
+    [zoom]="zoom"
+    [options]="options"
+  >
+    <map-marker
+      #marker
+      [position]="geopos$ | async"
+      [options]="markerOptions$ | async"
+      (mapDragend)="updateGeopos($event)"
+    ></map-marker>
+  </google-map>
+  <div class="individual-header-map__image-container" *ngIf="imageUrl$ | async; let url">
+    <img class="individual-header-map__image" [src]="url" />
+  </div>
+  <button mat-fab class="individual-header-map__fab" color="accent" (click)="locateMe()" *ngIf="displayLocateMe">
+    <mat-icon svgIcon="locateMe"></mat-icon>
+  </button>
+</div>

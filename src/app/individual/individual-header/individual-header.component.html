@@ -1,29 +1,16 @@
 <div class="individual-header">
   <ng-container *ngIf="mapOrGraph === 'Map'">
-    <google-map
-      class="individual-header__map"
-      [class.individual-header__map--with-image]="imageUrl$ | async"
-      [width]="null"
-      height="100%"
-      [center]="geopos$ | async"
-      [zoom]="zoom"
-      [options]="options"
-    >
-      <map-marker
-        #marker
-        [position]="geopos$ | async"
-        [options]="markerOptions$ | async"
-        (mapDragend)="updateGeopos($event)"
-      ></map-marker>
-    </google-map>
-    <div class="individual-header__image-container" *ngIf="imageUrl$ | async; let url">
-      <img class="individual-header__image" [src]="url" />
-    </div>
+    <app-individual-header-map [individual$]="individual$" [mode]="mode"></app-individual-header-map>
   </ng-container>
-  <div class="individual-header__graph" *ngIf="mapOrGraph === 'Graph'" #mapContainer>
-    <svg id="individual-header-graph" width="100%" height="100%"></svg>
-  </div>
-  <div style="position: relative" *ngIf="(sensorData | async)?.length > 0">
+  <app-individual-header-graph
+    [displayAirHumidity]="displayAirHumidity"
+    [displayAirTemperature]="displayAirTemperature"
+    [displaySoilHumidity]="displaySoilHumidity"
+    [displaySoilTemperature]="displaySoilTemperature"
+    [individual$]="individual$"
+    *ngIf="mapOrGraph === 'Graph'"
+  ></app-individual-header-graph>
+  <div style="position: relative" *ngIf="mode === 'detail' && (individual$ | async)?.sensor">
     <div
       class="individual-header__select"
       [class]="mapOrGraph === 'Map' ? 'individual-header__select-map' : 'individual-header__select-graph'"
@@ -31,50 +18,31 @@
       <div clas="individual-header__form-datasource">
         <mat-form-field>
           <mat-label>{{ 'Ansicht' | translate }}</mat-label>
-          <mat-select [(value)]="mapOrGraph" (selectionChange)="onChange()">
+          <mat-select [(value)]="mapOrGraph">
             <mat-option value="Map">{{ 'Karte' | translate }}</mat-option>
             <mat-option value="Graph">{{ 'Messwerte' | translate }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
       <div class="individual-header__grap-selection" *ngIf="mapOrGraph === 'Graph'">
-        <mat-checkbox
-          value="AirTemperature"
-          (change)="onChange()"
-          [(ngModel)]="displayAirTemperature"
-          id="individual-header-air-temperature"
-        >
+        <mat-checkbox value="AirTemperature" [(ngModel)]="displayAirTemperature" id="individual-header-air-temperature">
           {{ 'Luft Temperatur' | translate }}</mat-checkbox
         >
-        <mat-checkbox
-          value="AirHumidity"
-          (change)="onChange()"
-          [(ngModel)]="displayAirHumidity"
-          id="individual-header-air-humidity"
-        >
+        <mat-checkbox value="AirHumidity" [(ngModel)]="displayAirHumidity" id="individual-header-air-humidity">
           {{ 'Luft Feuchtigkeit' | translate }}</mat-checkbox
         >
         <mat-checkbox
           value="SoilTemperature"
-          (change)="onChange()"
           [(ngModel)]="displaySoilTemperature"
           translate
           id="individual-header-soil-temperature"
         >
           {{ 'Boden Temperatur' | translate }}</mat-checkbox
         >
-        <mat-checkbox
-          value="SoilHumidity"
-          (change)="onChange()"
-          [(ngModel)]="displaySoilHumidity"
-          id="individual-header-soil-humidity"
-        >
+        <mat-checkbox value="SoilHumidity" [(ngModel)]="displaySoilHumidity" id="individual-header-soil-humidity">
           {{ 'Boden Feuchtigkeit' | translate }}</mat-checkbox
         >
       </div>
     </div>
   </div>
 </div>
-<button mat-fab class="individual-header__fab" color="accent" (click)="locateMe()" *ngIf="displayLocateMe">
-  <mat-icon svgIcon="locateMe"></mat-icon>
-</button>

@@ -17,6 +17,8 @@ import { IndividualEditComponent } from './individual-edit/individual-edit.compo
 import { IndividualHeaderComponent } from './individual-header/individual-header.component';
 import { IndividualRoutingModule } from './individual-routing.module';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
+import { IndividualHeaderMapComponent } from './individual-header/individual-header-map.component';
+import { IndividualHeaderGraphComponent } from './individual-header/individual-header-graph.component';
 
 @NgModule({
   imports: [
@@ -37,6 +39,8 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
     IndividualDescriptionButtonsComponent,
     ObservationViewComponent,
     IndividualHeaderComponent,
+    IndividualHeaderMapComponent,
+    IndividualHeaderGraphComponent,
     IndividualEditViewComponent
   ],
   providers: [GeoposService],
