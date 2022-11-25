@@ -10,7 +10,7 @@
   <div class="individual-description__label" *ngIf="(individual$ | async).last_observation_date">
     <span translate>Letzte Beobachtung</span>
     <span>, </span>
-    <span>{{ lastObservationDate$ | async }}</span>
+    <span>{{ (individual$ | async).last_observation_date | shortdate }}</span>
   </div>
   <div class="individual-description__name" *ngIf="lastPhenophase$ | async">
     <span

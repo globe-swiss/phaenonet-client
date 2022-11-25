@@ -85,7 +85,6 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
         return combineLatest(
           _.map(observationsBySpecies, (os, keys) => {
             const [speciesId, treeId] = keys.split(','); // unpack species and individual name
-            console.log(treeId);
 
             return combineLatest([
               this.masterdataService.getSpeciesValue(speciesId),
@@ -120,7 +119,7 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
     );
 
     this.years$ = this.detailSubject$.pipe(
-      switchMap(individual => this.individualService.getAllIndividualForAllYears(individual.individual)),
+      switchMap(individual => this.individualService.getSelectableIndividuals(individual.individual, false)),
       map(individuals =>
         individuals.map(i => {
           return {

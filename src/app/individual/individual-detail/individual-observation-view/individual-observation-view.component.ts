@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import { MatDialog } from '@angular/material/dialog';
 import { deleteField } from '@angular/fire/firestore';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
+import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
 import { combineLatest, Observable } from 'rxjs';
-import { filter, first, map, switchMap, mergeAll } from 'rxjs/operators';
+import { filter, first, map, mergeAll, switchMap, tap } from 'rxjs/operators';
 import { UserService } from 'src/app/profile/user.service';
 import { altitudeLimits } from '../../../masterdata/altitude-limits';
 import { IdLike } from '../../../masterdata/masterdata-like';
@@ -15,10 +17,8 @@ import { ObservationService } from '../../../observation/observation.service';
 import { PhenophaseObservation } from '../../../observation/phenophase-observation';
 import { PhenophaseObservationsGroup } from '../../../observation/phenophase-observations-group';
 import { Individual } from '../../individual';
-import { PhenophaseDialogComponent } from '../../phenophase-dialog.component';
 import { IndividualService } from '../../individual.service';
-import { MatSelectChange } from '@angular/material/select';
-import { ActivatedRoute, Router } from '@angular/router';
+import { PhenophaseDialogComponent } from '../../phenophase-dialog.component';
 
 @Component({
   selector: 'app-individual-observation-view',
@@ -28,6 +28,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ObservationViewComponent implements OnInit {
   @Input() individual$: Observable<Individual>;
   @Input() isEditable$: Observable<boolean>;
+  @Input() isOwn$: Observable<boolean>;
 
   phenophaseObservationsGroups$: Observable<PhenophaseObservationsGroup[]>;
   staticComments = {};
@@ -100,8 +101,8 @@ export class ObservationViewComponent implements OnInit {
         });
       })
     );
-    this.years$ = this.individual$.pipe(
-      switchMap(individual => this.individualService.getAllIndividualForAllYears(individual.individual)),
+    this.years$ = combineLatest([this.individual$, this.isOwn$]).pipe(
+      switchMap(([individual, isOwn]) => this.individualService.getSelectableIndividuals(individual.individual, isOwn)),
       map(individuals =>
         individuals.map(i => ({
           year: i.year,

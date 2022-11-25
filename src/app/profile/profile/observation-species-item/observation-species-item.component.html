@@ -12,12 +12,12 @@
       </div>
     </div>
     <div class="observation-species-item__observation">
-      <div class="observation-species-item__label" *ngIf="getLastActivity()">
-        {{ 'Letzte Aktivität' | translate }},
-        {{ getLastActivity() }}
+      <div class="observation-species-item__label" *ngIf="getLastObservationDate()">
+        {{ 'Letzte Beobachtung' | translate }},
+        {{ getLastObservationDate() }}
       </div>
-      <div class="observation-species-item__label" *ngIf="!getLastActivity()">
-        {{ 'Noch keine Aktivität' | translate }}
+      <div class="observation-species-item__label" *ngIf="!getLastObservationDate()">
+        {{ 'Noch keine Beobachtungen' | translate }}
       </div>
     </div>
   </div>
