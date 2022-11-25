@@ -11,7 +11,7 @@
   "auth/network-request-failed.title": "Fehler",
   "auth/network-request-failed.message": "Es ist ein Netzwerkfehler aufgetreten.",
   "auth/too-many-requests.title": "Fehler",
-  "auth/too-many-requests.message": "Zu viele fehlgeschlagene Anmeldeversuche: Ihr Konto wurde vorübergehend deaktiviert. Bitte setzen Sie Ihr Kennwort zrück oder versuchen Sie es später erneut.",
+  "auth/too-many-requests.message": "Zu viele fehlgeschlagene Anmeldeversuche: Ihr Konto wurde vorübergehend deaktiviert. Bitte setzen Sie Ihr Kennwort zurück oder versuchen Sie es später erneut.",
   "all": "Alle",
   "globe": "PhaenoNet",
   "meteoswiss": "MeteoSchweiz",
