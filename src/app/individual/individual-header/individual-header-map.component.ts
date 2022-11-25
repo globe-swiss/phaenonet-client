@@ -7,9 +7,6 @@ import { Individual } from '../individual';
 import { IndividualService } from '../individual.service';
 import { GeoposService } from './geopos.service';
 
-const mapOrGraph = ['Map', 'Graph'] as const;
-type MapOrGraph = typeof mapOrGraph[number];
-
 @Component({
   selector: 'app-individual-header-map',
   templateUrl: './individual-header-map.component.html',

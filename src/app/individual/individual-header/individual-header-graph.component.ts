@@ -13,9 +13,6 @@ import { DailySensorData } from 'src/app/sensors/sensors';
 import { Observation } from 'src/app/observation/observation';
 import { ObservationService } from 'src/app/observation/observation.service';
 
-const mapOrGraph = ['Map', 'Graph'] as const;
-type MapOrGraph = typeof mapOrGraph[number];
-
 @Component({
   selector: 'app-individual-header-graph',
   templateUrl: './individual-header-graph.component.html',
@@ -43,7 +40,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     private sensorsService: SensorsService,
     private observationService: ObservationService
   ) {}
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(_changes: SimpleChanges): void {
     this.onChange();
   }
 
@@ -72,7 +69,6 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     const svg = d3.select<SVGGraphicsElement, unknown>('#individual-header-graph');
 
     const boundingBox = svg.node()?.getBoundingClientRect();
-    console.log({ boundingBox });
 
     svg.selectAll('*').remove();
 

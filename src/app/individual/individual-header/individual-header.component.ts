@@ -24,8 +24,6 @@ export class IndividualHeaderComponent implements OnInit {
   displaySoilTemperature = true;
   displaySoilHumidity = true;
 
-  constructor() {}
-
   ngOnInit(): void {
     this.edit = this.mode === 'edit';
 
