@@ -10,6 +10,7 @@ import { DisableNotOwnerDirective } from '../auth/disable-not-owner.directive';
 import { RemoveNotAuthorizedDirective } from '../auth/remove-not-authorized.directive';
 import { MaterialModule } from '../core/material.module';
 import { NotFoundComponent } from '../core/not-found.component';
+import { SensorsBadgeComponent } from '../sensors/sensors-badge.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { CopyClipboardDirective } from './copy-clipboard.directive';
 import { LimitToPipe } from './limitTo.pipe';
@@ -48,6 +49,7 @@ import { TypeGuardPipe } from './type-guard.pipe';
     LimitToPipe,
     UserSubscriptionButtonComponent,
     IndividualSubscriptionButtonComponent,
+    SensorsBadgeComponent,
     TypeGuardPipe
   ],
   exports: [
@@ -69,7 +71,8 @@ import { TypeGuardPipe } from './type-guard.pipe';
     LimitToPipe,
     UserSubscriptionButtonComponent,
     IndividualSubscriptionButtonComponent,
-    TypeGuardPipe
+    TypeGuardPipe,
+    SensorsBadgeComponent
   ],
   providers: [LoadingGuard]
 })

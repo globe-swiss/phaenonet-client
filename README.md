@@ -13,6 +13,8 @@ PhaenoNet is set up with two Firebase projects instances. These projects have a 
 
 The application will be using the database and access rules of the `phaenonet-test` project for all use-cases described in this section.
 
+To recreate the map_pins with the '+' install imagemagick and run the script `src/create_map_pins_with_plus_icon.sh`.
+
 The CSS is developed according to [BEM](http://getbem.com/introduction/).
 
 e.g.

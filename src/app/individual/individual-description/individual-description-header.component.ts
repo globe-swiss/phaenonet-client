@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
+import { formatShortDateTime } from 'src/app/shared/formatDate';
 import { MasterdataService } from '../../masterdata/masterdata.service';
 import { Phenophase } from '../../masterdata/phaenophase';
 import { Species } from '../../masterdata/species';
 import { PublicUserService } from '../../open/public-user.service';
-import { Individual } from '../individual';
+import { Individual, SensorLiveData } from '../individual';
 
 @Component({
   selector: 'app-individual-description-header',
@@ -25,6 +26,11 @@ export class IndividualDescriptionHeaderComponent implements OnInit {
   isRanger$: Observable<boolean>;
 
   constructor(private masterdataService: MasterdataService, private publicUserService: PublicUserService) {}
+
+  public lastMeasurement(sensor: SensorLiveData) {
+    const asDate = new Date(sensor.ts.seconds * 1000);
+    return formatShortDateTime(asDate);
+  }
 
   ngOnInit(): void {
     const publicUser$ = this.individual$.pipe(switchMap(i => this.publicUserService.get(i.user)));

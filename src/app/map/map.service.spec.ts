@@ -86,6 +86,7 @@ describe('MapService', () => {
         {
           id: 'id1',
           geopos: { lat: 1, lng: 2 },
+          has_sensor: false,
           source: 'wld',
           type: 'station',
           species: 'sp',
@@ -95,6 +96,7 @@ describe('MapService', () => {
         {
           id: 'id2',
           geopos: { lat: 1, lng: 2 },
+          has_sensor: false,
           source: 'wld',
           type: 'individual',
           species: 'sp',

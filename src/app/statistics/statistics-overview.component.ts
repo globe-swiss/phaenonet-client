@@ -347,13 +347,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
     this.g
       .append('g')
       .attr('transform', 'translate(' + 0 + ',' + this.height + ')')
-      .call(
-        axisBottom.tickValues(xTicks).tickFormat(t =>
-          moment()
-            .dayOfYear(+t)
-            .format('MMMM')
-        )
-      );
+      .call(axisBottom.tickValues(xTicks).tickFormat(t => moment().dayOfYear(+t).format('MMMM')));
   }
 
   private drawVerticalLines(

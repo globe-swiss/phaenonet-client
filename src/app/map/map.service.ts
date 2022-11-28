@@ -16,6 +16,7 @@ interface MapData {
       sp?: string;
       ss?: string[];
       p?: string;
+      hs?: boolean;
       t: IndividualType;
     };
   };
@@ -57,7 +58,8 @@ export class MapService {
         type: v.t,
         species: v.sp,
         station_species: v.ss,
-        last_phenophase: v.p
+        last_phenophase: v.p,
+        has_sensor: v.hs ?? false
       });
     });
     return result;
@@ -76,7 +78,10 @@ export class MapService {
   public getMapMarkers(individuals: MapIndividual[]): IndividualWithMarkerOpt[] {
     return individuals.map(individual => {
       const icon = this.masterdataService.individualToIcon(individual);
-      const markerOptions: google.maps.MarkerOptions = { draggable: false, icon: icon };
+      const markerOptions: google.maps.MarkerOptions = {
+        draggable: false,
+        icon: icon
+      };
       return {
         individualId: individual.id,
         geopos: individual.geopos,

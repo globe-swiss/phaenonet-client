@@ -1,0 +1,17 @@
+@import '../../../theming/mixins';
+
+::ng-deep app-individual-header-graph {
+  flex-grow: 1;
+}
+
+.individual-header-graph {
+  @include flex-row;
+  height: 400px;
+
+  &__graph {
+    @include flex-grow-shrink;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    height: 100%;
+  }
+}

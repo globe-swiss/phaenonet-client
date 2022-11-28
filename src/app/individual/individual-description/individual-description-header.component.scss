@@ -21,6 +21,24 @@ button.navigation {
     @include detail-label;
   }
 
+  &__sensor-badge {
+    padding-top: 15px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__question-mark {
+    @include mat.typography-level($phaenonet-typography, 'button');
+    border-radius: 50%;
+    background-color: #f7f5f2;
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+  }
+
   &__name {
     @include mat.typography-level($phaenonet-typography, 'body-1');
     margin-bottom: 20px;

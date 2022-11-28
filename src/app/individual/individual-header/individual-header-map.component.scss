@@ -1,0 +1,52 @@
+@import '../../../theming/mixins';
+
+::ng-deep app-individual-header-map {
+  flex: 1;
+}
+
+.individual-header-map {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+
+  @include for-tablet-and-smaller {
+    height: 300px;
+  }
+
+  @include for-phone {
+    height: 200px;
+  }
+
+  &__map {
+    @include flex-grow-shrink;
+  }
+
+  &__map ::ng-deep .map-container {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+  }
+
+  &__image-container {
+    @include flex-no-grow-shrink;
+    height: 100%;
+    overflow: hidden;
+    border-top-right-radius: 1rem;
+    aspect-ratio: 1 / 1;
+  }
+
+  &__image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__fab {
+    margin-left: 90%;
+    bottom: 28px;
+    width: 70px;
+    height: 70px;
+    @include for-tablet-and-smaller {
+      margin-left: 70%;
+    }
+  }
+}
