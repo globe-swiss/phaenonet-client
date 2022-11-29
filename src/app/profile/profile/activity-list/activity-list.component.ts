@@ -1,7 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
+import { Component, Input, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Activity } from '../../../activity/activity';
 import { ActivityService } from '../../../activity/activity.service';
 
@@ -10,17 +9,17 @@ import { ActivityService } from '../../../activity/activity.service';
   templateUrl: './activity-list.component.html',
   styleUrls: ['./activity-list.component.scss']
 })
-export class ActivityListComponent implements OnInit, OnDestroy {
+export class ActivityListComponent implements OnInit {
   @Input() userId: string;
 
-  limitActivities$ = new BehaviorSubject<number>(8);
+  private limitActivities$ = new BehaviorSubject<number>(8);
   activities$: Observable<Activity[]>;
 
-  constructor(private activityService: ActivityService, private analytics: AngularFireAnalytics) {}
+  constructor(private activityService: ActivityService) {}
 
   ngOnInit() {
     this.activities$ = this.limitActivities$.pipe(
-      switchMap(limit => this.activityService.listByUser(this.userId, limit).pipe(take(1)))
+      switchMap(limit => this.activityService.listByUser(this.userId, limit))
     );
   }
 
@@ -29,10 +28,5 @@ export class ActivityListComponent implements OnInit, OnDestroy {
    */
   showAllActivities() {
     this.limitActivities$.next(1000);
-    this.analytics.logEvent('profile.show-more-activities');
-  }
-
-  ngOnDestroy() {
-    this.limitActivities$.unsubscribe();
   }
 }
