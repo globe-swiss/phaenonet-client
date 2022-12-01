@@ -41,7 +41,6 @@ export class IndividualHeaderMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.edit = this.mode === 'edit';
-    console.log('mode:', { mode: this.mode, edit: this.edit });
 
     const config = {
       displayLocateMe: this.edit ? true : false,
