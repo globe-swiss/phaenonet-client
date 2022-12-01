@@ -28,8 +28,12 @@ export class IndividualDescriptionHeaderComponent implements OnInit {
   constructor(private masterdataService: MasterdataService, private publicUserService: PublicUserService) {}
 
   public lastMeasurement(sensor: SensorLiveData) {
-    const asDate = new Date(sensor.ts.seconds * 1000);
-    return formatShortDateTime(asDate);
+    if (sensor?.ts) {
+      const asDate = new Date(sensor.ts.seconds * 1000);
+      return formatShortDateTime(asDate);
+    } else {
+      return 'n/a';
+    }
   }
 
   ngOnInit(): void {

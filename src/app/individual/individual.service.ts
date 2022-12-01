@@ -139,7 +139,7 @@ export class IndividualService extends BaseResourceService<Individual> {
       .collection<Individual>(this.collectionName, ref => ref.where('individual', '==', individual))
       .valueChanges({ idField: 'id' })
       .pipe(
-        tap(x => this.fds.addRead(`${this.collectionName} getSelectableIndividuals`, x.length)),
+        tap(x => this.fds.addRead(`${this.collectionName} (getSelectableIndividuals)`, x.length)),
         map(individuals => individuals.filter(i => includeOwned || i.last_observation_date))
       );
   }

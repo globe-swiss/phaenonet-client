@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
@@ -19,6 +19,8 @@ export class SensorsService extends BaseResourceService<Sensors> {
       .doc(individual_id)
       .valueChanges()
       .pipe(
+        tap(() => this.fds.addRead(`${this.collectionName} (getSensorData)`, 1)),
+        filter(sensors => sensors !== undefined),
         map(sensors => {
           const data = sensors.data;
           const keys = Object.keys(data);
@@ -26,8 +28,7 @@ export class SensorsService extends BaseResourceService<Sensors> {
           const v = keys.sort().map(key => ({ day: key, ...data[key] }));
           return v.map(this.#toDailySensorData);
         })
-      )
-      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (getSensorData)`, x.length)));
+      );
   }
 
   #toDailySensorData = (sensors: Sensors & { day: string }) => {
