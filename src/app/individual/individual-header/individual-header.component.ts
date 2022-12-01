@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
 import { Individual } from '../individual';
 
 const mapOrGraph = ['Map', 'Graph'] as const;
@@ -26,10 +25,5 @@ export class IndividualHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.edit = this.mode === 'edit';
-
-    const detailGeopos$ = this.individual$.pipe(
-      filter(i => i !== undefined),
-      map(i => i.geopos)
-    );
   }
 }

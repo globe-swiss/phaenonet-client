@@ -1,17 +1,17 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { Observable, ReplaySubject, combineLatest } from 'rxjs';
-import { first, switchMap } from 'rxjs/operators';
-import { MasterdataService } from 'src/app/masterdata/masterdata.service';
-import { Individual } from '../individual';
-import { IndividualService } from '../individual.service';
+import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
-import * as d3 from 'd3';
-import { Margin } from 'src/app/statistics/statistics-overview.component';
-import { SensorsService } from 'src/app/sensors/sensors.service';
-import { DailySensorData } from 'src/app/sensors/sensors';
+import { combineLatest, Observable, ReplaySubject } from 'rxjs';
+import { first, switchMap } from 'rxjs/operators';
+import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { Observation } from 'src/app/observation/observation';
 import { ObservationService } from 'src/app/observation/observation.service';
+import { DailySensorData } from 'src/app/sensors/sensors';
+import { SensorsService } from 'src/app/sensors/sensors.service';
+import { Margin } from 'src/app/statistics/statistics-overview.component';
+import { Individual } from '../individual';
+import { IndividualService } from '../individual.service';
 
 @Component({
   selector: 'app-individual-header-graph',
@@ -27,8 +27,8 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     air: { temperature: '#6B83BA', humidity: '#2C3A5C' }
   };
 
-  sensorData: Observable<DailySensorData[]>;
-  observations: Observable<Observation[]>;
+  sensorData$: Observable<DailySensorData[]>;
+  observations$: Observable<Observation[]>;
   @Input() displayAirTemperature: boolean;
   @Input() displayAirHumidity: boolean;
   @Input() displaySoilTemperature: boolean;
@@ -45,10 +45,10 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.sensorData = this.individual$.pipe(
+    this.sensorData$ = this.individual$.pipe(
       switchMap(individual => this.sensorsService.getSensorData(this.individualService.composedId(individual)))
     );
-    this.observations = this.individual$.pipe(
+    this.observations$ = this.individual$.pipe(
       switchMap(individual => this.observationService.listByIndividual(this.individualService.composedId(individual)))
     );
 
@@ -60,7 +60,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
   }
 
   scheduleDrawChart() {
-    combineLatest([this.sensorData, this.observations, this.individual$])
+    combineLatest([this.sensorData$, this.observations$, this.individual$])
       .pipe(first())
       .subscribe(([s, o, i]) => this.drawChart(s, o, i));
   }
