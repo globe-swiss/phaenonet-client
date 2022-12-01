@@ -81,9 +81,9 @@ export class MapInfoService {
       individual_name: individual.name,
       last_observation_date: individual.last_observation_date,
       hasLiveData: individual?.deveui?.length > 0 ? true : false,
-      sensor: individual.sensor,
+      sensor: individual?.sensor,
       species_name: species.de,
-      phenophase_name: phenophase.de,
+      phenophase_name: phenophase?.de,
       imgUrl$: this.individualService.getImageUrl(individual, true).pipe(
         first(),
         map(u => (u === null ? 'assets/img/pic_placeholder.svg' : u))

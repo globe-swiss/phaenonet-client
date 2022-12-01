@@ -28,6 +28,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     air: { temperature: '#6B83BA', humidity: '#2C3A5C' }
   };
 
+  initialized = false;
   sensorData$: Observable<DailySensorData[]>;
   observations$: Observable<Observation[]>;
   @Input() displayAirTemperature: boolean;
@@ -42,7 +43,10 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     private observationService: ObservationService
   ) {}
   ngOnChanges(_changes: SimpleChanges): void {
-    this.onChange();
+    // avoid being executed before nginit()
+    if (this.initialized) {
+      this.scheduleDrawChart();
+    }
   }
 
   ngOnInit(): void {
@@ -54,10 +58,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     );
 
     this.scheduleDrawChart();
-  }
-
-  onChange() {
-    this.scheduleDrawChart();
+    this.initialized = true;
   }
 
   scheduleDrawChart() {
