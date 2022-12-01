@@ -22,6 +22,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
   @Input() individual$: ReplaySubject<Individual>;
   @ViewChild('mapContainer', { static: true }) mapContainer: ElementRef;
 
+  // note: colors are also defined in _overwrite-mat.scss
   colors = {
     soil: { temperature: '#96A68B', humidity: '#405240' },
     air: { temperature: '#6B83BA', humidity: '#2C3A5C' }
