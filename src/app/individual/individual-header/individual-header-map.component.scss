@@ -7,7 +7,7 @@
 .individual-header-map {
   height: 400px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 
   @include for-tablet-and-smaller {
     height: 300px;
