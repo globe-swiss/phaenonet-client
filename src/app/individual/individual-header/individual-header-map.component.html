@@ -18,7 +18,7 @@
   <div class="individual-header-map__image-container" *ngIf="imageUrl$ | async; let url">
     <img class="individual-header-map__image" [src]="url" />
   </div>
-  <button mat-fab class="individual-header-map__fab" color="accent" (click)="locateMe()" *ngIf="displayLocateMe">
-    <mat-icon svgIcon="locateMe"></mat-icon>
-  </button>
 </div>
+<button mat-fab class="individual-header-map__fab" color="accent" (click)="locateMe()" *ngIf="displayLocateMe">
+  <mat-icon svgIcon="locateMe"></mat-icon>
+</button>
