@@ -39,5 +39,5 @@ Scenario('test all year view', ({ I, statisticsPage }) => {
   I.wait(2);
   I.selectDropdownValue(statisticsPage.filter.phenoyear.dropdown, 'all');
   I.selectDropdownValue(statisticsPage.filter.species.dropdown, 'BA');
-  I.seeNumberOfElements(statisticsPage.label, 26);
+  I.seeNumberOfElements(statisticsPage.label, 27);
 });
