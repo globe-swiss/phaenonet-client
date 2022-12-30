@@ -51,16 +51,19 @@ export class MapService {
   public convertIndividuals(mapData: MapData): MapIndividual[] {
     const result = Array<MapIndividual & IdLike>();
     Object.entries(mapData.data).forEach(([k, v]) => {
-      result.push({
-        id: k,
-        geopos: v.g,
-        source: v.so,
-        type: v.t,
-        species: v.sp,
-        station_species: v.ss,
-        last_phenophase: v.p,
-        has_sensor: v.hs ?? false
-      });
+      // omit individuals without phenophase
+      if (!(v.t == 'individual' && !v.p)) {
+        result.push({
+          id: k,
+          geopos: v.g,
+          source: v.so,
+          type: v.t,
+          species: v.sp,
+          station_species: v.ss,
+          last_phenophase: v.p,
+          has_sensor: v.hs ?? false
+        });
+      }
     });
     return result;
   }

@@ -105,6 +105,31 @@ describe('MapService', () => {
         }
       ]);
     });
+
+    it('should not return individuals without phenophase', () => {
+      const g = { lat: 1, lng: 2 } as google.maps.LatLngLiteral;
+      const mapData = {
+        data: {
+          id1: { g: g, so: 'wld', sp: 'sp', ss: ['ss'], p: 'p', t: 'individual' },
+          id2: { g: g, so: 'wld', sp: 'sp', ss: ['ss'], t: 'individual' }
+        }
+      };
+
+      const result = fixture['convertIndividuals'](mapData as never);
+
+      expect(result).toEqual([
+        {
+          id: 'id1',
+          geopos: { lat: 1, lng: 2 },
+          has_sensor: false,
+          source: 'wld',
+          type: 'individual',
+          species: 'sp',
+          station_species: ['ss'],
+          last_phenophase: 'p'
+        }
+      ]);
+    });
   });
 
   describe('filterBySource', () => {
