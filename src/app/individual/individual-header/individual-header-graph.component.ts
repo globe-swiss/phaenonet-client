@@ -1,9 +1,9 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
-import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { first, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { Observation } from 'src/app/observation/observation';
 import { ObservationService } from 'src/app/observation/observation.service';
@@ -31,6 +31,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
   initialized = false;
   sensorData$: Observable<DailySensorData[]>;
   observations$: Observable<Observation[]>;
+  resizeEvent$ = new BehaviorSubject(0);
   @Input() displayAirTemperature: boolean;
   @Input() displayAirHumidity: boolean;
   @Input() displaySoilTemperature: boolean;
@@ -49,6 +50,13 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     }
   }
 
+  @HostListener('window:resize', ['$event'])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onResize(event: UIEvent): void {
+    // re-render the svg on window resize
+    this.resizeEvent$.next(1);
+  }
+
   ngOnInit(): void {
     this.sensorData$ = this.individual$.pipe(
       switchMap(individual => this.sensorsService.getSensorData(this.individualService.composedId(individual)))
@@ -62,9 +70,9 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
   }
 
   scheduleDrawChart() {
-    combineLatest([this.sensorData$, this.observations$, this.individual$])
-      .pipe(first())
-      .subscribe(([s, o, i]) => this.drawChart(s, o, i));
+    combineLatest([this.sensorData$, this.observations$, this.individual$, this.resizeEvent$]).subscribe(([s, o, i]) =>
+      this.drawChart(s, o, i)
+    );
   }
 
   drawChart(sensorData: DailySensorData[], observations: Observation[], individual: Individual) {
