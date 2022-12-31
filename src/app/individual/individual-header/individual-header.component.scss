@@ -1,17 +1,6 @@
 @import '../../../theming/mixins';
 
 .individual-header {
-  @include flex-row;
-  height: 400px;
-
-  @include for-tablet-and-smaller {
-    height: 300px;
-  }
-
-  @include for-phone {
-    height: 200px;
-  }
-
   &__select {
     width: 15rem;
 
