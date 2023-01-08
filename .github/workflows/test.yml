@@ -20,16 +20,16 @@ jobs:
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Cache dependencies
+      - name: Check cache (node modules)
         id: cache
         uses: martijnhols/actions-cache/check@v3
         with:
           path: ./node_modules
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
-      - name: Install Dependencies
+      - name: Install node modules
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci --also=dev
-      - name: Cache dependencies
+      - name: Save cache (node modules)
         if: steps.cache.outputs.cache-hit != 'true'
         uses: martijnhols/actions-cache/save@v3
         with:
@@ -45,7 +45,7 @@ jobs:
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Cache dependencies
+      - name: Restore cache (node modules)
         id: cache
         uses: martijnhols/actions-cache/restore@v3
         with:
@@ -76,7 +76,7 @@ jobs:
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Cache dependencies
+      - name: Restore cache (node modules)
         id: cache
         uses: martijnhols/actions-cache/restore@v3
         with:
@@ -147,7 +147,7 @@ jobs:
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Cache dependencies
+      - name: Restore cache (node modules)
         id: cache
         uses: martijnhols/actions-cache/restore@v3
         with:
