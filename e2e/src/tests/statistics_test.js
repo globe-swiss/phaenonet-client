@@ -2,8 +2,9 @@
 Feature('Statistics');
 
 Scenario('test quantil regression on 2018', ({ I, statisticsPage }) => {
+  // fixme: test will fail after phenoyear rollover -> based on 2023
   I.visit(statisticsPage.url);
-  I.wait(2);
+  I.waitForText('2023', 5, statisticsPage.filter.phenoyear.dropdown);
   I.selectDropdownValue(statisticsPage.filter.phenoyear.dropdown, 2018);
   I.seeNumberOfElements(statisticsPage.quantilbar, 79); // 2018, all, species, all
   I.seeNumberOfElements(statisticsPage.label, 37);
@@ -34,9 +35,9 @@ Scenario('test quantil regression on 2018', ({ I, statisticsPage }) => {
 });
 
 Scenario('test all year view', ({ I, statisticsPage }) => {
-  // fixme: test will fail after phenoyear rollover -> based on 2022
+  // fixme: test will fail after phenoyear rollover -> based on 2023
   I.visit(statisticsPage.url);
-  I.wait(2);
+  I.waitForText('2023', 5, statisticsPage.filter.phenoyear.dropdown);
   I.selectDropdownValue(statisticsPage.filter.phenoyear.dropdown, 'all');
   I.selectDropdownValue(statisticsPage.filter.species.dropdown, 'BA');
   I.seeNumberOfElements(statisticsPage.label, 27);
