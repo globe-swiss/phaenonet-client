@@ -165,7 +165,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Install Dependencies
-        run: npm ci --only=dev --ignore-scripts
+        run: npm ci --include=dev --ignore-scripts
       - name: check style
         run: npx prettier -c "."
       - name: check map icon completeness
