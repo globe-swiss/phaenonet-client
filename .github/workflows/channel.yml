@@ -32,8 +32,8 @@ jobs:
     environment: ${{ github.event.inputs.project }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+        uses: actions/checkout@v3.3.0
+      - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Install Dependencies
@@ -41,13 +41,13 @@ jobs:
       - name: Build
         run: npx ng build
       - name: Archive Test Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: ${{ env.PROJECT }}
           path: dist
       - id: auth
         name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v0
+        uses: google-github-actions/auth@v1.0.0
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
