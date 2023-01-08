@@ -3,3 +3,5 @@ package-lock.json
 config_static.json
 dist/
 e2e/output/
+src/local/init.json
+.angular/
