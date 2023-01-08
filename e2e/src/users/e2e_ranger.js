@@ -4,6 +4,6 @@ module.exports = {
   surname: 'e2e-ranger-surname',
   email: 'e2e-ranger@app.phaenonet.ch',
   language: 'Deutsch',
-  password: '1234567',
+  password: secret('1234567'),
   id: 'JIcn8kFpI4fYYcbdi9QzPlrHomn1'
 };
