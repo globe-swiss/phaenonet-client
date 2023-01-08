@@ -20,16 +20,21 @@ jobs:
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Cache dependencies
-        # check options to skip download in future versions
+      - name: Check cache (node modules)
         id: cache
-        uses: actions/cache@v3.2.2
+        uses: martijnhols/actions-cache/check@v3
         with:
           path: ./node_modules
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
-      - name: Install Dependencies
+      - name: Install node modules
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci --also=dev
+      - name: Save cache (node modules)
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: martijnhols/actions-cache/save@v3
+        with:
+          path: ./node_modules
+          key: ${{ steps.cache.outputs.primary-key }}
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -40,9 +45,9 @@ jobs:
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Cache dependencies
+      - name: Restore cache (node modules)
         id: cache
-        uses: actions/cache@v3.2.2
+        uses: martijnhols/actions-cache/restore@v3
         with:
           path: ./node_modules
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
@@ -71,9 +76,9 @@ jobs:
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Cache dependencies
+      - name: Restore cache (node modules)
         id: cache
-        uses: actions/cache@v3.2.2
+        uses: martijnhols/actions-cache/restore@v3
         with:
           path: ./node_modules
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
@@ -142,9 +147,9 @@ jobs:
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Cache dependencies
+      - name: Restore cache (node modules)
         id: cache
-        uses: actions/cache@v3.2.2
+        uses: martijnhols/actions-cache/restore@v3
         with:
           path: ./node_modules
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
@@ -165,7 +170,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Install Dependencies
-        run: npm ci --only=dev --ignore-scripts
+        run: npm ci --also=dev --ignore-scripts
       - name: check style
         run: npx prettier -c "."
       - name: check map icon completeness
