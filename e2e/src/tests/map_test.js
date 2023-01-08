@@ -27,7 +27,8 @@ Scenario('test initial filter', ({ I, mapPage }) => {
 
 Scenario('test regression on map markers for 2018', async ({ I, mapPage }) => {
   I.visit(mapPage.url);
-  I.waitForInvisible(mapPage.filter.phenoyear.placeholder, 10);
+  I.waitForInvisible(mapPage.filter.phenoyear.placeholder, 10); // todo: check condition
+  I.waitForText('2023', 5, mapPage.filter.phenoyear.dropdown);
   I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
   I.wait(2);
   I.seeNumberOfElements(mapPage.mapMarker, 387); // 2018, all, all
