@@ -1,0 +1,45 @@
+<div class="container">
+  <h1>Connect Sensor</h1>
+  <ng-container *ngIf="cameraAvailable">
+    <!-- ngx-scanner-qrcode -->
+    <ngx-scanner-qrcode #action="scanner" [config]="config" (event)="onEvent($event)"></ngx-scanner-qrcode>
+
+    <!-- data  -->
+    <!-- <p class="data">{{ (action.data | async | json) }}</p> -->
+
+    <!-- loading -->
+    <p *ngIf="action.isLoading">⌛ Loading...</p>
+
+    <!-- isTorch -->
+    <button
+      class="btn"
+      [class.btn-info]="!action.isStart"
+      [class.btn-warning]="action.isStart"
+      [disabled]="!action.isStart"
+    >
+      <img
+        *ngIf="!action.isTorch"
+        (click)="action.isTorch = !action.isTorch; handle(action, 'torcher')"
+        src="https://filedn.com/lKWj9QCXMXvHd1cjTremog8/flashlight-off.png"
+        width="30px"
+      />
+      <img
+        *ngIf="action.isTorch"
+        (click)="action.isTorch = !action.isTorch; handle(action, 'torcher')"
+        src="https://filedn.com/lKWj9QCXMXvHd1cjTremog8/flashlight-on.png"
+        width="30px"
+      />
+    </button>
+
+    <!-- camera -->
+    <button
+      class="btn"
+      [class.btn-info]="!action.isStart"
+      [class.btn-warning]="action.isStart"
+      [disabled]="!action.isStart"
+    >
+      <img (click)="camera(action)" src="https://filedn.com/lKWj9QCXMXvHd1cjTremog8/rotate-camera.png" width="30px" />
+    </button>
+  </ng-container>
+  <ng-container *ngIf="!cameraAvailable"> form with devuid </ng-container>
+</div>

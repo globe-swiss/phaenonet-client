@@ -22,5 +22,16 @@
     >
       {{ 'Objekt löschen' | translate }}
     </button>
+    <button
+      class="individual-description-buttons__button"
+      mat-flat-button
+      color="primary"
+      type="button"
+      id="connect-button"
+      [routerLink]="['/individuals', individualId, 'connect']"
+      *ngIf="isEditable$ | async"
+    >
+      {{ 'Sensor verbinden' | translate }}
+    </button>
   </div>
 </div>

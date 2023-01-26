@@ -34,6 +34,9 @@
     "@ngx-translate/core": "^14.0.0",
     "@sentry/angular": "^6.19.7",
     "@sentry/tracing": "^6.19.7",
+    "@zxing/browser": "^0.1.1",
+    "@zxing/library": "^0.19.1",
+    "@zxing/ngx-scanner": "^3.8.0",
     "browser-update": "^3.3.40",
     "d3": "^5.16.0",
     "firebase": "^9.0.0",
@@ -41,6 +44,7 @@
     "lodash": "^4.17.21",
     "lz-string": "^1.4.4",
     "moment": "^2.29.4",
+    "ngx-scanner-qrcode": "^1.2.0",
     "rxjs": "^7.5.6",
     "tslib": "^2.4.0",
     "zone.js": "~0.11.4"
