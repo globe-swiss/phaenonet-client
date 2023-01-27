@@ -11,7 +11,7 @@ import { Individual } from '../individual';
   styleUrls: ['./individual-connect.component.css']
 })
 export class IndividualConnectComponent implements OnInit {
-  @ViewChild('action') action: NgxScannerQrcodeComponent;
+  @ViewChild('scanner') scanner: NgxScannerQrcodeComponent;
   public config: ScannerQRCodeConfig = {
     // fps: 1000,
     isAuto: true,
@@ -64,19 +64,15 @@ export class IndividualConnectComponent implements OnInit {
           );
           console.error(err);
         });
-      this.action.stop();
+      this.scanner.stop();
       void this.router.navigate(['..'], { relativeTo: this.route });
     }
   }
 
-  public handle(action: any, fn: string): void {
-    action[fn]().subscribe(console.log, alert);
-  }
-
-  public camera(action: any): void {
-    const availableDevices = action.devices.value;
+  public camera(scanner: any): void {
+    const availableDevices = scanner.devices.value;
     this.curentDeviceIdx = (this.curentDeviceIdx + 1) % availableDevices.length;
-    action.playDevice(availableDevices[this.curentDeviceIdx]);
+    scanner.playDevice(availableDevices[this.curentDeviceIdx].deviceId);
     console.log('availableDevices', availableDevices);
     console.log('currentdevice', this.curentDeviceIdx);
   }
