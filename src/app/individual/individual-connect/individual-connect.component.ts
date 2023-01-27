@@ -45,26 +45,28 @@ export class IndividualConnectComponent implements OnInit {
   }
 
   public onEvent(e: ScannerQRCodeResult[]): void {
-    console.log(e.length, e[0], e[0].value);
-    const deveui = e[0].value;
-    const individual_id = this.route.snapshot.url[0].path;
-    console.log(individual_id);
-    this.afs
-      .collection<Individual>('individuals')
-      .doc<Individual>(individual_id)
-      .update({ deveui: deveui, sensor: {} })
-      .then(() =>
-        this.alertService.infoMessage('Sensor Verbunden', `Objekt ${individual_id} verbunden mit Sensor ${deveui}`)
-      )
-      .catch(err => {
-        this.alertService.infoMessage(
-          'Fehler',
-          `Fehler beim Verbinden von Object ${individual_id} mit Sensor ${deveui}`
-        );
-        console.error(err);
-      });
-    this.action.stop();
-    void this.router.navigate(['..'], { relativeTo: this.route });
+    console.log(e);
+    if (e.length > 0) {
+      const deveui = e[0].value;
+      const individual_id = this.route.snapshot.url[0].path;
+      console.log(individual_id);
+      this.afs
+        .collection<Individual>('individuals')
+        .doc<Individual>(individual_id)
+        .update({ deveui: deveui, sensor: {} })
+        .then(() =>
+          this.alertService.infoMessage('Sensor Verbunden', `Objekt ${individual_id} verbunden mit Sensor ${deveui}`)
+        )
+        .catch(err => {
+          this.alertService.infoMessage(
+            'Fehler',
+            `Fehler beim Verbinden von Object ${individual_id} mit Sensor ${deveui}`
+          );
+          console.error(err);
+        });
+      this.action.stop();
+      void this.router.navigate(['..'], { relativeTo: this.route });
+    }
   }
 
   public handle(action: any, fn: string): void {
@@ -75,6 +77,7 @@ export class IndividualConnectComponent implements OnInit {
     const availableDevices = action.devices.value;
     this.curentDeviceIdx = (this.curentDeviceIdx + 1) % availableDevices.length;
     action.playDevice(availableDevices[this.curentDeviceIdx]);
+    console.log('availableDevices', availableDevices);
     console.log('currentdevice', this.curentDeviceIdx);
   }
 }
