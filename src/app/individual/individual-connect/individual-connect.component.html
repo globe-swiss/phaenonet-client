@@ -1,24 +1,51 @@
 <div class="container">
   <h1>Connect Sensor</h1>
+  <p *ngIf="cameraAvailable === undefined">⌛ Loading...</p>
   <ng-container *ngIf="cameraAvailable">
     <!-- ngx-scanner-qrcode -->
     <ngx-scanner-qrcode #scanner="scanner" [config]="config" (event)="onEvent($event)"></ngx-scanner-qrcode>
 
     <!-- data  -->
     <!-- <p class="data">{{ (action.data | async | json) }}</p> -->
-
-    <!-- loading -->
     <p *ngIf="scanner.isLoading">⌛ Loading...</p>
-
     <!-- camera -->
     <button
       class="btn"
       [class.btn-info]="!scanner.isStart"
       [class.btn-warning]="scanner.isStart"
       [disabled]="!scanner.isStart"
+      (click)="camera(scanner)"
     >
-      <img (click)="camera(scanner)" src="https://filedn.com/lKWj9QCXMXvHd1cjTremog8/rotate-camera.png" width="30px" />
+      rotate camera
     </button>
+    <button class="btn" (click)="manual()">enter manually</button>
   </ng-container>
-  <ng-container *ngIf="!cameraAvailable"> form with devuid </ng-container>
+  <ng-container *ngIf="cameraAvailable === false">
+    <form [formGroup]="connectForm">
+      <mat-form-field>
+        <mat-label>Deveui</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="deveui"
+          autofocus
+          id="deveui"
+          placeholder="deveui"
+          minlength="16"
+          maxlength="16"
+          required
+        />
+      </mat-form-field>
+      <button
+        [disabled]="connectForm.invalid"
+        mat-flat-button
+        color="primary"
+        type="submit"
+        (click)="connect()"
+        id="connect-button"
+      >
+        Verbinden
+      </button>
+    </form>
+  </ng-container>
 </div>

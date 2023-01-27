@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxScannerQrcodeComponent, ScannerQRCodeConfig, ScannerQRCodeResult } from 'ngx-scanner-qrcode';
 import { AlertService } from 'src/app/messaging/alert.service';
@@ -25,7 +26,11 @@ export class IndividualConnectComponent implements OnInit {
     }
   };
   private curentDeviceIdx = 0;
-  public cameraAvailable = false;
+  public cameraAvailable: boolean = undefined;
+
+  connectForm = new UntypedFormGroup({
+    deveui: new UntypedFormControl('')
+  });
 
   constructor(
     private alertService: AlertService,
@@ -39,6 +44,7 @@ export class IndividualConnectComponent implements OnInit {
       .getUserMedia({ audio: false, video: true })
       .then(() => (this.cameraAvailable = true))
       .catch(function (err) {
+        this.cameraAvailable = false;
         console.log('GUM failed with error, time diff: ', err);
         alert('Please enable camera access to connect sensors via QR code');
       });
@@ -47,9 +53,28 @@ export class IndividualConnectComponent implements OnInit {
   public onEvent(e: ScannerQRCodeResult[]): void {
     console.log(e);
     if (e.length > 0) {
-      const deveui = e[0].value;
-      const individual_id = this.route.snapshot.url[0].path;
-      console.log(individual_id);
+      this.connect(e[0].value);
+    }
+  }
+
+  public camera(scanner: any): void {
+    const availableDevices = scanner.devices.value;
+    this.curentDeviceIdx = (this.curentDeviceIdx + 1) % availableDevices.length;
+    scanner.playDevice(availableDevices[this.curentDeviceIdx].deviceId);
+    console.log('availableDevices', availableDevices);
+    console.log('currentdevice', this.curentDeviceIdx);
+  }
+
+  public manual(): void {
+    this.cameraAvailable = false;
+    this.stopCamera();
+  }
+
+  public connect(deveui?: string): void {
+    console.log(deveui, this.connectForm.controls.deveui.value.trim().toUpperCase());
+    deveui = deveui || this.connectForm.controls.deveui.value.trim().toUpperCase();
+    const individual_id = this.route.snapshot.url[0].path;
+    if (deveui && deveui.length == 16) {
       this.afs
         .collection<Individual>('individuals')
         .doc<Individual>(individual_id)
@@ -64,16 +89,12 @@ export class IndividualConnectComponent implements OnInit {
           );
           console.error(err);
         });
-      this.scanner.stop();
+      this.stopCamera();
       void this.router.navigate(['..'], { relativeTo: this.route });
     }
   }
 
-  public camera(scanner: any): void {
-    const availableDevices = scanner.devices.value;
-    this.curentDeviceIdx = (this.curentDeviceIdx + 1) % availableDevices.length;
-    scanner.playDevice(availableDevices[this.curentDeviceIdx].deviceId);
-    console.log('availableDevices', availableDevices);
-    console.log('currentdevice', this.curentDeviceIdx);
+  private stopCamera() {
+    this.scanner && this.scanner.isStart && this.scanner.stop();
   }
 }
