@@ -1,0 +1,48 @@
+name: 'deploy-hosting action'
+description: 'deploys firebase hosting'
+inputs:
+  workload_identity_provider:
+    description: 'The workload identity provider'
+    required: true
+  service_account:
+    description: 'The gcp service account'
+    required: true
+  repo_token:
+    description: 'Github token for commenting on PR, needs permission: pull-request: write'
+    required: false
+  project_id:
+    description: 'The Firebase project id'
+    required: true
+  entry_point:
+    description: 'The folder firebase.json is located in'
+    default: .
+  channel_id:
+    description: 'Channel name or live for live deployment'
+    required: false
+  expires:
+    description: 'Channel expires'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - id: auth
+      name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1.0.0
+      with:
+        workload_identity_provider: ${{ inputs.workload_identity_provider }}
+        service_account: ${{ inputs.service_account }}
+        create_credentials_file: true
+    - name: extract service account
+      shell: sh
+      run: |
+        echo "SERVICE_ACCOUNT_KEY=$(cat "${{ steps.auth.outputs.credentials_file_path }}" | tr -d '\n')" >> $GITHUB_ENV
+    - name: Deploy E2E-Test Report
+      uses: FirebaseExtended/action-hosting-deploy@v0
+      with:
+        firebaseServiceAccount: '${{ env.SERVICE_ACCOUNT_KEY }}'
+        repoToken: '${{ inputs.repo_token }}'
+        projectId: ${{ inputs.project_id }}
+        entryPoint: ${{ inputs.entry_point }}
+        channelId: ${{ inputs.channel_id }}
+        expires: ${{ inputs.expires }}

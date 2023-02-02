@@ -15,12 +15,12 @@ module.exports = function () {
     },
     login() {
       const { loginPage } = inject();
-      this.visit(loginPage.url);
+      this.amOnPage(loginPage.url);
       this.amLoggedOut();
       this.enterLoginCredentials();
       this.click(loginPage.loginButton);
       this.waitUrlEquals(privateProfilePage.url);
-      this.seeElement(privateProfilePage.components.profile);
+      this.waitForElement(privateProfilePage.components.profile);
     },
     enterLoginCredentials() {
       const { loginPage, e2eTestUser } = inject();
@@ -34,37 +34,62 @@ module.exports = function () {
     amLoggedOut() {
       this.see('Anmelden', navbarComponent.signinProfileButton); // fixme: better way to check if logged in
     },
-    selectDropdownValue(dropdownLocator, value) {
+    selectDropdownValue(dropdownLocator, value, delay = 0) {
       this.click(dropdownLocator);
       this.click({ css: `mat-option[ng-reflect-value='${value}']` });
+      this.wait(delay);
     },
     async createDefaultIndividual() {
       // fixme: fails if api limit reached
-      this.visit(individualsEditPage.newIndividualUrl);
+      this.visit(individualsEditPage, individualsEditPage.newIndividualUrl);
+      this.waitForElement(individualsEditPage.components.form);
       individualsEditPage.fillForm();
       this.click(individualsEditPage.saveButton);
       this.waitForElement(individualsPage.components.header, 10);
       const url = await this.grabCurrentUrl();
       this.say(`Created Individual at ${url}`);
-      return url;
+      return url.split('/').pop();
     },
     deleteIndividual(url) {
-      this.visit(url);
+      this.visit(individualsPage, url);
       // delete all observations
       individualsPage.deleteIndividual();
     },
-    checkElementsPresent(elementList) {
-      Object.values(elementList).forEach(el => {
-        this.seeElement(el);
+    waitForComponents(componentList) {
+      Object.values(componentList).forEach(el => {
+        this.waitForElement(el, 5);
       });
     },
-    visit(url) {
-      this.amOnPage(url);
-      // this.wait(1); // make it slow but reliable
+    waitForDropdown(locator, delay = 5) {
+      const locatorString = `${locator.css ? locator.css : locator} .mat-select-placeholder`;
+      this.waitForInvisible(locatorString, delay);
+    },
+    visit(page, url = null, components = null) {
+      this.amOnPage(url || page.url);
+      this.waitForComponents(components || page.components || []);
     },
     dismissMapPopup() {
       this.wait(3); // dismissbutton to appear, unsafe
       this.clickIfVisible(mapPage.dismissButton);
+    },
+    async checkVisual(filename, tolerance = 0, prepareBaseImage = false, retryParams = { retries: 0, wait: 0 }) {
+      await retryTo(() => {
+        this.wait(retryParams.wait);
+        this.saveScreenshot(`${filename}.png`, true);
+        this.seeVisualDiff(`${filename}.png`, {
+          tolerance,
+          prepareBaseImage,
+          outputSettings: {
+            ignoreAreasColoredWith: { r: 255, g: 0, b: 0, a: 255 }
+          }
+        });
+      }, retryParams.retries);
+    },
+    mockGooglemaps() {
+      // https://developers.google.com/maps/domains
+      this.mockRoute('https://khm*.googleapis.com/**', route => route.abort());
+      this.mockRoute('https://maps.googleapis.com/maps/**', route => route.abort());
+      this.mockRoute('https://maps.googleapis.com/maps/api/js?*', route => route.continue());
     }
   });
 };

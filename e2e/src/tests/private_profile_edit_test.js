@@ -1,8 +1,15 @@
 Feature('Private Profile Edit');
 
+Scenario('test edit profile', async ({ I, profileEditPage, e2eTestUser }) => {
+  I.login();
+  I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
+  // I.waitForElement(profileEditPage.saveButton);
+  await I.checkVisual('private_profile_edit');
+}).tag('@visual');
+
 Scenario('test edit profile nick check', ({ I, profileEditPage, e2eTestUser }) => {
   I.login();
-  I.visit(profileEditPage.url(e2eTestUser));
+  I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
   I.seeElement(profileEditPage.saveButtonEnabled);
   I.clearField(profileEditPage.fields.nickname);
   I.type('xy');
@@ -16,7 +23,7 @@ Scenario('test edit profile nick check', ({ I, profileEditPage, e2eTestUser }) =
 
 Scenario('test select languages', ({ I, profileEditPage, e2eTestUser }) => {
   I.login();
-  I.visit(profileEditPage.url(e2eTestUser));
+  I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
   I.see('Deutsch'); // de
   I.click(profileEditPage.languageSelect.dropdown);
   I.click(profileEditPage.languageSelect.options.fr);

@@ -1,0 +1,37 @@
+name: 'upload-zip-artifact action'
+description: 'zip and upload an artifact'
+inputs:
+  name:
+    description: 'Artifact name'
+    default: 'artifact'
+  path:
+    description: 'A path that describes what to upload'
+    required: true
+  if-no-files-found:
+    description: >
+      The desired behavior if no files are found using the provided path.
+      Available Options:
+        warn: Output a warning but do not fail the action
+        error: Fail the action with an error message
+        ignore: Do not output any warnings or errors, the action does not fail
+    default: 'warn'
+  retention-days:
+    description: >
+      Duration after which artifact will expire in days. 0 means using default retention.
+      Minimum 1 day.
+      Maximum 90 days unless changed from the repository settings page.
+runs:
+  using: 'composite'
+  steps:
+    - name: zip contents
+      uses: DuckSoft/create-7z-action@v1.0
+      with:
+        pathSource: ${{ inputs.path }}
+        pathTarget: ${{ runner.temp }}/${{ inputs.name }}.zip
+    - name: Upload E2E-Test Artifact
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: ${{ inputs.name }}
+        path: ${{ runner.temp }}/${{ inputs.name }}.zip
+        if-no-files-found: ${{ inputs.if-no-files-found }}
+        retention-days: ${{ inputs.retention-days }}

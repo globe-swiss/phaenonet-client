@@ -1,0 +1,12 @@
+{
+  "hosting": {
+    "target": "phaenonet-test-e2e",
+    "public": "output",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/mochawesome.html"
+      }
+    ]
+  }
+}

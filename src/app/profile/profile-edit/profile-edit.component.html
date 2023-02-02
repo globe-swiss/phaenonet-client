@@ -3,7 +3,7 @@
     <div class="profile-edit__title">
       <h2 translate>PROFIL BEARBEITEN</h2>
     </div>
-    <form [formGroup]="editForm" class="profile-edit__right-column">
+    <form [formGroup]="editForm" class="profile-edit__right-column" data-test-id="editForm">
       <mat-form-field class="profile-edit__form-field">
         <mat-label>{{ 'Anzeigename bei PhaenoNet (öffentlich)' | translate }} </mat-label>
         <input

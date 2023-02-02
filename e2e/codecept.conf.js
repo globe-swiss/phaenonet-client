@@ -9,16 +9,23 @@
 exports.config = {
   tests: './src/tests/*_test.js',
   timeout: 60,
-  output: './output',
+  output: './output/img',
   helpers: {
     Playwright: {
       url: 'http://localhost:4200',
       show: false,
       browser: 'chromium',
+      windowSize: '1280x720',
       video: true,
       timeout: 30000,
       getPageTimeout: 30000,
       waitForTimeout: 30000
+    },
+    ResembleHelper: {
+      require: 'codeceptjs-resemblehelper',
+      screenshotFolder: './output/',
+      baseFolder: './output/base/',
+      diffFolder: './output/diff/'
     },
     Mochawesome: {
       uniqueScreenshotNames: false,
@@ -31,6 +38,7 @@ exports.config = {
   include: {
     I: './src/steps_file.js',
     loginPage: './src/pages/login.js',
+    logoutPage: './src/pages/logout.js',
     mapPage: './src/pages/map.js',
     privateProfilePage: './src/pages/private_profile.js',
     profileEditPage: './src/pages/profile_edit.js',
@@ -51,18 +59,15 @@ exports.config = {
   name: 'phaenonet-client',
   plugins: {
     retryFailedStep: {
-      enabled: true,
-      retries: 10
+      enabled: false
+    },
+    retryTo: {
+      enabled: true
     },
     screenshotOnFail: {
       enabled: true,
       fullPageScreenshots: true
     },
     pauseOnFail: {}
-  },
-  multiple: {
-    basic: {
-      browsers: ['chromium', 'firefox', 'webkit']
-    }
   }
 };

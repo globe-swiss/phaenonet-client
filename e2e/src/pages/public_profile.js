@@ -1,4 +1,7 @@
 module.exports = {
+  /**
+   * @param {string} userId
+   */
   url(userId) {
     return `/profile/${userId}`;
   },

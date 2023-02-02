@@ -1,0 +1,23 @@
+name: 'download-zip-artifact action'
+description: 'download and unzips an artifact'
+inputs:
+  name:
+    description: 'Artifact name'
+    required: true
+  path:
+    description: 'Destination path'
+    required: false
+    default: .
+runs:
+  using: 'composite'
+  steps:
+    - name: Download Build Artifact
+      uses: actions/download-artifact@v3.0.2
+      with:
+        name: ${{ inputs.name }}
+        path: ${{ runner.temp }}/
+    - name: unzip contents
+      uses: DuckSoft/extract-7z-action@v1.0
+      with:
+        pathSource: ${{ runner.temp }}/${{ inputs.name }}.zip
+        pathTarget: ${{ inputs.path }}

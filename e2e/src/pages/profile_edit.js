@@ -1,6 +1,12 @@
 module.exports = {
+  /**
+   * @param {{ nickname?: string; name?: string; surname?: string; email?: string; language?: string; password?: CodeceptJS.Secret; id: any; }} user
+   */
   url(user) {
     return `/profile/${user.id}/edit`;
+  },
+  components: {
+    form: { css: '[data-test-id=editForm]' }
   },
   fields: {
     nickname: { css: 'input#nickname' },

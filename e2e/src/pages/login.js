@@ -2,7 +2,6 @@ const { I } = inject();
 
 module.exports = {
   url: '/auth/login',
-  logoutUrl: '/auth/logged-out',
   components: {
     navigation: { css: 'app-nav' },
     form: { css: 'app-login-form' }
@@ -13,6 +12,10 @@ module.exports = {
   },
   loginButton: { css: 'app-login-form #login-button' },
 
+  /**
+   * @param {string} email
+   * @param {CodeceptJS.Secret} password
+   */
   login(email, password) {
     I.fillField(this.fields.email, email);
     I.fillField(this.fields.password, password);

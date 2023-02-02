@@ -9,6 +9,7 @@ junit.xml
 
 # tool output
 /e2e/output
+!/e2e/output/base
 sme.html
 
 # compiled output

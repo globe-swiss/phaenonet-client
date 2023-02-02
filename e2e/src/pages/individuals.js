@@ -7,7 +7,8 @@ module.exports = {
   components: {
     navigation: { css: 'app-nav' },
     header: { css: 'app-individual-header[mode=detail]' },
-    description: { css: 'app-individual-description' },
+    descriptionHeader: { css: 'app-individual-description-header' },
+    descriptionInfo: { css: 'app-individual-description-basic-info' },
     observations: { css: 'app-individual-observation-view' }
   },
   description: {
@@ -41,14 +42,16 @@ module.exports = {
       forestType: locate('.individual-description-basic-info__value')
         .inside('app-individual-description-basic-info')
         .at(9)
-    },
-    editButton: { css: 'app-individual-description-buttons #edit-button' },
-    deleteButton: { css: 'app-individual-description-buttons #delete-button' },
+    }
+  },
+  editButton: { css: 'app-individual-description-buttons #edit-button' },
+  deleteButton: { css: 'app-individual-description-buttons #delete-button' },
+  deleteDialog: {
     deleteConfirmationButton: { css: 'app-confirmation-dialog button[ng-reflect-dialog-result=true]' }
   },
   deleteIndividual() {
     I.click(this.description.deleteButton);
-    I.click(this.description.deleteConfirmationButton);
-    I.seeElement(privateProfilePage.components.profile);
+    I.click(this.deleteDialog.deleteConfirmationButton);
+    I.waitForComponents(privateProfilePage.components);
   }
 };

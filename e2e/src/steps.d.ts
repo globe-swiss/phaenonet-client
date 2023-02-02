@@ -1,6 +1,7 @@
 /// <reference types='codeceptjs' />
 type steps_file = typeof import('./steps_file.js');
 type loginPage = typeof import('./pages/login.js');
+type logoutPage = typeof import('./pages/logout.js');
 type mapPage = typeof import('./pages/map.js');
 type privateProfilePage = typeof import('./pages/private_profile.js');
 type profileEditPage = typeof import('./pages/profile_edit.js');
@@ -12,6 +13,7 @@ type statisticsPage = typeof import('./pages/statistics.js');
 type stationsPage = typeof import('./pages/stations.js');
 type navbarComponent = typeof import('./components/navbar.js');
 type e2eTestUser = typeof import('./users/e2e_test.js');
+type ResembleHelper = import('codeceptjs-resemblehelper');
 type customHelper = import('./helpers/clickIfVisible.js');
 
 declare namespace CodeceptJS {
@@ -19,6 +21,7 @@ declare namespace CodeceptJS {
     I: I;
     current: any;
     loginPage: loginPage;
+    logoutPage: logoutPage;
     mapPage: mapPage;
     privateProfilePage: privateProfilePage;
     profileEditPage: profileEditPage;
@@ -31,8 +34,12 @@ declare namespace CodeceptJS {
     navbarComponent: navbarComponent;
     e2eTestUser: e2eTestUser;
   }
-  interface Methods extends Playwright, Mochawesome, customHelper {}
-  interface I extends ReturnType<steps_file>, WithTranslation<Mochawesome>, WithTranslation<customHelper> {}
+  interface Methods extends Playwright, ResembleHelper, Mochawesome, customHelper {}
+  interface I
+    extends ReturnType<steps_file>,
+      WithTranslation<ResembleHelper>,
+      WithTranslation<Mochawesome>,
+      WithTranslation<customHelper> {}
   namespace Translation {
     interface Actions {}
   }

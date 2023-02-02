@@ -1,14 +1,13 @@
 Feature('Public Profile');
 
-Scenario('test component present', ({ I, publicProfilePage, e2eTestUser }) => {
-  I.visit(publicProfilePage.url(e2eTestUser.id));
-  I.checkElementsPresent(publicProfilePage.components);
-});
+Scenario('public profile page', async ({ I, publicProfilePage, e2eTestUser }) => {
+  await I.clearTestData();
+  I.visit(publicProfilePage, publicProfilePage.url(e2eTestUser.id));
+  I.waitForText(e2eTestUser.nickname);
 
-Scenario('public profile values', ({ I, publicProfilePage, e2eTestUser }) => {
-  I.visit(publicProfilePage.url(e2eTestUser.id));
-  I.see('PROFIL');
-  I.see('BEOBACHTUNGEN');
-  I.see('Öffentliches Profil von');
-  I.see(e2eTestUser.nickname);
-});
+  await I.checkVisual('public_profile-profile_values');
+}).tag('@visual');
+
+Scenario.todo('test subscribe to profile', () => {
+  // check image is displayed correctly
+}).tag('@visual');
