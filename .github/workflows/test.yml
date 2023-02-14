@@ -188,6 +188,8 @@ jobs:
         with:
           path: ./node_modules
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
+      - name: install codeceptjs deps
+        run: npm --prefix e2e ci
       - name: check map icon completeness
         run: |
           diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/fr-CH) || exit
