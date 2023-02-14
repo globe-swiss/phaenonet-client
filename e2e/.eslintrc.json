@@ -1,6 +1,6 @@
 {
   "root": false,
-  "ignorePatterns": ["output/**/*"], // "e2e/src/steps.d.ts"
+  "ignorePatterns": ["output/**/*"],
   "overrides": [
     {
       "files": ["**/*.js"],
