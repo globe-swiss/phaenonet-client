@@ -12,8 +12,8 @@ Scenario('create individual', async ({ I, individualsEditPage, individualsPage }
   I.click(individualsEditPage.saveButton);
   I.waitForComponents(individualsPage.components);
 })
-  .tag('@visual')
-  .tag('@ranger');
+  .tag('visual')
+  .tag('ranger');
 
 Scenario('edit individual', async ({ I, individualsEditPage, individualsPage }) => {
   const individualId = await I.createDefaultIndividual();
@@ -24,5 +24,5 @@ Scenario('edit individual', async ({ I, individualsEditPage, individualsPage }) 
   I.waitForComponents(individualsPage.components);
   I.waitForText('33%', 5, individualsPage.components.descriptionInfo);
 })
-  .tag('@visual')
-  .tag('@ranger');
+  .tag('visual')
+  .tag('ranger');

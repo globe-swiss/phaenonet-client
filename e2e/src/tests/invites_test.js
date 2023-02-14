@@ -8,7 +8,7 @@ Before(async ({ I, invitesPage }) => {
 
 Scenario('test no invites', async ({ I }) => {
   await I.checkVisual('invites-no_invites');
-}).tag('@visual');
+}).tag('visual');
 
 Scenario('test component send invite', async ({ I, invitesPage }) => {
   I.see('keine Einladungen vorhanden');
@@ -19,4 +19,4 @@ Scenario('test component send invite', async ({ I, invitesPage }) => {
   I.click(invitesPage.invitesDialog.sendButton);
   I.waitForText('verylongunusedemailadress@example.com', 10, invitesPage.invitesList.openInviteList);
   await I.checkVisual('invites-has_invite');
-}).tag('@visual');
+}).tag('visual');

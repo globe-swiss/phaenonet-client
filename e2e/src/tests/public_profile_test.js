@@ -9,7 +9,7 @@ Scenario('public profile page loggedout', async ({ I, publicProfilePage, e2eTest
   I.waitForText(e2eTestUser.nickname);
 
   await I.checkVisual('public_profile-loggedout');
-}).tag('@visual');
+}).tag('visual');
 
 Scenario('public profile page loggedin', async ({ I, publicProfilePage, e2eTestUser, e2eRangerUser }) => {
   I.login(e2eRangerUser);
@@ -17,7 +17,7 @@ Scenario('public profile page loggedin', async ({ I, publicProfilePage, e2eTestU
   I.waitForText(e2eTestUser.nickname);
 
   await I.checkVisual('public_profile-loggedin');
-}).tag('@visual');
+}).tag('visual');
 
 Scenario('public profile page loggedout', async ({ I, publicProfilePage, e2eRangerUser }) => {
   I.visit(publicProfilePage, publicProfilePage.url(e2eRangerUser.id));
@@ -25,8 +25,8 @@ Scenario('public profile page loggedout', async ({ I, publicProfilePage, e2eRang
 
   await I.checkVisual('public_profile-loggedout_ranger');
 })
-  .tag('@visual')
-  .tag('@ranger');
+  .tag('visual')
+  .tag('ranger');
 
 Scenario('test subscribe to profile', ({ I, publicProfilePage, publicUser, e2eTestUser }) => {
   I.login(e2eTestUser);

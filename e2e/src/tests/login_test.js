@@ -4,7 +4,7 @@ Scenario('test login screen', async ({ I, loginPage }) => {
   I.visit(loginPage);
   I.waitForText('E-Mail');
   await I.checkVisual('login', 0, false, { retries: 3, wait: 0.2 });
-}).tag('@visual');
+}).tag('visual');
 
 Scenario('test login from home screen', ({ I, loginPage, privateProfilePage, e2eTestUser, navbarComponent }) => {
   I.amOnPage('/');

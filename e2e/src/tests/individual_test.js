@@ -15,7 +15,7 @@ Scenario('test delete individual', async ({ I, individualsPage, privateProfilePa
   await I.checkVisual('individual_view-delete_dialog', 0, false, { retries: 3, wait: 1 });
   I.click(individualsPage.deleteDialog.deleteConfirmationButton);
   I.waitForComponents(privateProfilePage.components);
-}).tag('@visual');
+}).tag('visual');
 
 Scenario('test individual details', async ({ I, individualsPage, e2eTestUser }) => {
   const individualId = await I.createDefaultIndividual();
@@ -35,7 +35,7 @@ Scenario('test individual details', async ({ I, individualsPage, e2eTestUser }) 
   I.see('Mischwald', individualsPage.description.descriptionFields.forestType);
 
   await I.checkVisual('individual_view-details');
-}).tag('@visual');
+}).tag('visual');
 
 Scenario('test edit individual button', async ({ I, individualsPage, individualsEditPage }) => {
   const individualId = await I.createDefaultIndividual();
@@ -56,10 +56,10 @@ Scenario('test subscribe to individual', ({ I, individualsPage }) => {
 Scenario('test individual with image', async ({ I, individualsPage }) => {
   I.visit(individualsPage, individualsPage.url('2018_1326'));
   await I.checkVisual('individual_test-image', 0, false, { retries: 5, wait: 0.5 });
-}).tag('@visual');
+}).tag('visual');
 
 Scenario.todo('test individual with sensor', () => {
   // check switching between views
   // check timeseries toggles
   // check display of sensor data
-}).tag('@visual');
+}).tag('visual');

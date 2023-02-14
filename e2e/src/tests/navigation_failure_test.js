@@ -4,7 +4,7 @@ Scenario('test page not found', async ({ I }) => {
   I.amOnPage('/not_existing');
   I.see('Hier ist etwas schiefgelaufen.');
   await I.checkVisual('navigation_failures-page_not_found');
-}).tag('@visual');
+}).tag('visual');
 
 Scenario('test individuals redirects', ({ I, mapPage, individualsPage }) => {
   I.amOnPage(individualsPage.url(''));

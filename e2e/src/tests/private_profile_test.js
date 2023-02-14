@@ -7,7 +7,7 @@ Scenario('profile values', async ({ I, privateProfilePage, e2eTestUser }) => {
   I.visit(privateProfilePage);
   I.waitForText(e2eTestUser.nickname);
   await I.checkVisual(`${pf}-profile_values`);
-}).tag('@visual');
+}).tag('visual');
 
 Scenario('test logout', async ({ I, privateProfilePage, logoutPage }) => {
   I.login();
@@ -18,7 +18,7 @@ Scenario('test logout', async ({ I, privateProfilePage, logoutPage }) => {
   I.waitForComponents(logoutPage.components);
   I.amLoggedOut();
   await I.checkVisual('private_profile-loggedout');
-}).tag('@visual');
+}).tag('visual');
 
 Scenario('test edit profile link', ({ I, privateProfilePage, profileEditPage, e2eTestUser }) => {
   I.login(); // uses e2eTestUser
@@ -39,7 +39,7 @@ Scenario('test new individual shown on profile', async ({ I, privateProfilePage 
   I.visit(privateProfilePage);
   I.waitForElement(privateProfilePage.observations.listItems);
   await I.checkVisual(`${pf}-new_individual`);
-}).tag('@visual');
+}).tag('visual');
 
 Scenario('test loggedout profile access', ({ I, privateProfilePage, loginPage }) => {
   I.amOnPage(privateProfilePage.url);

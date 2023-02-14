@@ -5,7 +5,7 @@ Scenario('test edit profile', async ({ I, profileEditPage, e2eTestUser }) => {
   I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
   // I.waitForElement(profileEditPage.saveButton);
   await I.checkVisual('private_profile_edit');
-}).tag('@visual');
+}).tag('visual');
 
 Scenario('test edit profile nick check', ({ I, profileEditPage, e2eTestUser }) => {
   I.login();

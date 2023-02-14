@@ -13,4 +13,4 @@ Scenario('test register/profile', async ({ I, navbarComponent, e2eTestUser, priv
   I.waitForText('Profil', 10, navbarComponent.signinProfileButton);
   I.waitForComponents(privateProfilePage.components);
   await I.checkVisual('navigation_bar-post-login');
-}).tag('@visual');
+}).tag('visual');

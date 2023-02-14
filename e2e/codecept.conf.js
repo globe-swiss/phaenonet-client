@@ -28,7 +28,7 @@ exports.config = {
       diffFolder: './output/diff/'
     },
     Mochawesome: {
-      uniqueScreenshotNames: false,
+      uniqueScreenshotNames: true,
       fullPageScreenshots: true
     }
   },
@@ -64,8 +64,7 @@ exports.config = {
       enabled: true
     },
     screenshotOnFail: {
-      enabled: true,
-      fullPageScreenshots: true
+      enabled: true
     },
     subtitles: {
       enabled: true

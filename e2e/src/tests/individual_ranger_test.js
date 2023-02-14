@@ -26,5 +26,5 @@ Scenario('test individual details', async ({ I, e2eRangerUser, individualsPage }
 
   await I.checkVisual('individual_view-ranger_details');
 })
-  .tag('@visual')
-  .tag('@ranger');
+  .tag('visual')
+  .tag('ranger');

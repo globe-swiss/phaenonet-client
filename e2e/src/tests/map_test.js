@@ -47,14 +47,14 @@ Scenario('test regression on map markers for 2018', ({ I, mapPage }) => {
 Scenario.todo('test marker no img', () => {
   // click marker without image
   // test visual element
-}).tag('@visual');
+}).tag('visual');
 
 Scenario.todo('test marker img', () => {
   // click marker with image
   // test visual element
-}).tag('@visual');
+}).tag('visual');
 
 Scenario.todo('test marker with sensor', () => {
   // click marker with image
   // test visual element
-}).tag('@visual');
+}).tag('visual');
