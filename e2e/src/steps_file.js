@@ -1,4 +1,4 @@
-const { navbarComponent, individualsEditPage, individualsPage, mapPage, privateProfilePage } = inject();
+const { navbarComponent, individualsEditPage, individualsPage, privateProfilePage } = inject();
 const fetch = require('node-fetch');
 const { retrySteps } = require('./helpers/retrySteps');
 
