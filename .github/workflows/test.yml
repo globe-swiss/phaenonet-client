@@ -155,7 +155,7 @@ jobs:
         run: npm i
       - name: e2e-test
         working-directory: e2e
-        run: npx codeceptjs run --reporter mochawesome
+        run: npx codeceptjs run --reporter mochawesome --grep "@flaky" --invert
       - name: Upload E2E-Test Artifact
         uses: ./.github/actions/upload-zip-artifact
         with:

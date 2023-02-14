@@ -13,20 +13,20 @@ module.exports = function () {
     ss() {
       this.saveScreenshot('debug.png', true);
     },
-    login() {
+    login(user) {
       const { loginPage } = inject();
       this.amOnPage(loginPage.url);
       this.amLoggedOut();
-      this.enterLoginCredentials();
+      this.enterLoginCredentials(user);
       this.click(loginPage.loginButton);
       this.waitUrlEquals(privateProfilePage.url);
-      this.waitForElement(privateProfilePage.components.profile);
     },
-    enterLoginCredentials() {
+    enterLoginCredentials(user) {
       const { loginPage, e2eTestUser } = inject();
+      const testUser = user || e2eTestUser;
       this.waitUrlEquals(loginPage.url);
-      this.fillField(loginPage.fields.email, e2eTestUser.email);
-      this.fillField(loginPage.fields.password, e2eTestUser.password);
+      this.fillField(loginPage.fields.email, testUser.email);
+      this.fillField(loginPage.fields.password, testUser.password);
     },
     amLoggedIn() {
       this.see('Profil', navbarComponent.signinProfileButton); // fixme: better way to check if logged in

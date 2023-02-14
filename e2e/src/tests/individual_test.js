@@ -1,17 +1,14 @@
 Feature('Individual View');
 
-let individualId;
-
-// fixme: fails if api limit reached
-Before(async ({ I, individualsPage }) => {
+Before(async ({ I }) => {
   await I.clearTestData();
   I.mockGooglemaps();
   I.login();
-  individualId = await I.createDefaultIndividual();
-  I.visit(individualsPage, individualsPage.url(individualId));
 });
 
 Scenario('test delete individual', async ({ I, individualsPage, privateProfilePage }) => {
+  const individualId = await I.createDefaultIndividual();
+  I.visit(individualsPage, individualsPage.url(individualId));
   I.scrollTo(individualsPage.deleteButton);
   I.click(individualsPage.deleteButton);
   I.waitForVisible(individualsPage.deleteDialog.deleteConfirmationButton);
@@ -21,6 +18,8 @@ Scenario('test delete individual', async ({ I, individualsPage, privateProfilePa
 }).tag('@visual');
 
 Scenario('test individual details', async ({ I, individualsPage, e2eTestUser }) => {
+  const individualId = await I.createDefaultIndividual();
+  I.visit(individualsPage, individualsPage.url(individualId));
   I.see('Hasel', individualsPage.description.species);
   I.see('e2e-test-obj', individualsPage.description.name);
   I.see(e2eTestUser.nickname, individualsPage.description.owner);
@@ -38,17 +37,25 @@ Scenario('test individual details', async ({ I, individualsPage, e2eTestUser }) 
   await I.checkVisual('individual_view-details');
 }).tag('@visual');
 
-Scenario('test edit individual button', ({ I, individualsPage, individualsEditPage }) => {
+Scenario('test edit individual button', async ({ I, individualsPage, individualsEditPage }) => {
+  const individualId = await I.createDefaultIndividual();
+  I.visit(individualsPage, individualsPage.url(individualId));
   I.click(individualsPage.editButton);
   I.waitUrlEquals(individualsEditPage.url(individualId));
 });
 
-Scenario.todo('test subscribe to individual', () => {
-  // check image is displayed correctly
-}).tag('@visual');
+Scenario('test subscribe to individual', ({ I, individualsPage }) => {
+  I.visit(individualsPage, individualsPage.url('2018_1326'));
+  I.waitForElement(individualsPage.followButton);
+  I.click(individualsPage.followButton);
+  I.waitForElement(individualsPage.unfollowButton);
+  I.click(individualsPage.unfollowButton);
+  I.waitForElement(individualsPage.followButton);
+});
 
-Scenario.todo('test individual with image', () => {
-  // check image is displayed correctly
+Scenario('test individual with image', async ({ I, individualsPage }) => {
+  I.visit(individualsPage, individualsPage.url('2018_1326'));
+  await I.checkVisual('individual_test-image', 0, false, { retries: 5, wait: 0.5 });
 }).tag('@visual');
 
 Scenario.todo('test individual with sensor', () => {

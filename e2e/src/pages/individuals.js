@@ -44,6 +44,8 @@ module.exports = {
         .at(9)
     }
   },
+  followButton: { css: '[data-test-id=followButton]' },
+  unfollowButton: { css: '[data-test-id=unfollowButton]' },
   editButton: { css: 'app-individual-description-buttons #edit-button' },
   deleteButton: { css: 'app-individual-description-buttons #delete-button' },
   deleteDialog: {

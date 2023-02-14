@@ -49,7 +49,9 @@ exports.config = {
     statisticsPage: './src/pages/statistics.js',
     stationsPage: './src/pages/stations.js',
     navbarComponent: './src/components/navbar.js',
-    e2eTestUser: './src/users/e2e_test.js'
+    e2eTestUser: './src/users/e2e_test.js',
+    e2eRangerUser: './src/users/e2e_ranger.js',
+    publicUser: './src/users/public_user.js'
   },
   mocha: {
     reporterOptions: {
