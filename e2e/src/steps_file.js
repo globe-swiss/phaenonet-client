@@ -1,5 +1,6 @@
 const { navbarComponent, individualsEditPage, individualsPage, mapPage, privateProfilePage } = inject();
 const fetch = require('node-fetch');
+const { retrySteps } = require('./helpers/retrySteps');
 
 // in this file you can append custom step methods to 'I' object
 
@@ -40,7 +41,6 @@ module.exports = function () {
       this.wait(delay);
     },
     async createDefaultIndividual() {
-      // fixme: fails if api limit reached
       this.visit(individualsEditPage, individualsEditPage.newIndividualUrl);
       this.waitForElement(individualsEditPage.components.form);
       individualsEditPage.fillForm();
@@ -49,11 +49,6 @@ module.exports = function () {
       const url = await this.grabCurrentUrl();
       this.say(`Created Individual at ${url}`);
       return url.split('/').pop();
-    },
-    deleteIndividual(url) {
-      this.visit(individualsPage, url);
-      // delete all observations
-      individualsPage.deleteIndividual();
     },
     waitForComponents(componentList) {
       Object.values(componentList).forEach(el => {
@@ -68,22 +63,22 @@ module.exports = function () {
       this.amOnPage(url || page.url);
       this.waitForComponents(components || page.components || []);
     },
-    dismissMapPopup() {
-      this.wait(3); // dismissbutton to appear, unsafe
-      this.clickIfVisible(mapPage.dismissButton);
-    },
     async checkVisual(filename, tolerance = 0, prepareBaseImage = false, retryParams = { retries: 0, wait: 0 }) {
-      await retryTo(() => {
-        this.wait(retryParams.wait);
-        this.saveScreenshot(`${filename}.png`, true);
-        this.seeVisualDiff(`${filename}.png`, {
-          tolerance,
-          prepareBaseImage,
-          outputSettings: {
-            ignoreAreasColoredWith: { r: 255, g: 0, b: 0, a: 255 }
-          }
-        });
-      }, retryParams.retries);
+      await retrySteps(
+        this,
+        I => {
+          I.saveScreenshot(`${filename}.png`, true);
+          I.seeVisualDiff(`${filename}.png`, {
+            tolerance,
+            prepareBaseImage,
+            outputSettings: {
+              ignoreAreasColoredWith: { r: 255, g: 0, b: 0, a: 255 }
+            }
+          });
+        },
+        retryParams.retries,
+        retryParams.wait * 1000
+      );
     },
     mockGooglemaps() {
       // https://developers.google.com/maps/domains

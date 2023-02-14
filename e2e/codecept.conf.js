@@ -30,9 +30,6 @@ exports.config = {
     Mochawesome: {
       uniqueScreenshotNames: false,
       fullPageScreenshots: true
-    },
-    customHelper: {
-      require: './src/helpers/clickIfVisible.js'
     }
   },
   include: {
@@ -70,6 +67,8 @@ exports.config = {
       enabled: true,
       fullPageScreenshots: true
     },
-    pauseOnFail: {}
+    subtitles: {
+      enabled: true
+    }
   }
 };

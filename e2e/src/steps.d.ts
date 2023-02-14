@@ -16,7 +16,6 @@ type e2eTestUser = typeof import('./users/e2e_test.js');
 type e2eRangerUser = typeof import('./users/e2e_ranger.js');
 type publicUser = typeof import('./users/public_user.js');
 type ResembleHelper = import('codeceptjs-resemblehelper');
-type customHelper = import('./helpers/clickIfVisible.js');
 
 declare namespace CodeceptJS {
   interface SupportObject {
@@ -38,12 +37,8 @@ declare namespace CodeceptJS {
     e2eRangerUser: e2eRangerUser;
     publicUser: publicUser;
   }
-  interface Methods extends Playwright, ResembleHelper, Mochawesome, customHelper {}
-  interface I
-    extends ReturnType<steps_file>,
-      WithTranslation<ResembleHelper>,
-      WithTranslation<Mochawesome>,
-      WithTranslation<customHelper> {}
+  interface Methods extends Playwright, ResembleHelper, Mochawesome {}
+  interface I extends ReturnType<steps_file>, WithTranslation<ResembleHelper>, WithTranslation<Mochawesome> {}
   namespace Translation {
     interface Actions {}
   }
