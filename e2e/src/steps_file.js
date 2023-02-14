@@ -63,7 +63,7 @@ module.exports = function () {
       this.amOnPage(url || page.url);
       this.waitForComponents(components || page.components || []);
     },
-    async checkVisual(filename, tolerance = 0, prepareBaseImage = false, retryParams = { retries: 0, wait: 0 }) {
+    async checkVisual(filename, tolerance = 0, prepareBaseImage = false, retryParams = { retries: 3, wait: 0.2 }) {
       await retrySteps(
         this,
         I => {

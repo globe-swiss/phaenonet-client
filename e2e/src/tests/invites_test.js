@@ -13,7 +13,7 @@ Scenario('test no invites', async ({ I }) => {
 Scenario('test component send invite', async ({ I, invitesPage }) => {
   I.see('keine Einladungen vorhanden');
   I.click(invitesPage.invitesList.inviteButton);
-  await I.checkVisual('invites-dialog', 0, false, { retries: 2, wait: 0.2 });
+  await I.checkVisual('invites-dialog');
   I.wait(0.2); // why-so-ever without waiting fillField fails
   I.fillField(invitesPage.invitesDialog.textfield, 'verylongunusedemailadress@example.com');
   I.click(invitesPage.invitesDialog.sendButton);

@@ -3,7 +3,7 @@ Feature('Login');
 Scenario('test login screen', async ({ I, loginPage }) => {
   I.visit(loginPage);
   I.waitForText('E-Mail');
-  await I.checkVisual('login', 0, false, { retries: 3, wait: 0.2 });
+  await I.checkVisual('login');
 }).tag('visual');
 
 Scenario('test login from home screen', ({ I, loginPage, privateProfilePage, e2eTestUser, navbarComponent }) => {
