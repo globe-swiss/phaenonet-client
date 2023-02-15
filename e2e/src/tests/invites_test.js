@@ -3,19 +3,20 @@ Feature('Invites');
 Before(async ({ I, invitesPage }) => {
   await I.clearTestData();
   I.login();
-  I.visit(invitesPage.url);
+  I.visit(invitesPage);
 });
 
-Scenario('test component present invites', ({ I, invitesPage }) => {
-  I.checkElementsPresent(invitesPage.components);
-});
+Scenario('test no invites', async ({ I }) => {
+  await I.checkVisual('invites-no_invites');
+}).tag('visual');
 
-Scenario('test component send invite', ({ I, invitesPage }) => {
+Scenario('test component send invite', async ({ I, invitesPage }) => {
   I.see('keine Einladungen vorhanden');
   I.click(invitesPage.invitesList.inviteButton);
-  I.wait(1);
+  await I.checkVisual('invites-dialog');
+  I.wait(0.2); // why-so-ever without waiting fillField fails
   I.fillField(invitesPage.invitesDialog.textfield, 'verylongunusedemailadress@example.com');
   I.click(invitesPage.invitesDialog.sendButton);
   I.waitForText('verylongunusedemailadress@example.com', 10, invitesPage.invitesList.openInviteList);
-  I.seeElement(invitesPage.invitesList.inviteButton);
-});
+  await I.checkVisual('invites-has_invite');
+}).tag('visual');

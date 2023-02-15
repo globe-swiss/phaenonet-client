@@ -19,6 +19,9 @@ module.exports = {
   },
   observations: {
     listItems: { css: '[data-test-id=observation-item]' },
+    /**
+     * @param {number} num
+     */
     getItem(num) {
       return locate(this.listItems).at(num);
     },

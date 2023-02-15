@@ -11,6 +11,7 @@
   (click)="unfollow()"
   class="user-subscription-button__button"
   translate
+  data-test-id="unfollowButton"
 >
   Abonniert
 </button>
@@ -20,7 +21,8 @@
   color="button-not-subscribed"
   (click)="follow()"
   class="user-subscription-button__button"
-  translate=""
+  translate
+  data-test-id="followButton"
 >
   Abonnieren
 </button>

@@ -21,15 +21,15 @@ env:
   EXP: ${{ github.event.inputs.expires }}
   NODE_VERSION: '14'
 
-permissions:
-  contents: read
-  id-token: write
-
 jobs:
   build:
     name: Build & Create Channel
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.project }}
+    permissions:
+      contents: read
+      id-token: write
+      checks: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3.3.0
@@ -40,17 +40,12 @@ jobs:
         run: npm ci
       - name: Build
         run: npx ng build
-      - name: Archive Test Artifact
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: ${{ env.PROJECT }}
-          path: dist
-      - id: auth
-        name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v1.0.0
+      - name: Deploy Preview Channel
+        uses: ./.github/actions/deploy-hosting-action
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-          create_credentials_file: true
-      - name: Deploy Hosting Channel
-        run: npx firebase hosting:channel:deploy ${{ github.ref }} --project ${{ env.PROJECT }} -e ${{ env.EXP }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          project_Id: ${{ env.PROJECT }}
+          channel_id: ${{ github.ref }}
+          expires: ${{ env.EXP }}

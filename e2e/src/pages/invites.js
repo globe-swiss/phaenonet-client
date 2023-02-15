@@ -7,6 +7,9 @@ module.exports = {
   invitesList: {
     openInviteList: locate({ css: 'app-invite-list  [data-test-id=item_email]' }),
     acceptedInviteList: locate({ css: 'app-invite-list app-invite-item :nth-child(2)' }),
+    /**
+     * @param {number} num
+     */
     getItem(num) {
       return locate(this.listItems).at(num);
     },

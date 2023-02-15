@@ -1,5 +1,6 @@
-const { navbarComponent, individualsEditPage, individualsPage, mapPage, privateProfilePage } = inject();
+const { navbarComponent, individualsEditPage, individualsPage, privateProfilePage } = inject();
 const fetch = require('node-fetch');
+const { retrySteps } = require('./helpers/retrySteps');
 
 // in this file you can append custom step methods to 'I' object
 
@@ -13,20 +14,20 @@ module.exports = function () {
     ss() {
       this.saveScreenshot('debug.png', true);
     },
-    login() {
+    login(user) {
       const { loginPage } = inject();
-      this.visit(loginPage.url);
+      this.amOnPage(loginPage.url);
       this.amLoggedOut();
-      this.enterLoginCredentials();
+      this.enterLoginCredentials(user);
       this.click(loginPage.loginButton);
       this.waitUrlEquals(privateProfilePage.url);
-      this.seeElement(privateProfilePage.components.profile);
     },
-    enterLoginCredentials() {
+    enterLoginCredentials(user) {
       const { loginPage, e2eTestUser } = inject();
+      const testUser = user || e2eTestUser;
       this.waitUrlEquals(loginPage.url);
-      this.fillField(loginPage.fields.email, e2eTestUser.email);
-      this.fillField(loginPage.fields.password, e2eTestUser.password);
+      this.fillField(loginPage.fields.email, testUser.email);
+      this.fillField(loginPage.fields.password, testUser.password);
     },
     amLoggedIn() {
       this.see('Profil', navbarComponent.signinProfileButton); // fixme: better way to check if logged in
@@ -34,37 +35,56 @@ module.exports = function () {
     amLoggedOut() {
       this.see('Anmelden', navbarComponent.signinProfileButton); // fixme: better way to check if logged in
     },
-    selectDropdownValue(dropdownLocator, value) {
+    selectDropdownValue(dropdownLocator, value, delay = 0) {
       this.click(dropdownLocator);
       this.click({ css: `mat-option[ng-reflect-value='${value}']` });
+      this.wait(delay);
     },
     async createDefaultIndividual() {
-      // fixme: fails if api limit reached
-      this.visit(individualsEditPage.newIndividualUrl);
+      this.visit(individualsEditPage, individualsEditPage.newIndividualUrl);
+      this.waitForElement(individualsEditPage.components.form);
       individualsEditPage.fillForm();
       this.click(individualsEditPage.saveButton);
       this.waitForElement(individualsPage.components.header, 10);
       const url = await this.grabCurrentUrl();
       this.say(`Created Individual at ${url}`);
-      return url;
+      return url.split('/').pop();
     },
-    deleteIndividual(url) {
-      this.visit(url);
-      // delete all observations
-      individualsPage.deleteIndividual();
-    },
-    checkElementsPresent(elementList) {
-      Object.values(elementList).forEach(el => {
-        this.seeElement(el);
+    waitForComponents(componentList) {
+      Object.values(componentList).forEach(el => {
+        this.waitForElement(el, 5);
       });
     },
-    visit(url) {
-      this.amOnPage(url);
-      // this.wait(1); // make it slow but reliable
+    waitForDropdown(locator, delay = 5) {
+      const locatorString = `${locator.css ? locator.css : locator} .mat-select-placeholder`;
+      this.waitForInvisible(locatorString, delay);
     },
-    dismissMapPopup() {
-      this.wait(3); // dismissbutton to appear, unsafe
-      this.clickIfVisible(mapPage.dismissButton);
+    visit(page, url = null, components = null) {
+      this.amOnPage(url || page.url);
+      this.waitForComponents(components || page.components || []);
+    },
+    async checkVisual(filename, tolerance = 0, prepareBaseImage = false, retryParams = { retries: 3, wait: 0.2 }) {
+      await retrySteps(
+        this,
+        I => {
+          I.saveScreenshot(`${filename}.png`, true);
+          I.seeVisualDiff(`${filename}.png`, {
+            tolerance,
+            prepareBaseImage,
+            outputSettings: {
+              ignoreAreasColoredWith: { r: 255, g: 0, b: 0, a: 255 }
+            }
+          });
+        },
+        retryParams.retries,
+        retryParams.wait * 1000
+      );
+    },
+    mockGooglemaps() {
+      // https://developers.google.com/maps/domains
+      this.mockRoute('https://khm*.googleapis.com/**', route => route.abort());
+      this.mockRoute('https://maps.googleapis.com/maps/**', route => route.abort());
+      this.mockRoute('https://maps.googleapis.com/maps/api/js?*', route => route.continue());
     }
   });
 };

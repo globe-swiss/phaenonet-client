@@ -2,13 +2,17 @@ const { I } = inject();
 
 module.exports = {
   newIndividualUrl: '/individuals/new/edit',
+  /**
+   * @param {string} individualId
+   */
   url(individualId) {
     return `/individuals/${individualId}/edit`;
   },
   components: {
     navigation: { css: 'app-nav' },
     header: { css: 'app-individual-header' },
-    form: { css: 'app-individual-edit-view' }
+    form: { css: 'app-individual-edit-view' },
+    saveButton: { css: 'button[type=submit]' }
   },
   species: {
     dropdown: { css: 'mat-select[formcontrolname="species"]' },

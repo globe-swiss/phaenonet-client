@@ -1,43 +1,28 @@
 Feature('Private Profile');
 
-Scenario('test component present', ({ I, privateProfilePage }) => {
-  I.login();
-  I.visit(privateProfilePage.url);
-  I.checkElementsPresent(privateProfilePage.components);
-});
+const pf = 'private_profile';
 
-Scenario('profile values', ({ I, privateProfilePage, e2eTestUser }) => {
+Scenario('profile values', async ({ I, privateProfilePage, e2eTestUser }) => {
   I.login();
-  I.visit(privateProfilePage.url);
-  I.see(e2eTestUser.nickname, privateProfilePage.profile.nickname);
-  I.see(e2eTestUser.name, privateProfilePage.profile.name);
-  I.see(e2eTestUser.surname, privateProfilePage.profile.surname);
-  I.see(e2eTestUser.email, privateProfilePage.profile.email);
-  I.see(e2eTestUser.language, privateProfilePage.profile.language);
-});
+  I.visit(privateProfilePage);
+  I.waitForText(e2eTestUser.nickname);
+  await I.checkVisual(`${pf}-profile_values`);
+}).tag('visual');
 
-Scenario('test profile buttons', ({ I, privateProfilePage }) => {
+Scenario('test logout', async ({ I, privateProfilePage, logoutPage }) => {
   I.login();
-  I.visit(privateProfilePage.url);
-
-  I.seeElement(privateProfilePage.profile.profileLinkButton);
-  I.seeElement(privateProfilePage.profile.logoutButton);
-  I.seeElement(privateProfilePage.profile.profileEditButton);
-});
-
-Scenario('test logout', ({ I, privateProfilePage, loginPage }) => {
-  I.login();
-  I.visit(privateProfilePage.url);
+  I.visit(privateProfilePage);
 
   I.amLoggedIn();
   I.click(privateProfilePage.profile.logoutButton);
-  I.waitUrlEquals(loginPage.logoutUrl);
+  I.waitForComponents(logoutPage.components);
   I.amLoggedOut();
-});
+  await I.checkVisual('private_profile-loggedout');
+}).tag('visual');
 
 Scenario('test edit profile link', ({ I, privateProfilePage, profileEditPage, e2eTestUser }) => {
   I.login(); // uses e2eTestUser
-  I.visit(privateProfilePage.url);
+  I.visit(privateProfilePage);
 
   I.click(privateProfilePage.profile.profileEditButton);
   I.waitUrlEquals(profileEditPage.url(e2eTestUser));
@@ -45,34 +30,23 @@ Scenario('test edit profile link', ({ I, privateProfilePage, profileEditPage, e2
 
 Scenario('test new individual shown on profile', async ({ I, privateProfilePage }) => {
   await I.clearTestData();
-
   I.login();
-  I.visit(privateProfilePage.url);
-  I.wait(2);
+  I.visit(privateProfilePage);
   I.say('Checking that the profile is clean');
   I.dontSeeElement(privateProfilePage.observations.listItems);
 
-  const individualUrl = await I.createDefaultIndividual();
-  I.visit(privateProfilePage.url);
+  await I.createDefaultIndividual();
+  I.visit(privateProfilePage);
   I.waitForElement(privateProfilePage.observations.listItems);
-  within(privateProfilePage.observations.getItem(1), () => {
-    I.seeElement(privateProfilePage.observations.withinItem.image);
-    I.see('Hasel', privateProfilePage.observations.withinItem.species);
-    I.see('e2e-test-obj', privateProfilePage.observations.withinItem.name);
-  });
-  I.deleteIndividual(individualUrl);
-});
+  await I.checkVisual(`${pf}-new_individual`);
+}).tag('visual');
 
-Scenario('test loggedout profile access', ({ I, privateProfilePage, loginPage, e2eTestUser }) => {
-  I.visit(privateProfilePage.url);
+Scenario('test loggedout profile access', ({ I, privateProfilePage, loginPage }) => {
+  I.amOnPage(privateProfilePage.url);
+  I.waitForComponents(loginPage.components);
   I.amLoggedOut();
-  I.waitUrlEquals(loginPage.url);
-  I.enterLoginCredentials();
-  I.click(loginPage.loginButton);
-  I.waitUrlEquals(privateProfilePage.url); // test redirect
-  I.amLoggedIn();
-  I.see(e2eTestUser.nickname, privateProfilePage.profile.nickname);
 });
 
-// missing tests
-// - activities
+Scenario.todo('test activities', () => {
+  // check activities present and clickable
+});

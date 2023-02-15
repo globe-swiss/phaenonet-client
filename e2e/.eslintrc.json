@@ -1,0 +1,18 @@
+{
+  "root": false,
+  "ignorePatterns": ["output/**/*"],
+  "overrides": [
+    {
+      "files": ["**/*.js"],
+      "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+      },
+      "extends": ["airbnb-base", "plugin:prettier/recommended", "plugin:codeceptjs/recommended"],
+      "parserOptions": {
+        "ecmaVersion": 12
+      }
+    }
+  ]
+}

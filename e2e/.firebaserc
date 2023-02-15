@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "phaenonet-test"
+  },
+  "targets": {
+    "phaenonet-test": {
+      "hosting": {
+        "phaenonet-test-e2e": [
+          "phaenonet-test-e2e"
+        ]
+      }
+    }
+  }
+}

@@ -9,28 +9,33 @@
 exports.config = {
   tests: './src/tests/*_test.js',
   timeout: 60,
-  output: './output',
+  output: './output/img',
   helpers: {
     Playwright: {
       url: 'http://localhost:4200',
       show: false,
       browser: 'chromium',
+      windowSize: '1280x720',
       video: true,
       timeout: 30000,
       getPageTimeout: 30000,
       waitForTimeout: 30000
     },
-    Mochawesome: {
-      uniqueScreenshotNames: false,
-      fullPageScreenshots: true
+    ResembleHelper: {
+      require: 'codeceptjs-resemblehelper',
+      screenshotFolder: './output/',
+      baseFolder: './output/base/',
+      diffFolder: './output/diff/'
     },
-    customHelper: {
-      require: './src/helpers/clickIfVisible.js'
+    Mochawesome: {
+      uniqueScreenshotNames: true,
+      fullPageScreenshots: true
     }
   },
   include: {
     I: './src/steps_file.js',
     loginPage: './src/pages/login.js',
+    logoutPage: './src/pages/logout.js',
     mapPage: './src/pages/map.js',
     privateProfilePage: './src/pages/private_profile.js',
     profileEditPage: './src/pages/profile_edit.js',
@@ -41,7 +46,9 @@ exports.config = {
     statisticsPage: './src/pages/statistics.js',
     stationsPage: './src/pages/stations.js',
     navbarComponent: './src/components/navbar.js',
-    e2eTestUser: './src/users/e2e_test.js'
+    e2eTestUser: './src/users/e2e_test.js',
+    e2eRangerUser: './src/users/e2e_ranger.js',
+    publicUser: './src/users/public_user.js'
   },
   mocha: {
     reporterOptions: {
@@ -51,18 +58,16 @@ exports.config = {
   name: 'phaenonet-client',
   plugins: {
     retryFailedStep: {
-      enabled: true,
-      retries: 10
+      enabled: false
+    },
+    retryTo: {
+      enabled: true
     },
     screenshotOnFail: {
-      enabled: true,
-      fullPageScreenshots: true
+      enabled: true
     },
-    pauseOnFail: {}
-  },
-  multiple: {
-    basic: {
-      browsers: ['chromium', 'firefox', 'webkit']
+    subtitles: {
+      enabled: true
     }
   }
 };

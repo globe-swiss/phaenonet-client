@@ -65,7 +65,7 @@ jobs:
       - name: Build
         run: npx ng build ${{ env.PROJECT == 'phaenonet' && '--c=production' || '' }}
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3.1.2
+        uses: ./.github/actions/upload-zip-artifact
         with:
           name: ${{ env.PROJECT }}
           path: dist
@@ -77,10 +77,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3.3.0
       - name: Download Artifact
-        uses: actions/download-artifact@v3.0.2
+        uses: ./.github/actions/download-zip-artifact
         with:
           name: ${{ env.PROJECT }}
-          path: dist
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -116,18 +115,10 @@ jobs:
           repository: globe-swiss/phaenonet-client-security
           path: security
           ssh-key: ${{ secrets.SECURITY_REPO_DEPLOY_KEY }}
-      - id: auth
-        name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v1.0.0
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-          create_credentials_file: true
       - name: Download Artifact
-        uses: actions/download-artifact@v3.0.2
+        uses: ./.github/actions/download-zip-artifact
         with:
           name: ${{ env.PROJECT }}
-          path: dist
       - name: Remove source maps (prod)
         run: rm ./dist/**/*.map
         if: ${{ env.PROJECT == 'phaenonet' }}
@@ -136,6 +127,13 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       - name: install firebase-tools
         run: npm i --no-save firebase-tools
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1.0.0
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          create_credentials_file: true
       - name: Deploy to Firebase
         run: npx firebase deploy --project ${{ env.PROJECT }}
   tag:
