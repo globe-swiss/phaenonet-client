@@ -16,7 +16,7 @@ module.exports = function () {
     },
     login(user) {
       const { loginPage } = inject();
-      this.amOnPage(loginPage.url);
+      this.visit(loginPage);
       this.amLoggedOut();
       this.enterLoginCredentials(user);
       this.click(loginPage.loginButton);
@@ -25,7 +25,6 @@ module.exports = function () {
     enterLoginCredentials(user) {
       const { loginPage, e2eTestUser } = inject();
       const testUser = user || e2eTestUser;
-      this.waitUrlEquals(loginPage.url);
       this.fillField(loginPage.fields.email, testUser.email);
       this.fillField(loginPage.fields.password, testUser.password);
     },
