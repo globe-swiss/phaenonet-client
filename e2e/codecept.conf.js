@@ -42,6 +42,7 @@ exports.config = {
     publicProfilePage: './src/pages/public_profile.js',
     individualsPage: './src/pages/individuals.js',
     individualsEditPage: './src/pages/individuals_edit.js',
+    speciesPage: './src/pages/species.js',
     invitesPage: './src/pages/invites.js',
     statisticsPage: './src/pages/statistics.js',
     stationsPage: './src/pages/stations.js',

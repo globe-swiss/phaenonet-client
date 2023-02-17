@@ -8,6 +8,7 @@ type profileEditPage = typeof import('./pages/profile_edit.js');
 type publicProfilePage = typeof import('./pages/public_profile.js');
 type individualsPage = typeof import('./pages/individuals.js');
 type individualsEditPage = typeof import('./pages/individuals_edit.js');
+type speciesPage = typeof import('./pages/species.js');
 type invitesPage = typeof import('./pages/invites.js');
 type statisticsPage = typeof import('./pages/statistics.js');
 type stationsPage = typeof import('./pages/stations.js');
@@ -29,6 +30,7 @@ declare namespace CodeceptJS {
     publicProfilePage: publicProfilePage;
     individualsPage: individualsPage;
     individualsEditPage: individualsEditPage;
+    speciesPage: speciesPage;
     invitesPage: invitesPage;
     statisticsPage: statisticsPage;
     stationsPage: stationsPage;
