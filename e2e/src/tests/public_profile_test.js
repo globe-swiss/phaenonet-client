@@ -8,7 +8,8 @@ Scenario('public profile page loggedout', async ({ I, publicProfilePage, publicU
   I.visit(publicProfilePage, publicProfilePage.url(publicUser.id));
   I.selectDropdownValue(publicProfilePage.yearDropdown, 2018);
   I.waitForText('Winterlinde');
-  await I.checkVisual('public_profile-loggedout');
+  I.wait(1); // wait for images loading
+  await I.checkVisual('public_profile-loggedout', 0, false, { retries: 3, wait: 1 });
 }).tag('visual');
 
 Scenario('public profile page loggedin', async ({ I, publicProfilePage, e2eTestUser, e2eRangerUser }) => {
