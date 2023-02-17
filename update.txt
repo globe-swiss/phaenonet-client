@@ -16,3 +16,4 @@ ng update @angular/flex-layout @mat-datetimepicker/core @mat-datetimepicker/mome
                   https://www.npmjs.com/package/@angular/flex-layout -> This package has been deprecated. Please see https://blog.angular.io/modern-css-in-angular-layouts-4a259dca9127
                   -> flexlayout not upgraded
 ng update @angular/fire
+ng update @angular/google-maps
