@@ -6,3 +6,4 @@ ng update --force @angular/core@15 @angular/cli@15
                   Package "@sentry/angular" has an incompatible peer dependency to "@angular/router" (requires "10.x || 11.x || 12.x || 13.x" (extended), would install "15.1.5").
 ng update @angular-eslint/schematics
 ng update @angular-builders/jest
+ng update @sentry/angular

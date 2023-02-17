@@ -32,7 +32,7 @@
     "@mat-datetimepicker/core": "^10.0.0",
     "@mat-datetimepicker/moment": "^10.0.0",
     "@ngx-translate/core": "^14.0.0",
-    "@sentry/angular": "^6.19.7",
+    "@sentry/angular": "^7.38.0",
     "@sentry/tracing": "^6.19.7",
     "browser-update": "^3.3.40",
     "d3": "^5.16.0",
