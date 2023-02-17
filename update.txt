@@ -18,3 +18,5 @@ ng update @angular/flex-layout @mat-datetimepicker/core @mat-datetimepicker/mome
 ng update @angular/fire
 ng update @angular/google-maps
 ng update @sentry/tracing
+
+* fix sentry severity

@@ -50,7 +50,7 @@ function loadConfig() {
         platformBrowserDynamic([{ provide: FIREBASE_OPTIONS, useValue: config }]).bootstrapModule(AppModule)
       )
     )
-    .catch(() => Sentry.captureMessage('Could not fetch firebase config.', Sentry.Severity.Fatal));
+    .catch(() => Sentry.captureMessage('Could not fetch firebase config.', 'fatal'));
 }
 
 void loadConfig();
