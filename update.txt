@@ -7,3 +7,8 @@ ng update --force @angular/core@15 @angular/cli@15
 ng update @angular-eslint/schematics
 ng update @angular-builders/jest
 ng update @sentry/angular
+--
+ng update --force @angular/material@15
+                  Package "@angular/flex-layout" has an incompatible peer dependency to "@angular/cdk" (requires "^14.0.0", would install "15.1.5").
+                  Package "@mat-datetimepicker/core" has an incompatible peer dependency to "@angular/material" (requires "^14.0.4", would install "15.1.5").
+                  Package "@mat-datetimepicker/moment" has an incompatible peer dependency to "@angular/material-moment-adapter" (requires "^14.0.4", would install "15.1.5").

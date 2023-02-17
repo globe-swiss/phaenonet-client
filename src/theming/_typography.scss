@@ -62,7 +62,7 @@ T4 -> button (for button there is no css clss)
 
 */
 
-$phaenonet-typography: mat.define-typography-config(
+$phaenonet-typography: mat.define-legacy-typography-config(
   $font-family: '"Open Sans", "Roboto", sans-serif;',
   $headline:
     mat.define-typography-level(
