@@ -1,0 +1,6 @@
+ng update --force @angular/core@15 @angular/cli@15
+                  Package "@angular-builders/jest" has an incompatible peer dependency to "@angular-devkit/build-angular" (requires "^14.0.0", would install "15.1.6").
+                  Package "@angular-eslint/schematics" has an incompatible peer dependency to "@angular/cli" (requires ">= 14.0.0 < 15.0.0", would install "15.1.6").
+                  Package "@sentry/angular" has an incompatible peer dependency to "@angular/common" (requires "10.x || 11.x || 12.x || 13.x" (extended), would install "15.1.5").
+                  Package "@sentry/angular" has an incompatible peer dependency to "@angular/core" (requires "10.x || 11.x || 12.x || 13.x" (extended), would install "15.1.5").
+                  Package "@sentry/angular" has an incompatible peer dependency to "@angular/router" (requires "10.x || 11.x || 12.x || 13.x" (extended), would install "15.1.5").
