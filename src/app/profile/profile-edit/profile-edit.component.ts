@@ -22,12 +22,7 @@ import { ChangePasswordDialogComponent } from './change-password-dialog/change-p
   styleUrls: ['./profile-edit.component.scss']
 })
 export class ProfileEditComponent extends BaseDetailComponent<User> implements OnInit, OnDestroy {
-  editForm = new UntypedFormGroup({
-    nickname: new UntypedFormControl('', { asyncValidators: this.publicUserService.uniqueNicknameValidator() }),
-    firstname: new UntypedFormControl(''),
-    lastname: new UntypedFormControl(''),
-    locale: new UntypedFormControl('de-CH')
-  });
+  editForm: UntypedFormGroup;
   private subscriptions = new Subscription();
   private initialLanguage: string;
   email: string;
@@ -43,6 +38,12 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
     private authService: AuthService
   ) {
     super(userService, route, router);
+    this.editForm = new UntypedFormGroup({
+      nickname: new UntypedFormControl('', { asyncValidators: this.publicUserService.uniqueNicknameValidator() }),
+      firstname: new UntypedFormControl(''),
+      lastname: new UntypedFormControl(''),
+      locale: new UntypedFormControl('de-CH')
+    });
   }
 
   ngOnInit(): void {
