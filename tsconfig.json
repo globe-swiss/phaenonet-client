@@ -18,7 +18,7 @@
     "lib": ["es2019", "dom"],
     "allowSyntheticDefaultImports": true,
     "types": ["jest"],
-    "useDefineForClassFields": false
+    "useDefineForClassFields": true
   },
   "angularCompilerOptions": {
     "strictTemplates": true
