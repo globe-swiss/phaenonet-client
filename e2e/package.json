@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@codeceptjs/ui": "^0.4.7",
-    "codeceptjs": "^3.3.7",
+    "codeceptjs": "^3.4.1",
     "codeceptjs-resemblehelper": "git+https://github.com/pgoellnitz/codeceptjs-resemblehelper.git#1.9.7",
     "mocha": "^10.2.0",
     "mochawesome": "^7.1.3",
