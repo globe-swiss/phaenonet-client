@@ -29,7 +29,7 @@ export class LocalService {
       console.error('Localstorage not available');
       /* istanbul ignore next */
       if (!this.localStorageMsgSent && environment.production) {
-        Sentry.captureMessage('Localstorage not available', { level: Sentry.Severity.Debug });
+        Sentry.captureMessage('Localstorage not available', { level: 'debug' });
         this.localStorageMsgSent = true;
       }
     }

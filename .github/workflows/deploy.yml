@@ -22,7 +22,7 @@ env:
   PROJECT: ${{ github.event.inputs.project || 'phaenonet-test' }}
   TAG: ${{ github.event.inputs.tag }}
   VERSION: 'phaenonet-client@${{ github.event.inputs.tag && github.event.inputs.tag || github.sha }}'
-  NODE_VERSION: '14'
+  NODE_VERSION: '18'
 
 permissions:
   contents: read

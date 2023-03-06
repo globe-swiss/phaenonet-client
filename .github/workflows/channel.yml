@@ -19,7 +19,7 @@ on:
 env:
   PROJECT: ${{ github.event.inputs.project }}
   EXP: ${{ github.event.inputs.expires }}
-  NODE_VERSION: '14'
+  NODE_VERSION: '18'
 
 jobs:
   build:

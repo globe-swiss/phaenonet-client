@@ -7,7 +7,7 @@ on:
     branches: [master, test-pr]
 
 env:
-  NODE_VERSION: '14'
+  NODE_VERSION: '18'
   CACHE_SEQ: 1
 
 jobs:

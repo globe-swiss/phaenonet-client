@@ -28,7 +28,7 @@ export class FirestoreDebugService {
 
       if (environment.sentryEnabled && oldcnt / 1000 > this.lastSentrySend) {
         Sentry.captureMessage('High Firestore access', {
-          level: Sentry.Severity.Debug,
+          level: 'debug',
           extra: { counters: this.map2obj(map) }
         });
         this.lastSentrySend += 1;
