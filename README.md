@@ -141,7 +141,7 @@ npx ng build && npx firebase deploy --project phaenonet-test
 ```commandline
 git checkout v<version>
 npx firebase login
-rm -r node_modules && npm ci --also=dev && npx ng build --c=production && npx firebase deploy --project phaenonet
+rm -r node_modules && npm ci --include=dev && npx ng build --c=production && npx firebase deploy --project phaenonet
 ```
 
 ## Related resources
