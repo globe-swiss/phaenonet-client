@@ -39,10 +39,10 @@ module.exports = function () {
       this.click({ css: `mat-option[ng-reflect-value='${value}']` });
       this.wait(delay);
     },
-    async createDefaultIndividual() {
+    async createDefaultIndividual(species = null) {
       this.visit(individualsEditPage, individualsEditPage.newIndividualUrl);
       this.waitForElement(individualsEditPage.components.form);
-      individualsEditPage.fillForm();
+      individualsEditPage.fillForm(species);
       this.click(individualsEditPage.saveButton);
       this.waitForElement(individualsPage.components.header, 10);
       const url = await this.grabCurrentUrl();

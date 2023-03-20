@@ -77,8 +77,8 @@ module.exports = {
       // add more if needed
     }
   },
-  fillForm() {
-    I.selectDropdownValue(this.species.dropdown, this.species.options.hazel);
+  fillForm(species = this.species.options.hazel) {
+    I.selectDropdownValue(this.species.dropdown, species);
     I.fillField(this.name.field, 'e2e-test-obj');
     I.selectDropdownValue(this.environment.dropdown, this.environment.options.city);
     I.selectDropdownValue(this.exposition.dropdown, this.exposition.options.north);

@@ -44,6 +44,18 @@ module.exports = {
         .at(9)
     }
   },
+  observation: {
+    addButton1: locate('[data-test-id=addObservationIcon]').at(1),
+    EditButton1: locate('[data-test-id=editObservationIcon]').at(1),
+    addEdit: {
+      toggleCalendar: { css: '[data-test-id=datePickerToggle]' },
+      calendar: {
+        day1: locate('button .mat-calendar-body-cell-content').inside('mat-calendar').at(1)
+      },
+      saveButton: { css: '[data-test-id=saveButton]' },
+      deleteButton: { css: '[data-test-id=deleteButton]' }
+    }
+  },
   followButton: { css: '[data-test-id=followButton]' },
   unfollowButton: { css: '[data-test-id=unfollowButton]' },
   editButton: { css: 'app-individual-description-buttons #edit-button' },
