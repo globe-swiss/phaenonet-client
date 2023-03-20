@@ -15,9 +15,7 @@ import { PhenophaseObservation } from '../observation/phenophase-observation';
   templateUrl: 'phenophase-dialog.component.html'
 })
 export class PhenophaseDialogComponent {
-  showTouchCalendar$: Observable<boolean> = this.breakpointObserver
-    .observe('(max-height: 700px)')
-    .pipe(map(result => result.matches));
+  showTouchCalendar$: Observable<boolean>;
 
   originalDate: Observation['date'];
   originalComment: Observation['comment'];
@@ -32,6 +30,9 @@ export class PhenophaseDialogComponent {
       this.originalDate = original.date;
       this.originalComment = original.comment;
     }
+    this.showTouchCalendar$ = this.breakpointObserver
+      .observe('(max-height: 700px)')
+      .pipe(map(result => result.matches));
   }
 
   close(): void {
