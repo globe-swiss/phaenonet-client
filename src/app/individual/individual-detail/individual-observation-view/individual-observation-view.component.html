@@ -20,6 +20,7 @@
             placeholder="{{ item.phenophase.description_de | translate }}"
             [value]="item.observation.toNullable()?.date"
             readonly="true"
+            data-test-id="observationDate"
           />
           <mat-datepicker #fakePicker></mat-datepicker>
           <mat-icon

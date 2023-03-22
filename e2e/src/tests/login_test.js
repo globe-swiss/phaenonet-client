@@ -32,3 +32,5 @@ Scenario('test login with invalid mail', ({ I, loginPage }) => {
   I.waitUrlEquals(loginPage.url);
   I.amLoggedOut();
 });
+
+Scenario.todo('Reset password').tag('visual'); // screen currently broken

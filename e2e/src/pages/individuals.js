@@ -9,7 +9,8 @@ module.exports = {
     header: { css: 'app-individual-header[mode=detail]' },
     descriptionHeader: { css: 'app-individual-description-header' },
     descriptionInfo: { css: 'app-individual-description-basic-info' },
-    observations: { css: 'app-individual-observation-view' }
+    observations: { css: 'app-individual-observation-view' },
+    observationContent: { css: '[data-test-id=observationDate]' }
   },
   description: {
     species: { css: '[data-test-id=individual_species]' },
@@ -45,12 +46,16 @@ module.exports = {
     }
   },
   observation: {
-    addButton1: locate('[data-test-id=addObservationIcon]').at(1),
-    EditButton1: locate('[data-test-id=editObservationIcon]').at(1),
-    addEdit: {
+    obs1: {
+      date: locate('[data-test-id=observationDate]').at(1),
+      add: locate('[data-test-id=addObservationIcon]').at(1),
+      edit: locate('[data-test-id=editObservationIcon]').at(1)
+    },
+    observationDialog: {
       toggleCalendar: { css: '[data-test-id=datePickerToggle]' },
       calendar: {
-        day1: locate('button .mat-calendar-body-cell-content').inside('mat-calendar').at(1)
+        day1: locate('button .mat-calendar-body-cell-content').inside('mat-calendar').at(1),
+        day2: locate('button .mat-calendar-body-cell-content').inside('mat-calendar').at(2)
       },
       saveButton: { css: '[data-test-id=saveButton]' },
       deleteButton: { css: '[data-test-id=deleteButton]' }
