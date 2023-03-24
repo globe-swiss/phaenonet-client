@@ -45,12 +45,10 @@ module.exports = {
         .at(9)
     }
   },
-  observation: {
-    obs1: {
-      date: locate('[data-test-id=observationDate]').at(1),
-      add: locate('[data-test-id=addObservationIcon]').at(1),
-      edit: locate('[data-test-id=editObservationIcon]').at(1)
-    },
+  observations: {
+    dateFields: locate('[data-test-id=observationDate]'),
+    addButtons: locate('[data-test-id=addObservationIcon]'),
+    editButtons: locate('[data-test-id=editObservationIcon]'),
     observationDialog: {
       toggleCalendar: { css: '[data-test-id=datePickerToggle]' },
       calendar: {
