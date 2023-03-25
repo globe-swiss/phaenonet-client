@@ -28,7 +28,7 @@ jobs:
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
       - name: Install node modules
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci --also=dev
+        run: npm ci --include=dev
       - name: Save cache (node modules)
         if: steps.cache.outputs.cache-hit != 'true'
         uses: martijnhols/actions-cache/save@v3

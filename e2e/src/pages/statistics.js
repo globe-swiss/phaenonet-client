@@ -10,7 +10,7 @@ module.exports = {
     },
     source: {
       dropdown: { css: '.statistics-filter mat-select[formcontrolname="datasource"]' },
-      options: {
+      values: {
         all: 'all',
         phenonet: 'globe',
         meteoswiss: 'meteoswiss'
@@ -18,14 +18,14 @@ module.exports = {
     },
     type: {
       dropdown: { css: '.statistics-filter mat-select[formcontrolname="analyticsType"]' },
-      options: {
+      values: {
         species: 'species',
         altitude: 'altitude'
       }
     },
     species: {
       dropdown: { css: '.statistics-filter mat-select[formcontrolname="species"]' },
-      options: {
+      values: {
         hazel: 'HS',
         sycamore: 'BA'
         // add more if needed

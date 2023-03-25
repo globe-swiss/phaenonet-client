@@ -13,7 +13,7 @@ module.exports = {
     },
     source: {
       dropdown: { css: '.map-overview__map-filter mat-select[formcontrolname="datasource"]' },
-      options: {
+      values: {
         all: 'all',
         phenonet: 'globe',
         meteoswiss: 'meteoswiss'
@@ -21,7 +21,7 @@ module.exports = {
     },
     species: {
       dropdown: { css: '.map-overview__map-filter mat-select[formcontrolname="species"]' },
-      options: {
+      values: {
         hazel: 'HS',
         sycamore: 'BA'
         // add more if needed

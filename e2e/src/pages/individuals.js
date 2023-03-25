@@ -9,7 +9,8 @@ module.exports = {
     header: { css: 'app-individual-header[mode=detail]' },
     descriptionHeader: { css: 'app-individual-description-header' },
     descriptionInfo: { css: 'app-individual-description-basic-info' },
-    observations: { css: 'app-individual-observation-view' }
+    observations: { css: 'app-individual-observation-view' },
+    observationContent: { css: '[data-test-id=observationDate]' }
   },
   description: {
     species: { css: '[data-test-id=individual_species]' },
@@ -42,6 +43,20 @@ module.exports = {
       forestType: locate('.individual-description-basic-info__value')
         .inside('app-individual-description-basic-info')
         .at(9)
+    }
+  },
+  observations: {
+    dateFields: locate('[data-test-id=observationDate]'),
+    addButtons: locate('[data-test-id=addObservationIcon]'),
+    editButtons: locate('[data-test-id=editObservationIcon]'),
+    observationDialog: {
+      toggleCalendar: { css: '[data-test-id=datePickerToggle]' },
+      calendar: {
+        day1: locate('button .mat-calendar-body-cell-content').inside('mat-calendar').at(1),
+        day2: locate('button .mat-calendar-body-cell-content').inside('mat-calendar').at(2)
+      },
+      saveButton: { css: '[data-test-id=saveButton]' },
+      deleteButton: { css: '[data-test-id=deleteButton]' }
     }
   },
   followButton: { css: '[data-test-id=followButton]' },

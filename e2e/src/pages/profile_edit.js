@@ -20,7 +20,7 @@ module.exports = {
   saveButtonDisabled: { css: 'button#save-button:disabled' },
   languageSelect: {
     dropdown: { css: 'mat-select#langueselect' },
-    options: {
+    values: {
       de: { css: 'mat-option[value=de-CH]' },
       fr: { css: 'mat-option[value=fr-CH]' },
       it: { css: 'mat-option[value=it-CH]' }

@@ -15,7 +15,7 @@
         [max]="data.limits.end_day"
         readonly
       />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker-toggle matSuffix [for]="picker" data-test-id="datePickerToggle"></mat-datepicker-toggle>
       <mat-datepicker #picker [touchUi]="showTouchCalendar$ | async"></mat-datepicker>
     </mat-form-field>
     <mat-form-field class="phenophase-dialog__form-field" *ngIf="data.availableComments.length > 0">
@@ -29,10 +29,24 @@
     </mat-form-field>
   </div>
   <div mat-dialog-actions class="phenophase-dialog__buttons">
-    <button class="phenophase-dialog__button" mat-flat-button [mat-dialog-close]="data" color="accent" cdkFocusInitial>
+    <button
+      class="phenophase-dialog__button"
+      mat-flat-button
+      [mat-dialog-close]="data"
+      color="accent"
+      cdkFocusInitial
+      data-test-id="saveButton"
+    >
       {{ 'Speichern' | translate }}
     </button>
-    <button class="phenophase-dialog__button" mat-flat-button (click)="deleteAndClose()" color="warn" cdkFocusInitial>
+    <button
+      class="phenophase-dialog__button"
+      mat-flat-button
+      (click)="deleteAndClose()"
+      color="warn"
+      cdkFocusInitial
+      data-test-id="deleteButton"
+    >
       {{ 'Löschen' | translate }}
     </button>
   </div>
