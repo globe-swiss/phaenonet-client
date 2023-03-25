@@ -26,15 +26,15 @@ Scenario('test select languages', ({ I, profileEditPage, e2eTestUser }) => {
   I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
   I.see('Deutsch'); // de
   I.click(profileEditPage.languageSelect.dropdown);
-  I.click(profileEditPage.languageSelect.options.fr);
+  I.click(profileEditPage.languageSelect.values.fr);
   I.see('Français');
   I.see('Enregistrer');
   I.click(profileEditPage.languageSelect.dropdown);
-  I.click(profileEditPage.languageSelect.options.it);
+  I.click(profileEditPage.languageSelect.values.it);
   I.see('Italiano');
   I.see('Salva');
   I.click(profileEditPage.languageSelect.dropdown);
-  I.click(profileEditPage.languageSelect.options.de);
+  I.click(profileEditPage.languageSelect.values.de);
   I.see('Deutsch');
   I.see('Speichern');
 });

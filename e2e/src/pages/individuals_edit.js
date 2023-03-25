@@ -15,8 +15,8 @@ module.exports = {
     saveButton: { css: 'button[type=submit]' }
   },
   species: {
-    dropdown: { css: 'mat-select[formcontrolname="species"]' },
-    options: {
+    dropdown: { css: '[data-test-id=speciesDropdown]' },
+    values: {
       hazel: 'HS'
       // add more if needed
     }
@@ -27,14 +27,14 @@ module.exports = {
   // foto - todo: not implemented
   environment: {
     dropdown: { css: 'mat-select[formcontrolname="description"]' },
-    options: {
+    values: {
       city: 'ST'
       // add more if needed
     }
   },
   exposition: {
     dropdown: { css: 'mat-select[formcontrolname="exposition"]' },
-    options: {
+    values: {
       north: 'N'
       // add more if needed
     }
@@ -44,50 +44,50 @@ module.exports = {
   },
   shade: {
     dropdown: { css: 'mat-select[formcontrolname="shade"]' },
-    options: {
+    values: {
       shadow: 'B2'
       // add more if needed
     }
   },
   watering: {
     dropdown: { css: 'mat-select[formcontrolname="watering"]' },
-    options: {
+    values: {
       watered: '1'
       // add more if needed
     }
   },
   distance: {
     dropdown: { css: 'mat-select[formcontrolname="less100"]' },
-    options: {
+    values: {
       bigger100m: '0'
       // add more if needed
     }
   },
   habitat: {
     dropdown: { css: 'mat-select[formcontrolname="habitat"]' },
-    options: {
+    values: {
       woods: 'WA'
       // add more if needed
     }
   },
   forestType: {
     dropdown: { css: 'mat-select[formcontrolname="forest"]' },
-    options: {
+    values: {
       mixedForest: 'MW'
       // add more if needed
     }
   },
-  fillForm(species = this.species.options.hazel) {
+  fillForm(species = this.species.values.hazel) {
     I.selectDropdownValue(this.species.dropdown, species);
     I.fillField(this.name.field, 'e2e-test-obj');
-    I.selectDropdownValue(this.environment.dropdown, this.environment.options.city);
-    I.selectDropdownValue(this.exposition.dropdown, this.exposition.options.north);
+    I.selectDropdownValue(this.environment.dropdown, this.environment.values.city);
+    I.selectDropdownValue(this.exposition.dropdown, this.exposition.values.north);
     I.fillField(this.gradient.field, '42');
-    I.selectDropdownValue(this.shade.dropdown, this.shade.options.shadow);
-    I.selectDropdownValue(this.watering.dropdown, this.watering.options.watered);
-    I.selectDropdownValue(this.distance.dropdown, this.distance.options.bigger100m);
-    I.selectDropdownValue(this.habitat.dropdown, this.habitat.options.woods);
-    I.selectDropdownValue(this.forestType.dropdown, this.forestType.options.mixedForest);
+    I.selectDropdownValue(this.shade.dropdown, this.shade.values.shadow);
+    I.selectDropdownValue(this.watering.dropdown, this.watering.values.watered);
+    I.selectDropdownValue(this.distance.dropdown, this.distance.values.bigger100m);
+    I.selectDropdownValue(this.habitat.dropdown, this.habitat.values.woods);
+    I.selectDropdownValue(this.forestType.dropdown, this.forestType.values.mixedForest);
   },
   locateMeButton: { css: 'app-individual-header button' },
   saveButton: { css: 'button[type=submit]' },

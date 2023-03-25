@@ -36,12 +36,12 @@ module.exports = function () {
     },
     selectDropdownValue(dropdownLocator, value, delay = 0) {
       this.click(dropdownLocator);
-      this.click({ css: `mat-option[ng-reflect-value='${value}']` });
+      // option might no be present if role check is still pending
+      this.retry().click({ css: `mat-option[ng-reflect-value='${value}']` });
       this.wait(delay);
     },
     async createDefaultIndividual(species = undefined) {
       this.visit(individualsEditPage, individualsEditPage.newIndividualUrl);
-      this.waitForElement(individualsEditPage.components.form);
       individualsEditPage.fillForm(species);
       this.click(individualsEditPage.saveButton);
       this.waitForElement(individualsPage.components.header, 10);
