@@ -33,4 +33,11 @@ Scenario('test login with invalid mail', ({ I, loginPage }) => {
   I.amLoggedOut();
 });
 
+Scenario('test register screen', async ({ I, loginPage, registerPage }) => {
+  I.visit(loginPage);
+  I.click(loginPage.registerNowLink);
+  I.waitUrlEquals(registerPage.url);
+  await I.checkVisual('register');
+}).tag('visual');
+
 Scenario.todo('Reset password').tag('visual'); // screen currently broken
