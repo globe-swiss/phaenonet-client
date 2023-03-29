@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { Router } from '@angular/router';
@@ -17,18 +16,7 @@ import { equalValidation } from '../shared/validation';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  registerForm = new UntypedFormGroup({
-    nickname: new UntypedFormControl('', {
-      updateOn: 'blur',
-      asyncValidators: this.publicUserService.uniqueNicknameValidator()
-    }),
-    firstname: new UntypedFormControl(''),
-    lastname: new UntypedFormControl(''),
-    email: new UntypedFormControl(''),
-    password: new UntypedFormControl(''),
-    passwordConfirm: new UntypedFormControl(''),
-    locale: new UntypedFormControl('de-CH')
-  });
+  registerForm: UntypedFormGroup;
 
   registerFailed = false;
 
@@ -40,12 +28,24 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     private router: Router,
     private navService: NavService,
-    private languageService: LanguageService,
-    private analytics: AngularFireAnalytics
+    private languageService: LanguageService
   ) {}
 
   ngOnInit(): void {
     this.navService.setLocation('Registrierung');
+    this.registerForm = new UntypedFormGroup({
+      nickname: new UntypedFormControl('', {
+        updateOn: 'blur',
+        asyncValidators: this.publicUserService.uniqueNicknameValidator()
+      }),
+      firstname: new UntypedFormControl(''),
+      lastname: new UntypedFormControl(''),
+      email: new UntypedFormControl(''),
+      password: new UntypedFormControl(''),
+      passwordConfirm: new UntypedFormControl(''),
+      locale: new UntypedFormControl('de-CH')
+    });
+
     const equalValidator = equalValidation('password', 'passwordConfirm', 'passwordMissmatch');
     this.registerForm.setValidators(equalValidator);
     this.registerForm.updateValueAndValidity();
@@ -55,13 +55,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
           'Registration erfolgreich',
           'Sie haben sich erfolgreich bei PhaenoNet registriert.'
         );
-        void this.analytics.logEvent('register.submit');
         void this.router.navigateByUrl('/');
       }
     });
-    if (this.showRegisterForm()) {
-      void this.analytics.logEvent('register.view');
-    }
   }
 
   ngOnDestroy(): void {

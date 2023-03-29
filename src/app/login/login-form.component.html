@@ -41,12 +41,12 @@
     </mat-card-content>
     <mat-card-footer>
       <div>
-        <a class="login-form__link" mat-button [routerLink]="'/auth/reset-password'">{{
+        <a class="login-form__link" mat-button [routerLink]="'/auth/reset-password'" data-test-id="resetPassword">{{
           'Passwort vergessen?' | translate
         }}</a>
       </div>
       <div>
-        <a class="login-form__link" mat-button [routerLink]="'/auth/register'">{{
+        <a class="login-form__link" mat-button [routerLink]="'/auth/register'" data-test-id="registerNow">{{
           'Noch keinen Account? Jetzt registrieren!' | translate
         }}</a>
       </div>

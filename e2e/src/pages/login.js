@@ -11,6 +11,8 @@ module.exports = {
     password: { css: 'app-login-form #password' }
   },
   loginButton: { css: 'app-login-form #login-button' },
+  resetPasswordLink: { css: '[data-test-id=resetPassword]' },
+  registerNowLink: { css: '[data-test-id=registerNow]' },
 
   /**
    * @param {string} email

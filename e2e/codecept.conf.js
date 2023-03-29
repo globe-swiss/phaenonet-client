@@ -36,6 +36,7 @@ exports.config = {
     I: './src/steps_file.js',
     loginPage: './src/pages/login.js',
     logoutPage: './src/pages/logout.js',
+    registerPage: './src/pages/register.js',
     mapPage: './src/pages/map.js',
     privateProfilePage: './src/pages/private_profile.js',
     profileEditPage: './src/pages/profile_edit.js',
