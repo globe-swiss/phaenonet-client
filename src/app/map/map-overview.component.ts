@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { combineLatest, Observable } from 'rxjs';
+import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { Observable, combineLatest } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
@@ -10,6 +10,7 @@ import { MasterdataService } from '../masterdata/masterdata.service';
 import { SourceFilterType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 import { TypeGuard } from '../shared/type-guard.pipe';
+import { LocalService } from './../shared/local.service';
 import { IndividualInfoWindowData, MapInfoService, StationInfoWindowData } from './map-info.service';
 import { IndividualWithMarkerOpt, MapService } from './map.service';
 
@@ -21,12 +22,12 @@ const allSpecies = { id: 'ALL', de: 'Alle' } as Species;
   templateUrl: './map-overview.component.html',
   styleUrls: ['./map-overview.component.scss']
 })
-export class MapOverviewComponent implements OnInit {
+export class MapOverviewComponent implements OnInit, OnDestroy {
+  @ViewChild(GoogleMap, { static: false }) googleMap: GoogleMap;
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
 
   // Initial Map values
-  readonly center = { lat: 46.818188, lng: 8.227512 };
-  readonly zoom = 9;
+  mapParams: { center: { lat: number; lng: number }; zoom: number };
   readonly options: google.maps.MapOptions = {
     mapTypeId: google.maps.MapTypeId.TERRAIN,
     mapTypeControl: false,
@@ -63,11 +64,17 @@ export class MapOverviewComponent implements OnInit {
     private mapService: MapService,
     private masterdataService: MasterdataService,
     private formPersistanceService: FormPersistenceService,
+    private localService: LocalService,
     private mapInfoService: MapInfoService
   ) {}
 
   ngOnInit(): void {
     this.navService.setLocation('Karte');
+
+    this.mapParams = this.localService.sessionStorageGetObjectCompressed('mapParams');
+    if (!this.mapParams) {
+      this.mapParams = { center: { lat: 46.818188, lng: 8.227512 }, zoom: 9 };
+    }
 
     // open info window on the last marker that was clicked when new data is available
     this.infoWindowData$ = this.mapInfoService.infoWindowData$.pipe(
@@ -99,6 +106,13 @@ export class MapOverviewComponent implements OnInit {
       ),
       map(individuals => this.mapService.getMapMarkers(individuals))
     );
+  }
+
+  ngOnDestroy(): void {
+    this.localService.sessionStorageSetObjectCompressed('mapParams', {
+      center: this.googleMap.getCenter(),
+      zoom: this.googleMap.getZoom()
+    });
   }
 
   getColor(phenophase: string): string | null {
