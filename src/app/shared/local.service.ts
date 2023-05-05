@@ -3,28 +3,69 @@ import * as Sentry from '@sentry/angular';
 import { compress, decompress } from 'lz-string';
 import { environment } from 'src/environments/environment';
 
+export type StorageType = 'localStorage' | 'sessionStorage';
+
 @Injectable({
   providedIn: 'root'
 })
 export class LocalService {
-  private LOCALSTORAGE = 'localStorage';
   private localStorageMsgSent = false;
 
   localStorageRemove(key: string): void {
-    if (this.storageAvailable(this.LOCALSTORAGE)) {
+    this.storageRemove('localStorage', key);
+  }
+
+  localStorageGet(key: string): string | undefined {
+    return this.storageGet('localStorage', key);
+  }
+
+  localStorageSet(key: string, data: string): void {
+    this.storageSet('localStorage', key, data);
+  }
+
+  public localStorageGetObjectCompressed<T>(key: string): T | null {
+    return this.getObjectCompressed('localStorage', key);
+  }
+
+  public localStorageSetObjectCompressed<T>(key: string, obj: T): void {
+    this.setObjectCompressed('localStorage', key, obj);
+  }
+
+  sessionStorageRemove(key: string): void {
+    this.storageRemove('sessionStorage', key);
+  }
+
+  sessionStorageGet(key: string): string | undefined {
+    return this.storageGet('sessionStorage', key);
+  }
+
+  sessionStorageSet(key: string, data: string): void {
+    this.storageSet('sessionStorage', key, data);
+  }
+
+  public sessionStorageGetObjectCompressed<T>(key: string): T | null {
+    return this.getObjectCompressed('sessionStorage', key);
+  }
+
+  public sessionStorageSetObjectCompressed<T>(key: string, obj: T): void {
+    this.setObjectCompressed('sessionStorage', key, obj);
+  }
+
+  storageRemove(storagetype: StorageType, key: string): void {
+    if (this.storageAvailable(storagetype)) {
       localStorage.removeItem(key);
     }
   }
 
-  localStorageGet(key: string): string | undefined {
-    if (this.storageAvailable(this.LOCALSTORAGE)) {
-      return localStorage.getItem(key);
+  storageGet(storagetype: StorageType, key: string): string | undefined {
+    if (this.storageAvailable(storagetype)) {
+      return this.getStorage(storagetype).getItem(key);
     } else return undefined;
   }
 
-  localStorageSet(key: string, data: string): void {
-    if (this.storageAvailable(this.LOCALSTORAGE)) {
-      localStorage.setItem(key, data);
+  storageSet(storagetype: StorageType, key: string, data: string): void {
+    if (this.storageAvailable(storagetype)) {
+      this.getStorage(storagetype).setItem(key, data);
     } else {
       console.error('Localstorage not available');
       /* istanbul ignore next */
@@ -35,10 +76,13 @@ export class LocalService {
     }
   }
 
-  storageAvailable(type: string) {
+  getStorage(type: StorageType): Storage {
+    return window[type];
+  }
+
+  storageAvailable(type: StorageType): boolean {
     let storage: Storage;
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       storage = window[type];
       const x = '__storage_test__';
       storage.setItem(x, x);
@@ -63,13 +107,13 @@ export class LocalService {
     }
   }
 
-  public localstoreSetObjectCompressed<T>(key: string, obj: T): void {
+  public setObjectCompressed<T>(storagetype: StorageType, key: string, obj: T): void {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    this.localStorageSet(key, compress(JSON.stringify(obj)));
+    this.storageSet(storagetype, key, compress(JSON.stringify(obj)));
   }
 
-  public localstoraGetObjectCompressed<T>(key: string): T | null {
-    const localData = this.localStorageGet(key);
+  public getObjectCompressed<T>(storagetype: StorageType, key: string): T | null {
+    const localData = this.storageGet(storagetype, key);
     if (localData) {
       return JSON.parse(decompress(localData)) as T;
     } else {
