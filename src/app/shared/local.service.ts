@@ -59,13 +59,13 @@ export class LocalService {
 
   storageGet(storagetype: StorageType, key: string): string | undefined {
     if (this.storageAvailable(storagetype)) {
-      return localStorage.getItem(key);
+      return this.getStorage(storagetype).getItem(key);
     } else return undefined;
   }
 
   storageSet(storagetype: StorageType, key: string, data: string): void {
     if (this.storageAvailable(storagetype)) {
-      localStorage.setItem(key, data);
+      this.getStorage(storagetype).setItem(key, data);
     } else {
       console.error('Localstorage not available');
       /* istanbul ignore next */
@@ -76,10 +76,13 @@ export class LocalService {
     }
   }
 
-  storageAvailable(type: string) {
+  getStorage(type: StorageType): Storage {
+    return window[type];
+  }
+
+  storageAvailable(type: StorageType): boolean {
     let storage: Storage;
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       storage = window[type];
       const x = '__storage_test__';
       storage.setItem(x, x);

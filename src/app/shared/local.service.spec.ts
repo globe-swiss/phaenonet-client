@@ -110,14 +110,14 @@ describe('Service: Local', () => {
       const key = 'test';
       const obj = { foo: 'bar' };
 
-      fixture.localstoreSetObjectCompressed(key, obj);
-      const result = fixture.localstoraGetObjectCompressed(key);
+      fixture.localStorageSetObjectCompressed(key, obj);
+      const result = fixture.localStorageGetObjectCompressed(key);
 
       expect(result).toEqual(obj);
     });
 
     it('should gracefully return null on missing key', () => {
-      const result = fixture.localstoraGetObjectCompressed('not-found');
+      const result = fixture.localStorageGetObjectCompressed('not-found');
       expect(result).toBeNull();
     });
   });
