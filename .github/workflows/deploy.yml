@@ -139,7 +139,6 @@ jobs:
         if: ${{ env.TAG }}
   docs:
     name: Update Docs
-    needs: changes
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.project == 'phaenonet' }}
     steps:
