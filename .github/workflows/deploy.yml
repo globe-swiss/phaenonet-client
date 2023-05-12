@@ -29,18 +29,6 @@ permissions:
   id-token: write
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      dbdocs: ${{ steps.filter.outputs.dbdocs }}
-    steps:
-      - uses: actions/checkout@v3.3.0
-      - uses: dorny/paths-filter@v2.11.1
-        id: filter
-        with:
-          filters: |
-            dbdocs:
-              - 'docs/phaenonet.dbml'
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -153,7 +141,7 @@ jobs:
     name: Update Docs
     needs: changes
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.project == 'phaenonet' && needs.changes.outputs.dbdocs == 'true'}}
+    if: ${{ github.event.inputs.project == 'phaenonet' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3.3.0
