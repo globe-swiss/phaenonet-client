@@ -1,4 +1,4 @@
-# PhaenoNet Client ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/globe-swiss/phaenonet-client/test.yml?branch=master) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/c51ab6cad950470a8ffb99c969041b09)](https://www.codacy.com/gh/globe-swiss/phaenonet-client/dashboard?utm_source=github.com&utm_medium=referral&utm_content=globe-swiss/phaenonet-client&utm_campaign=Badge_Grade)
+# PhaenoNet Client ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/globe-swiss/phaenonet-client/test.yml?branch=master)
 
 This project is the web-client application for the phenology observation offer [PhaenoNet](https://www.phaenonet.ch) by [GLOBE Switzerland](https://www.globe-swiss.ch).
 
