@@ -10,12 +10,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v3.6.0
       with:
-        node-version: 14
+        node-version: ${{ env.NODE_VERSION }}
     - run: npx angular-http-server --path ${{ inputs.path }} --p ${{ inputs.port }} &
       shell: bash
     - name: Wait on
-      uses: iFaxity/wait-on-action@v1
+      uses: iFaxity/wait-on-action@v1.1.0
       with:
         resource: http://localhost:${{ inputs.port }}
