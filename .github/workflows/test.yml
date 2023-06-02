@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.2
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -41,7 +41,7 @@ jobs:
     needs: cache-deps
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.2
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -51,7 +51,7 @@ jobs:
           path: ./node_modules
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
       - name: Set API info
-        uses: suisei-cn/actions-download-file@v1.3.0
+        uses: suisei-cn/actions-download-file@v1.4.0
         with:
           url: ${{ secrets.FIREBASE_TEST_API_URL }}
           target: ./src/local/
@@ -76,7 +76,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.2
       - name: Download Build Artifact
         uses: ./.github/actions/download-zip-artifact
         with:
@@ -98,7 +98,7 @@ jobs:
     needs: cache-deps
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.2
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -119,7 +119,7 @@ jobs:
           reporter: jest-junit
         if: always()
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3.1.1
+        uses: codecov/codecov-action@v3.1.4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: reports/lcov.info
@@ -138,7 +138,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.2
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -181,7 +181,7 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.2
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -198,18 +198,18 @@ jobs:
           diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/it-CH) || exit
         if: ${{ always() }}
       - name: stylelint
-        uses: reviewdog/action-stylelint@v1
+        uses: reviewdog/action-stylelint@v1.16.0
         with:
           stylelint_input: '**/*.scss'
           reporter: github-pr-review
           fail_on_error: True
         if: always()
-      - uses: reviewdog/action-eslint@v1
+      - uses: reviewdog/action-eslint@v1.18.2
         with:
           reporter: github-pr-review
           fail_on_error: True
         if: always()
-      - uses: EPMatt/reviewdog-action-prettier@v1
+      - uses: EPMatt/reviewdog-action-prettier@v1.1.1
         with:
           reporter: github-pr-review
           fail_on_error: True
