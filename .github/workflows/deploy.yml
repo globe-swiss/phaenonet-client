@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.2
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.2
       - name: Download Artifact
         uses: ./.github/actions/download-zip-artifact
         with:
@@ -96,9 +96,9 @@ jobs:
     environment: ${{ github.event.inputs.project || 'phaenonet-test' }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.2
       - name: Checkout rules
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.2
         with:
           repository: globe-swiss/phaenonet-client-security
           path: security
@@ -117,7 +117,7 @@ jobs:
         run: npm i --no-save firebase-tools
       - id: auth
         name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v1.0.0
+        uses: google-github-actions/auth@v1.1.1
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
@@ -143,7 +143,7 @@ jobs:
     if: ${{ github.event.inputs.project == 'phaenonet' }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.2
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
