@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
-import { combineLatest, from, Observable, of, Subscription } from 'rxjs';
+import { Observable, Subscription, combineLatest, from, of } from 'rxjs';
 import { filter, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
@@ -109,10 +109,8 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
   getFollowedUsers(limit$: Observable<number>): Observable<(PublicUser & IdLike)[]> {
     return combineLatest([this.authService.user$, limit$]).pipe(
       filter(([user]) => user.following_users !== undefined && user.following_users.length !== 0),
-      switchMap(([user_ids, limit]) =>
-        combineLatest(
-          user_ids.following_users.slice(0, limit).map(user_id => this.publicUserService.getWithId(user_id))
-        )
+      switchMap(([user, limit]) =>
+        combineLatest(user.following_users.slice(0, limit).map(user_id => this.publicUserService.getWithId(user_id)))
       )
     );
   }
