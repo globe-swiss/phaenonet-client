@@ -82,12 +82,26 @@ export class IndividualService extends BaseResourceService<Individual> {
   }
 
   listByIds(individuals: string[], year: number, limit: number = 100): Observable<(Individual & IdLike)[]> {
-    return this.afs
-      .collection<Individual>(this.collectionName, ref =>
-        ref.where('individual', 'in', individuals).where('year', '==', year).limit(limit)
+    const chunkSize = 10; // Maximum number of values for each "in" operator
+    const chunks = [];
+
+    // Split individuals array into chunks
+    for (let i = 0; i < individuals.length; i += chunkSize) {
+      chunks.push(individuals.slice(i, i + chunkSize));
+    }
+
+    return combineLatest(
+      chunks.map(chunk =>
+        this.afs
+          .collection<Individual>(this.collectionName, ref =>
+            ref.where('individual', 'in', chunk).where('year', '==', year).limit(limit)
+          )
+          .valueChanges({ idField: 'id' })
       )
-      .valueChanges({ idField: 'id' })
-      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByIds)`, x.length)));
+    ).pipe(
+      map(results => results.flat()),
+      tap(x => this.fds.addRead(`${this.collectionName} (listByIds)`, x.length))
+    );
   }
 
   // fixme move near component
