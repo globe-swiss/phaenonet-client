@@ -30,6 +30,7 @@ Scenario('add/edit/delete observation', async ({ I, individualsPage }) => {
   I.click(individualsPage.observations.observationDialog.calendar.day1);
   I.click(individualsPage.observations.observationDialog.saveButton);
   I.waitForVisible(individualsPage.observations.dateFields.at(1));
+  I.wait(0.2);
   value = await I.grabValueFrom(individualsPage.observations.dateFields.at(1));
   assert(value.startsWith('01.'), value);
   // cannot select days in the future
@@ -40,6 +41,7 @@ Scenario('add/edit/delete observation', async ({ I, individualsPage }) => {
     I.click(individualsPage.observations.observationDialog.calendar.day2);
     I.click(individualsPage.observations.observationDialog.saveButton);
     I.waitForVisible(individualsPage.observations.dateFields.at(1));
+    I.wait(0.2);
     value = await I.grabValueFrom(individualsPage.observations.dateFields.at(1));
     assert(value.startsWith('02.'), value);
   } else {
