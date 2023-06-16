@@ -62,7 +62,9 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    (this.nicknameField.nativeElement as HTMLInputElement).focus();
+    setTimeout(() => {
+      (this.nicknameField.nativeElement as HTMLInputElement).focus();
+    }, 0);
   }
 
   ngOnDestroy(): void {
