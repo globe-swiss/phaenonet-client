@@ -40,4 +40,9 @@ Scenario('test register screen', async ({ I, loginPage, registerPage }) => {
   await I.checkVisual('register');
 }).tag('visual');
 
-Scenario.todo('Reset password').tag('visual'); // screen currently broken
+Scenario('Reset password', async ({ I, loginPage, resetPasswordPage }) => {
+  I.visit(loginPage);
+  I.click(loginPage.resetPasswordLink);
+  I.fillField(resetPasswordPage.fields.email, 'test@example.com');
+  await I.checkVisual('reset-password', 0, true);
+}).tag('visual'); // screen currently broken
