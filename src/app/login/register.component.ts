@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { Router } from '@angular/router';
@@ -15,7 +15,8 @@ import { equalValidation } from '../shared/validation';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('nickname') nicknameField!: ElementRef;
   registerForm: UntypedFormGroup;
 
   registerFailed = false;
@@ -58,6 +59,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
         void this.router.navigateByUrl('/');
       }
     });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      (this.nicknameField.nativeElement as HTMLInputElement).focus();
+    }, 0);
   }
 
   ngOnDestroy(): void {
