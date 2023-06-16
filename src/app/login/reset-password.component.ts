@@ -6,7 +6,8 @@ import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
 
 @Component({
-  templateUrl: './reset-password.component.html'
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.scss']
 })
 export class ResetPasswordComponent implements OnInit {
   resetPasswordForm = new UntypedFormGroup({

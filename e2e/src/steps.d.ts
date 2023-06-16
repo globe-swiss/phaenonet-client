@@ -3,6 +3,7 @@ type steps_file = typeof import('./steps_file.js');
 type loginPage = typeof import('./pages/login.js');
 type logoutPage = typeof import('./pages/logout.js');
 type registerPage = typeof import('./pages/register.js');
+type resetPasswordPage = typeof import('./pages/reset_password.js');
 type mapPage = typeof import('./pages/map.js');
 type privateProfilePage = typeof import('./pages/private_profile.js');
 type profileEditPage = typeof import('./pages/profile_edit.js');
@@ -26,6 +27,7 @@ declare namespace CodeceptJS {
     loginPage: loginPage;
     logoutPage: logoutPage;
     registerPage: registerPage;
+    resetPasswordPage: resetPasswordPage;
     mapPage: mapPage;
     privateProfilePage: privateProfilePage;
     profileEditPage: profileEditPage;
