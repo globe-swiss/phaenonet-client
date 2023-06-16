@@ -1,6 +1,8 @@
-<button class="phenonet-dialog-component-close-button" mat-button (click)="close()">X</button>
+<button class="phenonet-dialog-component-close-button" mat-button (click)="close()" tabindex="-1">
+  <mat-icon>clear</mat-icon>
+</button>
 <div class="change-email-dialog">
-  <h1 mat-dialog-title>{{ 'LOGIN E-MAIL ÄNDERN' | translate }}</h1>
+  <h2 mat-dialog-title>{{ 'LOGIN E-MAIL ÄNDERN' | translate }}</h2>
   <div mat-dialog-content>
     <form [formGroup]="changeEmailForm" fxLayout="column">
       <mat-form-field class="full-width">

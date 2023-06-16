@@ -38,3 +38,6 @@ Scenario('test select languages', ({ I, profileEditPage, e2eTestUser }) => {
   I.see('Deutsch');
   I.see('Speichern');
 });
+
+Scenario.todo('test edit profile email').tag('visual');
+Scenario.todo('test edit profile password').tag('visual');

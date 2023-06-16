@@ -1,6 +1,8 @@
-<button class="phenonet-dialog-component-close-button" mat-button (click)="close()">X</button>
+<button class="phenonet-dialog-component-close-button" mat-button (click)="close()" tabindex="-1">
+  <mat-icon>clear</mat-icon>
+</button>
 <div class="invite-dialog">
-  <h1 mat-dialog-title>{{ 'PERSON EINLADEN' | translate }}</h1>
+  <h2 mat-dialog-title>{{ 'PERSON EINLADEN' | translate }}</h2>
   <div mat-dialog-content>
     <form [formGroup]="inviteForm" fxLayout="column">
       <mat-form-field class="full-width">
