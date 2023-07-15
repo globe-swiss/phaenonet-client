@@ -1,0 +1,16 @@
+{
+  "name": "Codespace Launcher",
+  "postAttachCommand": ".devcontainer/setup.sh",
+  "customizations": {
+    "codespaces": {
+      "repositories": {
+        "globe-swiss/phaenonet-client-devcontainer": {
+          "permissions": "write-all"
+        },
+        "globe-swiss/phaenonet-client-security": {
+          "permissions": "write-all"
+        }
+      }
+    }
+  }
+}
