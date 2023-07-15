@@ -1,0 +1,6 @@
+[submodule ".devcontainer"]
+	path = .devcontainer
+	url = https://github.com/globe-swiss/phaenonet-client-devcontainer.git
+[submodule "security"]
+	path = security
+	url = https://github.com/globe-swiss/phaenonet-client-security.git

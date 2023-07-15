@@ -13,7 +13,11 @@ PhaenoNet is set up with two Firebase projects instances. These projects have a 
 
 The application will be using the database and access rules of the `phaenonet-test` project for all use-cases described in this section.
 
-To recreate the map_pins with the '+' install imagemagick and run the script `src/create_map_pins_with_plus_icon.sh`.
+### GitHub Codespaces
+
+Launch the Codespace in GitHub using the `codespace` branch. It will checkout the master branch, initialize the submodules, and rebuild the container. This process may take some minutes to finish.
+
+### CSS
 
 The CSS is developed according to [BEM](http://getbem.com/introduction/).
 
@@ -48,23 +52,6 @@ mixins.scss:
   ...
 }
 ```
-
-### Local setup
-
-Install Node.js and npm see: <https://www.npmjs.com/get-npm>
-
-Install the Firebase console and login:
-
-```commandline
-npm install
-npx firebase login
-```
-
-Consult the official documentation for the [Firebase CLI](https://firebase.google.com/docs/cli) for further information.
-
-API information [init.json](https://phaenonet-test.web.app/__/firebase/init.json) must be copied to the folder `/app/src/local/`. `curl https://phaenonet-test.web.app/__/firebase/init.json > src/local/init.json`
-
-Firestore and Storage rules need to be checked out from a separate project [phaenonet-client-security](https://github.com/globe-swiss/phaenonet-client-security) into the `/security` folder. `git clone git@github.com:globe-swiss/phaenonet-client-security.git security`
 
 ### Serve locally
 
@@ -104,6 +91,10 @@ To run all `stylelint` checks
 ```commandline
 npx stylelint "**/*.scss"
 ```
+
+### Create map pins
+
+To recreate the map_pins with the '+' install imagemagick and run the script `src/create_map_pins_with_plus_icon.sh`.
 
 ## Deploy to Firebase
 

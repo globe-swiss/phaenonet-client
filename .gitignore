@@ -4,8 +4,6 @@
 /reports
 junit.xml
 
-# security rules
-/security
 
 # tool output
 /e2e/output/*
@@ -49,4 +47,3 @@ Thumbs.db
 
 # local development
 /src/local
-/.devcontainer
