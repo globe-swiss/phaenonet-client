@@ -1,4 +1,4 @@
-git checkout submodules
+git checkout master
 git submodule update --init --recursive
 (cd .devcontainer; git checkout master)
 (cd security; git checkout main)
