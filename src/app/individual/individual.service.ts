@@ -43,21 +43,6 @@ export class IndividualService extends BaseResourceService<Individual> {
     return super.upsert(individual, `${individual.year}_${individual.individual}`);
   }
 
-  /**
-   * Get the list of individuals (unordered).
-   * @param userId the userId, can be public or self.
-   * @param fromYear return individuals starting with this year
-   * @limit limit global limit defaults to 1000
-   */
-  listByUser(userId: string, fromYear: number, limit: number = 1000): Observable<(Individual & IdLike)[]> {
-    return this.afs
-      .collection<Individual>(this.collectionName, ref =>
-        ref.where('user', '==', userId).where('year', '>=', fromYear).limit(limit)
-      )
-      .valueChanges({ idField: 'id' })
-      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByUser)`, x.length)));
-  }
-
   listByUserAndYear(userId: string, year: number, limit: number = 1000): Observable<(Individual & IdLike)[]> {
     return this.afs
       .collection<Individual>(this.collectionName, ref =>
