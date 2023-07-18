@@ -13,48 +13,6 @@
           "order": "DESCENDING"
         }
       ]
-    },
-    {
-      "collectionGroup": "individuals",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "user",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "modified",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "individuals",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "user",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "year",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "individuals",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "year",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "last_observation_date",
-          "order": "DESCENDING"
-        }
-      ]
     }
   ],
   "fieldOverrides": [
