@@ -231,11 +231,11 @@ tablegroup invites {
 
 table sensors {
   id string [pk, note: 'id is <year>_<individual_id>, the attributes are stored for each day in the path data.<date>']
-  ahs: number [note: 'air humidity sum']
-  ats: number [note: 'air temperature sum']
-  shs: number [note: 'soil humidity sum']
-  sts: number [note: 'soil temperature sum']
-  n: number [note: number of data points forming the sums]
+  ahs number [note: 'air humidity sum']
+  ats number [note: 'air temperature sum']
+  shs number [note: 'soil humidity sum']
+  sts number [note: 'soil temperature sum']
+  n number [note: 'number of data points forming the sums']
 
   note: '''
     Contains daily aggregated iot sensor data for individuals on Phaenonet+.
