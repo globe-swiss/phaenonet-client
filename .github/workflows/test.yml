@@ -201,16 +201,16 @@ jobs:
         uses: reviewdog/action-stylelint@v1.16.0
         with:
           stylelint_input: '**/*.scss'
-          reporter: github-pr-review
+          reporter: github-check
           fail_on_error: True
         if: always()
       - uses: reviewdog/action-eslint@v1.18.2
         with:
-          reporter: github-pr-review
+          reporter: github-check
           fail_on_error: True
         if: always()
       - uses: EPMatt/reviewdog-action-prettier@v1.1.1
         with:
-          reporter: github-pr-review
+          reporter: github-check
           fail_on_error: True
         if: always()
