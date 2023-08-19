@@ -185,6 +185,13 @@ jobs:
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Check markdownlint
+        uses: reviewdog/action-markdownlint@v0.12.1
+        with:
+          reporter: github-check
+          markdownlint_flags: "-c ./markdownlint.json -i '**/node_modules/*' ."
+          fail_on_error: True
+        if: always()
       - name: Restore cache (node modules)
         uses: martijnhols/actions-cache/restore@v3
         with:
@@ -210,12 +217,6 @@ jobs:
           fail_on_error: True
         if: always()
       - uses: EPMatt/reviewdog-action-prettier@v1.1.1
-        with:
-          reporter: github-check
-          fail_on_error: True
-        if: always()
-      - name: Check markdownlint
-        uses: reviewdog/action-markdownlint@v0.12.1
         with:
           reporter: github-check
           fail_on_error: True
