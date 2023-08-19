@@ -214,3 +214,9 @@ jobs:
           reporter: github-check
           fail_on_error: True
         if: always()
+      - name: Check markdownlint
+        uses: reviewdog/action-markdownlint@v0.12.1
+        with:
+          reporter: github-check
+          fail_on_error: True
+        if: always()
