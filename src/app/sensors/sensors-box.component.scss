@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 
 @import '../../theming/typography';
+@import '../../theming/custom-colours';
 
 .sensor-box {
   display: flex;
@@ -28,6 +29,12 @@
     display: grid;
     align-items: grid;
     grid-template-columns: repeat(5, auto);
+    &--soil {
+      color: $soil-color;
+    }
+    &--air {
+      color: $air-color;
+    }
   }
 
   &__icon {

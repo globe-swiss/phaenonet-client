@@ -1,6 +1,10 @@
 <div class="sensor-badge" *ngIf="sensorLiveData">
   <img class="sensor-badge__icon" src="assets/img/ico_temperature.png" />
-  <span class="sensor-badge__text">{{ sensorLiveData.at ? sensorLiveData.at + '°C ' : 'n/a' }}</span>
+  <span class="sensor-badge__text sensor-badge__text--air">{{
+    sensorLiveData.at ? sensorLiveData.at + '°C ' : 'n/a'
+  }}</span>
   <img class="sensor-badge__icon" src="assets/img/ico_humidity.png" />
-  <span class="sensor-badge__text">{{ sensorLiveData.ah ? sensorLiveData.ah + '% ' : 'n/a' }}</span>
+  <span class="sensor-badge__text sensor-badge__text--air">{{
+    sensorLiveData.ah ? sensorLiveData.ah + '% ' : 'n/a'
+  }}</span>
 </div>
