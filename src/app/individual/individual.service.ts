@@ -227,5 +227,4 @@ export class IndividualService extends BaseResourceService<Individual> {
   composedId(individual: Individual): string {
     return `${individual.year}_${individual.individual}`;
   }
-
 }
