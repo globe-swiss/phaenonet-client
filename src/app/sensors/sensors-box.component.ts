@@ -7,7 +7,7 @@ import { IndividualService } from '../individual/individual.service';
   templateUrl: './sensors-box.component.html',
   styleUrls: ['./sensors-box.component.scss']
 })
-export class SensorsBoxComponent  implements OnInit {
+export class SensorsBoxComponent implements OnInit {
   @Input() sensorLiveData: SensorLiveData;
   lastMeasurement$: string;
   lastMeasurementDateTime$: string;

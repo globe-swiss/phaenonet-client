@@ -34,7 +34,7 @@ export class IndividualDescriptionHeaderComponent implements OnInit {
     this.species$ = this.individual$.pipe(switchMap(i => this.masterdataService.getSpeciesValue(i.species)));
 
     this.individualCreatorNickname$ = publicUser$.pipe(map(u => u.nickname));
-    this.lastMeasurement$ = this.individual$.pipe(map(i => IndividualService.formatLastMeasurementDateTime(i.sensor)))
+    this.lastMeasurement$ = this.individual$.pipe(map(i => IndividualService.formatLastMeasurementDateTime(i.sensor)));
 
     const species$ = this.individual$.pipe(switchMap(i => this.masterdataService.getSpeciesValue(i.species)));
     this.lastPhenophase$ = combineLatest([this.individual$, species$]).pipe(

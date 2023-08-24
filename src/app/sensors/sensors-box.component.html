@@ -1,8 +1,9 @@
 <div class="sensor-box" *ngIf="sensorLiveData">
   <span class="sensor-box__title_line">
-    {{ 'Messwerte vom' | translate }}&nbsp;<span>{{' ' + lastMeasurement$}}</span>
-    <div class="sensor-box__info"
-      matTooltip="{{ ('Letzte Messung um: ' | translate) + lastMeasurementDateTime$ }}">i</div>
+    {{ 'Messwerte vom' | translate }}&nbsp;<span>{{ ' ' + lastMeasurement$ }}</span>
+    <div class="sensor-box__info" matTooltip="{{ ('Letzte Messung um: ' | translate) + lastMeasurementDateTime$ }}">
+      i
+    </div>
   </span>
   <div class="sensor-box__value_line">
     {{ 'Luft' | translate }}
@@ -10,7 +11,7 @@
     <span class="sensor-box__text">{{ sensorLiveData.ah ? sensorLiveData.ah + '% ' : 'n/a' }}</span>
     <img class="sensor-box__icon" src="assets/img/ico_temperature.png" />
     <span class="sensor-box__text">{{ sensorLiveData.at ? sensorLiveData.at + '°C ' : 'n/a' }}</span>
-    {{'Boden' | translate }}
+    {{ 'Boden' | translate }}
     <img class="sensor-box__icon" src="assets/img/ico_humidity.png" />
     <span class="sensor-box__text">{{ sensorLiveData.ah ? sensorLiveData.ah + '% ' : 'n/a' }}</span>
     <img class="sensor-box__icon" src="assets/img/ico_temperature.png" />

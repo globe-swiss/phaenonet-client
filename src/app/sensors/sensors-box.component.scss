@@ -6,30 +6,28 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: #F8F7F2;
+  background-color: #f8f7f2;
   border-radius: 15px;
   width: min-content;
   padding: 8px;
 
   &__title_line {
+    @include mat.typography-level($phaenonet-typography, 'button');
     padding-bottom: 4px;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     -ms-flex-align: baseline;
-    @include mat.typography-level($phaenonet-typography, 'button');
     font-size: 0.5rem;
   }
 
-
-
   &__value_line {
-    padding-bottom: 4px;
+    @include mat.typography-level($phaenonet-typography, 'button');
     @include detail-label;
+    padding-bottom: 4px;
     display: grid;
     align-items: grid;
     grid-template-columns: repeat(5, auto);
-    @include mat.typography-level($phaenonet-typography, 'button');
   }
 
   &__icon {
@@ -39,7 +37,6 @@
   }
 
   &__text {
-
     &:last-of-type {
       padding-right: 10px;
     }
@@ -58,5 +55,4 @@
     margin-left: auto;
     font-size: 0.5rem;
   }
-
 }
