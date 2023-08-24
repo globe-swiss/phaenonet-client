@@ -31,6 +31,24 @@ export class IndividualService extends BaseResourceService<Individual> {
     this.individualsByYear$$ = new Map();
   }
 
+  static formatLastMeasurementDate(sensor: SensorLiveData) {
+    if (sensor?.ts) {
+      const asDate = new Date(sensor.ts.seconds * 1000);
+      return formatShortDate(asDate);
+    } else {
+      return 'n/a';
+    }
+  }
+
+  static formatLastMeasurementDateTime(sensor: SensorLiveData) {
+    if (sensor?.ts) {
+      const asDate = new Date(sensor.ts.seconds * 1000);
+      return formatShortDateTime(asDate);
+    } else {
+      return 'n/a';
+    }
+  }
+
   upsert(individual: Individual): Observable<Individual> {
     if (!individual.individual) {
       individual.individual = this.afs.createId();
@@ -210,21 +228,4 @@ export class IndividualService extends BaseResourceService<Individual> {
     return `${individual.year}_${individual.individual}`;
   }
 
-  static formatLastMeasurementDate(sensor: SensorLiveData) {
-    if (sensor?.ts) {
-      const asDate = new Date(sensor.ts.seconds * 1000);
-      return formatShortDate(asDate);
-    } else {
-      return 'n/a';
-    }
-  }
-
-  static formatLastMeasurementDateTime(sensor: SensorLiveData) {
-    if (sensor?.ts) {
-      const asDate = new Date(sensor.ts.seconds * 1000);
-      return formatShortDateTime(asDate);
-    } else {
-      return 'n/a';
-    }
-  }
 }
