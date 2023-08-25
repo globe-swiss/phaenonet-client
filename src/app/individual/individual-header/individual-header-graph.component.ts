@@ -221,5 +221,32 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .style('text-anchor', 'middle')
       .attr('font-size', 12)
       .text(individual.year);
+
+    svg
+      .append('circle')
+      .attr('cx', width / 2 - 45)
+      .attr('cy', 15)
+      .attr('r', 6)
+      .style('fill', this.colors.air.temperature);
+    svg
+      .append('text')
+      .attr('x', width / 2 - 30)
+      .attr('y', 20)
+      .text('Luft')
+      .style('font-size', '15px')
+      .attr('alignment-baseline', 'middle');
+    svg
+      .append('circle')
+      .attr('cx', width / 2 + 30)
+      .attr('cy', 15)
+      .attr('r', 6)
+      .style('fill', this.colors.soil.temperature);
+    svg
+      .append('text')
+      .attr('x', width / 2 + 45)
+      .attr('y', 20)
+      .text('Boden')
+      .style('font-size', '15px')
+      .attr('alignment-baseline', 'middle');
   }
 }
