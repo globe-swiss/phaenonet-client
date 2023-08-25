@@ -91,10 +91,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .scaleTime()
       .domain([new Date(individual.year - 1, 10, 25), new Date(individual.year, 11, 31)])
       .range([0, width - (margin.left + margin.right)]);
-    const xAxis = d3Axis
-      .axisBottom(xScale)
-      .ticks(4)
-      .tickFormat(d3.timeFormat('Q%q'));
+    const xAxis = d3Axis.axisBottom(xScale).ticks(4).tickFormat(d3.timeFormat('Q%q'));
     const tempScale = d3Scale
       .scaleLinear()
       .domain(d3.extent(sensorData.flatMap(d => [d.soilTemperature, d.airTemperature])))
