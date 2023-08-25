@@ -15,7 +15,8 @@
       mat-fab
       (click)="mapOrGraph = 'Map'"
       class="individual-header__button individual-header__button--graph"
-      data-test-id="unfollowButton"
+      data-test-id="mapButton"
+      [color]="mapOrGraph === 'Map' ? 'selected' : ''"
     >
       <mat-icon svgIcon="map-pin"></mat-icon>
     </button>
@@ -23,7 +24,8 @@
       mat-fab
       (click)="mapOrGraph = 'Temperature'"
       class="individual-header__button individual-header__button--temp"
-      data-test-id="unfollowButton"
+      data-test-id="temperatureButton"
+      [color]="mapOrGraph === 'Temperature' ? 'selected' : ''"
     >
       <mat-icon svgIcon="humidity"></mat-icon>
     </button>
@@ -31,7 +33,8 @@
       mat-fab
       (click)="mapOrGraph = 'Humidity'"
       class="individual-header__button individual-header__button--humidity"
-      data-test-id="unfollowButton"
+      data-test-id="humidityButton"
+      [color]="mapOrGraph === 'Humidity' ? 'selected' : ''"
     >
       <mat-icon svgIcon="temperature"></mat-icon>
     </button>
