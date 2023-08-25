@@ -89,7 +89,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
 
     const xScale = d3Scale
       .scaleTime()
-      .domain([new Date(individual.year - 1, 10, 25), new Date(individual.year, 11, 31)])
+      .domain([new Date(individual.year - 1, 10, 23), new Date(individual.year, 11, 31)])
       .range([0, width - (margin.left + margin.right)]);
     const xAxis = d3Axis.axisBottom(xScale).ticks(4).tickFormat(d3.timeFormat('Q%q'));
     const tempScale = d3Scale
