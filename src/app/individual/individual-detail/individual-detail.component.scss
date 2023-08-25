@@ -35,6 +35,7 @@
     @include default-left-right-padding;
     @include left-column;
     @include detail-bottom-padding;
+    @include hide-on-mobile;
   }
 
   &__buttons {
