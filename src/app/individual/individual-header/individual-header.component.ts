@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { Individual } from '../individual';
 
-const mapOrGraph = ['Map', 'Graph'] as const;
+const mapOrGraph = ['Map', 'Temperature', 'Humidity'] as const;
 type MapOrGraph = typeof mapOrGraph[number];
 
 @Component({
@@ -17,11 +17,6 @@ export class IndividualHeaderComponent implements OnInit {
   edit: boolean;
 
   mapOrGraph: MapOrGraph = 'Map';
-
-  displayAirTemperature = true;
-  displayAirHumidity = true;
-  displaySoilTemperature = true;
-  displaySoilHumidity = true;
 
   ngOnInit(): void {
     this.edit = this.mode === 'edit';
