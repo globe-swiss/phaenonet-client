@@ -86,12 +86,6 @@
   }
 }
 
-@mixin hide-on-mobile {
-  @include for-phone {
-    display: none;
-  }
-}
-
 @mixin complete-right-column {
   grid-column: 2;
   grid-row: 1/-1;

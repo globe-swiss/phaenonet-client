@@ -29,23 +29,6 @@
     margin-top: 0.5rem;
   }
 
-  &__button {
-    position: relative;
-    top: -25px;
-
-    &--graph {
-      left: 20px;
-    }
-
-    &--temp {
-      left: 40px;
-    }
-
-    &--humidity {
-      left: 60px;
-    }
-  }
-
   &__grap-selection {
     display: flex;
     flex-direction: column;

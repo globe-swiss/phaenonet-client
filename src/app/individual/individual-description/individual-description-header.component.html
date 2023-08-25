@@ -40,6 +40,13 @@
     </button>
   </div>
   <div *ngIf="(individual$ | async)?.sensor as sensor" class="individual-description__sensor-badge">
-    <app-sensors-box [sensorLiveData]="sensor"></app-sensors-box>
+    <app-sensors-badge [sensorLiveData]="sensor"></app-sensors-badge>
+    <button
+      mat-icon-button
+      class="question-mark"
+      matTooltip="{{ ('Letzte Messung um: ' | translate) + lastMeasurement(sensor) }}"
+    >
+      <div class="individual-description__question-mark">?</div>
+    </button>
   </div>
 </div>

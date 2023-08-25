@@ -1,12 +1,11 @@
 @use '@angular/material' as mat;
 
 @import '../../theming/typography';
-@import '../../theming/custom-colours';
 
 .sensor-badge {
   display: flex;
   align-items: center;
-  background-color: #f8f7f2;
+  background-color: #c2bfb8;
   border-radius: 15px;
   width: min-content;
   padding-top: 4px;
@@ -20,14 +19,6 @@
 
   &__text {
     @include mat.typography-level($phaenonet-typography, 'button');
-    font-weight: 500;
-
-    &--soil {
-      color: $soil-color;
-    }
-    &--air {
-      color: $air-color;
-    }
 
     &:last-of-type {
       padding-right: 10px;

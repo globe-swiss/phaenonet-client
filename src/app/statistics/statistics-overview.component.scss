@@ -9,6 +9,14 @@
     display: flex;
     flex-direction: row;
 
+    mat-form-field {
+      margin: 1rem;
+    }
+
+    .statistics-info-button {
+      margin-top: 2rem;
+    }
+
     @include for-tablet-and-smaller {
       .mat-form-field {
         width: 6rem;
@@ -19,14 +27,6 @@
       .statistics-info-button {
         margin-top: 1rem;
       }
-    }
-
-    mat-form-field {
-      margin: 1rem;
-    }
-
-    .statistics-info-button {
-      margin-top: 2rem;
     }
   }
 }

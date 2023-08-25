@@ -7,7 +7,6 @@ import { Phenophase } from '../../masterdata/phaenophase';
 import { Species } from '../../masterdata/species';
 import { PublicUserService } from '../../open/public-user.service';
 import { Individual, SensorLiveData } from '../individual';
-import { IndividualService } from '../individual.service';
 
 @Component({
   selector: 'app-individual-description-header',
@@ -20,7 +19,6 @@ export class IndividualDescriptionHeaderComponent implements OnInit {
   species$: Observable<Species>;
 
   individualCreatorNickname$: Observable<string>;
-  lastMeasurement$: Observable<string>;
 
   lastPhenophase$: Observable<Phenophase>;
   lastPhenophaseColor$: Observable<string>;
@@ -29,12 +27,20 @@ export class IndividualDescriptionHeaderComponent implements OnInit {
 
   constructor(private masterdataService: MasterdataService, private publicUserService: PublicUserService) {}
 
+  public lastMeasurement(sensor: SensorLiveData) {
+    if (sensor?.ts) {
+      const asDate = new Date(sensor.ts.seconds * 1000);
+      return formatShortDateTime(asDate);
+    } else {
+      return 'n/a';
+    }
+  }
+
   ngOnInit(): void {
     const publicUser$ = this.individual$.pipe(switchMap(i => this.publicUserService.get(i.user)));
     this.species$ = this.individual$.pipe(switchMap(i => this.masterdataService.getSpeciesValue(i.species)));
 
     this.individualCreatorNickname$ = publicUser$.pipe(map(u => u.nickname));
-    this.lastMeasurement$ = this.individual$.pipe(map(i => IndividualService.formatLastMeasurementDateTime(i.sensor)));
 
     const species$ = this.individual$.pipe(switchMap(i => this.masterdataService.getSpeciesValue(i.species)));
     this.lastPhenophase$ = combineLatest([this.individual$, species$]).pipe(

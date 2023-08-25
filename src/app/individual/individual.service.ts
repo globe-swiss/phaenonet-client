@@ -12,9 +12,8 @@ import { Species } from '../masterdata/species';
 import { AlertService } from '../messaging/alert.service';
 import { Observation } from '../observation/observation';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
-import { Individual, SensorLiveData } from './individual';
+import { Individual } from './individual';
 import { IndividualPhenophase } from './individual-phenophase';
-import { formatShortDate, formatShortDateTime } from '../shared/formatDate';
 
 @Injectable()
 export class IndividualService extends BaseResourceService<Individual> {
@@ -29,24 +28,6 @@ export class IndividualService extends BaseResourceService<Individual> {
   ) {
     super(alertService, afs, 'individuals', fds);
     this.individualsByYear$$ = new Map();
-  }
-
-  static formatLastMeasurementDate(sensor: SensorLiveData) {
-    if (sensor?.ts) {
-      const asDate = new Date(sensor.ts.seconds * 1000);
-      return formatShortDate(asDate);
-    } else {
-      return 'n/a';
-    }
-  }
-
-  static formatLastMeasurementDateTime(sensor: SensorLiveData) {
-    if (sensor?.ts) {
-      const asDate = new Date(sensor.ts.seconds * 1000);
-      return formatShortDateTime(asDate);
-    } else {
-      return 'n/a';
-    }
   }
 
   upsert(individual: Individual): Observable<Individual> {
