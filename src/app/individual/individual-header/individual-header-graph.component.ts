@@ -174,8 +174,8 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
         .attr('d', soilHumidityLine);
 
     observations.forEach(observation => {
-      let color = this.masterdataService.getColor(observation.phenophase);
-      let axisHeight = height - margin.bottom + 10;
+      const color = this.masterdataService.getColor(observation.phenophase);
+      const axisHeight = height - margin.bottom + 10;
       svg
         .append('line')
         .datum(observation)
