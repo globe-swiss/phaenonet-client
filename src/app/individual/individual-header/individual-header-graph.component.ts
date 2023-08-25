@@ -89,17 +89,11 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
 
     const xScale = d3Scale
       .scaleTime()
-      .domain([new Date(individual.year - 1, 11, 1), new Date(individual.year, 11, 31)])
+      .domain([new Date(individual.year - 1, 10, 25), new Date(individual.year, 11, 31)])
       .range([0, width - (margin.left + margin.right)]);
     const xAxis = d3Axis
       .axisBottom(xScale)
       .ticks(4)
-      // .tickValues([
-      //   new Date(individual.year,1,0),
-      //   new Date(individual.year,4,0),
-      //   new Date(individual.year,7,0),
-      //   new Date(individual.year,10,0),
-      // ])
       .tickFormat(d3.timeFormat('Q%q'));
     const tempScale = d3Scale
       .scaleLinear()
@@ -182,18 +176,28 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
         .attr('stroke-width', 1.5)
         .attr('d', soilHumidityLine);
 
-    observations.forEach(observation =>
+    observations.forEach(observation => {
+      let color = this.masterdataService.getColor(observation.phenophase);
+      let axisHeight = height - margin.bottom + 10;
       svg
         .append('line')
         .datum(observation)
         .attr('x1', xScale(observation.date))
         .attr('x2', xScale(observation.date))
         .attr('y1', height * 0.05)
-        .attr('y2', height * 0.95)
+        .attr('y2', axisHeight)
         .attr('fill', 'none')
-        .attr('stroke', this.masterdataService.getColor(observation.phenophase))
-        .attr('stroke-width', 1.5)
-    );
+        .attr('stroke', color)
+        .attr('stroke-width', 1.5);
+      svg
+        .append('circle')
+        .attr('cx', xScale(observation.date))
+        .attr('cy', axisHeight)
+        .attr('r', '5px')
+        .attr('fill', color)
+        .attr('stroke', color)
+        .attr('stroke-width', 1.5);
+    });
 
     svg
       .append('text')
