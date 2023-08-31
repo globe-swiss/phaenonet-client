@@ -20,21 +20,21 @@
     </button>
     <button
       mat-fab
-      (click)="mapOrGraph = 'Humidity'"
-      class="individual-header__button individual-header__button--temp"
-      data-test-id="temperatureButton"
-      [color]="mapOrGraph === 'Humidity' ? 'selected' : ''"
-    >
-      <mat-icon svgIcon="humidity"></mat-icon>
-    </button>
-    <button
-      mat-fab
       (click)="mapOrGraph = 'Temperature'"
       class="individual-header__button individual-header__button--humidity"
       data-test-id="humidityButton"
       [color]="mapOrGraph === 'Temperature' ? 'selected' : ''"
     >
       <mat-icon svgIcon="temperature"></mat-icon>
+    </button>
+    <button
+      mat-fab
+      (click)="mapOrGraph = 'Humidity'"
+      class="individual-header__button individual-header__button--temp"
+      data-test-id="temperatureButton"
+      [color]="mapOrGraph === 'Humidity' ? 'selected' : ''"
+    >
+      <mat-icon svgIcon="humidity"></mat-icon>
     </button>
   </div>
 </div>

@@ -215,7 +215,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
 
     svg
       .append('text')
-      .attr('y', height + 20)
+      .attr('y', height + 40)
       .attr('x', width / 2)
       .style('text-anchor', 'middle')
       .attr('font-size', 12)
