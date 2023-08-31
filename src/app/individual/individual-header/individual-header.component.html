@@ -3,10 +3,8 @@
     <app-individual-header-map [individual$]="individual$" [mode]="mode"></app-individual-header-map>
   </ng-container>
   <app-individual-header-graph
-    [displayAirHumidity]="mapOrGraph === 'Humidity'"
-    [displayAirTemperature]="mapOrGraph === 'Temperature'"
-    [displaySoilHumidity]="mapOrGraph === 'Humidity'"
-    [displaySoilTemperature]="mapOrGraph === 'Temperature'"
+    [displayHumidity]="mapOrGraph === 'Humidity'"
+    [displayTemperature]="mapOrGraph === 'Temperature'"
     [individual$]="individual$"
     *ngIf="mapOrGraph !== 'Map'"
   ></app-individual-header-graph>
@@ -22,19 +20,19 @@
     </button>
     <button
       mat-fab
-      (click)="mapOrGraph = 'Temperature'"
+      (click)="mapOrGraph = 'Humidity'"
       class="individual-header__button individual-header__button--temp"
       data-test-id="temperatureButton"
-      [color]="mapOrGraph === 'Temperature' ? 'selected' : ''"
+      [color]="mapOrGraph === 'Humidity' ? 'selected' : ''"
     >
       <mat-icon svgIcon="humidity"></mat-icon>
     </button>
     <button
       mat-fab
-      (click)="mapOrGraph = 'Humidity'"
+      (click)="mapOrGraph = 'Temperature'"
       class="individual-header__button individual-header__button--humidity"
       data-test-id="humidityButton"
-      [color]="mapOrGraph === 'Humidity' ? 'selected' : ''"
+      [color]="mapOrGraph === 'Temperature' ? 'selected' : ''"
     >
       <mat-icon svgIcon="temperature"></mat-icon>
     </button>

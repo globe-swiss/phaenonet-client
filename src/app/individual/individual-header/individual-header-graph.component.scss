@@ -9,6 +9,10 @@
   display: flex;
   flex-direction: row;
 
+  &__graph {
+    padding-top: 20px;
+  }
+
   @include for-tablet-and-smaller {
     height: 300px;
   }

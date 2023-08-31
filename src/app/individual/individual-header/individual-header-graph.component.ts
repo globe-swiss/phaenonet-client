@@ -24,18 +24,16 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
 
   // note: colors are also defined in _overwrite-mat.scss
   colors = {
-    soil: { temperature: '#96A68B', humidity: '#405240' },
-    air: { temperature: '#6B83BA', humidity: '#2C3A5C' }
+    soil: '#736958',
+    air: '#88c7ff'
   };
 
   initialized = false;
   sensorData$: Observable<DailySensorData[]>;
   observations$: Observable<Observation[]>;
   resizeEvent$ = new BehaviorSubject(0);
-  @Input() displayAirTemperature: boolean;
-  @Input() displayAirHumidity: boolean;
-  @Input() displaySoilTemperature: boolean;
-  @Input() displaySoilHumidity: boolean;
+  @Input() displayTemperature: boolean;
+  @Input() displayHumidity: boolean;
 
   constructor(
     private individualService: IndividualService,
@@ -52,7 +50,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
 
   @HostListener('window:resize', ['$event'])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onResize(event: UIEvent): void {
+  onResize(_: UIEvent): void {
     // re-render the svg on window resize
     this.resizeEvent$.next(1);
   }
@@ -82,14 +80,14 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
 
     svg.selectAll('*').remove();
 
-    const margin: Margin = { top: 30, right: 10, bottom: 20, left: 50 };
+    const margin: Margin = { top: 40, right: 10, bottom: 40, left: 50 };
 
     const width = boundingBox.width - margin.left - margin.right;
     const height = boundingBox.height - (margin.top + margin.bottom);
 
     const xScale = d3Scale
       .scaleTime()
-      .domain([new Date(individual.year - 1, 10, 23), new Date(individual.year, 11, 31)])
+      .domain([new Date(individual.year - 1, 11, 0), new Date(individual.year, 11, 31)])
       .range([0, width - (margin.left + margin.right)]);
     const xAxis = d3Axis.axisBottom(xScale).ticks(4).tickFormat(d3.timeFormat('Q%q'));
     const tempScale = d3Scale
@@ -103,7 +101,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .domain(d3.extent(sensorData.flatMap(d => [d.soilHumidity, d.airHumidity])))
       .range([height - 30, 0])
       .nice();
-    const humidityAxis = d3Axis.axisRight(humidityScale);
+    const humidityAxis = d3Axis.axisLeft(humidityScale);
 
     const airTemperatureLine = d3
       .line<DailySensorData>()
@@ -125,53 +123,72 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .x(d => xScale(d.day))
       .y(d => humidityScale(d.soilHumidity));
 
-    svg.append('g').attr('transform', `translate(${margin.left},${margin.bottom})`).call(tempAxis);
-    svg
-      .append('g')
-      .attr('transform', `translate(${width - margin.right},${margin.bottom})`)
-      .call(humidityAxis);
+    if (this.displayTemperature) {
+      svg.append('g').attr('transform', `translate(${margin.left},${margin.bottom})`).call(tempAxis);
 
-    svg
-      .append('g')
-      .attr('transform', `translate(${margin.left},${height - margin.bottom + 10})`)
-      .call(xAxis);
+      svg
+        .append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 20)
+        .attr('x', 0 - height / 2)
+        .style('text-anchor', 'middle')
+        .attr('font-size', 12)
+        .text('°C');
 
-    if (this.displayAirTemperature)
       svg
         .append('path')
         .datum(sensorData)
+        .attr('transform', `translate(${margin.left},${margin.bottom})`)
         .attr('fill', 'none')
-        .attr('stroke', this.colors.air.temperature)
+        .attr('stroke', this.colors.air)
         .attr('stroke-width', 1.5)
         .attr('d', airTemperatureLine);
 
-    if (this.displaySoilTemperature)
       svg
         .append('path')
         .datum(sensorData)
+        .attr('transform', `translate(${margin.left},${margin.bottom})`)
         .attr('fill', 'none')
-        .attr('stroke', this.colors.soil.temperature)
+        .attr('stroke', this.colors.soil)
         .attr('stroke-width', 1.5)
         .attr('d', soilTemperatureLine)
         .enter();
+    }
 
-    if (this.displayAirHumidity)
+    if (this.displayHumidity) {
+      svg.append('g').attr('transform', `translate(${margin.left},${margin.bottom})`).call(humidityAxis);
+      svg
+        .append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 20)
+        .attr('x', 0 - height / 2)
+        .style('text-anchor', 'middle')
+        .attr('font-size', 12)
+        .text('%');
+
       svg
         .append('path')
         .datum(sensorData)
+        .attr('transform', `translate(${margin.left},${margin.bottom})`)
         .attr('fill', 'none')
-        .attr('stroke', this.colors.air.humidity)
+        .attr('stroke', this.colors.air)
         .attr('stroke-width', 1.5)
         .attr('d', airHumidityLine);
 
-    if (this.displaySoilHumidity)
       svg
         .append('path')
         .datum(sensorData)
+        .attr('transform', `translate(${margin.left},${margin.bottom})`)
         .attr('fill', 'none')
-        .attr('stroke', this.colors.soil.humidity)
+        .attr('stroke', this.colors.soil)
         .attr('stroke-width', 1.5)
         .attr('d', soilHumidityLine);
+    }
+
+    svg
+      .append('g')
+      .attr('transform', `translate(${margin.left},${height - margin.bottom + 50})`)
+      .call(xAxis);
 
     observations.forEach(observation => {
       const color = this.masterdataService.getColor(observation.phenophase);
@@ -181,38 +198,20 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
         .datum(observation)
         .attr('x1', xScale(observation.date))
         .attr('x2', xScale(observation.date))
-        .attr('y1', height * 0.05)
-        .attr('y2', axisHeight)
+        .attr('y1', margin.bottom)
+        .attr('y2', margin.bottom + axisHeight)
         .attr('fill', 'none')
         .attr('stroke', color)
         .attr('stroke-width', 1.5);
       svg
         .append('circle')
         .attr('cx', xScale(observation.date))
-        .attr('cy', axisHeight)
+        .attr('cy', margin.bottom + axisHeight)
         .attr('r', '5px')
         .attr('fill', color)
         .attr('stroke', color)
         .attr('stroke-width', 1.5);
     });
-
-    svg
-      .append('text')
-      .attr('transform', 'rotate(-90)')
-      .attr('y', 20)
-      .attr('x', 0 - height / 2)
-      .style('text-anchor', 'middle')
-      .attr('font-size', 12)
-      .text('°C');
-
-    svg
-      .append('text')
-      .attr('transform', 'rotate(-270)')
-      .attr('y', 0 - (width + 20))
-      .attr('x', height / 2)
-      .style('text-anchor', 'middle')
-      .attr('font-size', 12)
-      .text('%');
 
     svg
       .append('text')
@@ -227,7 +226,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .attr('cx', width / 2 - 45)
       .attr('cy', 15)
       .attr('r', 6)
-      .style('fill', this.colors.air.temperature);
+      .style('fill', this.colors.air);
     svg
       .append('text')
       .attr('x', width / 2 - 30)
@@ -240,7 +239,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .attr('cx', width / 2 + 30)
       .attr('cy', 15)
       .attr('r', 6)
-      .style('fill', this.colors.soil.temperature);
+      .style('fill', this.colors.soil);
     svg
       .append('text')
       .attr('x', width / 2 + 45)
@@ -248,5 +247,15 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .text('Boden')
       .style('font-size', '15px')
       .attr('alignment-baseline', 'middle');
+
+    if (width > 650) {
+      svg
+        .append('text')
+        .attr('x', margin.left)
+        .attr('y', 20)
+        .text(this.displayTemperature ? 'Temperatur (in Grad Celsius)' : 'Feuchtigkeit (in Prozent)')
+        .style('font-size', '15px')
+        .attr('alignment-baseline', 'middle');
+    }
   }
 }
