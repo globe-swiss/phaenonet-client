@@ -1,12 +1,31 @@
 {
   "hosting": {
-    "target": "phaenonet-test-e2e",
+    "headers": [
+      {
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          },
+          {
+            "key": "Pragma",
+            "value": "no-cache"
+          },
+          {
+            "key": "Expires",
+            "value": "0"
+          }
+        ],
+        "source": "**/*"
+      }
+    ],
     "public": "output",
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/mochawesome.html"
+        "destination": "/mochawesome.html",
+        "source": "**"
       }
-    ]
+    ],
+    "target": "phaenonet-test-e2e"
   }
 }
