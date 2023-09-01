@@ -60,14 +60,20 @@ jobs:
           npx --no-install stylelint "**/*.scss" -f json \
             | jq -r '.[] | {source: .source, warnings:.warnings[]} | "\(.source):\(.warnings.line):\(.warnings.column):\(.warnings.severity): \(.warnings.text)"' \
             | reviewdog -name=stylint -efm="%f:%l:%c:%t%*[^:]: %m" -filter-mode=diff_context -diff="git diff master" -f.diff.strip=0 -reporter=github-pr-check
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
       - name: eslint
         run: |
           npx --no-install eslint -f rdjson . \
             | reviewdog -name=eslint -f=rdjson -f.diff.strip=0 -filter-mode=diff_context -diff="git diff master" -reporter=github-pr-check
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
       - name: markdown
         run: |
           npx markdownlint -c ./markdownlint.json . \
             | bin/reviewdog -name=markdown -efm="%f:%l:%c %m" -efm="%f:%l %m" -filter-mode=diff_context -diff="git diff master" -f.diff.strip=0 -reporter=github-pr-check
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
