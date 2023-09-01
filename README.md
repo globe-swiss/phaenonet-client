@@ -16,7 +16,6 @@ The application will be using the database and access rules of the `phaenonet-te
 ### GitHub Codespaces
 
 Launch the Codespace in GitHub using the `codespace` branch. It will checkout the master branch, initialize the submodules, and rebuild the container. This process may take some minutes to finish.
-
 ### CSS
 
 The CSS is developed according to [BEM](http://getbem.com/introduction/).
