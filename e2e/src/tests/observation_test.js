@@ -34,7 +34,7 @@ Scenario('add/edit/delete observation', async ({ I, individualsPage }) => {
   value = await I.grabValueFrom(individualsPage.observations.dateFields.at(1));
   assert(value.startsWith('01.'), value);
   // cannot select days in the future
-  if (new Date().getDay() > 1) {
+  if (new Date().getDate() > 1) {
     I.say('Edit Observation');
     I.retry().click(individualsPage.observations.editButtons.at(1));
     I.click(individualsPage.observations.observationDialog.toggleCalendar);
