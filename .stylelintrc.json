@@ -1,17 +1,18 @@
 {
   "extends": ["stylelint-config-sass-guidelines", "stylelint-config-prettier-scss"],
+  "plugins": ["stylelint-order"],
   "rules": {
-    "color-hex-length": "long",
-    "selector-max-id": 4,
-    "selector-max-compound-selectors": 4,
-    "selector-no-qualifying-type": null,
-    "order/properties-alphabetical-order": null,
-    "color-named": null,
-    "selector-pseudo-element-no-unknown": null,
-    "max-nesting-depth": 3,
-    "shorthand-property-no-redundant-values": null,
     "at-rule-empty-line-before": null,
+    "color-hex-length": "long",
+    "color-named": null,
     "comment-whitespace-inside": "always",
-    "declaration-empty-line-before": null
+    "declaration-empty-line-before": null,
+    "max-nesting-depth": 3,
+    "order/properties-alphabetical-order": null,
+    "selector-max-compound-selectors": 4,
+    "selector-max-id": 4,
+    "selector-no-qualifying-type": null,
+    "selector-pseudo-element-no-unknown": null,
+    "shorthand-property-no-redundant-values": null
   }
 }
