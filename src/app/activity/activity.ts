@@ -9,7 +9,7 @@ export class Activity {
   individual_name: string;
   observation_id?: string;
   phenophase: string;
-  phenophase_name: string;
+  phenophase_name: any;
   source: SourceType;
   species: string;
   species_name: string;
