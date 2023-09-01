@@ -41,6 +41,7 @@
     "lodash": "^4.17.21",
     "lz-string": "^1.4.4",
     "moment": "^2.29.4",
+    "postcss": "^8.4.29",
     "rxjs": "^7.5.6",
     "tslib": "^2.4.0",
     "zone.js": "~0.11.4"
@@ -82,20 +83,12 @@
     "jest-preset-angular": "^12.2.0",
     "prettier": "2.8.0",
     "stylelint": "^15.2.0",
-    "stylelint-config-prettier-scss": "0.0.1",
-    "stylelint-config-sass-guidelines": "^9.0.1",
-    "stylelint-prettier": "^3.0.0",
+    "stylelint-config-prettier-scss": "^1.0.0",
+    "stylelint-config-sass-guidelines": "^10.0.0",
+    "stylelint-order": "^6.0.3",
     "ts-mockito": "^2.6.1",
     "ts-node": "~8.1.0",
     "typescript": "~4.9.5"
-  },
-  "overrides": {
-    "stylelint-config-sass-guidelines": {
-      "stylelint": "^15.2.0"
-    },
-    "stylelint-config-prettier": {
-      "stylelint": "^15.2.0"
-    }
   },
   "browserslist": [
     "defaults",
