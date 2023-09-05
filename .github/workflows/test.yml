@@ -9,6 +9,7 @@ on:
 env:
   NODE_VERSION: '18'
   CACHE_SEQ: 1
+  REVIEWDOG_VERSION: 'v0.14.2'
 
 jobs:
   cache-deps:
@@ -185,13 +186,6 @@ jobs:
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Check markdownlint
-        uses: reviewdog/action-markdownlint@v0.12.1
-        with:
-          reporter: github-check
-          markdownlint_flags: "-c ./markdownlint.json -i '**/node_modules/*' ."
-          fail_on_error: True
-        if: always()
       - name: Restore cache (node modules)
         uses: martijnhols/actions-cache/restore@v3
         with:
@@ -199,25 +193,33 @@ jobs:
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
       - name: install codeceptjs deps
         run: npm --prefix e2e ci
+      - uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: ${{ env.REVIEWDOG_VERSION }}
       - name: check map icon completeness
         run: |
           diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/fr-CH) || exit
           diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/it-CH) || exit
         if: ${{ always() }}
       - name: stylelint
-        uses: reviewdog/action-stylelint@v1.16.0
-        with:
-          stylelint_input: '**/*.scss'
-          reporter: github-check
-          fail_on_error: True
+        run: |
+          npx --no-install stylelint "**/*.scss" -f json \
+            | jq -r '.[] | {source: .source, warnings:.warnings[]} | "\(.source):\(.warnings.line):\(.warnings.column):\(.warnings.severity): \(.warnings.text)"' \
+            | reviewdog -name=stylint -efm="%f:%l:%c:%t%*[^:]: %m" -filter-mode=diff_context -diff="git diff master" -f.diff.strip=0 -fail-on-error -reporter=github-pr-check
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
-      - uses: reviewdog/action-eslint@v1.18.2
-        with:
-          reporter: github-check
-          fail_on_error: True
+      - name: eslint
+        run: |
+          npx --no-install eslint -f rdjson . \
+            | reviewdog -name=eslint -f=rdjson -f.diff.strip=0 -filter-mode=diff_context -diff="git diff master" -fail-on-error -reporter=github-pr-check
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
-      - uses: EPMatt/reviewdog-action-prettier@v1.1.1
-        with:
-          reporter: github-check
-          fail_on_error: True
+      - name: markdown
+        run: |
+          npx markdownlint -c ./markdownlint.json . 2>&1 \
+            | reviewdog -name=markdown -efm="%f:%l:%c %m" -efm="%f:%l %m" -filter-mode=diff_context -diff="git diff master" -f.diff.strip=1 -fail-on-error -reporter=github-pr-check
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
