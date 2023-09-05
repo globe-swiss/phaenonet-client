@@ -9,14 +9,11 @@
 
   &__subscription-button {
     position: relative;
-    bottom: 28px;
+    top: -80px;
     width: 70px;
     height: 0;
-    margin-left: 90%;
-
-    @include for-tablet-and-smaller {
-      margin-left: 70%;
-    }
+    margin-left: auto;
+    margin-right: 20px;
   }
 
   &__content {

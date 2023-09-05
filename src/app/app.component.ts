@@ -69,5 +69,20 @@ export class AppComponent {
       'arrow-right',
       this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/ico_arrow_right.svg')
     );
+
+    this.matIconRegistry.addSvgIcon(
+      'map-pin',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/map_pins/map_pin_generic.svg')
+    );
+
+    this.matIconRegistry.addSvgIcon(
+      'humidity',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/ico_humidity.svg')
+    );
+
+    this.matIconRegistry.addSvgIcon(
+      'temperature',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/img/ico_temperature.svg')
+    );
   }
 }

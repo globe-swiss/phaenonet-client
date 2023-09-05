@@ -29,6 +29,23 @@
     margin-top: 0.5rem;
   }
 
+  &__button {
+    position: relative;
+    top: -25px;
+
+    &--graph {
+      left: 20px;
+    }
+
+    &--temp {
+      left: 60px;
+    }
+
+    &--humidity {
+      left: 40px;
+    }
+  }
+
   &__grap-selection {
     display: flex;
     flex-direction: column;
@@ -52,4 +69,8 @@
       padding-top: 0.65em;
     }
   }
+}
+.mat-selected {
+  background-color: #7bb53b;
+  color: #ffffff;
 }
