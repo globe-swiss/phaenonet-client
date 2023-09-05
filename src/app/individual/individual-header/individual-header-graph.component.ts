@@ -2,7 +2,7 @@ import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleCh
 import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
-import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { Observation } from 'src/app/observation/observation';
@@ -89,7 +89,17 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .scaleTime()
       .domain([new Date(individual.year - 1, 11, 0), new Date(individual.year, 11, 31)])
       .range([0, width - (margin.left + margin.right)]);
-    const xAxis = d3Axis.axisBottom(xScale).ticks(4).tickFormat(d3.timeFormat('Q%q'));
+    const xAxis_ticks = d3Axis.axisBottom(xScale).ticks(4).tickFormat(d3.timeFormat(''));
+    const xAxis_lables = d3Axis
+      .axisBottom(xScale)
+      .tickValues([
+        new Date(individual.year, 1, 15),
+        new Date(individual.year, 4, 15),
+        new Date(individual.year, 7, 15),
+        new Date(individual.year, 10, 15)
+      ])
+      .tickSize(0)
+      .tickFormat(d3.timeFormat('Q%q'));
     const tempScale = d3Scale
       .scaleLinear()
       .domain(d3.extent(sensorData.flatMap(d => [d.soilTemperature, d.airTemperature])))
@@ -188,7 +198,12 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     svg
       .append('g')
       .attr('transform', `translate(${margin.left},${height - margin.bottom + 50})`)
-      .call(xAxis);
+      .call(xAxis_ticks);
+
+    svg
+      .append('g')
+      .attr('transform', `translate(${margin.left},${height - margin.bottom + 50})`)
+      .call(xAxis_lables);
 
     observations.forEach(observation => {
       const color = this.masterdataService.getColor(observation.phenophase);
