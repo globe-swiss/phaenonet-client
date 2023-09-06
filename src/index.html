@@ -17,15 +17,13 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,500;0,700;1,300;1,500;1,700&display=swap"
       rel="stylesheet"
     />
-  </head>
-  <body class="mat-typography" id="phaenonet-body">
     <script>
       let url = '__/firebase/init.json';
       fetch(url)
         .then(res => res.json())
         .then(out => {
           var script = document.createElement('script');
-          script.src = 'https://maps.googleapis.com/maps/api/js?key=' + out['apiKey'];
+          script.src = 'https://maps.googleapis.com/maps/api/js?callback=Function.prototype&key=' + out['apiKey'];
           script.type = 'text/javascript';
           document.head.appendChild(script);
         })
@@ -33,6 +31,8 @@
           console.log('ERROR: Api-Key not found');
         });
     </script>
+  </head>
+  <body class="mat-typography" id="phaenonet-body">
     <app-root></app-root>
   </body>
 </html>
