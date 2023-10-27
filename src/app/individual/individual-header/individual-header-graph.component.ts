@@ -268,7 +268,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
         .append('text')
         .attr('x', margin.left)
         .attr('y', 20)
-        .text(this.displayTemperature ? 'Temperatur (in Grad Celsius)' : 'Feuchtigkeit (in Prozent)')
+        .text(this.displayTemperature ? 'Temperatur (Tagesdurchschnitt)' : 'Feuchtigkeit (Tagesdurchschnitt)')
         .style('font-size', '15px')
         .attr('alignment-baseline', 'middle');
     }
