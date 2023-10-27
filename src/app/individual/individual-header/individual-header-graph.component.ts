@@ -80,10 +80,14 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
 
     svg.selectAll('*').remove();
 
-    const margin: Margin = { top: 40, right: 10, bottom: 40, left: 50 };
+    const margin: Margin = { top: 40, right: -15, bottom: 40, left: 50 };
 
     const width = boundingBox.width - margin.left - margin.right;
     const height = boundingBox.height - (margin.top + margin.bottom);
+
+    const legendX = width > 650 ? width / 2 : width - 50;
+    const fontSize = width > 650 ? '15px' : '12px';
+    const legendGapSize = width > 650 ? 30 : 20;
 
     const xScale = d3Scale
       .scaleTime()
@@ -142,7 +146,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
         .attr('y', 20)
         .attr('x', 0 - height / 2)
         .style('text-anchor', 'middle')
-        .attr('font-size', 12)
+        .style('font-size', fontSize)
         .text('°C');
 
       svg
@@ -173,7 +177,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
         .attr('y', 20)
         .attr('x', 0 - height / 2)
         .style('text-anchor', 'middle')
-        .attr('font-size', 12)
+        .style('font-size', fontSize)
         .text('%');
 
       svg
@@ -233,40 +237,39 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .attr('y', height + 40)
       .attr('x', width / 2)
       .style('text-anchor', 'middle')
-      .attr('font-size', 12)
+      .style('font-size', fontSize)
       .text(individual.year);
 
-    const legendX = width > 650 ? width / 2 : width - 50;
     svg
       .append('circle')
-      .attr('cx', legendX - 45)
+      .attr('cx', legendX - 15 - legendGapSize)
       .attr('cy', 15)
       .attr('r', 6)
       .style('fill', this.colors.air);
     svg
       .append('text')
-      .attr('x', legendX - 30)
+      .attr('x', legendX - legendGapSize)
       .attr('y', 20)
       .text('Luft')
-      .style('font-size', '15px');
+      .style('font-size', fontSize);
     svg
       .append('circle')
-      .attr('cx', legendX + 30)
+      .attr('cx', legendX + legendGapSize)
       .attr('cy', 15)
       .attr('r', 6)
       .style('fill', this.colors.soil);
     svg
       .append('text')
-      .attr('x', legendX + 45)
+      .attr('x', legendX + 15 + legendGapSize)
       .attr('y', 20)
       .text('Boden')
-      .style('font-size', '15px');
+      .style('font-size', fontSize);
 
     svg
       .append('text')
-      .attr('x', margin.left)
+      .attr('x', margin.left / 2)
       .attr('y', 20)
       .text(this.displayTemperature ? 'Temperatur (Tagesdurchschnitt)' : 'Feuchtigkeit (Tagesdurchschnitt)')
-      .style('font-size', '15px');
+      .style('font-size', fontSize);
   }
 }
