@@ -80,19 +80,19 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
 
     svg.selectAll('*').remove();
 
-    const margin: Margin = { top: 40, right: -15, bottom: 40, left: 50 };
+    const margin: Margin = { top: 40, right: 15, bottom: 40, left: 50 };
 
     const width = boundingBox.width - margin.left - margin.right;
     const height = boundingBox.height - (margin.top + margin.bottom);
 
-    const legendX = width > 650 ? width / 2 : width - 50;
+    const legendX = width > 650 ? width / 2 : width - 25;
     const fontSize = width > 650 ? '15px' : '12px';
     const legendGapSize = width > 650 ? 30 : 20;
 
     const xScale = d3Scale
       .scaleTime()
       .domain([new Date(individual.year - 1, 11, 0), new Date(individual.year, 11, 31)])
-      .range([0, width - (margin.left + margin.right)]);
+      .range([0, width]);
     const xAxis_ticks = d3Axis.axisBottom(xScale).ticks(4).tickFormat(d3.timeFormat(''));
     const xAxis_lables = d3Axis
       .axisBottom(xScale)
