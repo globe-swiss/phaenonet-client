@@ -236,41 +236,37 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .attr('font-size', 12)
       .text(individual.year);
 
+    const legendX = width > 650 ? width / 2 : width - 50;
     svg
       .append('circle')
-      .attr('cx', width / 2 - 45)
+      .attr('cx', legendX - 45)
       .attr('cy', 15)
       .attr('r', 6)
       .style('fill', this.colors.air);
     svg
       .append('text')
-      .attr('x', width / 2 - 30)
+      .attr('x', legendX - 30)
       .attr('y', 20)
       .text('Luft')
-      .style('font-size', '15px')
-      .attr('alignment-baseline', 'middle');
+      .style('font-size', '15px');
     svg
       .append('circle')
-      .attr('cx', width / 2 + 30)
+      .attr('cx', legendX + 30)
       .attr('cy', 15)
       .attr('r', 6)
       .style('fill', this.colors.soil);
     svg
       .append('text')
-      .attr('x', width / 2 + 45)
+      .attr('x', legendX + 45)
       .attr('y', 20)
       .text('Boden')
-      .style('font-size', '15px')
-      .attr('alignment-baseline', 'middle');
+      .style('font-size', '15px');
 
-    if (width > 650) {
-      svg
-        .append('text')
-        .attr('x', margin.left)
-        .attr('y', 20)
-        .text(this.displayTemperature ? 'Temperatur (Tagesdurchschnitt)' : 'Feuchtigkeit (Tagesdurchschnitt)')
-        .style('font-size', '15px')
-        .attr('alignment-baseline', 'middle');
-    }
+    svg
+      .append('text')
+      .attr('x', margin.left)
+      .attr('y', 20)
+      .text(this.displayTemperature ? 'Temperatur (Tagesdurchschnitt)' : 'Feuchtigkeit (Tagesdurchschnitt)')
+      .style('font-size', '15px');
   }
 }
