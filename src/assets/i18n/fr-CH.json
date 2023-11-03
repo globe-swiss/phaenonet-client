@@ -426,5 +426,13 @@
   "ANGENOMMENE EINLADUNGEN": "INVITATIONS ACCEPTEES",
   "Zurück": "Retour",
   "Keine Beobachtungen in": "Pas d’observation en",
-  "Gruppe": "Groupe"
+  "Gruppe": "Groupe",
+
+  "Fehlmast": "absence de fructification",
+  "Sprengmast": "fructification partielle",
+  "Halbmast": "demi-fructification",
+  "Vollmast": "fructification complète",
+  "Mastausprägung": "Intensité de la fructification",
+  "Mastausprägung anhand Beobachtungsanleitung als Kommentar eintragen": "Noter l'intensité de la fructification en commentaire sur la base du guide de terrain",
+  "Mast": "Fructification"
 }

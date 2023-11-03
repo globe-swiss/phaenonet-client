@@ -426,5 +426,13 @@
   "ANGENOMMENE EINLADUNGEN": "INVITI ACCETTATI",
   "Zurück": "Indietro",
   "Keine Beobachtungen in": "Nessuna osservazione nel",
-  "Gruppe": "Gruppo"
+  "Gruppe": "Gruppo",
+
+  "Fehlmast": "pasciona assente",
+  "Sprengmast": "pasciona occasionale",
+  "Halbmast": "pasciona parziale",
+  "Vollmast": "pasciona competa",
+  "Mastausprägung": "Intensità della pasciona",
+  "Mastausprägung anhand Beobachtungsanleitung als Kommentar eintragen": "Inserire l'intensità della pasciona come commento in base alla istruzione per l'osservazione",
+  "Mast": "Pasciona"
 }
