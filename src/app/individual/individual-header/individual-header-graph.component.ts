@@ -80,15 +80,19 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
 
     svg.selectAll('*').remove();
 
-    const margin: Margin = { top: 40, right: 10, bottom: 40, left: 50 };
+    const margin: Margin = { top: 40, right: 15, bottom: 70, left: 50 };
 
     const width = boundingBox.width - margin.left - margin.right;
     const height = boundingBox.height - (margin.top + margin.bottom);
 
+    const legendX = width > 650 ? width / 2 : width - 25;
+    const fontSize = width > 650 ? '15px' : '12px';
+    const legendGapSize = width > 650 ? 30 : 20;
+
     const xScale = d3Scale
       .scaleTime()
       .domain([new Date(individual.year - 1, 11, 0), new Date(individual.year, 11, 31)])
-      .range([0, width - (margin.left + margin.right)]);
+      .range([0, width]);
     const xAxis_ticks = d3Axis.axisBottom(xScale).ticks(4).tickFormat(d3.timeFormat(''));
     const xAxis_lables = d3Axis
       .axisBottom(xScale)
@@ -103,13 +107,13 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     const tempScale = d3Scale
       .scaleLinear()
       .domain(d3.extent(sensorData.flatMap(d => [d.soilTemperature, d.airTemperature])))
-      .range([height - 30, 0])
+      .range([height, 0])
       .nice();
     const tempAxis = d3Axis.axisLeft(tempScale);
     const humidityScale = d3Scale
       .scaleLinear()
       .domain(d3.extent(sensorData.flatMap(d => [d.soilHumidity, d.airHumidity])))
-      .range([height - 30, 0])
+      .range([height, 0])
       .nice();
     const humidityAxis = d3Axis.axisLeft(humidityScale);
 
@@ -134,21 +138,21 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .y(d => humidityScale(d.soilHumidity));
 
     if (this.displayTemperature) {
-      svg.append('g').attr('transform', `translate(${margin.left},${margin.bottom})`).call(tempAxis);
+      svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`).call(tempAxis);
 
       svg
         .append('text')
         .attr('transform', 'rotate(-90)')
         .attr('y', 20)
-        .attr('x', 0 - height / 2)
+        .attr('x', 0 - margin.top - height / 2)
         .style('text-anchor', 'middle')
-        .attr('font-size', 12)
+        .style('font-size', fontSize)
         .text('°C');
 
       svg
         .append('path')
         .datum(sensorData)
-        .attr('transform', `translate(${margin.left},${margin.bottom})`)
+        .attr('transform', `translate(${margin.left},${margin.top})`)
         .attr('fill', 'none')
         .attr('stroke', this.colors.air)
         .attr('stroke-width', 1.5)
@@ -157,7 +161,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       svg
         .append('path')
         .datum(sensorData)
-        .attr('transform', `translate(${margin.left},${margin.bottom})`)
+        .attr('transform', `translate(${margin.left},${margin.top})`)
         .attr('fill', 'none')
         .attr('stroke', this.colors.soil)
         .attr('stroke-width', 1.5)
@@ -166,20 +170,20 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     }
 
     if (this.displayHumidity) {
-      svg.append('g').attr('transform', `translate(${margin.left},${margin.bottom})`).call(humidityAxis);
+      svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`).call(humidityAxis);
       svg
         .append('text')
         .attr('transform', 'rotate(-90)')
         .attr('y', 20)
-        .attr('x', 0 - height / 2)
+        .attr('x', 0 - margin.top - height / 2)
         .style('text-anchor', 'middle')
-        .attr('font-size', 12)
+        .style('font-size', fontSize)
         .text('%');
 
       svg
         .append('path')
         .datum(sensorData)
-        .attr('transform', `translate(${margin.left},${margin.bottom})`)
+        .attr('transform', `translate(${margin.left},${margin.top})`)
         .attr('fill', 'none')
         .attr('stroke', this.colors.air)
         .attr('stroke-width', 1.5)
@@ -188,7 +192,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       svg
         .append('path')
         .datum(sensorData)
-        .attr('transform', `translate(${margin.left},${margin.bottom})`)
+        .attr('transform', `translate(${margin.left},${margin.top})`)
         .attr('fill', 'none')
         .attr('stroke', this.colors.soil)
         .attr('stroke-width', 1.5)
@@ -197,31 +201,31 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
 
     svg
       .append('g')
-      .attr('transform', `translate(${margin.left},${height - margin.bottom + 50})`)
+      .attr('transform', `translate(${margin.left},${margin.top + height})`)
       .call(xAxis_ticks);
 
     svg
       .append('g')
-      .attr('transform', `translate(${margin.left},${height - margin.bottom + 50})`)
+      .attr('transform', `translate(${margin.left},${margin.top + height})`)
       .call(xAxis_lables);
 
     observations.forEach(observation => {
       const color = this.masterdataService.getColor(observation.phenophase);
-      const axisHeight = height - margin.bottom + 10;
+      const axisHeight = margin.top + height;
       svg
         .append('line')
         .datum(observation)
         .attr('x1', xScale(observation.date) + margin.left)
         .attr('x2', xScale(observation.date) + margin.left)
-        .attr('y1', margin.bottom)
-        .attr('y2', margin.bottom + axisHeight)
+        .attr('y1', margin.top)
+        .attr('y2', axisHeight)
         .attr('fill', 'none')
         .attr('stroke', color)
         .attr('stroke-width', 1.5);
       svg
         .append('circle')
         .attr('cx', xScale(observation.date) + margin.left)
-        .attr('cy', margin.bottom + axisHeight)
+        .attr('cy', axisHeight)
         .attr('r', '5px')
         .attr('fill', color)
         .attr('stroke', color)
@@ -230,47 +234,43 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
 
     svg
       .append('text')
-      .attr('y', height + 40)
-      .attr('x', width / 2)
+      .attr('y', margin.top + height + 10)
+      .attr('x', margin.left + width / 2)
       .style('text-anchor', 'middle')
-      .attr('font-size', 12)
+      .style('font-size', fontSize)
+      .attr('alignment-baseline', 'hanging')
       .text(individual.year);
 
     svg
       .append('circle')
-      .attr('cx', width / 2 - 45)
+      .attr('cx', legendX - 15 - legendGapSize)
       .attr('cy', 15)
       .attr('r', 6)
       .style('fill', this.colors.air);
     svg
       .append('text')
-      .attr('x', width / 2 - 30)
+      .attr('x', legendX - legendGapSize)
       .attr('y', 20)
       .text('Luft')
-      .style('font-size', '15px')
-      .attr('alignment-baseline', 'middle');
+      .style('font-size', fontSize);
     svg
       .append('circle')
-      .attr('cx', width / 2 + 30)
+      .attr('cx', legendX + legendGapSize)
       .attr('cy', 15)
       .attr('r', 6)
       .style('fill', this.colors.soil);
     svg
       .append('text')
-      .attr('x', width / 2 + 45)
+      .attr('x', legendX + 15 + legendGapSize)
       .attr('y', 20)
       .text('Boden')
-      .style('font-size', '15px')
-      .attr('alignment-baseline', 'middle');
+      .style('font-size', fontSize);
 
-    if (width > 650) {
-      svg
-        .append('text')
-        .attr('x', margin.left)
-        .attr('y', 20)
-        .text(this.displayTemperature ? 'Temperatur (in Grad Celsius)' : 'Feuchtigkeit (in Prozent)')
-        .style('font-size', '15px')
-        .attr('alignment-baseline', 'middle');
-    }
+    svg
+      .append('text')
+      .attr('x', margin.left / 2)
+      .attr('y', 20)
+      .text(this.displayTemperature ? 'Temperatur (Tagesdurchschnitt)' : 'Feuchtigkeit (Tagesdurchschnitt)')
+      .style('font-size', fontSize);
   }
 }
