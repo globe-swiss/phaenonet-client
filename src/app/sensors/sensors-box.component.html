@@ -1,7 +1,13 @@
 <div class="sensor-box" *ngIf="sensorLiveData">
   <span class="sensor-box__title_line">
-    {{ 'Messwerte vom' | translate }}&nbsp;<span>{{ ' ' + lastMeasurement$ }}</span>
-    <div class="sensor-box__info" matTooltip="{{ ('Letzte Messung um: ' | translate) + lastMeasurementDateTime$ }}">
+    {{ 'Messwerte vom' | translate }}&nbsp;<span>{{ ' ' + lastMeasurementDateTime$ }}</span>
+    <div
+      class="sensor-box__info"
+      matTooltip="{{
+        'Werte werden stündlich von Sensoren direkt am Baum gemessen und mit LoRaWAN-Technologie übertragen. PhaenoNet-User können Messgeräte unter info@phaenonet.ch ausleihen.'
+          | translate
+      }}"
+    >
       i
     </div>
   </span>

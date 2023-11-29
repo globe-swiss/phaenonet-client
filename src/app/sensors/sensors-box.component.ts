@@ -9,11 +9,9 @@ import { IndividualService } from '../individual/individual.service';
 })
 export class SensorsBoxComponent implements OnInit {
   @Input() sensorLiveData: SensorLiveData;
-  lastMeasurement$: string;
   lastMeasurementDateTime$: string;
 
   ngOnInit(): void {
-    this.lastMeasurement$ = IndividualService.formatLastMeasurementDate(this.sensorLiveData);
     this.lastMeasurementDateTime$ = IndividualService.formatLastMeasurementDateTime(this.sensorLiveData);
   }
 }
