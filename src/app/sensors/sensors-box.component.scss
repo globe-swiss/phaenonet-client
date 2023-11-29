@@ -29,9 +29,11 @@
     display: grid;
     align-items: grid;
     grid-template-columns: repeat(5, auto);
+
     &--soil {
       color: $soil-color;
     }
+
     &--air {
       color: $air-color;
     }
@@ -44,9 +46,7 @@
   }
 
   &__text {
-    &:last-of-type {
-      padding-right: 10px;
-    }
+    text-align: right;
   }
 
   &__info {
