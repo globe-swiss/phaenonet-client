@@ -434,5 +434,10 @@
   "Vollmast": "fructification complète",
   "Mastausprägung": "Intensité de la fructification",
   "Mastausprägung anhand Beobachtungsanleitung als Kommentar eintragen": "Noter l'intensité de la fructification en commentaire sur la base du guide de terrain",
-  "Mast": "Fructification"
+  "Mast": "Fructification",
+
+  "Boden": "Sol",
+  "Luft": "Air",
+  "Temperatur (Tagesdurchschnitt)": "Humidité (moyenne quotidienne)",
+  "Feuchtigkeit (Tagesdurchschnitt)": "Température (moyenne quotidienne)"
 }
