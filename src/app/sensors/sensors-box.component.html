@@ -1,4 +1,4 @@
-<div class="sensor-box" *ngIf="sensorLiveData">
+<div class="sensor-box" *ngIf="sensorLiveData?.ts">
   <span class="sensor-box__title_line">
     {{ 'Messwerte vom' | translate }}&nbsp;<span>{{ ' ' + lastMeasurementDateTime$ }}</span>
     <div
