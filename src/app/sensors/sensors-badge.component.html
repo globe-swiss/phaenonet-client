@@ -1,4 +1,4 @@
-<div class="sensor-badge" *ngIf="sensorLiveData">
+<div class="sensor-badge" *ngIf="sensorLiveData?.ts">
   <img class="sensor-badge__icon" src="assets/img/ico_temperature.png" />
   <span class="sensor-badge__text sensor-badge__text--air">{{
     sensorLiveData.at ? (sensorLiveData.at | number : '.1-1') + '°C ' : 'n/a'
