@@ -434,5 +434,12 @@
   "Vollmast": "fructification complète",
   "Mastausprägung": "Intensité de la fructification",
   "Mastausprägung anhand Beobachtungsanleitung als Kommentar eintragen": "Noter l'intensité de la fructification en commentaire sur la base du guide de terrain",
-  "Mast": "Fructification"
+  "Mast": "Fructification",
+
+  "Boden": "Sol",
+  "Luft": "Air",
+  "Temperatur (Tagesdurchschnitt)": "Humidité (moyenne quotidienne)",
+  "Feuchtigkeit (Tagesdurchschnitt)": "Température (moyenne quotidienne)",
+  "Messwerte vom": "Valeurs mesurées le",
+  "Werte werden stündlich von Sensoren direkt am Baum gemessen und mit LoRaWAN-Technologie übertragen. PhaenoNet-User können Messgeräte unter info@phaenonet.ch ausleihen.": "Les valeurs sont mesurées toutes les heures par des capteurs placés directement sur l'arbre et transmis par la technologie LoRaWAN. Les utilisateurs de PhaenoNet peuvent emprunter des appareils de mesure en contactant info@phaenonet.ch."
 }

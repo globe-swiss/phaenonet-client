@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
@@ -39,7 +40,8 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     private individualService: IndividualService,
     private masterdataService: MasterdataService,
     private sensorsService: SensorsService,
-    private observationService: ObservationService
+    private observationService: ObservationService,
+    private translateService: TranslateService
   ) {}
   ngOnChanges(_changes: SimpleChanges): void {
     // avoid being executed before nginit()
@@ -71,6 +73,10 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     combineLatest([this.sensorData$, this.observations$, this.individual$, this.resizeEvent$]).subscribe(([s, o, i]) =>
       this.drawChart(s, o, i)
     );
+  }
+
+  translate(key: string) {
+    return String(this.translateService.instant(key));
   }
 
   drawChart(sensorData: DailySensorData[], observations: Observation[], individual: Individual) {
@@ -251,7 +257,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .append('text')
       .attr('x', legendX - legendGapSize)
       .attr('y', 20)
-      .text('Luft')
+      .text(this.translate('Luft'))
       .style('font-size', fontSize);
     svg
       .append('circle')
@@ -263,14 +269,16 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
       .append('text')
       .attr('x', legendX + 15 + legendGapSize)
       .attr('y', 20)
-      .text('Boden')
+      .text(this.translate('Boden'))
       .style('font-size', fontSize);
 
     svg
       .append('text')
       .attr('x', margin.left / 2)
       .attr('y', 20)
-      .text(this.displayTemperature ? 'Temperatur (Tagesdurchschnitt)' : 'Feuchtigkeit (Tagesdurchschnitt)')
+      .text(
+        this.translate(this.displayTemperature ? 'Temperatur (Tagesdurchschnitt)' : 'Feuchtigkeit (Tagesdurchschnitt)')
+      )
       .style('font-size', fontSize);
   }
 }
