@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
 import { BaseDetailComponent } from '../../core/base-detail.component';
@@ -26,7 +25,6 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
     protected individualService: IndividualService,
     public dialog: MatDialog,
     private authService: AuthService,
-    private analytics: AngularFireAnalytics,
     private masterdataService: MasterdataService,
     protected router: Router
   ) {
