@@ -14,7 +14,7 @@ import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest, zip } from 'rxjs';
-import { switchMap, withLatestFrom } from 'rxjs/operators';
+import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { Observation } from 'src/app/observation/observation';
 import { ObservationService } from 'src/app/observation/observation.service';
@@ -83,7 +83,9 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
       combineLatest([
         zip([this.sensorData$, this.observations$]).pipe(withLatestFrom(this.individual$)),
         this.changeEvent$
-      ]).subscribe(([[[s, o], i], _]) => this.drawChart(s, o, i))
+      ])
+        .pipe(tap(([[[s, o], i], _]) => console.log('subs out', s, o, i)))
+        .subscribe(([[[s, o], i], _]) => this.drawChart(s, o, i))
     );
   }
 
@@ -96,6 +98,8 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
   }
 
   drawChart(sensorData: DailySensorData[], observations: Observation[], individual: Individual) {
+    console.log('draw year', sensorData[0].day.getFullYear() + 1, observations[0].year, individual.year);
+    console.log('draw in', sensorData, observations, individual);
     const svg = d3.select<SVGGraphicsElement, unknown>('#individual-header-graph');
 
     const boundingBox = svg.node()?.getBoundingClientRect();
