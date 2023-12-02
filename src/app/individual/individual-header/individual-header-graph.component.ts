@@ -1,10 +1,20 @@
-import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
-import { BehaviorSubject, Observable, ReplaySubject, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest, zip } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { Observation } from 'src/app/observation/observation';
 import { ObservationService } from 'src/app/observation/observation.service';
@@ -19,9 +29,10 @@ import { IndividualService } from '../individual.service';
   templateUrl: './individual-header-graph.component.html',
   styleUrls: ['./individual-header-graph.component.scss']
 })
-export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
+export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Input() individual$: ReplaySubject<Individual>;
   @ViewChild('mapContainer', { static: true }) mapContainer: ElementRef;
+  subscriptions = new Subscription();
 
   // note: colors are also defined in _overwrite-mat.scss
   colors = {
@@ -32,7 +43,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
   initialized = false;
   sensorData$: Observable<DailySensorData[]>;
   observations$: Observable<Observation[]>;
-  resizeEvent$ = new BehaviorSubject(0);
+  changeEvent$ = new BehaviorSubject(0);
   @Input() displayTemperature: boolean;
   @Input() displayHumidity: boolean;
 
@@ -44,35 +55,38 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges {
     private translateService: TranslateService
   ) {}
   ngOnChanges(_changes: SimpleChanges): void {
-    // avoid being executed before nginit()
-    if (this.initialized) {
-      this.scheduleDrawChart();
-    }
+    // re-render the svg on temperature/humidity selection
+    this.changeEvent$.next(1);
   }
 
   @HostListener('window:resize', ['$event'])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onResize(_: UIEvent): void {
     // re-render the svg on window resize
-    this.resizeEvent$.next(1);
+    this.changeEvent$.next(1);
   }
 
   ngOnInit(): void {
     this.sensorData$ = this.individual$.pipe(
-      switchMap(individual => this.sensorsService.getSensorData(this.individualService.composedId(individual)))
+      mergeMap(individual => this.sensorsService.getSensorData(this.individualService.composedId(individual)))
     );
     this.observations$ = this.individual$.pipe(
-      switchMap(individual => this.observationService.listByIndividual(this.individualService.composedId(individual)))
+      mergeMap(individual => this.observationService.listByIndividual(this.individualService.composedId(individual)))
     );
 
-    this.scheduleDrawChart();
-    this.initialized = true;
+    /*
+    To sync the graph we wait till both sensorData$ and observations$ are loaded to
+    use the latest individual$ with this data.
+    On change event the graph is updated instantly.
+    */
+    this.subscriptions.add(
+      combineLatest([zip(this.sensorData$, this.observations$, this.individual$), this.changeEvent$]).subscribe(
+        ([[s, o, i], _]) => this.drawChart(s, o, i)
+      )
+    );
   }
-
-  scheduleDrawChart() {
-    combineLatest([this.sensorData$, this.observations$, this.individual$, this.resizeEvent$]).subscribe(([s, o, i]) =>
-      this.drawChart(s, o, i)
-    );
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   translate(key: string) {
