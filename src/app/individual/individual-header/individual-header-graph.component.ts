@@ -14,7 +14,7 @@ import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest, zip } from 'rxjs';
-import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { mergeMap, tap } from 'rxjs/operators';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { Observation } from 'src/app/observation/observation';
 import { ObservationService } from 'src/app/observation/observation.service';
@@ -68,27 +68,23 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
 
   ngOnInit(): void {
     this.sensorData$ = this.individual$.pipe(
-      switchMap(individual => this.sensorsService.getSensorData(this.individualService.composedId(individual)))
+      mergeMap(individual => this.sensorsService.getSensorData(this.individualService.composedId(individual)))
     );
     this.observations$ = this.individual$.pipe(
-      switchMap(individual => this.observationService.listByIndividual(this.individualService.composedId(individual)))
+      mergeMap(individual => this.observationService.listByIndividual(this.individualService.composedId(individual)))
     );
 
     /*
     To sync the graph we wait till both sensorData$ and observations$ are loaded to
-    use the latest individual$ with this data. individual$ emits multiple times, so we cannot zip them all together.
+    use the latest individual$ with this data.
     On change event the graph is updated instantly.
     */
     this.subscriptions.add(
-      combineLatest([
-        zip([this.sensorData$, this.observations$]).pipe(withLatestFrom(this.individual$)),
-        this.changeEvent$
-      ])
-        .pipe(tap(([[[s, o], i], _]) => console.log('subs out', s, o, i)))
-        .subscribe(([[[s, o], i], _]) => this.drawChart(s, o, i))
+      combineLatest([zip(this.sensorData$, this.observations$, this.individual$), this.changeEvent$])
+        .pipe(tap(([[s, o, i], _]) => console.log('subs out', s, o, i)))
+        .subscribe(([[s, o, i], _]) => this.drawChart(s, o, i))
     );
   }
-
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
