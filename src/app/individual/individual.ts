@@ -46,7 +46,9 @@ export function isMapindividual(individual: MapIndividual | Individual): individ
 }
 
 export function hasSensor(individual: MapIndividual | Individual): boolean {
-  return isMapindividual(individual) ? individual.has_sensor : individual.sensor !== undefined;
+  return isMapindividual(individual)
+    ? individual.has_sensor
+    : individual.sensor !== undefined || individual.deveui !== undefined;
 }
 
 export interface MapIndividual extends IdLike {
