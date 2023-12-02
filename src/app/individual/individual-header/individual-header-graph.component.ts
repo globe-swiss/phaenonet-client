@@ -93,6 +93,10 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
     return String(this.translateService.instant(key));
   }
 
+  isMobile(width: number) {
+    return width <= 650;
+  }
+
   drawChart(sensorData: DailySensorData[], observations: Observation[], individual: Individual) {
     const svg = d3.select<SVGGraphicsElement, unknown>('#individual-header-graph');
 
@@ -105,9 +109,9 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
     const width = boundingBox.width - margin.left - margin.right;
     const height = boundingBox.height - (margin.top + margin.bottom);
 
-    const legendX = width > 650 ? width / 2 : width - 25;
-    const fontSize = width > 650 ? '15px' : '12px';
-    const legendGapSize = width > 650 ? 30 : 20;
+    const legendX = this.isMobile(width) ? width - 25 : width / 2;
+    const fontSize = this.isMobile(width) ? '12px' : '15px';
+    const legendGapSize = this.isMobile(width) ? 20 : 30;
 
     const xScale = d3Scale
       .scaleTime()
@@ -136,6 +140,11 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
       .range([height, 0])
       .nice();
     const humidityAxis = d3Axis.axisLeft(humidityScale);
+
+    if (this.isMobile(width)) {
+      tempAxis.ticks(5);
+      humidityAxis.ticks(5);
+    }
 
     const airTemperatureLine = d3
       .line<DailySensorData>()
