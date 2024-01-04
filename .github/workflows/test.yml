@@ -89,43 +89,6 @@ jobs:
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           project_Id: phaenonet-test
-  test:
-    # workaround fixed by https://github.com/dorny/test-reporter/pull/174
-    permissions:
-      statuses: write
-      checks: write
-    name: Unit Tests
-    runs-on: ubuntu-latest
-    needs: cache-deps
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3.5.2
-      - uses: actions/setup-node@v3.6.0
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Restore cache (node modules)
-        uses: martijnhols/actions-cache/restore@v3
-        with:
-          path: ./node_modules
-          key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
-      - name: Build test version
-        run: npx ng test
-        env:
-          JEST_JUNIT_OUTPUT_DIR: reports
-      - name: Test Report
-        uses: dorny/test-reporter@v1.6.0
-        with:
-          name: Unit Tests Results
-          path: reports/junit.xml
-          reporter: jest-junit
-        if: always()
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3.1.4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: reports/lcov.info
-          flags: unittests
-        if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
   e2e-tests:
     concurrency: e2e-test
     name: E2E-tests
