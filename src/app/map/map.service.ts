@@ -43,27 +43,29 @@ export class MapService {
       .valueChanges()
       .pipe(
         first(), // do not subscribe to changes
-        map(x => this.convertIndividuals(x)),
+        map(mapData => this.convertIndividuals(mapData)),
+        map(mapIndividuals => this.filterMapIndividuals(mapIndividuals)),
         tap(() => this.fds.addRead('maps'))
       );
+  }
+
+  filterMapIndividuals(mapIndividuals: MapIndividual[]): MapIndividual[] {
+    return mapIndividuals.filter(mapIndividual => mapIndividual.last_phenophase || mapIndividual.station_species);
   }
 
   public convertIndividuals(mapData: MapData): MapIndividual[] {
     const result = Array<MapIndividual & IdLike>();
     Object.entries(mapData.data).forEach(([k, v]) => {
-      // omit individuals without phenophase
-      if (!(v.t == 'individual' && !v.p)) {
-        result.push({
-          id: k,
-          geopos: v.g,
-          source: v.so,
-          type: v.t,
-          species: v.sp,
-          station_species: v.ss,
-          last_phenophase: v.p,
-          has_sensor: v.hs ?? false
-        });
-      }
+      result.push({
+        id: k,
+        geopos: v.g,
+        source: v.so,
+        type: v.t,
+        species: v.sp,
+        station_species: v.ss,
+        last_phenophase: v.p,
+        has_sensor: v.hs ?? false
+      });
     });
     return result;
   }
