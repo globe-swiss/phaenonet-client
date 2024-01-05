@@ -82,8 +82,6 @@ export class IndividualHeaderMapComponent implements OnInit {
       .subscribe(i => {
         if (i.geopos) {
           this.geoposService.update(new google.maps.LatLng(i.geopos));
-        } else {
-          this.geoposService.init();
         }
       });
 
