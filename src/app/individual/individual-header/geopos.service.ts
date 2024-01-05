@@ -3,34 +3,34 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class GeoposService {
-  readonly initialGeopos: google.maps.LatLngLiteral = { lat: 46.818188, lng: 8.227512 };
-  private center: BehaviorSubject<google.maps.LatLngLiteral> = new BehaviorSubject(this.initialGeopos);
-  private geopos: BehaviorSubject<google.maps.LatLngLiteral> = new BehaviorSubject(this.initialGeopos);
+  private geopos: BehaviorSubject<google.maps.LatLngLiteral> = new BehaviorSubject({ lat: 47.164364, lng: 8.518581 });
   private altitude: BehaviorSubject<number> = new BehaviorSubject(0);
-  center$ = this.center.asObservable();
   geopos$ = this.geopos.asObservable();
   altitude$ = this.altitude.asObservable();
 
   elevator = new google.maps.ElevationService();
 
-  init(): void {
-    this.update(new google.maps.LatLng(this.initialGeopos));
+  constructor() {
+    this.updateAltitude();
   }
 
   update(latLng: google.maps.LatLng): void {
     this.geopos.next(latLng.toJSON());
-    this.center.next(latLng.toJSON());
-    this.updateAltitude(latLng);
+    this.updateAltitude();
   }
 
-  private updateAltitude(latLng: google.maps.LatLng): void {
-    this.elevator.getElevationForLocations({ locations: [latLng] }, (results, status) => {
-      if (status === 'OK') {
+  private updateAltitude(): void {
+    this.elevator
+      .getElevationForLocations({ locations: [this.geopos.value] })
+      .then(({ results }) => {
         if (results[0]) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
           this.altitude.next(Math.round(results[0].elevation));
+        } else {
+          console.error(`Elevation service no results found for: ${JSON.stringify(this.geopos.value)}`);
         }
-      }
-    });
+      })
+      .catch(e => console.error(e));
   }
 
   getAltitude(): number {

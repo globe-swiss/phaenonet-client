@@ -4,7 +4,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { some } from 'fp-ts/lib/Option';
-import { BehaviorSubject, combineLatest, Observable, ReplaySubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { AlertService } from 'src/app/messaging/alert.service';
 import { UserService } from 'src/app/profile/user.service';
@@ -18,8 +18,8 @@ import { MasterdataService } from '../../../masterdata/masterdata.service';
 import { Shade } from '../../../masterdata/shade';
 import { Species } from '../../../masterdata/species';
 import { Individual } from '../../individual';
-import { IndividualService } from '../../individual.service';
 import { GeoposService } from '../../individual-header/geopos.service';
+import { IndividualService } from '../../individual.service';
 
 @Component({
   selector: 'app-individual-edit-view',

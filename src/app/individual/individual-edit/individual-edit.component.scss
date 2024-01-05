@@ -9,6 +9,7 @@
 
   &__content {
     @include detail-view-content;
+    margin-top: 40px;
   }
 
   &__left-content {

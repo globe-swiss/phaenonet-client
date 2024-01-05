@@ -25,7 +25,7 @@ Scenario('test individual details', async ({ I, individualsPage, e2eTestUser }) 
   I.see(e2eTestUser.nickname, individualsPage.description.owner);
 
   I.see('Stadt', individualsPage.description.descriptionFields.environment);
-  I.see('1504', individualsPage.description.descriptionFields.altitude);
+  I.see('455', individualsPage.description.descriptionFields.altitude);
   I.see('Nord', individualsPage.description.descriptionFields.exposition);
   I.see('42', individualsPage.description.descriptionFields.gradient);
   I.see('beschattet', individualsPage.description.descriptionFields.shadow);
