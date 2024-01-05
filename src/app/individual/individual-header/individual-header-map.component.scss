@@ -40,13 +40,12 @@
     height: 100%;
   }
 
-  &__fab {
-    margin-left: 90%;
+  &__locate-me {
+    position: relative;
     bottom: 28px;
     width: 70px;
-    height: 70px;
-    @include for-tablet-and-smaller {
-      margin-left: 70%;
-    }
+    height: 0;
+    margin-left: auto;
+    margin-right: 40px;
   }
 }
