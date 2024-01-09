@@ -438,8 +438,8 @@
 
   "Boden": "Suolo",
   "Luft": "Aria",
-  "Temperatur (Tagesdurchschnitt)": "Umidità (media giornaliera)",
-  "Feuchtigkeit (Tagesdurchschnitt)": "Temperatura (media giornaliera)",
+  "Temperatur (Tagesdurchschnitt)": "Temperatura (media giornaliera)",
+  "Feuchtigkeit (Tagesdurchschnitt)": "Umidità (media giornaliera)",
   "Messwerte vom": "Valori misurati il",
   "Werte werden stündlich von Sensoren direkt am Baum gemessen und mit LoRaWAN-Technologie übertragen. PhaenoNet-User können Messgeräte unter info@phaenonet.ch ausleihen.": "I valori vengono misurati ogni ora da sensori posti direttamente sull'albero e trasmessi tramite la tecnologia LoRaWAN. Gli utenti di PhaenoNet possono prendere in prestito i dispositivi di misurazione contattando info@phaenonet.ch."
 }
