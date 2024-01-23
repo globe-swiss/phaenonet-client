@@ -58,8 +58,19 @@ Scenario('test individual with image', async ({ I, individualsPage }) => {
   await I.checkVisual('individual_test-image', 0, false, { retries: 5, wait: 0.5 });
 }).tag('visual');
 
-Scenario.todo('test individual with sensor', () => {
-  // check switching between views
-  // check timeseries toggles
-  // check display of sensor data
+Scenario('test individual with sensor map', async ({ I, individualsPage }) => {
+  I.visit(individualsPage, individualsPage.url('2018_721'));
+  await I.checkVisual('individual_test-sensor-map', 0, false, { retries: 5, wait: 0.5 });
+}).tag('visual');
+
+Scenario('test individual with sensor humidity', async ({ I, individualsPage }) => {
+  I.visit(individualsPage, individualsPage.url('2018_721'));
+  I.click(individualsPage.map.humidityButton);
+  await I.checkVisual('individual_test-sensor-humidity', 0, false, { retries: 5, wait: 0.5 });
+}).tag('visual');
+
+Scenario('test individual with sensor temperature', async ({ I, individualsPage }) => {
+  I.visit(individualsPage, individualsPage.url('2018_721'));
+  I.click(individualsPage.map.temperatureButton);
+  await I.checkVisual('individual_test-sensor-temperature', 0, false, { retries: 5, wait: 0.5 });
 }).tag('visual');

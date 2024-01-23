@@ -59,6 +59,11 @@ module.exports = {
       deleteButton: { css: '[data-test-id=deleteButton]' }
     }
   },
+  map: {
+    mapButton: { css: '[data-test-id=mapButton]' },
+    humidityButton: { css: '[data-test-id=humidityButton]' },
+    temperatureButton: { css: '[data-test-id=temperatureButton]' }
+  },
   followButton: { css: '[data-test-id=followButton]' },
   unfollowButton: { css: '[data-test-id=unfollowButton]' },
   editButton: { css: 'app-individual-description-buttons #edit-button' },
