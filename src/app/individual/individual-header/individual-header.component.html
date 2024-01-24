@@ -8,7 +8,7 @@
     [individual$]="individual$"
     *ngIf="mapOrGraph !== 'Map'"
   ></app-individual-header-graph>
-  <div style="position: relative" *ngIf="mode === 'detail' && (individual$ | async)?.sensor">
+  <div class="individual-header__button-row" *ngIf="mode === 'detail' && (individual$ | async)?.sensor">
     <button
       mat-fab
       (click)="mapOrGraph = 'Map'"
@@ -22,7 +22,7 @@
       mat-fab
       (click)="mapOrGraph = 'Temperature'"
       class="individual-header__button individual-header__button--humidity"
-      data-test-id="humidityButton"
+      data-test-id="temperatureButton"
       [color]="mapOrGraph === 'Temperature' ? 'selected' : ''"
     >
       <mat-icon svgIcon="temperature"></mat-icon>
@@ -31,7 +31,7 @@
       mat-fab
       (click)="mapOrGraph = 'Humidity'"
       class="individual-header__button individual-header__button--temp"
-      data-test-id="temperatureButton"
+      data-test-id="humidityButton"
       [color]="mapOrGraph === 'Humidity' ? 'selected' : ''"
     >
       <mat-icon svgIcon="humidity"></mat-icon>

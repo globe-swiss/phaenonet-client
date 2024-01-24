@@ -303,5 +303,8 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
         this.translate(this.displayTemperature ? 'Temperatur (Tagesdurchschnitt)' : 'Feuchtigkeit (Tagesdurchschnitt)')
       )
       .style('font-size', fontSize);
+
+    // correct axis ticks font
+    svg.selectAll('.tick text').style('font-family', "'Open Sans', sans-serif");
   }
 }

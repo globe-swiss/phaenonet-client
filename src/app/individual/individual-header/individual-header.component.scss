@@ -18,20 +18,13 @@
     }
   }
 
-  &__select-map {
+  &__button-row {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-  }
-
-  &__select-graph {
-    margin-right: 0.5rem;
-    margin-top: 0.5rem;
   }
 
   &__button {
     position: relative;
-    top: -25px;
+    bottom: 28px;
 
     &--graph {
       left: 20px;
@@ -44,12 +37,6 @@
     &--humidity {
       left: 40px;
     }
-  }
-
-  &__grap-selection {
-    display: flex;
-    flex-direction: column;
-    padding: 5px;
   }
 
   ::ng-deep #phaenonet-body &__select {
@@ -70,6 +57,7 @@
     }
   }
 }
+
 .mat-selected {
   background-color: #7bb53b;
   color: #ffffff;

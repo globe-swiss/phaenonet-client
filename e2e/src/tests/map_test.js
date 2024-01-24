@@ -54,7 +54,12 @@ Scenario.todo('test marker img', () => {
   // test visual element
 }).tag('visual');
 
-Scenario.todo('test marker with sensor', () => {
+Scenario.todo('test marker with sensor no img', () => {
+  // click marker with no image
+  // test visual element
+}).tag('visual');
+
+Scenario.todo('test marker with sensor img', () => {
   // click marker with image
   // test visual element
 }).tag('visual');
