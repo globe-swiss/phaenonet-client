@@ -5,7 +5,8 @@ Scenario('test navbar content present', ({ I, navbarComponent }) => {
   I.waitForComponents(navbarComponent);
 });
 
-Scenario('test register/profile', async ({ I, navbarComponent, e2eTestUser, privateProfilePage }) => {
+Scenario.todo('test register/profile', async ({ I, navbarComponent, e2eTestUser, privateProfilePage }) => {
+  // DISABLED: rework this test when it is possible to check components/parts of the webpage visually with resemble
   I.amOnPage(`/profile/${e2eTestUser.id}`);
   I.waitForText('Anmelden', 10, navbarComponent.signinProfileButton);
   await I.checkVisual('navigation_bar-pre-login');

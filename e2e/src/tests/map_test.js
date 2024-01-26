@@ -45,6 +45,15 @@ Scenario('test regression on map markers for 2018', ({ I, mapPage }) => {
 });
 
 Scenario.todo('test marker no img', () => {
+  /** v3.5.10
+  Now we expose the WebElements that are returned by the WebHelper and you could make the subsequence actions on them.
+
+  // Playwright helper would return the Locator
+
+  I.amOnPage('/form/focus_blur_elements');
+  const webElements = await I.grabWebElements('#button');
+  webElements[0].click();
+  */
   // click marker without image
   // test visual element
 }).tag('visual');
