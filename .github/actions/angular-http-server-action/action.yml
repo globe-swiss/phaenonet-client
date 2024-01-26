@@ -10,7 +10,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v3.6.0
+    - uses: actions/setup-node@v4.0.1
       with:
         node-version: ${{ env.NODE_VERSION }}
     - run: npx angular-http-server --path ${{ inputs.path }} --p ${{ inputs.port }} &

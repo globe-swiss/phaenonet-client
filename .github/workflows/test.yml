@@ -9,7 +9,7 @@ on:
 env:
   NODE_VERSION: '18'
   CACHE_SEQ: 1
-  REVIEWDOG_VERSION: 'v0.14.2'
+  REVIEWDOG_VERSION: 'v0.17.0'
 
 jobs:
   cache-deps:
@@ -17,8 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.5.2
-      - uses: actions/setup-node@v3.6.0
+        uses: actions/checkout@v4.1.1
+      - uses: actions/setup-node@v4.0.1
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Check cache (node modules)
@@ -42,8 +42,8 @@ jobs:
     needs: cache-deps
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.5.2
-      - uses: actions/setup-node@v3.6.0
+        uses: actions/checkout@v4.1.1
+      - uses: actions/setup-node@v4.0.1
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Restore cache (node modules)
@@ -77,7 +77,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v4.1.1
       - name: Download Build Artifact
         uses: ./.github/actions/download-zip-artifact
         with:
@@ -102,8 +102,8 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.5.2
-      - uses: actions/setup-node@v3.6.0
+        uses: actions/checkout@v4.1.1
+      - uses: actions/setup-node@v4.0.1
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Download Build Artifact
@@ -145,8 +145,8 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.5.2
-      - uses: actions/setup-node@v3.6.0
+        uses: actions/checkout@v4.1.1
+      - uses: actions/setup-node@v4.0.1
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Restore cache (node modules)
@@ -156,7 +156,7 @@ jobs:
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
       - name: install codeceptjs deps
         run: npm --prefix e2e ci
-      - uses: reviewdog/action-setup@v1
+      - uses: reviewdog/action-setup@v1.2.0
         with:
           reviewdog_version: ${{ env.REVIEWDOG_VERSION }}
       - name: check map icon completeness
