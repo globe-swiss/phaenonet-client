@@ -4,7 +4,7 @@
 <div class="change-email-dialog">
   <h2 mat-dialog-title>{{ 'LOGIN E-MAIL ÄNDERN' | translate }}</h2>
   <div mat-dialog-content>
-    <form [formGroup]="changeEmailForm" fxLayout="column">
+    <form [formGroup]="changeEmailForm">
       <mat-form-field class="full-width">
         <mat-label>{{ 'Neue E-Mail' | translate }} </mat-label>
         <input matInput type="text" formControlName="email" id="newemail" email required />
