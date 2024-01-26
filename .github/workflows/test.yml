@@ -23,7 +23,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       - name: Check cache (node modules)
         id: cache
-        uses: martijnhols/actions-cache/check@v3
+        uses: martijnhols/actions-cache/check@v3.0.11b
         with:
           path: ./node_modules
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
@@ -32,7 +32,7 @@ jobs:
         run: npm ci --include=dev
       - name: Save cache (node modules)
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: martijnhols/actions-cache/save@v3
+        uses: martijnhols/actions-cache/save@v3.0.11b
         with:
           path: ./node_modules
           key: ${{ steps.cache.outputs.primary-key }}
@@ -47,7 +47,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Restore cache (node modules)
-        uses: martijnhols/actions-cache/restore@v3
+        uses: martijnhols/actions-cache/restore@v3.0.11b
         with:
           path: ./node_modules
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
@@ -150,7 +150,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Restore cache (node modules)
-        uses: martijnhols/actions-cache/restore@v3
+        uses: martijnhols/actions-cache/restore@v3.0.11b
         with:
           path: ./node_modules
           key: module-${{ env.NODE_VERSION }}-${{ env.CACHE_SEQ }}-${{ hashFiles('package-lock.json') }}
