@@ -190,7 +190,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
 
     svg.selectAll('*').remove();
 
-    const margin: Margin = { top: 20, right: 20, bottom: 30, left: 160 };
+    const margin: Margin = { top: 20, right: 20, bottom: 30, left: 130 };
     const offsetLeft = this.statisticsContainer.nativeElement.offsetLeft;
     const offsetTop = this.statisticsContainer.nativeElement.offsetTop;
     const width = boundingBox.width - margin.left - margin.right;
@@ -336,6 +336,8 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
             .format(width >= 740 ? 'MMMM' : 'MM')
         )
       );
+
+    svg.selectAll('.tick text').style('font-family', "'Open Sans', sans-serif");
   }
 
   private drawVerticalLines(
