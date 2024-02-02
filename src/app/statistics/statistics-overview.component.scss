@@ -20,24 +20,36 @@
     display: flex;
     flex-direction: row;
 
-    @include for-tablet-and-smaller {
-      .mat-form-field {
-        width: 6rem;
-        font-size: var(--t3-size);
-        margin-bottom: 0;
-      }
-
-      .statistics-info-button {
-        margin-top: 1rem;
-      }
-    }
-
     mat-form-field {
       margin: 1rem;
     }
 
     .statistics-info-button {
       margin-top: 2rem;
+    }
+
+    @include for-tablet-and-smaller {
+      .mat-form-field {
+        width: 6rem;
+        font-size: 0.875rem;
+        margin-bottom: 0;
+      }
+
+      .statistics-info-button {
+        margin-top: 1.5rem;
+      }
+    }
+
+    @include for-phone {
+      .mat-form-field {
+        width: 3.5rem;
+        font-size: 0.75rem;
+        margin-bottom: 0;
+      }
+
+      .statistics-info-button {
+        margin-top: 1.2rem;
+      }
     }
   }
 }
