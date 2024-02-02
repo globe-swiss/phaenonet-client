@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { RouterModule } from '@angular/router';
@@ -34,7 +33,6 @@ import { SensorsBoxComponent } from '../sensors/sensors-box.component';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule,
     GoogleMapsModule
   ],
   declarations: [
@@ -65,7 +63,6 @@ import { SensorsBoxComponent } from '../sensors/sensors-box.component';
     CopyClipboardDirective,
     RouterModule,
     TranslateModule,
-    FlexLayoutModule,
     GoogleMapsModule,
     RoundPipe,
     ShortdatePipe,

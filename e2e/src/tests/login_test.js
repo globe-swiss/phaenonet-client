@@ -45,4 +45,4 @@ Scenario('Reset password', async ({ I, loginPage, resetPasswordPage }) => {
   I.click(loginPage.resetPasswordLink);
   I.fillField(resetPasswordPage.fields.email, 'test@example.com');
   await I.checkVisual('reset-password');
-}).tag('visual'); // screen currently broken
+}).tag('visual');

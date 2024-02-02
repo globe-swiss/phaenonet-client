@@ -1,4 +1,4 @@
-<div fxLayout="row" [routerLink]="['/individuals', activity.individual_id]" class="activity-item__card">
+<div [routerLink]="['/individuals', activity.individual_id]" class="activity-item__card">
   <img [alt]="activity.species" [src]="getIcon()" width="55" height="60" style="vertical-align: center" />
   <div>
     <div class="activity-item__label" style="margin-top: 0">

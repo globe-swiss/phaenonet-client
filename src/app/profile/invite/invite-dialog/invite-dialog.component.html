@@ -4,7 +4,7 @@
 <div class="invite-dialog">
   <h2 mat-dialog-title>{{ 'PERSON EINLADEN' | translate }}</h2>
   <div mat-dialog-content>
-    <form [formGroup]="inviteForm" fxLayout="column">
+    <form [formGroup]="inviteForm">
       <mat-form-field class="full-width">
         <mat-label>{{ 'E-Mail' | translate }} </mat-label>
         <input matInput type="text" formControlName="email" id="invitemail" autocomplete="off" email required />

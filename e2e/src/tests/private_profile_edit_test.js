@@ -3,7 +3,6 @@ Feature('Private Profile Edit');
 Scenario('test edit profile', async ({ I, profileEditPage, e2eTestUser }) => {
   I.login();
   I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
-  // I.waitForElement(profileEditPage.saveButton);
   await I.checkVisual('private_profile_edit');
 }).tag('visual');
 
@@ -39,5 +38,16 @@ Scenario('test select languages', ({ I, profileEditPage, e2eTestUser }) => {
   I.see('Speichern');
 });
 
-Scenario.todo('test edit profile email').tag('visual');
-Scenario.todo('test edit profile password').tag('visual');
+Scenario('test edit profile email', async ({ I, profileEditPage, e2eTestUser }) => {
+  I.login();
+  I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
+  I.click(profileEditPage.editEmailIcon);
+  await I.checkVisual('private_profile_edit-edit_email');
+}).tag('visual');
+
+Scenario('test edit profile password', async ({ I, profileEditPage, e2eTestUser }) => {
+  I.login();
+  I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
+  I.click(profileEditPage.editPasswordIcon);
+  await I.checkVisual('private_profile_edit-edit_password');
+}).tag('visual');

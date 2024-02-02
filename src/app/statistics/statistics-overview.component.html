@@ -1,12 +1,5 @@
-<div gdColumns="repeat(8, 1fr)" class="statistics-overview">
-  <div
-    #statisticsContainer
-    class="chart-view"
-    gdColumn="2 / span 6"
-    gdColumn.lt-md="1 / span 8"
-    width="100%"
-    height="100%"
-  >
+<div class="statistics-overview">
+  <div #statisticsContainer class="chart-view">
     <div class="statistics-filter">
       <div>
         <form [formGroup]="filter">
@@ -55,7 +48,7 @@
         </form>
       </div>
     </div>
-    <svg width="100%" height="100%"></svg>
+    <svg id="statistics-graph" width="100%" height="100%"></svg>
     <div id="tooltip" class="hidden">
       <p><strong id="title">Phenophase</strong></p>
       <p><span id="value"></span></p>

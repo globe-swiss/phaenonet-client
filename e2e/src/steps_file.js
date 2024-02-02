@@ -63,6 +63,9 @@ module.exports = function () {
       this.waitForComponents(components || page.components || []);
     },
     async checkVisual(filename, tolerance = 0, prepareBaseImage = false, retryParams = { retries: 3, wait: 0.2 }) {
+      if (prepareBaseImage) {
+        this.wait(5);
+      }
       await retrySteps(
         this,
         I => {

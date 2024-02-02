@@ -1,3 +1,16 @@
 .root {
   height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 6rem 1fr;
+}
+
+.app-nav {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.content {
+  grid-row: 2;
+  grid-column: 1;
 }

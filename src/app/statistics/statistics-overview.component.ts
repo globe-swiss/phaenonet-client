@@ -1,5 +1,4 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { AbstractControl, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import * as d3Axis from 'd3-axis';
@@ -16,6 +15,7 @@ import { SourceFilterType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
 import { Observation } from '../observation/observation';
 import { formatShortDate } from '../shared/formatDate';
+import { AltitudeGroup } from './altitude-group';
 import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
 import { AnalyticsValue } from './analytics-value';
@@ -47,7 +47,7 @@ const allYear = 'all';
   styleUrls: ['./statistics-overview.component.scss']
 })
 export class StatisticsOverviewComponent implements OnInit, OnDestroy {
-  @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef;
+  @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef<HTMLDivElement>;
 
   availableYears: number[];
   selectableYears$: Observable<string[]>;
@@ -60,20 +60,6 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
   private redraw$ = new Subject();
   private subscription = new Subscription();
 
-  private margin: Margin = { top: 20, right: 20, bottom: 30, left: 160 };
-
-  private width: number;
-  private height: number;
-
-  private offsetLeft: number;
-  private offsetTop: number;
-
-  private svg: any;
-
-  private x: any;
-  private y: any;
-  private g: any;
-
   private year: number | null; // null if all year
   private data: Analytics[];
 
@@ -82,8 +68,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
     private statisticsService: StatisticsService,
     private masterdataService: MasterdataService,
     private formPersistanceService: FormPersistenceService,
-    private translateService: TranslateService,
-    private analytics: AngularFireAnalytics
+    private translateService: TranslateService
   ) {}
 
   @HostListener('window:resize', ['$event'])
@@ -99,7 +84,6 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.navService.setLocation('Auswertungen');
-    void this.analytics.logEvent('statistics.view');
 
     if (!this.formPersistanceService.statisticFilter) {
       this.selectedYear = new UntypedFormControl();
@@ -174,16 +158,6 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
 
             this.year = year === allYear ? null : parseInt(year, 10);
 
-            // only report an event if filter is not the default
-            if (this.year !== this.masterdataService.getPhenoYear() || datasource !== 'all' || species !== 'all') {
-              void this.analytics.logEvent('statistics.filter', {
-                year: this.year,
-                source: datasource,
-                species: species,
-                type: analyticsType,
-                current: this.year === this.masterdataService.getPhenoYear()
-              });
-            }
             return this.statisticsService.listByYear(year, analyticsType, datasource, species);
           }),
           map(results => {
@@ -210,18 +184,19 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
   }
 
   private drawChart() {
-    this.svg = d3.select('svg');
+    const svg = d3.select<SVGGraphicsElement, unknown>('#statistics-graph');
 
-    this.svg.selectAll('*').remove();
+    const boundingBox = svg.node()?.getBoundingClientRect();
 
-    this.offsetLeft = this.statisticsContainer.nativeElement.offsetLeft;
-    this.offsetTop = this.statisticsContainer.nativeElement.offsetTop;
+    svg.selectAll('*').remove();
 
-    this.width = this.statisticsContainer.nativeElement.offsetWidth - this.margin.left - this.margin.right;
-    this.height = this.statisticsContainer.nativeElement.offsetHeight - this.margin.top - this.margin.bottom;
-    this.g = this.svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
-
-    this.x = d3Scale.scaleLinear().domain([-30, 395]).range([0, this.width]).nice();
+    const margin: Margin = { top: 20, right: 20, bottom: 30, left: 130 };
+    const offsetLeft = this.statisticsContainer.nativeElement.offsetLeft;
+    const offsetTop = this.statisticsContainer.nativeElement.offsetTop;
+    const width = boundingBox.width - margin.left - margin.right;
+    const height = boundingBox.height - (margin.top + margin.bottom);
+    const xScale = d3Scale.scaleLinear().domain([-30, 395]).range([0, width]).nice();
+    const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     const domain = this.data.map(analytics => analytics.species);
     const subdomain = !this.year
@@ -230,7 +205,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
 
     const resultingDomain = [];
     domain.forEach(species => {
-      subdomain.forEach(subdomainKey => {
+      subdomain.forEach((subdomainKey: number | AltitudeGroup) => {
         if (subdomainKey) {
           resultingDomain.push(`${species}-${subdomainKey}`);
         } else {
@@ -239,60 +214,66 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
       });
     });
 
-    this.y = d3Scale.scaleBand().domain(resultingDomain).rangeRound([0, this.height]).padding(0.4);
+    const y = d3Scale.scaleBand().domain(resultingDomain).rangeRound([0, height]).padding(0.4);
 
     this.data.forEach(analytics => {
-      this.g
-        .selectAll('.horizontalLines')
+      analytics.values.sort((a, b) => a.min.getTime() - b.min.getTime());
+      g.selectAll('.horizontalLines')
         .data(analytics.values)
         .enter()
         .append('line')
-        .attr('x1', d => this.x(this.toX(analytics.year, d.min)))
-        .attr('x2', d => this.x(this.toX(analytics.year, d.max)))
-        .attr('y1', d => this.y(this.toKey(analytics)) + this.y.bandwidth() / 2)
-        .attr('y2', d => this.y(this.toKey(analytics)) + this.y.bandwidth() / 2)
+        .attr('x1', d => xScale(this.dateToX(analytics.year, d.min)))
+        .attr('x2', d => xScale(this.dateToX(analytics.year, d.max)))
+        .attr('y1', _ => y(this.toKey(analytics)) + y.bandwidth() / 2)
+        .attr('y2', _ => y(this.toKey(analytics)) + y.bandwidth() / 2)
         .attr('stroke', d => this.getColor(d.phenophase))
         .attr('stroke-width', 1)
         .style('opacity', 0.7)
         .attr('fill', 'none');
 
       this.drawVerticalLines(
+        g,
+        y,
         '.median',
         analytics,
-        d => this.x(this.toX(analytics.year, d.median)),
-        d => this.x(this.toX(analytics.year, d.median)),
+        d => xScale(this.dateToX(analytics.year, d.median)),
+        d => xScale(this.dateToX(analytics.year, d.median)),
         d => this.getColor(d.phenophase)
       );
 
       this.drawVerticalLines(
+        g,
+        y,
         '.whiskersMin',
         analytics,
-        d => this.x(this.toX(analytics.year, d.min)),
-        d => this.x(this.toX(analytics.year, d.min)),
+        d => xScale(this.dateToX(analytics.year, d.min)),
+        d => xScale(this.dateToX(analytics.year, d.min)),
         d => this.getColor(d.phenophase)
       );
 
       this.drawVerticalLines(
+        g,
+        y,
         '.whiskersMax',
         analytics,
-        d => this.x(this.toX(analytics.year, d.max)),
-        d => this.x(this.toX(analytics.year, d.max)),
+        d => xScale(this.dateToX(analytics.year, d.max)),
+        d => xScale(this.dateToX(analytics.year, d.max)),
         d => this.getColor(d.phenophase)
       );
 
-      const self = this;
-      this.g
-        .selectAll('.rect')
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      const self = this; // onMouseOver needs inner as well as outer scope
+      g.selectAll('.rect')
         .data(analytics.values)
         .enter()
         .append('rect')
-        .attr('height', this.y.bandwidth())
+        .attr('height', y.bandwidth())
         .attr(
           'width',
-          d => this.x(this.toX(analytics.year, d.quantile_75)) - this.x(this.toX(analytics.year, d.quantile_25))
+          d => xScale(this.dateToX(analytics.year, d.quantile_75)) - xScale(this.dateToX(analytics.year, d.quantile_25))
         )
-        .attr('x', d => this.x(this.toX(analytics.year, d.quantile_25)))
-        .attr('y', d => this.y(this.toKey(analytics)))
+        .attr('x', d => xScale(this.dateToX(analytics.year, d.quantile_25)))
+        .attr('y', _ => y(this.toKey(analytics)))
         .attr('fill', d => this.getColor(d.phenophase))
         .style('opacity', 0.7)
         .attr('stroke', '#262626')
@@ -300,30 +281,32 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
         .on('mouseover', function (d) {
           const xPosition =
             parseFloat(d3.select(this).attr('x')) +
-            self.margin.left +
-            self.offsetLeft -
+            margin.left +
+            offsetLeft -
             parseFloat(d3.select(this).attr('width')) / 2;
 
-          const yPosition = parseFloat(d3.select(this).attr('y')) + self.margin.top + self.offsetTop;
+          const yPosition = parseFloat(d3.select(this).attr('y')) + margin.top + offsetTop;
 
           d3.select('#tooltip')
-            .style('left', xPosition + 'px')
-            .style('top', yPosition + 'px')
+            .style('left', `${xPosition}px`)
+            .style('top', `${yPosition}px`)
             .select('#value')
-            .text('' + formatShortDate(d.quantile_25) + ' - ' + formatShortDate(d.quantile_75));
+            .text(`${formatShortDate(d.quantile_25)} - ${formatShortDate(d.quantile_75)}`);
 
           d3.select('#tooltip')
-            .style('left', xPosition + 'px')
-            .style('top', yPosition + 'px')
+            .style('left', `${xPosition}px`)
+            .style('top', `${yPosition}px`)
             .select('#median')
-            .text(self.translateService.instant('Median:') + ' ' + formatShortDate(d.median));
+            .text(`${self.translateService.instant('Median:') as string} ${formatShortDate(d.median)}`);
 
           self.masterdataService
             .getPhenophaseValue(analytics.species, d.phenophase)
             .pipe(
               first(),
               map(phenophase => {
-                d3.select('#tooltip').select('#title').text(self.translateService.instant(phenophase.de));
+                d3.select('#tooltip')
+                  .select('#title')
+                  .text(self.translateService.instant(phenophase.de) as string);
 
                 d3.select('#tooltip').classed('hidden', false);
               })
@@ -335,35 +318,43 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
         });
     });
 
-    const axisLeft = d3Axis.axisLeft(this.y).tickFormat(t => this.translateLeftAxisTick(t.toString()));
-    this.g.append('g').call(axisLeft);
+    const axisLeft = d3Axis.axisLeft(y).tickFormat(t => this.translateLeftAxisTick(t.toString()));
+    g.append('g').call(axisLeft);
 
     const tickYear = this.masterdataService.getPhenoYear();
     const xTicks = d3Time
       .timeMonths(new Date(tickYear - 1, 11, 1), new Date(tickYear + 1, 0, 31))
-      .map(d => this.toX(tickYear, d));
+      .map(d => this.dateToX(tickYear, d));
 
-    const axisBottom = d3Axis.axisBottom(this.x);
-    this.g
-      .append('g')
-      .attr('transform', 'translate(' + 0 + ',' + this.height + ')')
-      .call(axisBottom.tickValues(xTicks).tickFormat(t => moment().dayOfYear(+t).format('MMMM')));
+    const axisBottom = d3Axis.axisBottom(xScale);
+    g.append('g')
+      .attr('transform', `translate(0, ${height})`)
+      .call(
+        axisBottom.tickValues(xTicks).tickFormat(t =>
+          moment()
+            .dayOfYear(+t)
+            .format(width >= 740 ? 'MMMM' : 'MM')
+        )
+      );
+
+    svg.selectAll('.tick text').style('font-family', "'Open Sans', sans-serif");
   }
 
   private drawVerticalLines(
+    g: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>,
+    y: d3Scale.ScaleBand<string>,
     selection: string,
     analytics: Analytics,
     x1: (d: AnalyticsValue) => number,
     x2: (d: AnalyticsValue) => number,
     color: (d: AnalyticsValue) => string
   ) {
-    this.g
-      .selectAll(selection)
+    g.selectAll(selection)
       .data(analytics.values)
       .enter()
       .append('line')
-      .attr('y1', _ => this.y(this.toKey(analytics)))
-      .attr('y2', _ => this.y(this.toKey(analytics)) + this.y.bandwidth())
+      .attr('y1', _ => y(this.toKey(analytics)))
+      .attr('y2', _ => y(this.toKey(analytics)) + y.bandwidth())
       .attr('x1', d => x1(d))
       .attr('x2', d => x2(d))
       .attr('stroke', d => color(d))
@@ -371,15 +362,15 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
       .style('opacity', 0.7);
   }
 
-  private translateLeftAxisTick(input: string) {
+  private translateLeftAxisTick(input: string): string {
     if (input.indexOf('-') > 0) {
-      return this.translateService.instant(input.split('-')[1]);
+      return this.translateService.instant(input.split('-')[1]) as string;
     } else {
-      return this.translateService.instant(input);
+      return this.translateService.instant(input) as string;
     }
   }
 
-  private toX(year: number, value: Date) {
+  private dateToX(year: number, value: Date) {
     const m = moment(value);
     const lastDateOfAnalytics = moment({ year: year }).endOf('year');
 

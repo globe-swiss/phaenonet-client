@@ -13,7 +13,8 @@ module.exports = {
     firstname: { css: 'input#firstname' },
     lastname: { css: 'input#lastname' }
   },
-  editPasswordIcon: { css: 'mat-icon edit' },
+  editEmailIcon: { css: '[data-test-id=editEmailIcon]' },
+  editPasswordIcon: { css: '[data-test-id=editPasswordIcon]' },
   saveButton: { css: 'button#save-button' },
   cancelButton: { css: 'button#cancel-button' },
   saveButtonEnabled: { css: 'button#save-button:not(:disabled)' },
