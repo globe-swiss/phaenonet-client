@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+
 import { interval, Observable, of, Subject } from 'rxjs';
 
 /**
@@ -8,7 +8,7 @@ import { interval, Observable, of, Subject } from 'rxjs';
  * resources.
  */
 @Injectable()
-export class LoadingGuard implements CanActivate {
+export class LoadingGuard {
   constructor() {}
 
   testLoaded(): boolean {
