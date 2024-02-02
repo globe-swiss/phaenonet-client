@@ -329,7 +329,13 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
     const axisBottom = d3Axis.axisBottom(xScale);
     g.append('g')
       .attr('transform', `translate(0, ${height})`)
-      .call(axisBottom.tickValues(xTicks).tickFormat(t => moment().dayOfYear(+t).format('MMMM')));
+      .call(
+        axisBottom.tickValues(xTicks).tickFormat(t =>
+          moment()
+            .dayOfYear(+t)
+            .format(width >= 740 ? 'MMMM' : 'MM')
+        )
+      );
   }
 
   private drawVerticalLines(
