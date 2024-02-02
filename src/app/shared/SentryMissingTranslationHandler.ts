@@ -1,5 +1,5 @@
 import { MissingTranslationHandler, MissingTranslationHandlerParams } from '@ngx-translate/core';
-import * as Sentry from '@sentry/angular';
+import * as Sentry from '@sentry/angular-ivy';
 import { environment } from 'src/environments/environment';
 
 export class SentryMissingTranslationHandler implements MissingTranslationHandler {

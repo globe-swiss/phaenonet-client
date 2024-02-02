@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as Sentry from '@sentry/angular';
+import * as Sentry from '@sentry/angular-ivy';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
