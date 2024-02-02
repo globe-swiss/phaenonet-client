@@ -2,6 +2,17 @@
 
 .statistics-overview {
   height: 74vh;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.chart-view {
+  grid-column: 2 / span 6;
+  width: 100%;
+  height: 100%;
+  @include for-tablet-and-smaller {
+    grid-column: 1 / span 8;
+  }
 }
 
 .statistics-filter {
