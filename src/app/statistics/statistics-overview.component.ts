@@ -217,6 +217,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
     const y = d3Scale.scaleBand().domain(resultingDomain).rangeRound([0, height]).padding(0.4);
 
     this.data.forEach(analytics => {
+      analytics.values.sort((a, b) => a.min.getTime() - b.min.getTime());
       g.selectAll('.horizontalLines')
         .data(analytics.values)
         .enter()
