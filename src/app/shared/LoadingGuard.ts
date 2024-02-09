@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+
 import { interval, Observable, of, Subject } from 'rxjs';
 
 /**
@@ -8,11 +8,10 @@ import { interval, Observable, of, Subject } from 'rxjs';
  * resources.
  */
 @Injectable()
-export class LoadingGuard implements CanActivate {
-  constructor() {}
-
+export class LoadingGuard {
   testLoaded(): boolean {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const test = google.maps.LatLng;
       return true;
     } catch (error) {

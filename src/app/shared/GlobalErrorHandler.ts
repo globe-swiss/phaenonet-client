@@ -1,5 +1,5 @@
 import { ErrorHandler, Injectable } from '@angular/core';
-import * as Sentry from '@sentry/angular';
+import * as Sentry from '@sentry/angular-ivy';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../profile/user.service';
