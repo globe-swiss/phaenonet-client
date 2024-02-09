@@ -5,7 +5,6 @@
       "extends": [
         "eslint:recommended",
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/recommended--extra",
         "plugin:@angular-eslint/template/process-inline-templates",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -19,36 +18,36 @@
       },
       "rules": {
         "@angular-eslint/component-selector": [
+          "error",
           {
             "prefix": "app",
             "style": "kebab-case",
             "type": "element"
-          },
-          "error"
+          }
         ],
         "@angular-eslint/directive-selector": [
+          "error",
           {
             "prefix": "app",
             "style": "camelCase",
             "type": "attribute"
-          },
-          "error"
+          }
         ],
         "@typescript-eslint/consistent-type-definitions": "error",
         "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/explicit-member-accessibility": [
+          "off",
           {
             "accessibility": "explicit"
-          },
-          "off"
+          }
         ],
         "@typescript-eslint/no-unused-vars": [
+          "error",
           {
             "argsIgnorePattern": "^_"
-          },
-          "error"
+          }
         ],
-        "brace-style": ["1tbs", "error"],
+        "brace-style": ["error", "1tbs"],
         "id-blacklist": "off",
         "id-match": "off",
         "no-underscore-dangle": "off",
