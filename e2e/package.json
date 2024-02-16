@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@codeceptjs/ui": "^0.7.0",
+    "@codeceptjs/ui": "^0.7.7",
     "codeceptjs": "^3.5.12",
     "codeceptjs-resemblehelper": "^1.9.7",
     "mocha": "^10.2.0",
