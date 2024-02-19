@@ -34,11 +34,6 @@ export class LoginFormComponent {
       });
   }
 
-  // fixme: this probably should redirect when logged in #125
-  showLoginForm(): boolean {
-    return !this.isLoggedIn(); // && !this.user;
-  }
-
   isLoginFailed(): boolean {
     return this.loginFailed;
   }
