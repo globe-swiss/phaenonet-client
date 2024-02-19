@@ -5,7 +5,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
 import { none } from 'fp-ts/lib/Option';
-import { from, Observable, of, Subscription } from 'rxjs';
+import { Observable, Subscription, from, of } from 'rxjs';
 import { map, switchAll, switchMap, take, tap } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
@@ -40,7 +40,10 @@ export class AuthService extends BaseService implements OnDestroy {
   ) {
     super(alertService);
 
-    this.firebaseUser$ = this.afAuth.authState.pipe(tap(() => this.fds.addRead('firebaseUser')));
+    this.firebaseUser$ = this.afAuth.authState.pipe(
+      // multiple events on login
+      tap(() => this.fds.addRead('firebaseUser'))
+    );
     this.user$ = this.firebaseUser$.pipe(
       switchMap(user => {
         if (user) {

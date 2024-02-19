@@ -20,6 +20,7 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   registerForm: UntypedFormGroup;
 
   private subscription: Subscription;
+  private realRegisterRequest: boolean;
 
   constructor(
     private authService: AuthService,
@@ -50,18 +51,26 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
     this.registerForm.updateValueAndValidity();
     this.subscription = this.authService.user$.subscribe(user => {
       if (user) {
-        this.alertService.infoMessage(
-          'Registration erfolgreich',
-          'Sie haben sich erfolgreich bei PhaenoNet registriert.'
-        );
-        void this.router.navigateByUrl('/');
+        if (this.realRegisterRequest) {
+          this.alertService.infoMessage(
+            'Registration erfolgreich',
+            'Sie haben sich erfolgreich bei PhaenoNet registriert.'
+          );
+          void this.router.navigateByUrl('/');
+        } else {
+          void this.router.navigateByUrl('/profile');
+        }
       }
     });
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
-      (this.nicknameField.nativeElement as HTMLInputElement).focus();
+      try {
+        (this.nicknameField.nativeElement as HTMLInputElement).focus();
+      } catch (error) {
+        console.warn('Unable to set focus on nickname, already logged in?');
+      }
     }, 0);
   }
 
@@ -70,6 +79,7 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   register(): void {
+    this.realRegisterRequest = true;
     this.authService.register(
       this.registerForm.controls.email.value,
       this.registerForm.controls.password.value,
@@ -80,7 +90,6 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  // fixme: this probably should redirect to profile when logged in #125
   showRegisterForm(): boolean {
     return !this.isLoggedIn();
   }
