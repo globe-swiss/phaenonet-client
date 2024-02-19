@@ -41,13 +41,4 @@ export class LoginFormComponent {
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
-
-  // fixme: set title static in page #125
-  title(): string {
-    if (this.isLoggedIn()) {
-      return 'Willkommen';
-    } else {
-      return 'Bitte melden Sie sich an';
-    }
-  }
 }

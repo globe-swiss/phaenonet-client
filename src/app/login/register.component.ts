@@ -19,8 +19,6 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('nickname') nicknameField!: ElementRef;
   registerForm: UntypedFormGroup;
 
-  registerFailed = false;
-
   private subscription: Subscription;
 
   constructor(
@@ -72,7 +70,6 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   register(): void {
-    this.registerFailed = false;
     this.authService.register(
       this.registerForm.controls.email.value,
       this.registerForm.controls.password.value,
@@ -88,21 +85,8 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
     return !this.isLoggedIn();
   }
 
-  isRegisterFailed(): boolean {
-    return this.registerFailed;
-  }
-
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
-  }
-
-  // fixme: this still needed? #125
-  title(): string {
-    if (this.isLoggedIn()) {
-      return 'Willkommen';
-    } else {
-      return 'Jetzt registrieren!';
-    }
   }
 
   changeLocale(event: MatSelectChange): void {
