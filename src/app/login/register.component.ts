@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -17,11 +17,18 @@ import { equalValidation } from '../shared/validation';
 })
 export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('nickname') nicknameField!: ElementRef;
-  registerForm: UntypedFormGroup;
-
-  registerFailed = false;
+  registerForm: FormGroup<{
+    nickname: FormControl<string>;
+    firstname: FormControl<string>;
+    lastname: FormControl<string>;
+    email: FormControl<string>;
+    password: FormControl<string>;
+    passwordConfirm: FormControl<string>;
+    locale: FormControl<string>;
+  }>;
 
   private subscription: Subscription;
+  private realRegisterRequest: boolean;
 
   constructor(
     private authService: AuthService,
@@ -34,17 +41,17 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.navService.setLocation('Registrierung');
-    this.registerForm = new UntypedFormGroup({
-      nickname: new UntypedFormControl('', {
+    this.registerForm = new FormGroup({
+      nickname: new FormControl('', {
         updateOn: 'blur',
         asyncValidators: this.publicUserService.uniqueNicknameValidator()
       }),
-      firstname: new UntypedFormControl(''),
-      lastname: new UntypedFormControl(''),
-      email: new UntypedFormControl(''),
-      password: new UntypedFormControl(''),
-      passwordConfirm: new UntypedFormControl(''),
-      locale: new UntypedFormControl('de-CH')
+      firstname: new FormControl(''),
+      lastname: new FormControl(''),
+      email: new FormControl(''),
+      password: new FormControl(''),
+      passwordConfirm: new FormControl(''),
+      locale: new FormControl('de-CH')
     });
 
     const equalValidator = equalValidation('password', 'passwordConfirm', 'passwordMissmatch');
@@ -52,18 +59,26 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
     this.registerForm.updateValueAndValidity();
     this.subscription = this.authService.user$.subscribe(user => {
       if (user) {
-        this.alertService.infoMessage(
-          'Registration erfolgreich',
-          'Sie haben sich erfolgreich bei PhaenoNet registriert.'
-        );
-        void this.router.navigateByUrl('/');
+        if (this.realRegisterRequest) {
+          this.alertService.infoMessage(
+            'Registration erfolgreich',
+            'Sie haben sich erfolgreich bei PhaenoNet registriert.'
+          );
+          void this.router.navigateByUrl('/');
+        } else {
+          void this.router.navigateByUrl('/profile');
+        }
       }
     });
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
-      (this.nicknameField.nativeElement as HTMLInputElement).focus();
+      try {
+        (this.nicknameField.nativeElement as HTMLInputElement).focus();
+      } catch (error) {
+        console.warn('Unable to set focus on nickname, already logged in?');
+      }
     }, 0);
   }
 
@@ -72,40 +87,27 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   register(): void {
-    this.registerFailed = false;
+    this.realRegisterRequest = true;
     this.authService.register(
-      this.registerForm.controls.email.value,
-      this.registerForm.controls.password.value,
-      this.registerForm.controls.nickname.value,
-      this.registerForm.controls.firstname.value,
-      this.registerForm.controls.lastname.value,
-      this.registerForm.controls.locale.value
+      this.registerForm.value.email,
+      this.registerForm.value.password,
+      this.registerForm.value.nickname,
+      this.registerForm.value.firstname,
+      this.registerForm.value.lastname,
+      this.registerForm.value.locale
     );
   }
 
-  // fixme: this probably should redirect to profile when logged in #125
   showRegisterForm(): boolean {
     return !this.isLoggedIn();
-  }
-
-  isRegisterFailed(): boolean {
-    return this.registerFailed;
   }
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
 
-  // fixme: this still needed? #125
-  title(): string {
-    if (this.isLoggedIn()) {
-      return 'Willkommen';
-    } else {
-      return 'Jetzt registrieren!';
-    }
-  }
-
   changeLocale(event: MatSelectChange): void {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     this.languageService.changeLocale(event.value);
   }
 }

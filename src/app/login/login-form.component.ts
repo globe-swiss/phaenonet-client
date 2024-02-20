@@ -34,25 +34,11 @@ export class LoginFormComponent {
       });
   }
 
-  // fixme: this probably should redirect when logged in #125
-  showLoginForm(): boolean {
-    return !this.isLoggedIn(); // && !this.user;
-  }
-
   isLoginFailed(): boolean {
     return this.loginFailed;
   }
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
-  }
-
-  // fixme: set title static in page #125
-  title(): string {
-    if (this.isLoggedIn()) {
-      return 'Willkommen';
-    } else {
-      return 'Bitte melden Sie sich an';
-    }
   }
 }

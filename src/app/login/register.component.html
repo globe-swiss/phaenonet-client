@@ -1,4 +1,4 @@
-<div class="register">
+<div class="register" *ngIf="showRegisterForm()">
   <mat-card class="register__content">
     <mat-card-header>
       <mat-card-title translate>REGISTRIEREN</mat-card-title>
@@ -12,7 +12,7 @@
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <form class="register__form" [formGroup]="registerForm" *ngIf="showRegisterForm()">
+      <form class="register__form" [formGroup]="registerForm">
         <mat-form-field>
           <mat-label>{{ 'Anzeigename bei PhaenoNet (öffentlich)' | translate }} </mat-label>
           <input
