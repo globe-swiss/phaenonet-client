@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -17,7 +17,15 @@ import { equalValidation } from '../shared/validation';
 })
 export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('nickname') nicknameField!: ElementRef;
-  registerForm: UntypedFormGroup;
+  registerForm: FormGroup<{
+    nickname: FormControl<string>;
+    firstname: FormControl<string>;
+    lastname: FormControl<string>;
+    email: FormControl<string>;
+    password: FormControl<string>;
+    passwordConfirm: FormControl<string>;
+    locale: FormControl<string>;
+  }>;
 
   private subscription: Subscription;
   private realRegisterRequest: boolean;
@@ -33,17 +41,17 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.navService.setLocation('Registrierung');
-    this.registerForm = new UntypedFormGroup({
-      nickname: new UntypedFormControl('', {
+    this.registerForm = new FormGroup({
+      nickname: new FormControl('', {
         updateOn: 'blur',
         asyncValidators: this.publicUserService.uniqueNicknameValidator()
       }),
-      firstname: new UntypedFormControl(''),
-      lastname: new UntypedFormControl(''),
-      email: new UntypedFormControl(''),
-      password: new UntypedFormControl(''),
-      passwordConfirm: new UntypedFormControl(''),
-      locale: new UntypedFormControl('de-CH')
+      firstname: new FormControl(''),
+      lastname: new FormControl(''),
+      email: new FormControl(''),
+      password: new FormControl(''),
+      passwordConfirm: new FormControl(''),
+      locale: new FormControl('de-CH')
     });
 
     const equalValidator = equalValidation('password', 'passwordConfirm', 'passwordMissmatch');
@@ -81,12 +89,12 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   register(): void {
     this.realRegisterRequest = true;
     this.authService.register(
-      this.registerForm.controls.email.value,
-      this.registerForm.controls.password.value,
-      this.registerForm.controls.nickname.value,
-      this.registerForm.controls.firstname.value,
-      this.registerForm.controls.lastname.value,
-      this.registerForm.controls.locale.value
+      this.registerForm.value.email,
+      this.registerForm.value.password,
+      this.registerForm.value.nickname,
+      this.registerForm.value.firstname,
+      this.registerForm.value.lastname,
+      this.registerForm.value.locale
     );
   }
 
@@ -99,6 +107,7 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   changeLocale(event: MatSelectChange): void {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     this.languageService.changeLocale(event.value);
   }
 }
