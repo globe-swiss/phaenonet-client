@@ -25,6 +25,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
+      - run: pnpm install
       - name: Set API info
         uses: suisei-cn/actions-download-file@v1.4.0
         with:
@@ -130,8 +131,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
-      - name: install codeceptjs deps
-        run: pnpm --filter e2e install
+      - run: pnpm -r install
       - uses: reviewdog/action-setup@v1.2.0
         with:
           reviewdog_version: ${{ env.REVIEWDOG_VERSION }}
