@@ -94,6 +94,8 @@ jobs:
         with:
           path: ./dist/phaenonet
           port: 4200
+      - name: Fix node-canvas for resemble-helper@codeceptjs
+        run: sudo apt-get install -y libcairo2-dev libjpeg-dev libgif-dev
       - name: Setup CodeceptJS
         working-directory: e2e
         run: pnpm install && pnpm exec playwright install chromium
