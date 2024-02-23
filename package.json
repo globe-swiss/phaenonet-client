@@ -1,17 +1,8 @@
 {
-  "name": "phaenonet",
-  "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "start-local": "ng serve --c=local",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "sme": "ng build -c=sme && npx source-map-explorer dist/phaenonet/*-es2015.js --html > sme.html"
-  },
-  "private": true,
+  "browserslist": [
+    "> 0.5% in CH",
+    "defaults"
+  ],
   "dependencies": {
     "@angular/animations": "^16.2.12",
     "@angular/cdk": "^16.2.14",
@@ -84,8 +75,21 @@
     "ts-node": "~8.1.0",
     "typescript": "~4.9.5"
   },
-  "browserslist": [
-    "defaults",
-    "> 0.5% in CH"
-  ]
+  "engines": {
+    "node": "=18",
+    "pnpm": ">=3"
+  },
+  "name": "phaenonet",
+  "private": true,
+  "scripts": {
+    "build": "ng build",
+    "e2e": "ng e2e",
+    "lint": "ng lint",
+    "ng": "ng",
+    "sme": "ng build -c=sme && pnpm exec source-map-explorer dist/phaenonet/*-es2015.js --html > sme.html",
+    "start": "ng serve",
+    "start-local": "ng serve --c=local",
+    "test": "ng test"
+  },
+  "version": "0.0.0"
 }

@@ -17,6 +17,7 @@ on:
         default: 14d
 
 env:
+  CI: true # pnpm
   PROJECT: ${{ github.event.inputs.project }}
   EXP: ${{ github.event.inputs.expires }}
   NODE_VERSION: '18'
@@ -33,13 +34,17 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.1.1
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
       - uses: actions/setup-node@v4.0.1
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install
       - name: Build
-        run: npx ng build
+        run: pnpm exec ng build
       - name: Deploy Preview Channel
         uses: ./.github/actions/deploy-hosting-action
         with:

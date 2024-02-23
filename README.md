@@ -60,7 +60,7 @@ Initially copy [init.json](https://phaenonet-test.web.app/__/firebase/init.json)
 Run a dev server.
 
 ```commandline
-npx ng serve --c=local
+pnpm exec ng serve --c=local
 ```
 
 Navigate to <http://localhost:4200/>. The app will automatically reload if you change any of the source files.
@@ -69,17 +69,11 @@ Navigate to <http://localhost:4200/>. The app will automatically reload if you c
 
 To run e2e-test first run a local server as described in the previous chapter.
 
-Install the required dependencies
+Install the required dependencies and run the tests:
 
 ```commandline
-cd e2e
-npm install
-```
-
-and run the tests with `codeceptjs` e.g.
-
-```commandline
-npx codeceptjs run --steps
+pnpm --filter e2e install
+pnpm --filter e2e exec codeceptjs run --steps
 ```
 
 Test output will be located in `/e2e/output`.
@@ -89,7 +83,7 @@ Test output will be located in `/e2e/output`.
 To run all `stylelint` checks
 
 ```commandline
-npx stylelint "**/*.scss"
+pnpm exec stylelint "**/*.scss"
 ```
 
 ### Create map pins
@@ -107,7 +101,7 @@ Code merged to the `master` branch will be deployed to <https://phaenonet-test.w
 Intermediate development states of the application can be deployed to [hosting channels](https://firebase.google.com/docs/hosting/manage-hosting-resources).
 
 ```commandline
-npx ng build && npx firebase hosting:channel:deploy my_channel_name --project phaenonet-test
+pnpm exec ng build && pnpm exec firebase hosting:channel:deploy my_channel_name --project phaenonet-test
 ```
 
 ### Manually deploy rules & indexes in development
@@ -116,7 +110,7 @@ Rules and indexes for Firestore and Storage will need to be deployed manually if
 Be aware that the rules are shared between the hosting channel and the `test` application.
 
 ```commandline
-npx firebase deploy --only storage,firestore --project phaenonet-test
+pnpm exec firebase deploy --only storage,firestore --project phaenonet-test
 ```
 
 ### Manually deploy application for acceptance test
@@ -124,15 +118,16 @@ npx firebase deploy --only storage,firestore --project phaenonet-test
 To manually deploy a test version:
 
 ```commandline
-npx ng build && npx firebase deploy --project phaenonet-test
+pnpm exec firebase login
+pnpm exec ng build && pnpm exec firebase deploy --project phaenonet-test
 ```
 
 ### Manually deploy application version to production
 
 ```commandline
 git checkout v<version>
-npx firebase login
-rm -r node_modules && npm ci --include=dev && npx ng build --c=production && npx firebase deploy --project phaenonet
+pnpm exec firebase login
+rm -r node_modules && CI=true pnpm install && pnpm exec ng build --c=production && pnpm exec firebase deploy --project phaenonet
 ```
 
 ## Related resources

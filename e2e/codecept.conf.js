@@ -1,7 +1,7 @@
 // const { setHeadlessWhen } = require('@codeceptjs/configure');
 
 // // turn on headless mode when running with HEADLESS=true environment variable
-// // export HEADLESS=true && npx codeceptjs run
+// // export HEADLESS=true && pnpm exec codeceptjs run
 // setHeadlessWhen(process.env.HEADLESS);
 
 // eslint-disable-next-line spaced-comment

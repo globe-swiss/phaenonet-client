@@ -19,6 +19,7 @@ on:
     branches: [master, test-master]
 
 env:
+  CI: true # pnpm
   PROJECT: ${{ github.event.inputs.project || 'phaenonet-test' }}
   TAG: ${{ github.event.inputs.tag }}
   VERSION: 'phaenonet-client@${{ github.event.inputs.tag && github.event.inputs.tag || github.sha }}'
@@ -35,13 +36,17 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.1.1
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
       - uses: actions/setup-node@v4.0.1
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install
       - name: check style
-        run: npx prettier -c "."
+        run: pnpm exec prettier -c "."
       - name: check map icon completeness
         run: |
           diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/fr-CH) || exit
@@ -51,7 +56,7 @@ jobs:
           echo "set release version: ${{ env.VERSION }}"
           sed -ri "s|'#VERSION#'|'${{ env.VERSION }}'|" src/environments/environment*.ts
       - name: Build
-        run: npx ng build ${{ env.PROJECT == 'phaenonet' && '--c=production' || '' }}
+        run: pnpm exec ng build ${{ env.PROJECT == 'phaenonet' && '--c=production' || '' }}
       - name: Upload Artifact
         uses: ./.github/actions/upload-zip-artifact
         with:
@@ -68,21 +73,25 @@ jobs:
         uses: ./.github/actions/download-zip-artifact
         with:
           name: ${{ env.PROJECT }}
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
       - uses: actions/setup-node@v4.0.1
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
       - name: Install sentry-cli
-        run: npm install @sentry/cli --no-save
+        run: pnpm install @sentry/cli
       - name: Perform release
         run: |
           echo "Create new release ${{ env.VERSION }}"
-          npx sentry-cli releases new ${{ env.VERSION }}
-          npx sentry-cli releases set-commits ${{ env.VERSION }} --auto
-          npx sentry-cli releases files ${{ env.VERSION }} upload-sourcemaps ./dist/phaenonet -x=js -x=map -x=css -i=**/src_assets_i18n* --validate --verbose --rewrite --strip-common-prefix
-          npx sentry-cli releases finalize ${{ env.VERSION }}
+          pnpm exec sentry-cli releases new ${{ env.VERSION }}
+          pnpm exec sentry-cli releases set-commits ${{ env.VERSION }} --auto
+          pnpm exec sentry-cli releases files ${{ env.VERSION }} upload-sourcemaps ./dist/phaenonet -x=js -x=map -x=css -i=**/src_assets_i18n* --validate --verbose --rewrite --strip-common-prefix
+          pnpm exec sentry-cli releases finalize ${{ env.VERSION }}
           echo "Finalized release ${{ env.VERSION }}"
           echo "Adding deployment for ${{ env.ENVIRONMENT }} environment"
-          npx sentry-cli releases deploys ${{ env.VERSION }} new --env ${{ env.ENVIRONMENT }}
+          pnpm exec sentry-cli releases deploys ${{ env.VERSION }} new --env ${{ env.ENVIRONMENT }}
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: phaenonet
@@ -110,11 +119,15 @@ jobs:
       - name: Remove source maps (prod)
         run: rm ./dist/**/*.map
         if: ${{ env.PROJECT == 'phaenonet' }}
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
       - uses: actions/setup-node@v4.0.1
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
       - name: install firebase-tools
-        run: npm i --no-save firebase-tools
+        run: pnpm install firebase-tools
       - id: auth
         name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2.1.0
@@ -123,7 +136,7 @@ jobs:
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
           create_credentials_file: true
       - name: Deploy to Firebase
-        run: npx firebase deploy --project ${{ env.PROJECT }}
+        run: pnpm exec firebase deploy --project ${{ env.PROJECT }}
   tag:
     name: Tag
     needs: deploy
@@ -144,10 +157,14 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.1.1
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
       - uses: actions/setup-node@v4.0.1
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
       - name: build & upload docs
-        run: npx dbdocs build docs/phaenonet.dbml
+        run: pnpm exec dbdocs build docs/phaenonet.dbml
         env:
           DBDOCS_TOKEN: ${{ secrets.DBDOCS_TOKEN }}
