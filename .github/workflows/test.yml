@@ -96,7 +96,7 @@ jobs:
           port: 4200
       - name: Setup CodeceptJS
         working-directory: e2e
-        run: pnpm intall && pnpm exec playwright install chromium
+        run: pnpm install && pnpm exec playwright install chromium
       - name: e2e-test
         working-directory: e2e
         run: pnpm exec codeceptjs run --reporter mochawesome --grep "@flaky" --invert
