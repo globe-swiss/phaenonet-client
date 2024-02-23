@@ -17,7 +17,7 @@ runs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'pnpm'
-    - run: pnpm exec angular-http-server --path ${{ inputs.path }} --p ${{ inputs.port }} &
+    - run: pnpm dlx angular-http-server --path ${{ inputs.path }} --p ${{ inputs.port }} &
       shell: bash
     - name: Wait on
       uses: iFaxity/wait-on-action@v1.1.0
