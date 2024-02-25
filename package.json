@@ -80,6 +80,11 @@
     "pnpm": ">=3"
   },
   "name": "phaenonet",
+  "pnpm": {
+    "overrides": {
+      "canvas": "^2.11.2"
+    }
+  },
   "private": true,
   "scripts": {
     "build": "ng build",
