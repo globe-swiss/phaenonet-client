@@ -17,7 +17,10 @@ export class InviteListComponent implements OnInit {
   openInvites$: Observable<Invite[]>;
   acceptedInvites$: Observable<Invite[]>;
 
-  constructor(private dialog: MatDialog, private inviteService: InviteService) {}
+  constructor(
+    private dialog: MatDialog,
+    private inviteService: InviteService
+  ) {}
 
   ngOnInit(): void {
     const inviteSort = (i1: Invite, i2: Invite) => i2.modified.toMillis() - i1.modified.toMillis();

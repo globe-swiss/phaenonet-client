@@ -3,7 +3,7 @@ import { ReplaySubject } from 'rxjs';
 import { Individual } from '../individual';
 
 const mapOrGraph = ['Map', 'Temperature', 'Humidity'] as const;
-type MapOrGraph = typeof mapOrGraph[number];
+type MapOrGraph = (typeof mapOrGraph)[number];
 
 @Component({
   selector: 'app-individual-header',

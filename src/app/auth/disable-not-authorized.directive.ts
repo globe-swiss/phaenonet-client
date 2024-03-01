@@ -5,7 +5,10 @@ import { AuthService } from './auth.service';
   selector: '[appDisableNotAuthorized]'
 })
 export class DisableNotAuthorizedDirective implements AfterViewInit {
-  constructor(private elementRef: ElementRef, private authService: AuthService) {}
+  constructor(
+    private elementRef: ElementRef,
+    private authService: AuthService
+  ) {}
 
   ngAfterViewInit() {
     if (!this.authService.isLoggedIn()) {

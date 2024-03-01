@@ -8,7 +8,10 @@ export class DisableNotOwnerDirective implements AfterViewInit {
   @Input('appDisableNotOwner')
   owner: string = '';
 
-  constructor(private elementRef: ElementRef, private authService: AuthService) {}
+  constructor(
+    private elementRef: ElementRef,
+    private authService: AuthService
+  ) {}
 
   ngAfterViewInit() {
     if (!this.authService.isLoggedIn() || this.authService.getUserId() !== this.owner) {

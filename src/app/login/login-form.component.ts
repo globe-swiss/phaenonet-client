@@ -20,7 +20,10 @@ export class LoginFormComponent {
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   onLoginSuccess: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(private authService: AuthService, private alertService: AlertService) {}
+  constructor(
+    private authService: AuthService,
+    private alertService: AlertService
+  ) {}
 
   login(): void {
     this.loginFailed = false;

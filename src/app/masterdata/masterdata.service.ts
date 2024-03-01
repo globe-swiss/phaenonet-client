@@ -279,7 +279,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
   }
 
   private toMasterdatalikeList<T extends MasterdataLike>(masterdataLikeObjects: MasterdataCollection): T[] {
-    return Object.entries(masterdataLikeObjects).map(([key, value]) => ({ id: key, ...value } as T));
+    return Object.entries(masterdataLikeObjects).map(([key, value]) => ({ id: key, ...value }) as T);
   }
 
   private getMasterdataFor<T extends MasterdataLike>(data: MasterdataCollection): Observable<T[]> {

@@ -27,7 +27,10 @@ export class IndividualDescriptionHeaderComponent implements OnInit {
 
   isRanger$: Observable<boolean>;
 
-  constructor(private masterdataService: MasterdataService, private publicUserService: PublicUserService) {}
+  constructor(
+    private masterdataService: MasterdataService,
+    private publicUserService: PublicUserService
+  ) {}
 
   ngOnInit(): void {
     const publicUser$ = this.individual$.pipe(switchMap(i => this.publicUserService.get(i.user)));

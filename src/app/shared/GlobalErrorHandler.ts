@@ -6,7 +6,10 @@ import { UserService } from '../profile/user.service';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
-  constructor(private authService: AuthService, private userService: UserService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
 
   private sentryErrorHandler = Sentry.createErrorHandler({ showDialog: false });
 

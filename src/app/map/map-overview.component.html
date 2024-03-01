@@ -9,7 +9,7 @@
     >
     </map-marker>
     <map-info-window>
-      <ng-container *ngIf="infoWindowData$ | async | guardType : isIndividualInfoWindowData as d">
+      <ng-container *ngIf="infoWindowData$ | async | guardType: isIndividualInfoWindowData as d">
         <div [routerLink]="d.url" class="map-overview__info-window">
           <div class="map-overview__info-window-image-container">
             <img class="map-overview__info-window-image" *ngIf="d.imgUrl$ | async" [src]="d.imgUrl$ | async" />
@@ -31,7 +31,7 @@
           <mat-icon>chevron_right</mat-icon>
         </div>
       </ng-container>
-      <ng-container *ngIf="infoWindowData$ | async | guardType : isStationInfoWindowData as d">
+      <ng-container *ngIf="infoWindowData$ | async | guardType: isStationInfoWindowData as d">
         <div class="map-overview__info-window" [routerLink]="d.url">
           <img src="assets/img/pic_placeholder.svg" style="max-height: 100px" />
           <div class="map-overview__info-window-text">

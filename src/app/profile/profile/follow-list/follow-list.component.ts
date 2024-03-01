@@ -15,7 +15,10 @@ export class FollowListComponent implements OnInit {
   followedUsers$: Observable<PublicUser[]>;
   limit$ = new BehaviorSubject<number>(1);
 
-  constructor(private individualService: IndividualService, private userService: UserService) {}
+  constructor(
+    private individualService: IndividualService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.followedIndividuals$ = this.individualService.getIndividualPhenohases(
