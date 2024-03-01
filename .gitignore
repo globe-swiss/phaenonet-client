@@ -13,6 +13,7 @@ protractorFailuresReport/
 
 # dependencies
 node_modules
+.pnpm-store
 
 # IDE
 .vscode
