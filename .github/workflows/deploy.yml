@@ -80,8 +80,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
-      - name: Install sentry-cli
-        run: pnpm install @sentry/cli
+      - run: pnpm install
       - name: Perform release
         run: |
           echo "Create new release ${{ env.VERSION }}"
@@ -126,8 +125,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
-      - name: install firebase-tools
-        run: pnpm install firebase-tools
+      - run: pnpm install
       - id: auth
         name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2.1.0
@@ -164,6 +162,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
+      - run: pnpm install
       - name: build & upload docs
         run: pnpm exec dbdocs build docs/phaenonet.dbml
         env:
