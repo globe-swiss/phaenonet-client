@@ -9,7 +9,7 @@
     "@angular/common": "^16.2.12",
     "@angular/compiler": "^16.2.12",
     "@angular/core": "^16.2.12",
-    "@angular/fire": "^7.5.0",
+    "@angular/fire": "~7.6.1",
     "@angular/forms": "^16.2.12",
     "@angular/google-maps": "^16.2.14",
     "@angular/localize": "^16.2.12",
@@ -80,7 +80,8 @@
   "name": "phaenonet",
   "pnpm": {
     "overrides": {
-      "canvas": "^2.11.2"
+      "canvas": "^2.11.2",
+      "rxfire@^6.0.0": "6.0.3"
     }
   },
   "private": true,
