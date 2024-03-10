@@ -38,7 +38,10 @@ export class MapInfoService {
   private individualIdSubject = new ReplaySubject<string>(1);
   public readonly infoWindowData$: Observable<IndividualInfoWindowData | StationInfoWindowData>;
 
-  constructor(private individualService: IndividualService, private masterdataService: MasterdataService) {
+  constructor(
+    private individualService: IndividualService,
+    private masterdataService: MasterdataService
+  ) {
     this.infoWindowData$ = this.individualIdSubject.pipe(
       switchMap(id => this.individualService.getWithId(id)),
       switchMap(individual =>

@@ -9,7 +9,11 @@ import { DailySensorData, Sensors } from './sensors';
 
 @Injectable()
 export class SensorsService extends BaseResourceService<Sensors> {
-  constructor(alertService: AlertService, protected afs: AngularFirestore, protected fds: FirestoreDebugService) {
+  constructor(
+    alertService: AlertService,
+    protected afs: AngularFirestore,
+    protected fds: FirestoreDebugService
+  ) {
     super(alertService, afs, 'sensors', fds);
   }
 

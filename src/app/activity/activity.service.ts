@@ -9,7 +9,11 @@ import { Activity } from './activity';
 
 @Injectable()
 export class ActivityService extends BaseResourceService<Activity> {
-  constructor(alertService: AlertService, protected afs: AngularFirestore, protected fds: FirestoreDebugService) {
+  constructor(
+    alertService: AlertService,
+    protected afs: AngularFirestore,
+    protected fds: FirestoreDebugService
+  ) {
     super(alertService, afs, 'activities', fds);
   }
 

@@ -11,7 +11,11 @@ import { AnalyticsType } from './analytics-type';
 
 @Injectable()
 export class StatisticsService extends BaseResourceService<Analytics> {
-  constructor(alertService: AlertService, protected afs: AngularFirestore, protected fds: FirestoreDebugService) {
+  constructor(
+    alertService: AlertService,
+    protected afs: AngularFirestore,
+    protected fds: FirestoreDebugService
+  ) {
     super(alertService, afs, 'analytics_result', fds);
   }
 

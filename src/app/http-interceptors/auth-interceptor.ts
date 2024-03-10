@@ -8,7 +8,10 @@ import { LoginDialogComponent } from '../login/login-dialog.component';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService, private dialog: MatDialog) {}
+  constructor(
+    private authService: AuthService,
+    private dialog: MatDialog
+  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
     return next.handle(request).pipe(

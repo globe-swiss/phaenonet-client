@@ -70,7 +70,7 @@ export class IndividualHeaderMapComponent implements OnInit {
           ({
             draggable: config.markerDraggable,
             icon: this.edit ? editIcon : this.masterdataService.individualToIcon(i)
-          } as google.maps.MarkerOptions)
+          }) as google.maps.MarkerOptions
       )
     );
 

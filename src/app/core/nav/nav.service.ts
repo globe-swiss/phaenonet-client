@@ -10,7 +10,10 @@ export class NavService implements OnDestroy {
   private location$: BehaviorSubject<string> = new BehaviorSubject(this.DEFAULT_LOCATION);
   private subscriptions = new Subscription();
 
-  constructor(private translateService: TranslateService, private titleService: Title) {
+  constructor(
+    private translateService: TranslateService,
+    private titleService: Title
+  ) {
     this.subscriptions.add(
       this.location$
         .pipe(switchMap(untranslatedLocation => translateService.get(untranslatedLocation)))

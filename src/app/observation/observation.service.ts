@@ -9,7 +9,11 @@ import { Observation } from './observation';
 
 @Injectable()
 export class ObservationService extends BaseResourceService<Observation> {
-  constructor(alertService: AlertService, protected afs: AngularFirestore, protected fds: FirestoreDebugService) {
+  constructor(
+    alertService: AlertService,
+    protected afs: AngularFirestore,
+    protected fds: FirestoreDebugService
+  ) {
     super(alertService, afs, 'observations', fds);
   }
 

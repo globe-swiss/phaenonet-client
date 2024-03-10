@@ -8,7 +8,10 @@ import { LanguageService } from '../language.service';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent {
-  constructor(private authService: AuthService, private languageService: LanguageService) {}
+  constructor(
+    private authService: AuthService,
+    private languageService: LanguageService
+  ) {}
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();

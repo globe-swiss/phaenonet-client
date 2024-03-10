@@ -5,7 +5,10 @@ import { AuthService } from './auth.service';
   selector: '[appRemoveNotAuthorized]'
 })
 export class RemoveNotAuthorizedDirective implements OnInit {
-  constructor(private elementRef: ElementRef, private authService: AuthService) {}
+  constructor(
+    private elementRef: ElementRef,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     if (!this.authService.isLoggedIn()) {

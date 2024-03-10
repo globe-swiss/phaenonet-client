@@ -7,7 +7,11 @@ import { NavService } from '../core/nav/nav.service';
   templateUrl: './login-site.component.html'
 })
 export class LoginSiteComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router, private navService: NavService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private navService: NavService
+  ) {}
 
   ngOnInit(): void {
     this.navService.setLocation('Anmeldung');
