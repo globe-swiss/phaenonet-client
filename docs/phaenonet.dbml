@@ -23,7 +23,7 @@ table activities {
   id string [pk]
   action activity_action
   activity_date date
-  followers array[string]
+  followers "array[string]"
   individual_id string [ref: > individuals.id]
   individual_name string
   observation_id string [ref: > observations.id]
@@ -95,7 +95,7 @@ table maps {
   p string [note: 'see indivduals.last_phenophase']
   so string [note: 'see individuals.source']
   sp string [null, note: 'see individuals.species']
-  ss array[string] [null, note: 'see individuals.station_species']
+  ss "array[string]" [null, note: 'see individuals.station_species']
   t string [note: 'see individuals.type']
 
   note: '''
@@ -121,7 +121,7 @@ table individuals {
   shade string [note: 'definitions/config_static/shade']
   source source
   species string [note: 'definitions/config_static/species']
-  station_species array[string] [note: 'definitions/config_static/species']
+  station_species "array[string]" [note: 'definitions/config_static/species']
   type individual_type
   user string [ref: < users.id]
   watering string [note: 'definitions/config_static/watering']
@@ -171,7 +171,7 @@ table nicknames {
 table public_user {
   id string [pk, ref: - users.id]
   nickname string [unique, ref: - users.nickname]
-  roles array[roles] [note: 'defined roles: ranger']
+  roles "array[roles]" [note: 'defined roles: ranger']
 
   note: 'Public user information.'
 }
@@ -182,8 +182,8 @@ table users {
   locale locale
   firstname string [null]
   lastname string [null]
-  following_individuals array[string] [null]
-  following_users array[string] [null]
+  following_individuals "array[string]" [null]
+  following_users "array[string]" [null]
   created timestamp
   modified timestamp
 
@@ -217,7 +217,7 @@ table invites {
 
 table invites_lookup {
   id string [pk, ref: > invites.email]
-  invites array[string]
+  invites "array[string]"
 
   note: 'Reverse lookup table for finding the invite initiator(s).'
 }
