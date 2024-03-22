@@ -4,7 +4,9 @@
 
 @import './typography';
 
-@include mat.all-legacy-component-typographies($phaenonet-typography);
+/* TODO(mdc-migration): Remove all-legacy-component-typographies once all legacy components are migrated */
+@include mat.all-legacy-component-typographies($phaenonet-typography-legacy);
+@include mat.all-component-typographies($phaenonet-typography);
 
 @import './palettes';
 

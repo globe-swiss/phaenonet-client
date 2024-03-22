@@ -28,7 +28,7 @@ button.navigation {
   }
 
   &__name {
-    @include mat.typography-level($phaenonet-typography, 'body-1');
+    @include typo-t1;
     margin-bottom: 20px;
   }
 
@@ -44,7 +44,7 @@ button.navigation {
 
   &__creator-name {
     @include detail-value;
-    @include mat.typography-level($phaenonet-typography, 'body-1');
+    @include typo-t1;
 
     text-decoration: none;
   }

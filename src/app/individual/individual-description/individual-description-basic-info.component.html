@@ -2,7 +2,7 @@
   <div class="individual-description-basic-info__label">{{ 'Umgebung' | translate }}</div>
   <div class="individual-description-basic-info__value">{{ (description$ | async)?.de | translate }}</div>
   <div class="individual-description-basic-info__label">{{ 'Höhe' | translate }}</div>
-  <div>
+  <div class="individual-description-basic-info__value">
     <span class="individual-description-basic-info__value">{{ (individual$ | async)?.altitude | round }}</span>
     <span class="individual-description-basic-info__value-addition" translate> {{ 'm ü. M.' }}</span>
   </div>

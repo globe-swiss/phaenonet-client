@@ -16,7 +16,7 @@
       <div class="station-detail__observation-content" data-test-id="station-observations">
         <div class="station-detail__title">
           <h2>{{ 'Phänophasen' | translate }}</h2>
-          <div class="station-detail__year phenonet-year-select">
+          <div class="station-detail__year">
             <mat-select
               [value]="individualService.composedId(detailSubject$ | async)"
               (selectionChange)="selectYear($event)"

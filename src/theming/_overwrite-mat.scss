@@ -16,7 +16,7 @@ button[mat-flat-button] {
 }
 
 #phaenonet-body mat-card-subtitle {
-  @include mat.typography-level($phaenonet-typography, 'body-2');
+  @include typo-t2;
 }
 
 #phaenonet-body .mat-form-field-underline {
@@ -36,11 +36,6 @@ button[mat-flat-button] {
   padding: 30px;
   line-height: 14px;
   font-size: 1.5rem;
-}
-
-#phaenonet-body .phenonet-year-select span {
-  @include mat.typography-level($phaenonet-typography, 'body-2');
-  font-weight: bold;
 }
 
 #phaenonet-body .gm-style .gm-style-iw-c {

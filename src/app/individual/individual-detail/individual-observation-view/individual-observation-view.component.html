@@ -1,6 +1,6 @@
 <div class="individual-observation-view__title">
   <h2>{{ 'Phänophasen' | translate }}</h2>
-  <div class="individual-observation-view__year phenonet-year-select">
+  <div class="individual-observation-view__year">
     <mat-select [value]="individualService.composedId(individual$ | async)" (selectionChange)="selectYear($event)">
       <mat-option [value]="year.composedId" *ngFor="let year of years$ | async">{{ year.year }}</mat-option>
     </mat-select>
@@ -8,10 +8,10 @@
 </div>
 <div *ngFor="let groupedItem of phenophaseObservationsGroups$ | async" class="individual-observation-view">
   <ng-container *ngIf="(isEditable$ | async) || groupedItem.hasObservations">
-    <div class="individual-observation-view__label">{{ groupedItem.phenophaseGroup.de | translate }}</div>
+    <div class="individual-observation-view__phenophase-group">{{ groupedItem.phenophaseGroup.de | translate }}</div>
     <div *ngFor="let item of groupedItem.phenophaseObservations">
       <ng-container *ngIf="(isEditable$ | async) || item.observation.isSome()">
-        <div class="individual-observation-view_label">{{ item.phenophase.de | translate }}</div>
+        <div class="individual-observation-view__phenophase">{{ item.phenophase.de | translate }}</div>
         <mat-form-field class="individual-observation-view__form-field">
           <input
             matInput

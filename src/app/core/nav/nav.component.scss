@@ -52,7 +52,8 @@ mat-toolbar.mat-toolbar {
   }
 
   &__button {
-    @include mat.typography-level($phaenonet-typography, 'button');
+    @include typo-t4;
+    line-height: 36px; // todo: does not respect the line height from typography-button
     color: #5d5d5d;
   }
 }
