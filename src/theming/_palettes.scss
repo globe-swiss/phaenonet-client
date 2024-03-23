@@ -107,6 +107,7 @@ $phaenonet-warn: mat.define-palette($phaenonet-w, 500);
 
 $phaenonet-theme: mat.define-light-theme(
   (
+    density: 0,
     color: (
       primary: $phaenonet-primary,
       accent: $phaenonet-accent,

@@ -5,8 +5,13 @@ a[mat-flat-button] {
   padding-right: 75px;
 }
 
-button[mat-flat-button] {
+.mat-mdc-unelevated-button.mat-mdc-button-base {
   height: 70px;
+}
+
+// cannot make it work globally: $mdc-typography-font-family: unquote('"Open Sans", sans-serif');
+.mdc-button {
+  font-family: 'Open Sans', Roboto, sans-serif;
 }
 
 /* fix for https://github.com/angular/components/issues/23784 */
@@ -29,7 +34,7 @@ button[mat-flat-button] {
   padding: 30px;
 }
 
-#phaenonet-body .phenonet-dialog-component mat-dialog-container .phenonet-dialog-component-close-button.mat-button {
+#phaenonet-body .phenonet-dialog-component mat-dialog-container .phenonet-dialog-component-close-button.mat-mdc-button {
   position: absolute;
   top: 0;
   right: 0;

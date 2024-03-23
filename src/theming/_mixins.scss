@@ -227,7 +227,7 @@
 }
 
 @mixin ranger-badge {
-  button {
+  mat-icon {
     vertical-align: text-top;
     margin-top: -1rem;
     width: 20px;
@@ -235,9 +235,17 @@
 }
 
 @mixin badge {
-  button {
+  mat-icon {
     vertical-align: text-top;
     background-color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+
+  mat-icon svg {
+    //todo how to apply this to the SVG
+    transform: scale(0.6);
   }
 }
 

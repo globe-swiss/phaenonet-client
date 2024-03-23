@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+//@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 @import './typography';
 
@@ -13,7 +13,9 @@
 //tutorial https://blog.thoughtram.io/angular/2017/05/23/custom-themes-with-angular-material.html#custom-theme-using-built-in-color-palettes
 @include mat.legacy-core-theme($phaenonet-theme);
 @include mat.legacy-autocomplete-theme($phaenonet-theme);
-@include mat.legacy-button-theme($phaenonet-theme);
+@include mat.button-theme($phaenonet-theme);
+@include mat.fab-theme($phaenonet-theme);
+@include mat.icon-button-theme($phaenonet-theme);
 @include mat.button-toggle-theme($phaenonet-theme);
 @include mat.legacy-card-theme($phaenonet-theme);
 @include mat.legacy-checkbox-theme($phaenonet-theme);
