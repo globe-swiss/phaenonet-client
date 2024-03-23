@@ -2,6 +2,8 @@ const { navbarComponent, individualsEditPage, individualsPage, privateProfilePag
 const fetch = require('node-fetch');
 const { retrySteps } = require('./helpers/retrySteps');
 
+const prepareBaseImage = false;
+
 // in this file you can append custom step methods to 'I' object
 
 // eslint-disable-next-line func-names
@@ -62,7 +64,7 @@ module.exports = function () {
       this.amOnPage(url || page.url);
       this.waitForComponents(components || page.components || []);
     },
-    async checkVisual(filename, tolerance = 0, prepareBaseImage = false, retryParams = { retries: 3, wait: 0.2 }) {
+    async checkVisual(filename, tolerance = 0, retryParams = { retries: 3, wait: 0.2 }) {
       if (prepareBaseImage) {
         this.wait(5);
       }
