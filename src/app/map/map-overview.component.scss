@@ -69,13 +69,13 @@
     }
   }
 
-  &__extended-fab-button {
-    width: unset;
-    border-radius: 35px;
-    padding-left: 75px;
-    padding-right: 75px;
+  // dynamic size + shadow
+  &__extended-flat-button {
+    box-shadow:
+      0 3px 5px -1px rgba(0, 0, 0, 0.2),
+      0 6px 10px 0 rgba(0, 0, 0, 0.14),
+      0 1px 18px 0 rgba(0, 0, 0, 0.12);
     margin-top: 2.5rem;
-    height: 70px;
 
     @include for-tablet-and-smaller {
       border-radius: 25px;

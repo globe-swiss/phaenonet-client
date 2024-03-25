@@ -46,7 +46,12 @@
     </map-info-window>
   </google-map>
   <div class="map-overview__map-actions">
-    <button mat-fab class="map-overview__extended-fab-button" color="primary" [routerLink]="'/individuals/new/edit'">
+    <button
+      mat-flat-button
+      class="map-overview__extended-flat-button"
+      color="primary"
+      [routerLink]="'/individuals/new/edit'"
+    >
       <mat-icon>add</mat-icon>
       <span>{{ 'Objekt hinzufügen' | translate }}</span>
     </button>
