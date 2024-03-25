@@ -17,12 +17,14 @@
         />
       </span>
       <span class="profile-details__badge">
-        <mat-icon
+        <button
+          mat-icon-button
           [app-copy-clipboard]="profileLink"
           (copied)="notifyCopied()"
           data-test-id="profile-details-link-button"
-          svgIcon="copylink"
-        />
+        >
+          <mat-icon svgIcon="copylink"></mat-icon>
+        </button>
       </span>
     </h1>
     <div class="profile-details__label">{{ 'Vorname' | translate }}</div>
