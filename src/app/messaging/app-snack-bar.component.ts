@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 import { AlertComponent } from './alert.component';
 import { AlertMessage, AlertService, Level } from './alert.service';
 
@@ -8,22 +8,28 @@ import { AlertMessage, AlertService, Level } from './alert.service';
   selector: 'app-snack-bar',
   templateUrl: 'app-snack-bar.component.html'
 })
-export class AppSnackBarComponent implements OnInit {
+export class AppSnackBarComponent implements OnInit, OnDestroy {
+  subscriptions = new Subscription();
   constructor(
     public snackBar: MatSnackBar,
-    private alertService: AlertService,
-    private translateService: TranslateService
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
-    this.alertService.latestMessage.subscribe(alertMessage =>
-      this.snackBar.openFromComponent(AlertComponent, {
-        announcementMessage: alertMessage.title,
-        data: alertMessage,
-        panelClass: ['alert', this.cssClass(alertMessage)],
-        duration: alertMessage.duration
-      })
+    this.subscriptions.add(
+      this.alertService.latestMessage.subscribe(alertMessage =>
+        this.snackBar.openFromComponent(AlertComponent, {
+          announcementMessage: alertMessage.title,
+          data: alertMessage,
+          panelClass: ['alert', this.cssClass(alertMessage)],
+          duration: alertMessage.duration
+        })
+      )
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   private cssClass(alertMessage: AlertMessage): string {

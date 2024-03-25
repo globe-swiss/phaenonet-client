@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 
-//@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 @import './typography';
 
@@ -45,6 +45,6 @@
 @include mat.toolbar-theme($phaenonet-theme);
 @include mat.legacy-tooltip-theme($phaenonet-theme);
 @include mat.tree-theme($phaenonet-theme);
-@include mat.legacy-snack-bar-theme($phaenonet-theme);
+@include mat.snack-bar-theme($phaenonet-theme);
 
 @import './overwrite-mat';
