@@ -1,3 +1,4 @@
+// Button component
 button[mat-flat-button],
 a[mat-flat-button] {
   border-radius: 35px;
@@ -6,14 +7,31 @@ a[mat-flat-button] {
 }
 
 .mat-mdc-unelevated-button.mat-mdc-button-base {
+  // adjust default button height
   height: 70px;
 }
 
 // cannot make it work globally: $mdc-typography-font-family: unquote('"Open Sans", sans-serif');
 .mdc-button {
+  // adjust font on button
   font-family: 'Open Sans', Roboto, sans-serif;
 }
 
+// Form
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  // remove background from fields in input forms
+  background-color: transparent !important;
+  // correct padding for filter bars
+  padding-right: 5px;
+  padding-left: 0;
+}
+
+.mat-mdc-form-field-focus-overlay {
+  // remove background from fields in input forms
+  background-color: transparent !important;
+}
+
+// others
 /* fix for https://github.com/angular/components/issues/23784 */
 #phaenonet-body mat-card-actions.phaenonet-overwrite-mat-card-actions-center {
   display: flex;
@@ -24,6 +42,7 @@ a[mat-flat-button] {
   @include typo-t2;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 #phaenonet-body .mat-form-field-underline {
   background-color: #f7f5f2;
 }

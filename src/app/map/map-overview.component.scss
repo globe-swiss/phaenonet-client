@@ -105,7 +105,7 @@
       transform: translateX(-50%);
     }
 
-    ::ng-deep .mat-form-field-underline {
+    ::ng-deep .mdc-line-ripple {
       display: none;
     }
 
@@ -119,26 +119,26 @@
         flex-direction: column;
       }
     }
-  }
-}
 
-::ng-deep #phaenonet-body #form-year .mat-form-field-infix {
-  width: 7rem;
-  @include for-tablet-and-smaller {
-    width: 6rem;
-  }
-}
+    &__year {
+      width: 7rem;
+      @include for-tablet-and-smaller {
+        width: 6rem;
+      }
+    }
 
-::ng-deep #phaenonet-body #form-datasource .mat-form-field-infix {
-  width: 7rem;
-  @include for-tablet-and-smaller {
-    width: 6rem;
-  }
-}
+    &__datasource {
+      width: 7rem;
+      @include for-tablet-and-smaller {
+        width: 7rem;
+      }
+    }
 
-::ng-deep #phaenonet-body #form-species .mat-form-field-infix {
-  width: 15rem;
-  @include for-tablet-and-smaller {
-    width: 6rem;
+    &__species {
+      width: 15rem;
+      @include for-tablet-and-smaller {
+        width: 6rem;
+      }
+    }
   }
 }

@@ -1,6 +1,6 @@
 <div class="statistics-overview">
-  <div #statisticsContainer class="chart-view">
-    <div class="statistics-filter">
+  <div #statisticsContainer class="statistics-overview__chart-view">
+    <div class="statistics-overview__statistics-filter">
       <div>
         <form [formGroup]="filter">
           <mat-form-field>
@@ -49,7 +49,7 @@
       </div>
     </div>
     <svg id="statistics-graph" width="100%" height="100%"></svg>
-    <div id="tooltip" class="hidden">
+    <div id="tooltip" class="statistics-overview__tooltip hidden">
       <p><strong id="title">Phenophase</strong></p>
       <p><span id="value"></span></p>
       <p><span id="median"></span></p>

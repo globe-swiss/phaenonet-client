@@ -59,7 +59,7 @@
   <div class="map-overview__map-filter">
     <div>
       <form [formGroup]="filter">
-        <div id="form-year">
+        <div class="map-overview__map-filter__year">
           <mat-form-field>
             <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
             <mat-select formControlName="year">
@@ -67,7 +67,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div id="form-datasource">
+        <div class="map-overview__map-filter__datasource">
           <mat-form-field>
             <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
             <mat-select formControlName="datasource">
@@ -77,7 +77,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div id="form-species">
+        <div class="map-overview__map-filter__species">
           <mat-form-field>
             <mat-label>{{ 'Art' | translate }}</mat-label>
             <mat-select formControlName="species">
