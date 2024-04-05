@@ -1,21 +1,23 @@
 // Button component
 button[mat-flat-button],
 a[mat-flat-button] {
-  border-radius: 35px;
-  padding-left: 75px;
-  padding-right: 75px;
+  &.mat-mdc-button,
+  &.mat-mdc-raised-button,
+  &.mdc-button--unelevated,
+  &.mdc-button--outlined {
+    border-radius: 35px;
+    padding-left: 75px;
+    padding-right: 75px;
+    height: 70px;
+    //font-family: 'Open Sans', Roboto, sans-serif;
+  }
 }
 
-.mat-mdc-unelevated-button.mat-mdc-button-base {
-  // adjust default button height
-  height: 70px;
-}
-
-// cannot make it work globally: $mdc-typography-font-family: unquote('"Open Sans", sans-serif');
-.mdc-button {
-  // adjust font on button
-  font-family: 'Open Sans', Roboto, sans-serif;
-}
+// // cannot make it work globally: $mdc-typography-font-family: unquote('"Open Sans", sans-serif');
+// .mdc-button {
+//   // adjust font on button
+//   font-family: 'Open Sans', Roboto, sans-serif;
+// }
 
 // Form
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
@@ -43,6 +45,7 @@ a[mat-flat-button] {
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
 #phaenonet-body .mat-form-field-underline {
   background-color: #f7f5f2;
 }
@@ -75,18 +78,22 @@ a[mat-flat-button] {
 }
 
 // note: colors are also defined in individual-header-graph-component.ts
+/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
 #phaenonet-body #individual-header-air-temperature .mat-checkbox-background {
   background-color: #6b83ba;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
 #phaenonet-body #individual-header-air-humidity .mat-checkbox-background {
   background-color: #2c3a5c;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
 #phaenonet-body #individual-header-soil-temperature .mat-checkbox-background {
   background-color: #96a68b;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
 #phaenonet-body #individual-header-soil-humidity .mat-checkbox-background {
   background-color: #405240;
 }

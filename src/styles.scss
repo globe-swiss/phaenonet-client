@@ -1,5 +1,7 @@
 @use '@angular/material' as mat;
 
+@include mat.core();
+
 @import './theming/phaenonet-theme';
 @import './theming/constants';
 @import './theming/mixins';
@@ -78,6 +80,7 @@ snack-bar-container.error {
   color: #f8f2c4;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 .mat-card-header-text {
   margin: 0 !important;
 }

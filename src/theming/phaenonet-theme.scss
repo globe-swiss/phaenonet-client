@@ -1,50 +1,60 @@
 @use '@angular/material' as mat;
 
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+//@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 @import './typography';
-
-/* TODO(mdc-migration): Remove all-legacy-component-typographies once all legacy components are migrated */
-@include mat.all-legacy-component-typographies($phaenonet-typography-legacy);
-@include mat.all-component-typographies($phaenonet-typography);
-
 @import './palettes';
 
+$phaenonet-theme: mat.define-light-theme(
+  (
+    density: 0,
+    color: (
+      primary: $phaenonet-primary,
+      accent: $phaenonet-accent,
+      warn: $phaenonet-warn
+    ),
+    typography: $phaenonet-typography
+  )
+);
+
 //tutorial https://blog.thoughtram.io/angular/2017/05/23/custom-themes-with-angular-material.html#custom-theme-using-built-in-color-palettes
+//update: https://angular-material.dev/courses/m2-ng-components/m2-ng-components/overview
+@include mat.typography-hierarchy($phaenonet-typography);
+
 @include mat.core-theme($phaenonet-theme);
 @include mat.autocomplete-theme($phaenonet-theme);
 @include mat.button-theme($phaenonet-theme);
 @include mat.fab-theme($phaenonet-theme);
 @include mat.icon-button-theme($phaenonet-theme);
 @include mat.button-toggle-theme($phaenonet-theme);
-@include mat.legacy-card-theme($phaenonet-theme);
-@include mat.legacy-checkbox-theme($phaenonet-theme);
-@include mat.legacy-chips-theme($phaenonet-theme);
-@include mat.legacy-table-theme($phaenonet-theme);
+@include mat.card-theme($phaenonet-theme);
+//@include mat.checkbox-theme($phaenonet-theme);
+//@include mat.chips-theme($phaenonet-theme);
+//@include mat.table-theme($phaenonet-theme);
 @include mat.datepicker-theme($phaenonet-theme);
-@include mat.legacy-dialog-theme($phaenonet-theme);
-@include mat.divider-theme($phaenonet-theme);
-@include mat.expansion-theme($phaenonet-theme);
+@include mat.dialog-theme($phaenonet-theme);
+//@include mat.divider-theme($phaenonet-theme);
+//@include mat.expansion-theme($phaenonet-theme);
 @include mat.form-field-theme($phaenonet-theme);
-@include mat.grid-list-theme($phaenonet-theme);
+//@include mat.grid-list-theme($phaenonet-theme);
 @include mat.icon-theme($phaenonet-theme);
 @include mat.input-theme($phaenonet-theme);
-@include mat.legacy-list-theme($phaenonet-theme);
-@include mat.legacy-menu-theme($phaenonet-theme);
-@include mat.legacy-paginator-theme($phaenonet-theme);
-@include mat.legacy-progress-bar-theme($phaenonet-theme);
-@include mat.legacy-progress-spinner-theme($phaenonet-theme);
-@include mat.legacy-radio-theme($phaenonet-theme);
+//@include mat.list-theme($phaenonet-theme);
+//@include mat.menu-theme($phaenonet-theme);
+//@include mat.paginator-theme($phaenonet-theme);
+//@include mat.progress-bar-theme($phaenonet-theme);
+@include mat.progress-spinner-theme($phaenonet-theme);
+//@include mat.radio-theme($phaenonet-theme);
 @include mat.select-theme($phaenonet-theme);
-@include mat.sidenav-theme($phaenonet-theme);
-@include mat.legacy-slide-toggle-theme($phaenonet-theme);
-@include mat.legacy-slider-theme($phaenonet-theme);
-@include mat.stepper-theme($phaenonet-theme);
-@include mat.sort-theme($phaenonet-theme);
-@include mat.legacy-tabs-theme($phaenonet-theme);
-@include mat.toolbar-theme($phaenonet-theme);
-@include mat.legacy-tooltip-theme($phaenonet-theme);
-@include mat.tree-theme($phaenonet-theme);
+//@include mat.sidenav-theme($phaenonet-theme);
+//@include mat.slide-toggle-theme($phaenonet-theme);
+//@include mat.slider-theme($phaenonet-theme);
+//@include mat.stepper-theme($phaenonet-theme);
+//@include mat.sort-theme($phaenonet-theme);
+//@include mat.tabs-theme($phaenonet-theme);
+//@include mat.toolbar-theme($phaenonet-theme);
+@include mat.tooltip-theme($phaenonet-theme);
+//@include mat.tree-theme($phaenonet-theme);
 @include mat.snack-bar-theme($phaenonet-theme);
 
 @import './overwrite-mat';
