@@ -6,6 +6,7 @@
 @import './theming/constants';
 @import './theming/mixins';
 
+// ***** OVERRIDES *****
 html,
 body {
   height: 100%;
@@ -14,6 +15,19 @@ body {
   font-family: 'Open Sans';
   background: #f7f5f2;
   color: #262626;
+}
+
+h2 {
+  color: #868072;
+  text-transform: uppercase;
+}
+
+// ***** CARD *****
+// centers action buttons on cards
+// fix for https://github.com/angular/components/issues/23784
+mat-card-actions.center-actions {
+  display: flex;
+  justify-content: center;
 }
 
 .detail-view {
@@ -63,11 +77,6 @@ body {
   }
 }
 
-h2 {
-  color: #868072;
-  text-transform: uppercase;
-}
-
 .full-width {
   width: 100%;
 }
@@ -78,11 +87,6 @@ snack-bar-container.info {
 
 snack-bar-container.error {
   color: #f8f2c4;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-.mat-card-header-text {
-  margin: 0 !important;
 }
 
 .clip-text {

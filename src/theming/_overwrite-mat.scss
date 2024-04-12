@@ -1,4 +1,4 @@
-// Button component
+// ***** BUTTON *****
 button[mat-flat-button],
 a[mat-flat-button] {
   &.mat-mdc-button,
@@ -9,45 +9,61 @@ a[mat-flat-button] {
     padding-left: 75px;
     padding-right: 75px;
     height: 70px;
-    //font-family: 'Open Sans', Roboto, sans-serif;
   }
 }
 
-// Form
+// ***** FORM *****
+:root {
+  --mdc-filled-text-field-active-indicator-color: #f7f5f2; // input field underline color
+  --mdc-filled-text-field-hover-active-indicator-color: #e7e5e2; // input field underline color (hover)
+  --mdc-filled-text-field-container-color: transparent; // input field background
+  --mat-form-field-state-layer-color: transparent; // input field background (active)
+}
+
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-  // remove background from fields in input forms
-  background-color: transparent !important;
-  // correct padding for filter bars
+  // correct padding for input fileds & filter bars
   padding-right: 5px;
   padding-left: 0;
 }
 
-.mat-mdc-form-field-focus-overlay {
-  // remove background from fields in input forms
-  background-color: transparent !important;
+// ***** SELECT *****
+:root {
+  --mat-select-trigger-text-size: var(h2-font-size); // select trigger text size
 }
 
-// select
 .mat-mdc-select-panel {
-  min-width: fit-content;
+  min-width: fit-content; // selection options can be wider than the trigger
 }
 
-// others
-/* fix for https://github.com/angular/components/issues/23784 */
-#phaenonet-body mat-card-actions.phaenonet-overwrite-mat-card-actions-center {
-  display: flex;
-  justify-content: center;
+// ***** CARD *****
+
+// mat-card currently not raised, should be default again after update: https://github.com/angular/components/pull/27418
+
+.mat-mdc-card-header-text {
+  margin: 0 !important;
 }
 
-#phaenonet-body mat-card-subtitle {
-  @include typo-t2;
+.mat-mdc-card-header {
+  padding: 0 !important;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
-#phaenonet-body .mat-form-field-underline {
-  background-color: #f7f5f2;
+.mat-mdc-card-title {
+  margin-bottom: 6px !important;
 }
+
+.mat-mdc-card-subtitle {
+  margin-bottom: 16px !important;
+}
+
+.mat-mdc-card-content {
+  padding: 0 !important;
+}
+
+.mat-mdc-card {
+  padding-bottom: 30px !important;
+}
+
+// ***** OTHERS *****
 
 #phaenonet-body .phenonet-dialog-component mat-dialog-container {
   border-radius: 1rem;
@@ -77,22 +93,22 @@ a[mat-flat-button] {
 }
 
 // note: colors are also defined in individual-header-graph-component.ts
-/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
 #phaenonet-body #individual-header-air-temperature .mat-checkbox-background {
   background-color: #6b83ba;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
 #phaenonet-body #individual-header-air-humidity .mat-checkbox-background {
   background-color: #2c3a5c;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
 #phaenonet-body #individual-header-soil-temperature .mat-checkbox-background {
   background-color: #96a68b;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
 #phaenonet-body #individual-header-soil-humidity .mat-checkbox-background {
   background-color: #405240;
 }
