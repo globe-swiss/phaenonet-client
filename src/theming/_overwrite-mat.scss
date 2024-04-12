@@ -13,12 +13,6 @@ a[mat-flat-button] {
   }
 }
 
-// // cannot make it work globally: $mdc-typography-font-family: unquote('"Open Sans", sans-serif');
-// .mdc-button {
-//   // adjust font on button
-//   font-family: 'Open Sans', Roboto, sans-serif;
-// }
-
 // Form
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   // remove background from fields in input forms
@@ -31,6 +25,11 @@ a[mat-flat-button] {
 .mat-mdc-form-field-focus-overlay {
   // remove background from fields in input forms
   background-color: transparent !important;
+}
+
+// select
+.mat-mdc-select-panel {
+  min-width: fit-content;
 }
 
 // others

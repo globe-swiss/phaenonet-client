@@ -258,12 +258,14 @@
 }
 
 @mixin year-select {
-  @include typo-h2;
   margin-left: auto;
-  font-weight: bold;
   margin-bottom: 30px;
   margin-top: -2px;
   @include for-tablet-and-smaller {
     margin-top: -1px;
+  }
+
+  mat-select {
+    font-weight: bold;
   }
 }
