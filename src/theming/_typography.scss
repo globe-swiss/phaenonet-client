@@ -82,9 +82,9 @@ $phaenonet-typography: mat.define-typography-config(
     ),
   $body-1:
     mat.define-typography-level(
-      $font-size: var(--t3-font-size),
-      $line-height: var(--t3--line-height),
-      $font-weight: var(--t3-font-weight)
+      $font-size: var(--t2-font-size),
+      $line-height: var(--t2--line-height),
+      $font-weight: var(--t2-font-weight)
     ),
   $subtitle-2:
     mat.define-typography-level(
