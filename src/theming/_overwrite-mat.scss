@@ -1,3 +1,6 @@
+/* stylelint-disable selector-class-pattern */
+@import './constants';
+
 // ***** BUTTON *****
 button[mat-flat-button],
 a[mat-flat-button] {
@@ -63,22 +66,26 @@ a[mat-flat-button] {
   padding-bottom: 30px !important;
 }
 
+// ***** DIALOG *****
+
+:root {
+  --mat-dialog-with-actions-content-padding: 0;
+  --mat-dialog-headline-padding: 0;
+  --mat-dialog-content-padding: 0;
+  --mdc-dialog-subhead-color: var(--h2-color); // color needs to be overridden to default
+  --mdc-dialog-container-shape: 1rem; // set boarder radius
+}
+
+mat-dialog-container .mdc-dialog__container .mat-mdc-dialog-surface {
+  padding: 30px;
+  padding-bottom: 15px;
+}
+
+.mdc-dialog__title::before {
+  height: unset !important; // remove addiniontal padding on top of dialog title
+}
+
 // ***** OTHERS *****
-
-#phaenonet-body .phenonet-dialog-component mat-dialog-container {
-  border-radius: 1rem;
-  position: relative;
-  padding: 30px;
-}
-
-#phaenonet-body .phenonet-dialog-component mat-dialog-container .phenonet-dialog-component-close-button.mat-mdc-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 30px;
-  line-height: 14px;
-  font-size: 1.5rem;
-}
 
 #phaenonet-body .gm-style .gm-style-iw-c {
   padding: 0;

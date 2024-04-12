@@ -6,6 +6,11 @@
 @import './theming/constants';
 @import './theming/mixins';
 
+// ***** GLOBAL *****
+:root {
+  --h2-color: #868072;
+}
+
 // ***** OVERRIDES *****
 html,
 body {
@@ -18,7 +23,7 @@ body {
 }
 
 h2 {
-  color: #868072;
+  color: var(--h2-color);
   text-transform: uppercase;
 }
 
@@ -30,6 +35,27 @@ mat-card-actions.center-actions {
   justify-content: center;
 }
 
+// ***** DIALOG *****
+
+// enable dialog closing button
+mat-dialog-container .phenonet-dialog-component-close-button.mat-mdc-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 15px;
+  z-index: 1; // make sure it is on top of the dialog
+
+  mat-icon {
+    font-size: 1.5rem;
+  }
+
+  // remove hover effect
+  .mat-mdc-button-persistent-ripple::before {
+    opacity: 0;
+  }
+}
+
+// ***** OTHERS *****
 .detail-view {
   margin-top: 2.625rem;
   padding-bottom: 7.5375rem;
@@ -114,16 +140,4 @@ snack-bar-container.error {
 
   padding-top: 0.125rem;
   padding-bottom: 1.25rem;
-}
-
-#phaenonet-body .font-weight-300 {
-  font-weight: 300;
-}
-
-#phaenonet-body .no-margin-top {
-  margin-top: 0;
-}
-
-.mat-icon {
-  overflow: visible !important;
 }
