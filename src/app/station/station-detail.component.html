@@ -37,10 +37,10 @@
                   matInput
                   [id]="item.phenophase.id"
                   [matDatepicker]="fakePicker"
-                  placeholder="{{ item.phenophase.description_de | translate }}"
                   [value]="item.observation.toNullable()?.date"
                   readonly="true"
                 />
+                <mat-label translate>{{ item.phenophase.description_de }}</mat-label>
               </mat-form-field>
               <mat-datepicker #fakePicker></mat-datepicker>
               <div

@@ -17,11 +17,11 @@
             matInput
             [id]="item.phenophase.id"
             [matDatepicker]="fakePicker"
-            placeholder="{{ item.phenophase.description_de | translate }}"
             [value]="item.observation.toNullable()?.date"
             readonly="true"
             data-test-id="observationDate"
           />
+          <mat-label translate>{{ item.phenophase.description_de }}</mat-label>
           <mat-datepicker #fakePicker></mat-datepicker>
           <mat-icon
             *ngIf="(isEditable$ | async) && item.observation.isNone() && item.limits.isEditable"
