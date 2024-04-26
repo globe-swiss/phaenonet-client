@@ -19,27 +19,6 @@
   padding-right: var(--default-padding);
 }
 
-@mixin flex-row {
-  display: flex;
-  flex-direction: row;
-}
-
-@mixin flex-no-grow-shrink {
-  flex-grow: 0;
-  flex-shrink: 0;
-}
-
-@mixin flex-grow-shrink {
-  flex-grow: 1;
-  flex-shrink: 1;
-}
-
-@mixin margin-between-description {
-  &:nth-child(2n - 1) {
-    margin-top: 7rem;
-  }
-}
-
 @mixin detail-view {
   padding-left: 20px;
   padding-right: 20px;
