@@ -30,8 +30,11 @@ a[mat-flat-button] {
 }
 
 // ***** SELECT *****
-:root {
-  --mat-select-trigger-text-size: var(h2-font-size); // select trigger text size
+// adjust select text sizes (setting in :root does not work as it needs to be dynamic based on screen sizes)
+.mat-mdc-select-value-text,
+.mat-mdc-option,
+.mdc-text-field--filled .mdc-floating-label {
+  font-size: var(--t2-font-size) !important;
 }
 
 .mat-mdc-select-panel {
