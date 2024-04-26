@@ -67,7 +67,6 @@ a[mat-flat-button] {
 }
 
 // ***** DIALOG *****
-
 :root {
   --mat-dialog-with-actions-content-padding: 0;
   --mat-dialog-headline-padding: 0;
@@ -85,37 +84,18 @@ mat-dialog-container .mdc-dialog__container .mat-mdc-dialog-surface {
   height: unset !important; // remove addiniontal padding on top of dialog title
 }
 
-// ***** OTHERS *****
-
+// ***** GOOGLE MAPS *****
+// remove padding from info window
 #phaenonet-body .gm-style .gm-style-iw-c {
-  padding: 0;
+  padding: 0 !important;
 }
 
+// hide overflow on info window and do not add scroll bars
 #phaenonet-body .gm-style .gm-style-iw-d {
-  overflow: auto !important;
+  overflow: hidden !important;
 }
 
+// remove close icon from info window
 #phaenonet-body button.gm-ui-hover-effect {
   display: none !important;
-}
-
-// note: colors are also defined in individual-header-graph-component.ts
-/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
-#phaenonet-body #individual-header-air-temperature .mat-checkbox-background {
-  background-color: #6b83ba;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
-#phaenonet-body #individual-header-air-humidity .mat-checkbox-background {
-  background-color: #2c3a5c;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
-#phaenonet-body #individual-header-soil-temperature .mat-checkbox-background {
-  background-color: #96a68b;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
-#phaenonet-body #individual-header-soil-humidity .mat-checkbox-background {
-  background-color: #405240;
 }
