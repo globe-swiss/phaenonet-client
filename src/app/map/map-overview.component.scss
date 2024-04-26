@@ -103,6 +103,13 @@
       top: 6.5rem;
       left: 50%;
       transform: translateX(-50%);
+
+      // adjust select text sizes for phone
+      ::ng-deep .mat-mdc-select-value-text,
+      ::ng-deep .mat-mdc-option,
+      ::ng-deep .mdc-text-field--filled .mdc-floating-label {
+        font-size: var(--t2-font-size);
+      }
     }
 
     ::ng-deep .mdc-line-ripple {

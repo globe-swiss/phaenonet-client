@@ -30,11 +30,13 @@ a[mat-flat-button] {
 }
 
 // ***** SELECT *****
-// adjust select text sizes (setting in :root does not work as it needs to be dynamic based on screen sizes)
-.mat-mdc-select-value-text,
-.mat-mdc-option,
-.mdc-text-field--filled .mdc-floating-label {
-  font-size: var(--t2-font-size) !important;
+:root {
+  --mat-form-field-container-height: 50px; // lift labels up
+}
+
+// allow labels to show behind selector icons
+.mat-mdc-floating-label.mdc-floating-label {
+  overflow: visible;
 }
 
 .mat-mdc-select-panel {

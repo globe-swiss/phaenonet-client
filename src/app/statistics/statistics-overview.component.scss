@@ -17,6 +17,7 @@
     form {
       display: flex;
       flex-direction: row;
+      align-items: baseline;
 
       .mdc-line-ripple {
         display: none;
@@ -25,21 +26,19 @@
       mat-form-field {
         margin: 1rem;
       }
-
-      .statistics-info-button {
-        margin-top: 2rem;
-      }
     }
 
     @include for-tablet-and-smaller {
       .mat-mdc-form-field {
         width: 6rem;
-        font-size: 0.875rem;
         margin-bottom: 0;
       }
 
-      .statistics-info-button {
-        margin-top: 1.5rem;
+      // adjust select text sizes for phone
+      .mat-mdc-select-value-text,
+      .mat-mdc-option,
+      .mdc-text-field--filled .mdc-floating-label {
+        font-size: var(--t2-font-size);
       }
     }
 
@@ -47,12 +46,14 @@
       .mat-mdc-form-field {
         width: 3.5rem;
         margin: 0.5rem;
-        font-size: 0.75rem;
         margin-bottom: 0;
       }
 
-      .statistics-info-button {
-        margin-top: 0.8rem;
+      // adjust select text sizes for phone
+      .mat-mdc-select-value-text,
+      .mat-mdc-option,
+      .mdc-text-field--filled .mdc-floating-label {
+        font-size: var(--t4-font-size);
       }
     }
   }
