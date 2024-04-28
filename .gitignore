@@ -10,6 +10,7 @@ sme.html
 tmp
 /out-tsc
 protractorFailuresReport/
+.nx
 
 # dependencies
 node_modules
