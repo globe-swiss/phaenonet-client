@@ -92,7 +92,7 @@
 }
 
 @mixin detail-value-t2 {
-  @include typo-t2; // todo: was body-2, should this be t2 or t3?
+  @include typo-t2;
 }
 
 @mixin detail-value-t1 {
