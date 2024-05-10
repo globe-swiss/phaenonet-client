@@ -64,6 +64,7 @@ jobs:
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           project_Id: phaenonet-test
+          expires: 30d
   e2e-tests:
     concurrency: e2e-test
     name: E2E-tests
@@ -116,6 +117,7 @@ jobs:
           project_Id: phaenonet-test
           entry_point: e2e/
           channel_id: ${{ github.ref == 'refs/heads/master' && 'live' || null }}
+          expires: 30d
         if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
   checks:
     name: Code Quality
