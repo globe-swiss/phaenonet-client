@@ -4,32 +4,6 @@
 
 @import './mixins';
 
-:root {
-  --h1-font-size: 1.875rem;
-  --h2-font-size: 1.125rem;
-  --t1-font-size: 1.375rem;
-  --t2-font-size: 1.125rem;
-  --t3-font-size: 1rem;
-  --t4-font-size: 0.875rem;
-
-  --h1-font-weight: 700;
-  --h2-font-weight: 700;
-  --t1-font-weight: 300;
-  --t2-font-weight: 300;
-  --t3-font-weight: 300;
-  --t4-font-weight: 300;
-  --t4-bold-font-weight: 700;
-
-  --h1--line-height: calc(1.5 / 1.125);
-  --h2--line-height: calc(1.5 / 1.125);
-  --t1--line-height: calc(1.375 / 1);
-  --t2--line-height: calc(1.375 / 1);
-  --t3--line-height: calc(1.375 / 0.5);
-  --t4--line-height: calc(1.375 / 1);
-
-  font-size: 1em;
-}
-
 @include for-tablet-and-smaller {
   body {
     --h1-font-size: 1.75rem;
@@ -45,10 +19,11 @@
 
 To select a specific font size from Angular in an element you can use:
 <div class="mat-body-1">...</div>
+(!) DO NOT USE THE MAT CLASSES, use the approach below
 
 To select a specific font size from Angular in a class you can use:
 .SomeClass {
-  @include mat.typography-level($phaenonet-typography, 'button');
+  @include typo-h1
 }
 
 The Fontsizes of Dani are mapped to the following Angular Typhography Level:
@@ -58,31 +33,48 @@ H2 -> title (mat-h2)
 T1 -> body-1 (mat-body-1)
 T2 -> body-2 (mat-body-2), input (for input there is no css class)
 T3 -> subheading-1 (mat-h3), subheading-2 (mat-h4), caption (mat-caption)
-T4 -> button (for button there is no css clss)
+T4 -> button (for button there is no css class)
+
+https://material.angular.io/guide/typography
+CSS class	                          Level name	Native elements
+=========                           ==========  ===============
+.mat-headline-1	                    headline-1	None
+.mat-headline-2	                    headline-2	None
+.mat-headline-3	                    headline-3	None
+.mat-headline-4	                    headline-4	None
+.mat-h1 or .mat-headline-5	        headline-5	<h1>
+.mat-h2 or .mat-headline-6	        headline-6	<h2>
+.mat-h3 or .mat-subtitle-1	        subtitle-1	<h3>
+.mat-h4 or .mat-body-1	            body-1	    <h4>
+.mat-h5	                            None	      <h5>
+.mat-h6	                            None	      <h6>
+.mat-body or .mat-body-2	          body-2	    Body text
+.mat-body-strong or .mat-subtitle-2	subtitle-2	None
+.mat-small or .mat-caption	        caption	    None
 
 */
 
-$phaenonet-typography: mat.define-legacy-typography-config(
+$phaenonet-typography: mat.define-typography-config(
   $font-family: '"Open Sans", "Roboto", sans-serif;',
-  $headline:
+  $headline-5:
     mat.define-typography-level(
       $font-size: var(--h1-font-size),
       $line-height: var(--h1--line-height),
       $font-weight: var(--h1-font-weight)
     ),
-  $title:
+  $headline-6:
     mat.define-typography-level(
       $font-size: var(--h2-font-size),
       $line-height: var(--h2--line-height),
       $font-weight: var(--h2-font-weight)
     ),
-  $subheading-2:
+  $subtitle-1:
     mat.define-typography-level(
       $font-size: var(--t3-font-size),
       $line-height: var(--t3--line-height),
       $font-weight: var(--t3-font-weight)
     ),
-  $subheading-1:
+  $body-2:
     mat.define-typography-level(
       $font-size: var(--t3-font-size),
       $line-height: var(--t3--line-height),
@@ -90,11 +82,11 @@ $phaenonet-typography: mat.define-legacy-typography-config(
     ),
   $body-1:
     mat.define-typography-level(
-      $font-size: var(--t1-font-size),
-      $line-height: var(--t1--line-height),
-      $font-weight: var(--t1-font-weight)
+      $font-size: var(--t2-font-size),
+      $line-height: var(--t2--line-height),
+      $font-weight: var(--t2-font-weight)
     ),
-  $body-2:
+  $subtitle-2:
     mat.define-typography-level(
       $font-size: var(--t2-font-size),
       $line-height: var(--t2--line-height),
@@ -103,14 +95,8 @@ $phaenonet-typography: mat.define-legacy-typography-config(
   $button:
     mat.define-typography-level(
       $font-size: var(--t4-font-size),
-      $line-height: var(--t4--line-height),
+      $line-height: var(--t1--line-height),
       $font-weight: var(--t4-font-weight)
-    ),
-  $input:
-    mat.define-typography-level(
-      $font-size: var(--t2-font-size),
-      $line-height: 1.5,
-      $font-weight: var(--t2-font-weight)
     ),
   $caption:
     mat.define-typography-level(

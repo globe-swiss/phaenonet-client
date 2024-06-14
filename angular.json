@@ -125,21 +125,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "phaenonet:build"
+            "buildTarget": "phaenonet:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "phaenonet:build:production"
+              "buildTarget": "phaenonet:build:production"
             },
             "local": {
-              "browserTarget": "phaenonet:build:local"
+              "buildTarget": "phaenonet:build:local"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "phaenonet:build"
+            "buildTarget": "phaenonet:build"
           }
         },
         "lint": {

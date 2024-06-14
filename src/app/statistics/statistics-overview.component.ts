@@ -278,7 +278,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
         .style('opacity', 0.7)
         .attr('stroke', '#262626')
         .attr('stroke-width', 0.5)
-        .on('mouseover', function (d) {
+        .on('mouseover', function (_event: MouseEvent, d: AnalyticsValue) {
           const xPosition =
             parseFloat(d3.select(this).attr('x')) +
             margin.left +

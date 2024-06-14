@@ -37,7 +37,7 @@ Scenario('test register screen', async ({ I, loginPage, registerPage }) => {
   I.visit(loginPage);
   I.click(loginPage.registerNowLink);
   I.waitUrlEquals(registerPage.url);
-  await I.checkVisual('register', 0, false, { retries: 5, wait: 0.5 });
+  await I.checkVisual('register', 0, { retries: 5, wait: 0.5 });
 }).tag('visual');
 
 Scenario('Reset password', async ({ I, loginPage, resetPasswordPage }) => {

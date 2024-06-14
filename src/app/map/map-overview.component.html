@@ -45,44 +45,47 @@
       </ng-container>
     </map-info-window>
   </google-map>
-  <div class="map-overview__map-actions">
-    <button mat-fab class="map-overview__extended-fab-button" color="primary" [routerLink]="'/individuals/new/edit'">
+  <div class="map-overview__map-actions" data-test-id="actions-component">
+    <button
+      mat-flat-button
+      class="map-overview__extended-flat-button"
+      color="primary"
+      [routerLink]="'/individuals/new/edit'"
+    >
       <mat-icon>add</mat-icon>
       <span>{{ 'Objekt hinzufügen' | translate }}</span>
     </button>
   </div>
-  <div class="map-overview__map-filter">
-    <div>
-      <form [formGroup]="filter">
-        <div id="form-year">
-          <mat-form-field>
-            <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
-            <mat-select formControlName="year">
-              <mat-option *ngFor="let year of yearFilterValues$ | async" [value]="year">{{ year }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div id="form-datasource">
-          <mat-form-field>
-            <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
-            <mat-select formControlName="datasource">
-              <mat-option *ngFor="let datasource of datasourceFilterValues" [value]="datasource">{{
-                datasource | translate
-              }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div id="form-species">
-          <mat-form-field>
-            <mat-label>{{ 'Art' | translate }}</mat-label>
-            <mat-select formControlName="species">
-              <mat-option *ngFor="let specie of speciesFilterValues$ | async" [value]="specie.id">{{
-                specie.de | translate
-              }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </form>
-    </div>
+  <div class="map-overview__map-filter" data-test-id="filter-component">
+    <form [formGroup]="filter">
+      <div class="map-overview__map-filter__year">
+        <mat-form-field>
+          <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
+          <mat-select formControlName="year" data-test-id="select-year">
+            <mat-option *ngFor="let year of yearFilterValues$ | async" [value]="year">{{ year }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="map-overview__map-filter__datasource">
+        <mat-form-field>
+          <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
+          <mat-select formControlName="datasource" data-test-id="select-source">
+            <mat-option *ngFor="let datasource of datasourceFilterValues" [value]="datasource">{{
+              datasource | translate
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="map-overview__map-filter__species">
+        <mat-form-field>
+          <mat-label>{{ 'Art' | translate }}</mat-label>
+          <mat-select formControlName="species" data-test-id="select-species">
+            <mat-option *ngFor="let specie of speciesFilterValues$ | async" [value]="specie.id">{{
+              specie.de | translate
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
   </div>
 </div>

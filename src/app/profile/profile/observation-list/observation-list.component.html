@@ -6,7 +6,7 @@
     </h2>
   </div>
   <div *ngIf="userId" class="observation-list__content">
-    <div class="observation-list__year phenonet-year-select">
+    <div class="observation-list__year">
       <mat-select [value]="selectedYear | async" (selectionChange)="selectYear($event)" data-test-id="selectYear">
         <mat-option [value]="year" *ngFor="let year of avaiableYears() | async">{{ year }}</mat-option>
       </mat-select>

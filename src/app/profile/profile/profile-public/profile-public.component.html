@@ -2,14 +2,13 @@
   <div class="profile-public__title">
     <h2>{{ 'PROFIL' | translate }}</h2>
   </div>
-  <div *ngIf="user$ | async" class="profile-publice__content">
-    <div class="profile-publice__label">{{ 'Öffentliches Profil von' | translate }}</div>
-    <h1 class="profile-public__nick">
+  <div *ngIf="user$ | async" class="profile-public__content">
+    <div>{{ 'Öffentliches Profil von' | translate }}</div>
+    <h1>
       {{ nickname$ | async }}
       <span class="profile-public__ranger-badge">
         <button
           mat-icon-button
-          class="badge"
           matTooltip="{{
             'PhenoRanger sind speziell ausgebildete Personen, welche Daten zu zusätzlichen Arten erfassen können. Für weitere Informationen, oder um selbst PhenoRanger zu werden, wenden Sie sich an pheno.rangers@wsl.ch.'
               | translate

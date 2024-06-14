@@ -1,0 +1,67 @@
+:root {
+  --h1-font-size: 1.875rem;
+  --h2-font-size: 1.125rem;
+  --t1-font-size: 1.375rem;
+  --t2-font-size: 1.125rem;
+  --t3-font-size: 1rem;
+  --t4-font-size: 0.875rem;
+
+  --h1-font-weight: 700;
+  --h2-font-weight: 700;
+  --t1-font-weight: 300;
+  --t2-font-weight: 300;
+  --t3-font-weight: 300;
+  --t4-font-weight: 300;
+  --t4-bold-font-weight: 700;
+
+  --h1--line-height: calc(1.5 / 1.125);
+  --h2--line-height: calc(1.5 / 1.125);
+  --t1--line-height: calc(1.375 / 1);
+  --t2--line-height: calc(1.375 / 1);
+  --t3--line-height: calc(1.375 / 1);
+  --t4--line-height: calc(1.375 / 1);
+
+  --mdc-typography-font-family: "'Open Sans', Roboto, sans-serif";
+}
+
+@mixin typo-h1 {
+  font-size: var(--h1-font-size);
+  line-height: var(--h1--line-height);
+  font-weight: var(--h1-font-weight);
+}
+
+@mixin typo-h2 {
+  font-size: var(--h2-font-size);
+  line-height: var(--h2--line-height);
+  font-weight: var(--h2-font-weight);
+}
+
+@mixin typo-t1 {
+  font-size: var(--t1-font-size);
+  line-height: var(--t1--line-height);
+  font-weight: var(--t1-font-weight);
+}
+
+@mixin typo-t2 {
+  font-size: var(--t2-font-size);
+  line-height: var(--t2--line-height);
+  font-weight: var(--t2-font-weight);
+}
+
+@mixin typo-t3 {
+  font-size: var(--t3-font-size);
+  line-height: var(--t3--line-height);
+  font-weight: var(--t3-font-weight);
+}
+
+@mixin typo-t4 {
+  font-size: var(--t4-font-size);
+  line-height: var(--t4--line-height);
+  font-weight: var(--t4-font-weight);
+}
+
+@mixin typo-t4-bold {
+  font-size: var(--t4-font-size);
+  line-height: var(--t4--line-height);
+  font-weight: var(--t4-bold-font-weight);
+}

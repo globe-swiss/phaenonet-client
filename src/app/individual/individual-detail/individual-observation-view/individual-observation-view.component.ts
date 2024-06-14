@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { deleteField } from '@angular/fire/firestore';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';

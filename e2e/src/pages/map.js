@@ -3,16 +3,15 @@ module.exports = {
   components: {
     navigation: { css: 'app-nav' },
     map: { css: 'google-map' },
-    filter: { css: '.map-overview__map-filter' },
-    actions: { css: '.map-overview__map-actions' }
+    filter: { css: '[data-test-id=filter-component]' },
+    actions: { css: '[data-test-id=actions-component]' }
   },
   filter: {
     phenoyear: {
-      dropdown: { css: '.map-overview__map-filter mat-select[formcontrolname=year]' },
-      placeholder: { css: '.map-overview__map-filter mat-select[formcontrolname=year] .mat-select-placeholder' }
+      dropdown: { css: '[data-test-id=select-year]' }
     },
     source: {
-      dropdown: { css: '.map-overview__map-filter mat-select[formcontrolname="datasource"]' },
+      dropdown: { css: '[data-test-id=select-source]' },
       values: {
         all: 'all',
         phenonet: 'globe',
@@ -20,7 +19,7 @@ module.exports = {
       }
     },
     species: {
-      dropdown: { css: '.map-overview__map-filter mat-select[formcontrolname="species"]' },
+      dropdown: { css: '[data-test-id=select-species]' },
       values: {
         hazel: 'HS',
         sycamore: 'BA'

@@ -38,27 +38,9 @@
       left: 40px;
     }
   }
-
-  ::ng-deep #phaenonet-body &__select {
-    .mat-form-field-underline {
-      background-color: deeppink;
-      display: none;
-    }
-
-    .mat-form-field-wrapper {
-      margin-bottom: 8px;
-      padding-bottom: 0;
-      padding-left: 11px;
-    }
-
-    .mat-form-field-label-wrapper {
-      top: -0.65em;
-      padding-top: 0.65em;
-    }
-  }
 }
 
-.mat-selected {
+.mat-mdc-selected {
   background-color: #7bb53b;
   color: #ffffff;
 }

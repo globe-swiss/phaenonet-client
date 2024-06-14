@@ -23,6 +23,7 @@
 
   &__content {
     @include profile-detail-right-column;
+    @include typo-t2;
   }
 
   &__button {

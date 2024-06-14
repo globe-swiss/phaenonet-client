@@ -7,16 +7,14 @@
     <h1 class="profile-details__nick" data-test-id="profile-details-nickname">
       {{ nickname$ | async }}
       <span class="profile-details__ranger-badge">
-        <button
-          mat-icon-button
+        <mat-icon
           matTooltip="{{
             'PhenoRanger sind speziell ausgebildete Personen, welche Daten zu zusätzlichen Arten erfassen können. Für weitere Informationen, oder um selbst PhenoRanger zu werden, wenden Sie sich an pheno.rangers@wsl.ch.'
               | translate
           }}"
           *ngIf="isRanger$ | async"
-        >
-          <mat-icon svgIcon="ranger-badge"></mat-icon>
-        </button>
+          svgIcon="ranger-badge"
+        />
       </span>
       <span class="profile-details__badge">
         <button

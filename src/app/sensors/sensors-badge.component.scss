@@ -19,7 +19,7 @@
   }
 
   &__text {
-    @include mat.typography-level($phaenonet-typography, 'button');
+    @include typo-t4;
     font-weight: 500;
 
     &--soil {

@@ -2,6 +2,8 @@ const { navbarComponent, individualsEditPage, individualsPage, privateProfilePag
 const fetch = require('node-fetch');
 const { retrySteps } = require('./helpers/retrySteps');
 
+const prepareBaseImage = false;
+
 // in this file you can append custom step methods to 'I' object
 
 // eslint-disable-next-line func-names
@@ -11,8 +13,8 @@ module.exports = function () {
       this.say('clear individuals for e2e user');
       await fetch('https://europe-west1-phaenonet-test.cloudfunctions.net/e2e_clear_individuals');
     },
-    ss() {
-      this.saveScreenshot('debug.png', true);
+    ss(suffix = '') {
+      this.saveScreenshot(`debug${suffix}.png`, true);
     },
     login(user) {
       const { loginPage } = inject();
@@ -55,14 +57,14 @@ module.exports = function () {
       });
     },
     waitForDropdown(locator, delay = 5) {
-      const locatorString = `${locator.css ? locator.css : locator} .mat-select-placeholder`;
+      const locatorString = `${locator.css ? locator.css : locator} .mat-mdc-select-placeholder`;
       this.waitForInvisible(locatorString, delay);
     },
     visit(page, url = null, components = null) {
       this.amOnPage(url || page.url);
       this.waitForComponents(components || page.components || []);
     },
-    async checkVisual(filename, tolerance = 0, prepareBaseImage = false, retryParams = { retries: 3, wait: 0.2 }) {
+    async checkVisual(filename, tolerance = 0, retryParams = { retries: 3, wait: 0.2 }) {
       if (prepareBaseImage) {
         this.wait(5);
       }

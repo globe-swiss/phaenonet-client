@@ -1,3 +1,4 @@
+/* stylelint-disable max-nesting-depth */
 @import '../../theming/mixins';
 
 .statistics-overview {
@@ -11,64 +12,69 @@
 
   display: flex;
   flex-direction: row;
-}
 
-.chart-view {
-  width: 100%;
-  height: 100%;
-}
+  &__statistics-filter {
+    form {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
 
-.statistics-filter {
-  form {
-    display: flex;
-    flex-direction: row;
+      .mdc-line-ripple {
+        display: none;
+      }
 
-    mat-form-field {
-      margin: 1rem;
-    }
-
-    .statistics-info-button {
-      margin-top: 2rem;
+      mat-form-field {
+        margin: 1rem;
+      }
     }
 
     @include for-tablet-and-smaller {
-      .mat-form-field {
+      .mat-mdc-form-field {
         width: 6rem;
-        font-size: 0.875rem;
         margin-bottom: 0;
       }
 
-      .statistics-info-button {
-        margin-top: 1.5rem;
+      // adjust select text sizes for phone
+      .mat-mdc-select-value-text,
+      .mat-mdc-option,
+      .mdc-text-field--filled .mdc-floating-label {
+        font-size: var(--t2-font-size);
       }
     }
 
     @include for-phone {
-      .mat-form-field {
+      .mat-mdc-form-field {
         width: 3.5rem;
         margin: 0.5rem;
-        font-size: 0.75rem;
         margin-bottom: 0;
       }
 
-      .statistics-info-button {
-        margin-top: 0.8rem;
+      // adjust select text sizes for phone
+      .mat-mdc-select-value-text,
+      .mat-mdc-option,
+      .mdc-text-field--filled .mdc-floating-label {
+        font-size: var(--t4-font-size);
       }
     }
   }
-}
 
-#tooltip {
-  position: absolute;
-  width: auto;
-  height: auto;
-  padding: 10px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-  pointer-events: none;
-}
+  &__chart-view {
+    width: 100%;
+    height: 100%;
+  }
 
-#tooltip.hidden {
-  display: none;
+  &__tooltip {
+    position: absolute;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+  }
+
+  &__tooltip.hidden {
+    display: none;
+  }
 }

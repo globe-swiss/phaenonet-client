@@ -1,5 +1,7 @@
 @import '../../../theming/mixins';
 
+@import '../../../theming/typography';
+
 .profile-species {
   @include detail-view;
 

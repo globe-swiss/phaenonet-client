@@ -46,13 +46,12 @@ mat-toolbar.mat-toolbar {
 
   &__buttons {
     margin-left: auto;
-    margin-right: -15px;
     align-self: center;
     display: flex;
   }
 
   &__button {
-    @include mat.typography-level($phaenonet-typography, 'button');
+    @include typo-t4;
     color: #5d5d5d;
   }
 }

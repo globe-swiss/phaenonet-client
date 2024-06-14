@@ -13,7 +13,7 @@
   padding: 8px;
 
   &__title_line {
-    @include mat.typography-level($phaenonet-typography, 'button');
+    @include typo-t4;
     padding-bottom: 4px;
     display: flex;
     flex-direction: row;
@@ -23,7 +23,7 @@
   }
 
   &__value_line {
-    @include mat.typography-level($phaenonet-typography, 'button');
+    @include typo-t4;
     @include detail-label;
     padding-bottom: 4px;
     display: grid;
@@ -50,7 +50,7 @@
   }
 
   &__info {
-    @include mat.typography-level($phaenonet-typography, 'button');
+    @include typo-t4;
     border-radius: 50%;
     background-color: #393939;
     color: white;

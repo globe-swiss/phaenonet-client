@@ -1,9 +1,17 @@
 @use '@angular/material' as mat;
 
+@include mat.core();
+
 @import './theming/phaenonet-theme';
 @import './theming/constants';
 @import './theming/mixins';
 
+// ***** GLOBAL *****
+:root {
+  --h2-color: #868072;
+}
+
+// ***** OVERRIDES *****
 html,
 body {
   height: 100%;
@@ -14,6 +22,40 @@ body {
   color: #262626;
 }
 
+h2 {
+  color: var(--h2-color);
+  text-transform: uppercase;
+}
+
+// ***** CARD *****
+// centers action buttons on cards
+// fix for https://github.com/angular/components/issues/23784
+mat-card-actions.center-actions {
+  display: flex;
+  justify-content: center;
+}
+
+// ***** DIALOG *****
+
+// enable dialog closing button
+mat-dialog-container .phenonet-dialog-component-close-button.mat-mdc-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 15px;
+  z-index: 1; // make sure it is on top of the dialog
+
+  mat-icon {
+    font-size: 1.5rem;
+  }
+
+  // remove hover effect
+  .mat-mdc-button-persistent-ripple::before {
+    opacity: 0;
+  }
+}
+
+// ***** OTHERS *****
 .detail-view {
   margin-top: 2.625rem;
   padding-bottom: 7.5375rem;
@@ -61,11 +103,6 @@ body {
   }
 }
 
-h2 {
-  color: #868072;
-  text-transform: uppercase;
-}
-
 .full-width {
   width: 100%;
 }
@@ -78,10 +115,6 @@ snack-bar-container.error {
   color: #f8f2c4;
 }
 
-.mat-card-header-text {
-  margin: 0 !important;
-}
-
 .clip-text {
   overflow: hidden;
   white-space: nowrap;
@@ -89,34 +122,22 @@ snack-bar-container.error {
 }
 
 .detail-info-value {
-  @include mat.typography-level($phaenonet-typography, 'button');
+  @include typo-t4;
 
   color: #5d5d5d;
   font-weight: var(--t4-bold-font-weight);
 }
 
 .detail-info-value-addition {
-  @include mat.typography-level($phaenonet-typography, 'button');
+  @include typo-t4;
 
   color: #5d5d5d;
   font-weight: var(--t4-font-weight);
 }
 
 .phenophase-title {
-  @include mat.typography-level($phaenonet-typography, 'body-1');
+  @include typo-t1;
 
   padding-top: 0.125rem;
   padding-bottom: 1.25rem;
-}
-
-#phaenonet-body .font-weight-300 {
-  font-weight: 300;
-}
-
-#phaenonet-body .no-margin-top {
-  margin-top: 0;
-}
-
-.mat-icon {
-  overflow: visible !important;
 }

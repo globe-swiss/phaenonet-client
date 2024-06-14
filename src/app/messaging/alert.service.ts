@@ -35,7 +35,7 @@ export class AlertService {
     combineLatest(
       this.translateService.get(untranslated.title, untranslated.titleParams),
       this.translateService.get(untranslated.message, untranslated.messageParams),
-      (title, message: string) => ({ title, message })
+      (title: string, message: string) => ({ title, message })
     ).subscribe(pair => {
       this.latestMessage.next({
         level: untranslated.level,

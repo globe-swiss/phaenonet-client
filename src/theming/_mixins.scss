@@ -1,5 +1,7 @@
 @import './constants';
 
+@import './mixins-typography';
+
 @mixin for-tablet-and-smaller {
   @media screen and (max-width: $min-desktop-width) {
     @content;
@@ -15,27 +17,6 @@
 @mixin default-left-right-padding {
   padding-left: var(--default-padding);
   padding-right: var(--default-padding);
-}
-
-@mixin flex-row {
-  display: flex;
-  flex-direction: row;
-}
-
-@mixin flex-no-grow-shrink {
-  flex-grow: 0;
-  flex-shrink: 0;
-}
-
-@mixin flex-grow-shrink {
-  flex-grow: 1;
-  flex-shrink: 1;
-}
-
-@mixin margin-between-description {
-  &:nth-child(2n - 1) {
-    margin-top: 7rem;
-  }
 }
 
 @mixin detail-view {
@@ -98,21 +79,24 @@
 }
 
 @mixin detail-label {
-  @include mat.typography-level($phaenonet-typography, 'button');
+  @include typo-t4;
 
-  font-weight: 500;
+  font-weight: 500; // todo: why 500?
   color: #868072;
 }
 
 @mixin detail-value {
-  @include mat.typography-level($phaenonet-typography, 'button');
+  @include typo-t4-bold;
 
   color: #5d5d5d;
-  font-weight: var(--t4-bold-font-weight);
 }
 
 @mixin detail-value-t2 {
-  @include mat.typography-level($phaenonet-typography, 'body-2');
+  @include typo-t2;
+}
+
+@mixin detail-value-t1 {
+  @include typo-t1;
 }
 
 @mixin detail-value-regular {
@@ -222,7 +206,7 @@
 }
 
 @mixin ranger-badge {
-  button {
+  mat-icon {
     vertical-align: text-top;
     margin-top: -1rem;
     width: 20px;
@@ -230,10 +214,8 @@
 }
 
 @mixin badge {
-  button {
-    vertical-align: text-top;
-    background-color: white;
-  }
+  background-color: white;
+  border-radius: 50%;
 }
 
 @mixin card-view {
@@ -256,6 +238,13 @@
 
 @mixin year-select {
   margin-left: auto;
-  font-weight: bold;
   margin-bottom: 30px;
+  margin-top: -2px;
+  @include for-tablet-and-smaller {
+    margin-top: -1px;
+  }
+
+  mat-select {
+    font-weight: bold;
+  }
 }

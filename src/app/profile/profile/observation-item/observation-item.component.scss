@@ -32,7 +32,7 @@
   }
 
   &__value {
-    @include mat.typography-level($phaenonet-typography, 'body-1');
+    @include typo-t1;
   }
 
   &__phenophase-circle {

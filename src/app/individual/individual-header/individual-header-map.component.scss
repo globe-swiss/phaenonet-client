@@ -18,7 +18,8 @@
   }
 
   &__map {
-    @include flex-grow-shrink;
+    flex-grow: 1;
+    flex-shrink: 1;
   }
 
   &__map ::ng-deep .map-container {
@@ -27,7 +28,8 @@
   }
 
   &__image-container {
-    @include flex-no-grow-shrink;
+    flex-grow: 0;
+    flex-shrink: 0;
     height: 100%;
     overflow: hidden;
     border-top-right-radius: 1rem;

@@ -1,73 +1,106 @@
+/* stylelint-disable selector-class-pattern */
+@import './constants';
+
+// ***** BUTTON *****
 button[mat-flat-button],
 a[mat-flat-button] {
-  border-radius: 35px;
-  padding-left: 75px;
-  padding-right: 75px;
+  &.mat-mdc-button,
+  &.mat-mdc-raised-button,
+  &.mdc-button--unelevated,
+  &.mdc-button--outlined {
+    border-radius: 35px;
+    padding-left: 75px;
+    padding-right: 75px;
+    height: 70px;
+  }
 }
 
-button[mat-flat-button] {
-  height: 70px;
+// ***** FORM *****
+:root {
+  --mdc-filled-text-field-active-indicator-color: #f7f5f2; // input field underline color
+  --mdc-filled-text-field-hover-active-indicator-color: #e7e5e2; // input field underline color (hover)
+  --mdc-filled-text-field-container-color: transparent; // input field background
+  --mat-form-field-state-layer-color: transparent; // input field background (active)
 }
 
-/* fix for https://github.com/angular/components/issues/23784 */
-#phaenonet-body mat-card-actions.phaenonet-overwrite-mat-card-actions-center {
-  display: flex;
-  justify-content: center;
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  // correct padding for input fileds & filter bars
+  padding-right: 5px;
+  padding-left: 0;
 }
 
-#phaenonet-body mat-card-subtitle {
-  @include mat.typography-level($phaenonet-typography, 'body-2');
+// ***** SELECT *****
+:root {
+  --mat-form-field-container-height: 50px; // lift labels up
 }
 
-#phaenonet-body .mat-form-field-underline {
-  background-color: #f7f5f2;
+// allow labels to show behind selector icons
+.mat-mdc-floating-label.mdc-floating-label {
+  overflow: visible;
 }
 
-#phaenonet-body .phenonet-dialog-component mat-dialog-container {
-  border-radius: 1rem;
-  position: relative;
+.mat-mdc-select-panel {
+  min-width: fit-content; // selection options can be wider than the trigger
+}
+
+// ***** CARD *****
+
+// mat-card currently not raised, should be default again after update: https://github.com/angular/components/pull/27418
+
+.mat-mdc-card-header-text {
+  margin: 0 !important;
+}
+
+.mat-mdc-card-header {
+  padding: 0 !important;
+}
+
+.mat-mdc-card-title {
+  margin-bottom: 6px !important;
+}
+
+.mat-mdc-card-subtitle {
+  margin-bottom: 16px !important;
+}
+
+.mat-mdc-card-content {
+  padding: 0 !important;
+}
+
+.mat-mdc-card {
+  padding-bottom: 30px !important;
+}
+
+// ***** DIALOG *****
+:root {
+  --mat-dialog-with-actions-content-padding: 0;
+  --mat-dialog-headline-padding: 0;
+  --mat-dialog-content-padding: 0;
+  --mdc-dialog-subhead-color: var(--h2-color); // color needs to be overridden to default
+  --mdc-dialog-container-shape: 1rem; // set boarder radius
+}
+
+mat-dialog-container .mdc-dialog__container .mat-mdc-dialog-surface {
   padding: 30px;
+  padding-bottom: 15px;
 }
 
-#phaenonet-body .phenonet-dialog-component mat-dialog-container .phenonet-dialog-component-close-button.mat-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 30px;
-  line-height: 14px;
-  font-size: 1.5rem;
+.mdc-dialog__title::before {
+  height: unset !important; // remove addiniontal padding on top of dialog title
 }
 
-#phaenonet-body .phenonet-year-select span {
-  @include mat.typography-level($phaenonet-typography, 'body-2');
-  font-weight: bold;
-}
-
+// ***** GOOGLE MAPS *****
+// remove padding from info window
 #phaenonet-body .gm-style .gm-style-iw-c {
-  padding: 0;
+  padding: 0 !important;
 }
 
+// hide overflow on info window and do not add scroll bars
 #phaenonet-body .gm-style .gm-style-iw-d {
-  overflow: auto !important;
+  overflow: hidden !important;
 }
 
+// remove close icon from info window
 #phaenonet-body button.gm-ui-hover-effect {
   display: none !important;
-}
-
-// note: colors are also defined in individual-header-graph-component.ts
-#phaenonet-body #individual-header-air-temperature .mat-checkbox-background {
-  background-color: #6b83ba;
-}
-
-#phaenonet-body #individual-header-air-humidity .mat-checkbox-background {
-  background-color: #2c3a5c;
-}
-
-#phaenonet-body #individual-header-soil-temperature .mat-checkbox-background {
-  background-color: #96a68b;
-}
-
-#phaenonet-body #individual-header-soil-humidity .mat-checkbox-background {
-  background-color: #405240;
 }

@@ -6,7 +6,7 @@
 
 .activity-item {
   &__value {
-    @include mat.typography-level($phaenonet-typography, 'body-1');
+    @include typo-t1;
   }
 
   &__label {
