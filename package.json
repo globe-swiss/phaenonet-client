@@ -79,16 +79,10 @@
   "name": "phaenonet",
   "pnpm": {
     "overrides": {
-      "canvas": "^2.11.2",
-      "rxfire@^6": "6.0.3",
-      "firebase@^9": "~9.21.0",
-      "@angular/fire@^16": "~7.6.1"
+      "canvas": "^2.11.2"
     },
     "overrideComments": {
-      "canvas": "override from 2.8 -> 2.11 to be able to use binary dependency for resemblejs",
-      "rxfire@^6": "rxfire does not work above 6.0.3, see https://github.com/FirebaseExtended/rxfire/issues/88",
-      "firebase@^9": "firebase versions >9.21 broken for @angular/fire 7.6.x",
-      "@angular/fire@^16": "version 16 is not working"
+      "canvas": "override from 2.8 -> 2.11 to be able to use binary dependency for resemblejs"
     }
   },
   "private": true,
