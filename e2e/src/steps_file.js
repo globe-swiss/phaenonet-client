@@ -13,8 +13,8 @@ module.exports = function () {
       this.say('clear individuals for e2e user');
       await fetch('https://europe-west1-phaenonet-test.cloudfunctions.net/e2e_clear_individuals');
     },
-    ss() {
-      this.saveScreenshot('debug.png', true);
+    ss(suffix = '') {
+      this.saveScreenshot(`debug${suffix}.png`, true);
     },
     login(user) {
       const { loginPage } = inject();
@@ -57,7 +57,7 @@ module.exports = function () {
       });
     },
     waitForDropdown(locator, delay = 5) {
-      const locatorString = `${locator.css ? locator.css : locator} .mat-select-placeholder`;
+      const locatorString = `${locator.css ? locator.css : locator} .mat-mdc-select-placeholder`;
       this.waitForInvisible(locatorString, delay);
     },
     visit(page, url = null, components = null) {

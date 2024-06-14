@@ -2,14 +2,14 @@ module.exports = {
   url: '/statistics',
   components: {
     navigation: { css: 'app-nav' },
-    statistics: { css: 'div .statistics-overview' }
+    statistics: { css: '[data-test-id=statistics-overview-component]' }
   },
   filter: {
     phenoyear: {
-      dropdown: { css: '.statistics-filter mat-select[formcontrolname=year]' }
+      dropdown: { css: '[data-test-id=select-year]' }
     },
     source: {
-      dropdown: { css: '.statistics-filter mat-select[formcontrolname="datasource"]' },
+      dropdown: { css: '[data-test-id=select-source]' },
       values: {
         all: 'all',
         phenonet: 'globe',
@@ -17,14 +17,14 @@ module.exports = {
       }
     },
     type: {
-      dropdown: { css: '.statistics-filter mat-select[formcontrolname="analyticsType"]' },
+      dropdown: { css: '[data-test-id=select-analyticsType]' },
       values: {
         species: 'species',
         altitude: 'altitude'
       }
     },
     species: {
-      dropdown: { css: '.statistics-filter mat-select[formcontrolname="species"]' },
+      dropdown: { css: '[data-test-id=select-species]' },
       values: {
         hazel: 'HS',
         sycamore: 'BA'
