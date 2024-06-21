@@ -53,8 +53,8 @@ export abstract class BaseResourceService<T> extends BaseService implements Reso
 
   getWithId(id: string): Observable<T & IdLike> {
     return this.afs
-      .collection<T>(this.collectionName)
-      .doc<T>(id)
+      .collection<T & IdLike>(this.collectionName)
+      .doc<T & IdLike>(id)
       .valueChanges({ idField: 'id' })
       .pipe(tap(() => this.fds.addRead(`${this.collectionName} (base-resource.getWithId)`)));
   }
