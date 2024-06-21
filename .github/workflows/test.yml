@@ -17,17 +17,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.1.1
-      - uses: pnpm/action-setup@v3
+        uses: actions/checkout@v4.1.7
+      - uses: pnpm/action-setup@v4.0.0
         with:
           version: 8
-      - uses: actions/setup-node@v4.0.1
+      - uses: actions/setup-node@v4.0.2
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm install
       - name: Set API info
-        uses: suisei-cn/actions-download-file@v1.4.0
+        uses: suisei-cn/actions-download-file@v1.6.0
         with:
           url: ${{ secrets.FIREBASE_TEST_API_URL }}
           target: ./src/local/
@@ -52,7 +52,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.7
       - name: Download Build Artifact
         uses: ./.github/actions/download-zip-artifact
         with:
@@ -78,11 +78,11 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.1.1
-      - uses: pnpm/action-setup@v3
+        uses: actions/checkout@v4.1.7
+      - uses: pnpm/action-setup@v4.0.0
         with:
           version: 8
-      - uses: actions/setup-node@v4.0.1
+      - uses: actions/setup-node@v4.0.2
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -125,16 +125,16 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.1.1
-      - uses: pnpm/action-setup@v3
+        uses: actions/checkout@v4.1.7
+      - uses: pnpm/action-setup@v4.0.0
         with:
           version: 8
-      - uses: actions/setup-node@v4.0.1
+      - uses: actions/setup-node@v4.0.2
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm -r install
-      - uses: reviewdog/action-setup@v1.2.0
+      - uses: reviewdog/action-setup@v1.3.0
         with:
           reviewdog_version: ${{ env.REVIEWDOG_VERSION }}
       - name: check map icon completeness

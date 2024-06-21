@@ -1,13 +1,16 @@
 name: GitHub Actions Version Updater
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 5 * * 5'
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4.1.7
         with:
           # [Required] Access token with `workflow` scope.
           token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
