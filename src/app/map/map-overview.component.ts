@@ -30,7 +30,7 @@ export class MapOverviewComponent implements OnInit, OnDestroy {
   mapParams: { center: { lat: number; lng: number }; zoom: number };
   readonly options: google.maps.MapOptions = {
     mapTypeId: google.maps.MapTypeId.TERRAIN,
-    mapTypeControl: false,
+    mapTypeControl: true,
     fullscreenControl: false,
     streetViewControl: false,
     minZoom: 8,
