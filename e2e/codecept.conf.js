@@ -74,7 +74,6 @@ exports.config = {
     },
     coverage: {
       enabled: true,
-      debug: true,
       name: 'E2E-Test Coverage Report',
       outputDir: 'output/coverage-reports',
       reports: ['codecov', 'console-summary', 'v8'],

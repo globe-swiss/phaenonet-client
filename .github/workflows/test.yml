@@ -125,6 +125,7 @@ jobs:
           use_oidc: true
           file: ./e2e/output/coverage-reports/codecov.json
           flags: e2e
+        if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
   checks:
     name: Code Quality
     runs-on: ubuntu-latest
