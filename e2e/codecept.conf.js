@@ -71,6 +71,15 @@ exports.config = {
     },
     subtitles: {
       enabled: true
+    },
+    coverage: {
+      enabled: true,
+      name: 'E2E-Test Coverage Report',
+      outputDir: 'output/coverage-reports',
+      reports: ['codecov', 'console-summary', 'v8'],
+      sourceFilter: { '**/src/**': true, '**/*.js': false },
+      entryFilter: { '**/main.js': true },
+      cleanCache: true
     }
   }
 };
