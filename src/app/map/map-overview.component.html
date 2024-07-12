@@ -1,13 +1,15 @@
 <div class="map-overview">
   <google-map width="100%" height="100%" [center]="mapParams.center" [zoom]="mapParams.zoom" [options]="options">
-    <map-marker
-      #marker="mapMarker"
-      *ngFor="let individualWithMarkerOpts of mapMarkers$ | async"
-      [position]="individualWithMarkerOpts.geopos"
-      [options]="individualWithMarkerOpts.markerOptions"
-      (mapClick)="openInfoWindow(marker, individualWithMarkerOpts.individualId)"
-    >
-    </map-marker>
+    <map-marker-clusterer imagePath="https://marker.nanoka.fr/map_cluster-FF8888-55.svg?z=">
+      <map-marker
+        #marker="mapMarker"
+        *ngFor="let individualWithMarkerOpts of mapMarkers$ | async"
+        [position]="individualWithMarkerOpts.geopos"
+        [options]="individualWithMarkerOpts.markerOptions"
+        (mapClick)="openInfoWindow(marker, individualWithMarkerOpts.individualId)"
+      >
+      </map-marker>
+    </map-marker-clusterer>
     <map-info-window>
       <ng-container *ngIf="infoWindowData$ | async | guardType: isIndividualInfoWindowData as d">
         <div [routerLink]="d.url" class="map-overview__info-window">

@@ -18,6 +18,7 @@
     "@angular/platform-browser": "^17.3.11",
     "@angular/platform-browser-dynamic": "^17.3.11",
     "@angular/router": "^17.3.11",
+    "@googlemaps/markerclusterer": "^2.5.3",
     "@mat-datetimepicker/core": "^13.0.2",
     "@mat-datetimepicker/moment": "^13.0.2",
     "@ngx-translate/core": "^14.0.0",

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { GoogleMap, MapInfoWindow, MapMarker, MapMarkerClusterer } from '@angular/google-maps';
 import { Observable, combineLatest } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { FormPersistenceService } from '../core/form-persistence.service';
