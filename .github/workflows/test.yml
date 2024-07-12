@@ -119,6 +119,12 @@ jobs:
           channel_id: ${{ github.ref == 'refs/heads/master' && 'live' || null }}
           expires: 30d
         if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
+      - name: Codecov
+        uses: codecov/codecov-action@v4.5.0
+        with:
+          use_oidc: true
+          file: ./e2e/output/coverage-reports/codecov.json
+          flags: e2e
   checks:
     name: Code Quality
     runs-on: ubuntu-latest
