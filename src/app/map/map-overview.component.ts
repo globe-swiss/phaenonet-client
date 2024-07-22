@@ -26,11 +26,11 @@ export class MapOverviewComponent implements OnInit, OnDestroy {
   @ViewChild(GoogleMap, { static: false }) googleMap: GoogleMap;
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
 
+  mapTypeId = google.maps.MapTypeId.TERRAIN;
   // Initial Map values
   mapParams: { center: { lat: number; lng: number }; zoom: number };
   readonly options: google.maps.MapOptions = {
-    mapTypeId: google.maps.MapTypeId.TERRAIN,
-    mapTypeControl: true,
+    mapTypeControl: false,
     fullscreenControl: false,
     streetViewControl: false,
     minZoom: 8,
@@ -361,5 +361,10 @@ export class MapOverviewComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  switchView() {
+    this.mapTypeId =
+      this.mapTypeId == google.maps.MapTypeId.TERRAIN ? google.maps.MapTypeId.SATELLITE : google.maps.MapTypeId.TERRAIN;
   }
 }
