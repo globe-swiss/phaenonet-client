@@ -49,7 +49,10 @@ export class MapOverviewComponent implements OnInit, OnDestroy {
         elementType: 'labels',
         stylers: [
           {
-            visibility: 'off'
+            color: '#ffffff'
+          },
+          {
+            visibility: 'on'
           }
         ]
       },
@@ -58,10 +61,10 @@ export class MapOverviewComponent implements OnInit, OnDestroy {
         elementType: 'labels.text.fill',
         stylers: [
           {
-            color: '#444444'
+            color: '#000000'
           },
           {
-            visibility: 'off'
+            visibility: 'on'
           }
         ]
       },
