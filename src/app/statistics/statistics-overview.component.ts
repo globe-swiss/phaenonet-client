@@ -5,6 +5,7 @@ import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import * as d3 from 'd3-selection';
 import * as d3Time from 'd3-time';
+import * as d3tf from 'd3-time-format';
 import moment from 'moment';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
@@ -195,7 +196,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
     const offsetTop = this.statisticsContainer.nativeElement.offsetTop;
     const width = boundingBox.width - margin.left - margin.right;
     const height = boundingBox.height - (margin.top + margin.bottom);
-    const xScale = d3Scale.scaleLinear().domain([-30, 395]).range([0, width]).nice();
+    const xScale = d3Scale.scaleLinear().domain([-30, 395]).range([0, width]);
     const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     const domain = this.data.map(analytics => analytics.species);
@@ -216,14 +217,15 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
 
     const y = d3Scale.scaleBand().domain(resultingDomain).rangeRound([0, height]).padding(0.4);
 
+    // draw box-plot
     this.data.forEach(analytics => {
       analytics.values.sort((a, b) => a.min.getTime() - b.min.getTime());
       g.selectAll('.horizontalLines')
         .data(analytics.values)
         .enter()
         .append('line')
-        .attr('x1', d => xScale(this.dateToX(analytics.year, d.min)))
-        .attr('x2', d => xScale(this.dateToX(analytics.year, d.max)))
+        .attr('x1', d => xScale(this.dateToDOY(analytics.year, d.min)))
+        .attr('x2', d => xScale(this.dateToDOY(analytics.year, d.max)))
         .attr('y1', _ => y(this.toKey(analytics)) + y.bandwidth() / 2)
         .attr('y2', _ => y(this.toKey(analytics)) + y.bandwidth() / 2)
         .attr('stroke', d => this.getColor(d.phenophase))
@@ -236,8 +238,8 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
         y,
         '.median',
         analytics,
-        d => xScale(this.dateToX(analytics.year, d.median)),
-        d => xScale(this.dateToX(analytics.year, d.median)),
+        d => xScale(this.dateToDOY(analytics.year, d.median)),
+        d => xScale(this.dateToDOY(analytics.year, d.median)),
         d => this.getColor(d.phenophase)
       );
 
@@ -246,8 +248,8 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
         y,
         '.whiskersMin',
         analytics,
-        d => xScale(this.dateToX(analytics.year, d.min)),
-        d => xScale(this.dateToX(analytics.year, d.min)),
+        d => xScale(this.dateToDOY(analytics.year, d.min)),
+        d => xScale(this.dateToDOY(analytics.year, d.min)),
         d => this.getColor(d.phenophase)
       );
 
@@ -256,8 +258,8 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
         y,
         '.whiskersMax',
         analytics,
-        d => xScale(this.dateToX(analytics.year, d.max)),
-        d => xScale(this.dateToX(analytics.year, d.max)),
+        d => xScale(this.dateToDOY(analytics.year, d.max)),
+        d => xScale(this.dateToDOY(analytics.year, d.max)),
         d => this.getColor(d.phenophase)
       );
 
@@ -270,9 +272,11 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
         .attr('height', y.bandwidth())
         .attr(
           'width',
-          d => xScale(this.dateToX(analytics.year, d.quantile_75)) - xScale(this.dateToX(analytics.year, d.quantile_25))
+          d =>
+            xScale(this.dateToDOY(analytics.year, d.quantile_75)) -
+            xScale(this.dateToDOY(analytics.year, d.quantile_25))
         )
-        .attr('x', d => xScale(this.dateToX(analytics.year, d.quantile_25)))
+        .attr('x', d => xScale(this.dateToDOY(analytics.year, d.quantile_25)))
         .attr('y', _ => y(this.toKey(analytics)))
         .attr('fill', d => this.getColor(d.phenophase))
         .style('opacity', 0.7)
@@ -318,25 +322,32 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
         });
     });
 
-    const axisLeft = d3Axis.axisLeft(y).tickFormat(t => this.translateLeftAxisTick(t.toString()));
-    g.append('g').call(axisLeft);
+    // Draw y-axis
+    const yAxis = d3Axis.axisLeft(y).tickFormat(t => this.translateYAxisTick(t.toString()));
+    g.append('g').call(yAxis);
 
+    // Draw x-axis
     const tickYear = this.masterdataService.getPhenoYear();
     const xTicks = d3Time
       .timeMonths(new Date(tickYear - 1, 11, 1), new Date(tickYear + 1, 0, 31))
-      .map(d => this.dateToX(tickYear, d));
+      .map(d => this.dateToDOY(tickYear, d));
 
-    const axisBottom = d3Axis.axisBottom(xScale);
-    g.append('g')
-      .attr('transform', `translate(0, ${height})`)
-      .call(
-        axisBottom.tickValues(xTicks).tickFormat(t =>
-          moment()
-            .dayOfYear(+t)
-            .format(width >= 740 ? 'MMMM' : 'MM')
-        )
+    const xAxisTicks = d3Axis.axisBottom(xScale).tickValues(xTicks).tickFormat(d3tf.timeFormat(''));
+
+    const xAxisLabels = d3Axis
+      .axisBottom(xScale)
+      .tickValues(xTicks.map(tickValue => tickValue + 15)) // put labels on the 15th of each month
+      .tickSize(0)
+      .tickPadding(5)
+      .tickFormat(t =>
+        moment()
+          .dayOfYear(+t)
+          .format(width >= 740 ? 'MMMM' : 'MM')
       );
+    g.append('g').attr('transform', `translate(0, ${height})`).call(xAxisTicks);
+    g.append('g').attr('transform', `translate(0, ${height})`).call(xAxisLabels);
 
+    // adjust fonts
     svg.selectAll('.tick text').style('font-family', "'Open Sans', sans-serif");
   }
 
@@ -362,7 +373,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
       .style('opacity', 0.7);
   }
 
-  private translateLeftAxisTick(input: string): string {
+  private translateYAxisTick(input: string): string {
     if (input.indexOf('-') > 0) {
       return this.translateService.instant(input.split('-')[1]) as string;
     } else {
@@ -370,7 +381,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private dateToX(year: number, value: Date) {
+  private dateToDOY(year: number, value: Date) {
     const m = moment(value);
     const lastDateOfAnalytics = moment({ year: year }).endOf('year');
 
