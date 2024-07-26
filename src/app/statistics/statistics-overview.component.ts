@@ -5,7 +5,6 @@ import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import * as d3 from 'd3-selection';
 import * as d3Time from 'd3-time';
-import * as d3tf from 'd3-time-format';
 import moment from 'moment';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
@@ -191,12 +190,12 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
 
     svg.selectAll('*').remove();
 
-    const margin: Margin = { top: 20, right: 20, bottom: 30, left: 130 };
+    const margin: Margin = { top: 0, right: 20, bottom: 30, left: 130 };
     const offsetLeft = this.statisticsContainer.nativeElement.offsetLeft;
     const offsetTop = this.statisticsContainer.nativeElement.offsetTop;
     const width = boundingBox.width - margin.left - margin.right;
     const height = boundingBox.height - (margin.top + margin.bottom);
-    const xScale = d3Scale.scaleLinear().domain([-30, 395]).range([0, width]);
+    const xScale = d3Scale.scaleLinear().domain([-30, 365]).range([0, width]);
     const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     const domain = this.data.map(analytics => analytics.species);
@@ -329,10 +328,13 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
     // Draw x-axis
     const tickYear = this.masterdataService.getPhenoYear();
     const xTicks = d3Time
-      .timeMonths(new Date(tickYear - 1, 11, 1), new Date(tickYear + 1, 0, 31))
+      .timeMonths(new Date(tickYear - 1, 11, 1), new Date(tickYear, 11, 31))
       .map(d => this.dateToDOY(tickYear, d));
 
-    const xAxisTicks = d3Axis.axisBottom(xScale).tickValues(xTicks).tickFormat(d3tf.timeFormat(''));
+    const xAxisTicks = d3Axis
+      .axisBottom(xScale)
+      .tickValues(xTicks)
+      .tickFormat(_ => '');
 
     const xAxisLabels = d3Axis
       .axisBottom(xScale)
