@@ -117,8 +117,8 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
       .scaleTime()
       .domain([new Date(individual.year - 1, 11, 0), new Date(individual.year, 11, 31)])
       .range([0, width]);
-    const xAxis_ticks = d3Axis.axisBottom(xScale).ticks(4).tickFormat(d3.timeFormat(''));
-    const xAxis_lables = d3Axis
+    const xAxisTicks = d3Axis.axisBottom(xScale).ticks(4).tickFormat(d3.timeFormat(''));
+    const xAxisLabels = d3Axis
       .axisBottom(xScale)
       .tickValues([
         new Date(individual.year, 1, 15),
@@ -231,12 +231,12 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
     svg
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top + height})`)
-      .call(xAxis_ticks);
+      .call(xAxisTicks);
 
     svg
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top + height})`)
-      .call(xAxis_lables);
+      .call(xAxisLabels);
 
     observations.forEach(observation => {
       const color = this.masterdataService.getColor(observation.phenophase);
