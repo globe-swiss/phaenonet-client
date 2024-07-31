@@ -2,7 +2,7 @@
 @import '../../theming/mixins';
 
 .statistics-overview {
-  height: 74vh;
+  height: 100%;
   @include default-left-right-padding;
 
   max-width: 1120px;
