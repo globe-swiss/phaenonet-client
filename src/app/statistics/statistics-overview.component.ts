@@ -63,6 +63,8 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
   private year: number | null; // null if all year
   private data: Analytics[];
 
+  svgComponentHeight = 0;
+
   constructor(
     private navService: NavService,
     private statisticsService: StatisticsService,
@@ -194,11 +196,10 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
     const offsetLeft = this.statisticsContainer.nativeElement.offsetLeft;
     const offsetTop = this.statisticsContainer.nativeElement.offsetTop;
     const width = boundingBox.width - margin.left - margin.right;
-    const height = boundingBox.height - (margin.top + margin.bottom);
     const xScale = d3Scale.scaleLinear().domain([-30, 365]).range([0, width]);
     const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const domain = this.data.map(analytics => analytics.species);
+    const domain = Array.from(new Set(this.data.map(analytics => analytics.species)));
     const subdomain = !this.year
       ? this.availableYears
       : [...new Set(this.data.map(analytics => analytics.altitude_grp))].sort().reverse();
@@ -214,7 +215,19 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
       });
     });
 
-    const y = d3Scale.scaleBand().domain(resultingDomain).rangeRound([0, height]).padding(0.4);
+    // required height for the y-axis based on the abount of domains to display
+    const requiredHeight = resultingDomain.length * 12 + margin.top + margin.bottom;
+    // svg component height to fill screen without scrollbar or to the minimum required to display the y-axis
+    this.svgComponentHeight = Math.max(window.innerHeight - offsetTop - 5, requiredHeight);
+
+    const yAxisHeight = this.svgComponentHeight - (margin.top + margin.bottom);
+    let y = d3Scale.scaleBand().domain(resultingDomain).padding(0.4);
+    // do not round on large domains to prevent large gaps on top/bottom of the y-axis
+    if (resultingDomain.length > 30) {
+      y = y.range([0, yAxisHeight]);
+    } else {
+      y = y.rangeRound([0, yAxisHeight]);
+    }
 
     // draw box-plot
     this.data.forEach(analytics => {
@@ -346,8 +359,8 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
           .dayOfYear(+t)
           .format(width >= 740 ? 'MMMM' : 'MM')
       );
-    g.append('g').attr('transform', `translate(0, ${height})`).call(xAxisTicks);
-    g.append('g').attr('transform', `translate(0, ${height})`).call(xAxisLabels);
+    g.append('g').attr('transform', `translate(0, ${yAxisHeight})`).call(xAxisTicks);
+    g.append('g').attr('transform', `translate(0, ${yAxisHeight})`).call(xAxisLabels);
 
     // adjust fonts
     svg.selectAll('.tick text').style('font-family', "'Open Sans', sans-serif");
