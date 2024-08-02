@@ -148,7 +148,20 @@ jobs:
         run: |
           diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/fr-CH) || exit
           diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/it-CH) || exit
-        if: ${{ always() }}
+        if: always()
+      - name: check style
+        run: pnpm exec prettier -c "."
+        if: always()
+      - uses: EPMatt/reviewdog-action-prettier@v1
+        with:
+          reporter: github-pr-check
+          level: error
+          # The action will look for a package.json file with prettier
+          # declared as a dependency located in the repo root directory.
+          workdir: .
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: always()
       - name: stylelint
         run: |
           pnpm exec stylelint "**/*.scss" -f json \
