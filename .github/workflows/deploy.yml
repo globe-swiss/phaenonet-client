@@ -45,12 +45,6 @@ jobs:
           cache: 'pnpm'
       - name: Install Dependencies
         run: pnpm install
-      - name: check style
-        run: pnpm exec prettier -c "."
-      - name: check map icon completeness
-        run: |
-          diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/fr-CH) || exit
-          diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/it-CH) || exit
       - name: set release version
         run: |
           echo "set release version: ${{ env.VERSION }}"

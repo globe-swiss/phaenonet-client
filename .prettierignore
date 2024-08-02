@@ -1,5 +1,6 @@
 package.json
 *-lock.json
+*-lock.yaml
 config_static.json
 dist/
 e2e/output/
