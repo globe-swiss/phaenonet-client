@@ -63,7 +63,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
   private year: number | null; // null if all year
   private data: Analytics[];
 
-  svgComponentHeight: number;
+  svgComponentHeight = 0;
 
   constructor(
     private navService: NavService,
@@ -221,7 +221,13 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
     this.svgComponentHeight = Math.max(window.innerHeight - offsetTop - 5, requiredHeight);
 
     const yAxisHeight = this.svgComponentHeight - (margin.top + margin.bottom);
-    const y = d3Scale.scaleBand().domain(resultingDomain).rangeRound([0, yAxisHeight]).padding(0.4);
+    let y = d3Scale.scaleBand().domain(resultingDomain).padding(0.4);
+    // do not round on large domains to prevent large gaps on top/bottom of the y-axis
+    if (resultingDomain.length > 30) {
+      y = y.range([0, yAxisHeight]);
+    } else {
+      y = y.rangeRound([0, yAxisHeight]);
+    }
 
     // draw box-plot
     this.data.forEach(analytics => {
