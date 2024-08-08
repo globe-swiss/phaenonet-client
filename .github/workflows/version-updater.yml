@@ -10,7 +10,7 @@ env:
   NODE_VERSION: '18'
 
 jobs:
-  build:
+  actions-update:
     runs-on: ubuntu-latest
 
     steps:
@@ -40,7 +40,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpm update
+      - run: pnpm update -r
       - name: Check for changes
         id: git-check
         run: |
@@ -49,6 +49,8 @@ jobs:
         if: ${{ steps.git-check.outputs.changes == 'true' }}
         uses: peter-evans/create-pull-request@v5
         with:
+          # required to trigger e2e-test workflow
+          token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
           commit-message: 'Update packages'
           title: '[Automated] Update Packages'
           body: 'Automated changes by GitHub Actions'
