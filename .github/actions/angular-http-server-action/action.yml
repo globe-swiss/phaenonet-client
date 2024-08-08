@@ -7,15 +7,21 @@ inputs:
   path:
     description: 'The path to serve from'
     required: true
+  node_version:
+    description: 'Node version to use. default: latest'
+    default: latest
+  pnpm_version:
+    description: 'PNPM version to use. default: latest'
+    default: 'latest'
 runs:
   using: 'composite'
   steps:
     - uses: pnpm/action-setup@v3
       with:
-        version: 8
+        version: ${{ inputs.pnpm_version }}
     - uses: actions/setup-node@v4.0.1
       with:
-        node-version: ${{ env.NODE_VERSION }}
+        node-version: ${{ inputs.node_version }}
         cache: 'pnpm'
     - run: pnpm dlx angular-http-server --path ${{ inputs.path }} --p ${{ inputs.port }} &
       shell: bash
