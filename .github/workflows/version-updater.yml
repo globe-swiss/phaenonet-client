@@ -1,4 +1,4 @@
-name: GitHub Actions Version Updater
+name: Version Updater
 
 on:
   workflow_dispatch:
@@ -6,18 +6,18 @@ on:
     - cron: '30 5 * * 5'
 
 jobs:
-  # actions-update:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4.1.7
-  #       with:
-  #         # [Required] Access token with `workflow` scope.
-  #         token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
-  #     - name: Run GitHub Actions Version Updater
-  #       uses: saadmk11/github-actions-version-updater@v0.8.1
-  #       with:
-  #         # [Required] Access token with `workflow` scope.
-  #         token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
+  actions-update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.7
+        with:
+          # [Required] Access token with `workflow` scope.
+          token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
+      - name: Run GitHub Actions Version Updater
+        uses: saadmk11/github-actions-version-updater@v0.8.1
+        with:
+          # [Required] Access token with `workflow` scope.
+          token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
   npm-update:
     permissions:
       contents: write
