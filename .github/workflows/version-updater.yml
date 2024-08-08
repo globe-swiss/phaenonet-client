@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: '30 5 * * 5'
 
+env:
+  CI: true # pnpm
+  NODE_VERSION: '18'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,3 +24,33 @@ jobs:
         with:
           # [Required] Access token with `workflow` scope.
           token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
+  npm-update:
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4.0.0
+        with:
+          version: 8
+      - uses: actions/setup-node@v4.0.3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm update
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code || echo "changes=true" >> $GITHUB_OUTPUT
+      - name: Create Pull Request
+        if: ${{ steps.git-check.outputs.changes == 'true' }}
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: 'Update packages'
+          title: '[Automated] Update Packages'
+          body: 'Automated changes by GitHub Actions'
+          branch: automated-update
+          delete-branch: true
