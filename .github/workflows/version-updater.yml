@@ -18,7 +18,8 @@ jobs:
         with:
           # [Required] Access token with `workflow` scope.
           token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
-          pull_request_title: '[Automated] Update GitHub Action Versions'
+          pull_request_title: '[Automated] Update GitHub Action Versions [no ci]'
+          commit_message: 'Update GitHub Action Versions [no ci]'
   npm-update:
     permissions:
       contents: write
