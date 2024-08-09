@@ -153,7 +153,7 @@ jobs:
       - name: check style
         run: pnpm exec prettier -c "."
         if: always()
-      - uses: EPMatt/reviewdog-action-prettier@v1
+      - uses: EPMatt/reviewdog-action-prettier@v1.2.0
         with:
           reporter: github-pr-check
           level: error
