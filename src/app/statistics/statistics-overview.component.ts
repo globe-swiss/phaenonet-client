@@ -267,9 +267,9 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
       .attr('y1', _ => 0)
       .attr('y2', _ => yAxisHeight)
       .attr('stroke', _ => 'grey')
-      .attr('stroke-width', 1)
+      .attr('stroke-width', 0.2)
       .attr('stroke-dasharray', '5,5')
-      .style('opacity', 0.3)
+      .style('opacity', 1)
       .attr('fill', 'none');
 
     // draw box-plot
