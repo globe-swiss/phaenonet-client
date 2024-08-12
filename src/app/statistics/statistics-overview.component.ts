@@ -229,6 +229,49 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
       y = y.rangeRound([0, yAxisHeight]);
     }
 
+    // Draw y-axis
+    const yAxis = d3Axis.axisLeft(y).tickFormat(t => this.translateYAxisTick(t.toString()));
+    g.append('g').call(yAxis);
+
+    // Draw x-axis
+    const tickYear = this.masterdataService.getPhenoYear();
+    const xTicks = d3Time
+      .timeMonths(new Date(tickYear - 1, 11, 1), new Date(tickYear, 11, 31))
+      .map(d => this.dateToDOY(tickYear, d));
+
+    const xAxisTicks = d3Axis
+      .axisBottom(xScale)
+      .tickValues(xTicks)
+      .tickFormat(_ => '');
+
+    const xAxisLabels = d3Axis
+      .axisBottom(xScale)
+      .tickValues(xTicks.map(tickValue => tickValue + 15)) // put labels on the 15th of each month
+      .tickSize(0)
+      .tickPadding(5)
+      .tickFormat(t =>
+        moment()
+          .dayOfYear(+t)
+          .format(width >= 740 ? 'MMMM' : 'MM')
+      );
+    g.append('g').attr('transform', `translate(0, ${yAxisHeight})`).call(xAxisTicks);
+    g.append('g').attr('transform', `translate(0, ${yAxisHeight})`).call(xAxisLabels);
+
+    // draw x-axis helper lines
+    g.selectAll('.tickGrid')
+      .data(xTicks.slice(1))
+      .enter()
+      .append('line')
+      .attr('x1', d => xScale(d.valueOf()))
+      .attr('x2', d => xScale(d.valueOf()))
+      .attr('y1', _ => 0)
+      .attr('y2', _ => yAxisHeight)
+      .attr('stroke', _ => 'grey')
+      .attr('stroke-width', 0.2)
+      .attr('stroke-dasharray', '5,5')
+      .style('opacity', 1)
+      .attr('fill', 'none');
+
     // draw box-plot
     this.data.forEach(analytics => {
       analytics.values.sort((a, b) => a.min.getTime() - b.min.getTime());
@@ -333,34 +376,6 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
           d3.select('#tooltip').classed('hidden', true);
         });
     });
-
-    // Draw y-axis
-    const yAxis = d3Axis.axisLeft(y).tickFormat(t => this.translateYAxisTick(t.toString()));
-    g.append('g').call(yAxis);
-
-    // Draw x-axis
-    const tickYear = this.masterdataService.getPhenoYear();
-    const xTicks = d3Time
-      .timeMonths(new Date(tickYear - 1, 11, 1), new Date(tickYear, 11, 31))
-      .map(d => this.dateToDOY(tickYear, d));
-
-    const xAxisTicks = d3Axis
-      .axisBottom(xScale)
-      .tickValues(xTicks)
-      .tickFormat(_ => '');
-
-    const xAxisLabels = d3Axis
-      .axisBottom(xScale)
-      .tickValues(xTicks.map(tickValue => tickValue + 15)) // put labels on the 15th of each month
-      .tickSize(0)
-      .tickPadding(5)
-      .tickFormat(t =>
-        moment()
-          .dayOfYear(+t)
-          .format(width >= 740 ? 'MMMM' : 'MM')
-      );
-    g.append('g').attr('transform', `translate(0, ${yAxisHeight})`).call(xAxisTicks);
-    g.append('g').attr('transform', `translate(0, ${yAxisHeight})`).call(xAxisLabels);
 
     // adjust fonts
     svg.selectAll('.tick text').style('font-family', "'Open Sans', sans-serif");
