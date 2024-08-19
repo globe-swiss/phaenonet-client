@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import localeIt from '@angular/common/locales/it';
@@ -42,11 +42,11 @@ registerLocaleData(localeIt, 'it');
 
 @NgModule({
   declarations: [AppComponent],
+  bootstrap: [AppComponent],
   imports: [
     SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule,
     ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {
@@ -89,9 +89,9 @@ registerLocaleData(localeIt, 'it');
     SensorsService,
     MapService,
     // workaround for https://github.com/firebase/firebase-js-sdk/issues/1674 remove when fixed in the SDK
-    { provide: SETTINGS, useValue: { experimentalForceLongPolling: true, merge: true } }
+    { provide: SETTINGS, useValue: { experimentalForceLongPolling: true, merge: true } },
     // { provide: DEBUG_MODE, useValue: true }
-  ],
-  bootstrap: [AppComponent]
+    provideHttpClient(withInterceptorsFromDi())
+  ]
 })
 export class AppModule {}

@@ -5,7 +5,7 @@
 @import './typography';
 @import './palettes';
 
-$phaenonet-theme: mat.define-light-theme(
+$phaenonet-theme: mat.m2-define-light-theme(
   (
     density: 0,
     color: (

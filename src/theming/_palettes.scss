@@ -101,6 +101,6 @@ $phaenonet-w: (
   )
 );
 
-$phaenonet-primary: mat.define-palette($phaenonet-p, 500);
-$phaenonet-accent: mat.define-palette($phaenonet-s, 500);
-$phaenonet-warn: mat.define-palette($phaenonet-w, 500);
+$phaenonet-primary: mat.m2-define-palette($phaenonet-p, 500);
+$phaenonet-accent: mat.m2-define-palette($phaenonet-s, 500);
+$phaenonet-warn: mat.m2-define-palette($phaenonet-w, 500);
