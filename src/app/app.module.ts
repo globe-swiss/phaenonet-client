@@ -88,8 +88,6 @@ registerLocaleData(localeIt, 'it');
     IndividualService,
     SensorsService,
     MapService,
-    // workaround for https://github.com/firebase/firebase-js-sdk/issues/1674 remove when fixed in the SDK
-    { provide: SETTINGS, useValue: { experimentalForceLongPolling: false, merge: true } },
     // { provide: DEBUG_MODE, useValue: true }
     provideHttpClient(withInterceptorsFromDi())
   ]
