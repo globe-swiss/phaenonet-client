@@ -2,11 +2,17 @@ import { Component, Input } from '@angular/core';
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
 import { MasterdataService } from '../../../masterdata/masterdata.service';
 import { formatShortDate } from '../../../shared/formatDate';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-observation-species-item',
   templateUrl: './observation-species-item.component.html',
-  styleUrls: ['./observation-species-item.component.scss']
+  styleUrls: ['./observation-species-item.component.scss'],
+  standalone: true,
+  imports: [RouterLink, TranslateModule, NgIf, MatIcon]
 })
 export class ObservationSpeciesItemComponent {
   @Input() species: string;

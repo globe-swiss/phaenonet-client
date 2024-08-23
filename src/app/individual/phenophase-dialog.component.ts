@@ -1,15 +1,57 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose
+} from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Observation } from '../observation/observation';
 import { PhenophaseObservation } from '../observation/phenophase-observation';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { FormsModule } from '@angular/forms';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'app-phenohase-dialog',
   styleUrls: ['./phenophase-dialog.component.scss'],
-  templateUrl: 'phenophase-dialog.component.html'
+  templateUrl: 'phenophase-dialog.component.html',
+  standalone: true,
+  imports: [
+    MatButton,
+    MatIcon,
+    MatDialogTitle,
+    TranslateModule,
+    CdkScrollable,
+    MatDialogContent,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatDatepickerInput,
+    FormsModule,
+    MatDatepickerToggle,
+    MatSuffix,
+    MatDatepicker,
+    NgIf,
+    MatSelect,
+    MatOption,
+    NgFor,
+    MatDialogActions,
+    MatDialogClose,
+    AsyncPipe
+  ]
 })
 export class PhenophaseDialogComponent {
   showTouchCalendar$: Observable<boolean>;

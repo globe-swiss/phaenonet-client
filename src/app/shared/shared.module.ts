@@ -33,9 +33,7 @@ import { SensorsBoxComponent } from '../sensors/sensors-box.component';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    GoogleMapsModule
-  ],
-  declarations: [
+    GoogleMapsModule,
     RemoveNotAuthorizedDirective,
     DisableNotAuthorizedDirective,
     DisableNotOwnerDirective,

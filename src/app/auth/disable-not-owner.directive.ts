@@ -2,7 +2,8 @@ import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
 import { AuthService } from './auth.service';
 
 @Directive({
-  selector: '[appDisableNotOwner]'
+  selector: '[appDisableNotOwner]',
+  standalone: true
 })
 export class DisableNotOwnerDirective implements AfterViewInit {
   @Input('appDisableNotOwner')

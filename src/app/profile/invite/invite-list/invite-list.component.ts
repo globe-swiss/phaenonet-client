@@ -6,11 +6,17 @@ import { Invite } from '../invite';
 import { InviteDialogData } from '../invite-dialog/invite-dialog-data';
 import { InviteDialogComponent } from '../invite-dialog/invite-dialog.component';
 import { InviteService } from '../invite.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { InviteItemComponent } from '../invite-item/invite-item.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-invite-list',
   templateUrl: './invite-list.component.html',
-  styleUrls: ['./invite-list.component.scss']
+  styleUrls: ['./invite-list.component.scss'],
+  standalone: true,
+  imports: [TranslateModule, NgIf, NgFor, InviteItemComponent, MatButton, AsyncPipe]
 })
 export class InviteListComponent implements OnInit {
   @Input() userId: string;

@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
+import { LoginFormComponent } from './login-form.component';
 
 @Component({
-  templateUrl: './login-site.component.html'
+  templateUrl: './login-site.component.html',
+  standalone: true,
+  imports: [LoginFormComponent]
 })
 export class LoginSiteComponent implements OnInit {
   constructor(

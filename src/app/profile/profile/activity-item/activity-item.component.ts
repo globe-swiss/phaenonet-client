@@ -2,11 +2,16 @@ import { Component, Input } from '@angular/core';
 import { Activity } from '../../../activity/activity';
 import { MasterdataService } from '../../../masterdata/masterdata.service';
 import { formatShortDateTime } from '../../../shared/formatDate';
+import { RouterLink } from '@angular/router';
+import { NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-activity-item',
   templateUrl: './activity-item.component.html',
-  styleUrls: ['./activity-item.component.scss']
+  styleUrls: ['./activity-item.component.scss'],
+  standalone: true,
+  imports: [RouterLink, NgIf, TranslateModule]
 })
 export class ActivityItemComponent {
   @Input() activity: Activity;

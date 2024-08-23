@@ -4,11 +4,19 @@ import { IndividualPhenophase } from 'src/app/individual/individual-phenophase';
 import { IndividualService } from 'src/app/individual/individual.service';
 import { PublicUser } from 'src/app/open/public-user';
 import { UserService } from '../../user.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgFor, AsyncPipe } from '@angular/common';
+import { UserItemComponent } from '../user-item/user-item.component';
+import { ObservationItemComponent } from '../observation-item/observation-item.component';
+import { MatButton } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-follow-list',
   templateUrl: './follow-list.component.html',
-  styleUrls: ['./follow-list.component.scss']
+  styleUrls: ['./follow-list.component.scss'],
+  standalone: true,
+  imports: [TranslateModule, NgFor, UserItemComponent, ObservationItemComponent, MatButton, RouterLink, AsyncPipe]
 })
 export class FollowListComponent implements OnInit {
   followedIndividuals$: Observable<IndividualPhenophase[]>;

@@ -6,8 +6,7 @@ import { StationDetailComponent } from './station-detail.component';
 import { StationRoutingModule } from './station-routing.module';
 
 @NgModule({
-  imports: [SharedModule, StationRoutingModule, IndividualModule, ActivityModule],
-  declarations: [StationDetailComponent],
+  imports: [SharedModule, StationRoutingModule, IndividualModule, ActivityModule, StationDetailComponent],
   providers: [],
   exports: []
 })

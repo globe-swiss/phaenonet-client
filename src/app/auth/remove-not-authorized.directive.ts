@@ -2,7 +2,8 @@ import { Directive, ElementRef, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
 
 @Directive({
-  selector: '[appRemoveNotAuthorized]'
+  selector: '[appRemoveNotAuthorized]',
+  standalone: true
 })
 export class RemoveNotAuthorizedDirective implements OnInit {
   constructor(

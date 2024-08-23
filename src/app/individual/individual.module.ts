@@ -28,9 +28,7 @@ import { IndividualHeaderGraphComponent } from './individual-header/individual-h
     ObservationModule,
     ActivityModule,
     OpenModule,
-    StorageModule
-  ],
-  declarations: [
+    StorageModule,
     IndividualEditComponent,
     IndividualDetailComponent,
     PhenophaseDialogComponent,

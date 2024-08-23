@@ -2,7 +2,8 @@ import { AfterViewInit, Directive, ElementRef } from '@angular/core';
 import { AuthService } from './auth.service';
 
 @Directive({
-  selector: '[appDisableNotAuthorized]'
+  selector: '[appDisableNotAuthorized]',
+  standalone: true
 })
 export class DisableNotAuthorizedDirective implements AfterViewInit {
   constructor(

@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { some } from 'fp-ts/lib/Option';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest } from 'rxjs';
@@ -20,11 +20,38 @@ import { Species } from '../../../masterdata/species';
 import { Individual } from '../../individual';
 import { GeoposService } from '../../individual-header/geopos.service';
 import { IndividualService } from '../../individual.service';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { DisableNotOwnerDirective } from '../../../auth/disable-not-owner.directive';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-individual-edit-view',
   templateUrl: './individual-edit-view.component.html',
-  styleUrls: ['./individual-edit-view.component.scss']
+  styleUrls: ['./individual-edit-view.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    NgFor,
+    MatIcon,
+    MatSuffix,
+    MatButton,
+    DisableNotOwnerDirective,
+    AsyncPipe,
+    TranslateModule
+  ]
 })
 export class IndividualEditViewComponent implements OnInit, OnDestroy {
   @Input() individual$: ReplaySubject<Individual>;

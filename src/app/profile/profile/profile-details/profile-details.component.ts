@@ -7,11 +7,30 @@ import { AuthService } from '../../../auth/auth.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../../../messaging/alert.service';
 import { PublicUser } from '../../../open/public-user';
 import { UserService } from '../../user.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { CopyClipboardDirective } from '../../../shared/copy-clipboard.directive';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-profile-details',
   templateUrl: './profile-details.component.html',
-  styleUrls: ['./profile-details.component.scss']
+  styleUrls: ['./profile-details.component.scss'],
+  standalone: true,
+  imports: [
+    TranslateModule,
+    NgIf,
+    MatIcon,
+    MatTooltip,
+    MatIconButton,
+    CopyClipboardDirective,
+    MatButton,
+    RouterLink,
+    AsyncPipe
+  ]
 })
 export class ProfileDetailsComponent implements OnInit {
   @Input() userId: string;

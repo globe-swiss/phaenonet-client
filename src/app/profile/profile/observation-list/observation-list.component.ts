@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelectChange, MatSelect } from '@angular/material/select';
 import { Observable, ReplaySubject } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { LanguageService } from 'src/app/core/language.service';
@@ -8,11 +8,33 @@ import { AuthService } from '../../../auth/auth.service';
 import { IndividualPhenophase } from '../../../individual/individual-phenophase';
 import { IndividualService } from '../../../individual/individual.service';
 import { gropupBy } from 'src/app/shared/group-by';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatOption } from '@angular/material/core';
+import { ObservationSpeciesItemComponent } from '../observation-species-item/observation-species-item.component';
+import { ObservationItemComponent } from '../observation-item/observation-item.component';
+import { MatButton } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-observation-list',
   templateUrl: './observation-list.component.html',
-  styleUrls: ['./observation-list.component.scss']
+  styleUrls: ['./observation-list.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    MatSelect,
+    NgFor,
+    MatOption,
+    ObservationSpeciesItemComponent,
+    ObservationItemComponent,
+    MatButton,
+    RouterLink,
+    MatIcon,
+    AsyncPipe
+  ]
 })
 export class ObservationListComponent implements OnInit {
   @Input() userId: string;

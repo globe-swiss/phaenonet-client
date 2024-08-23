@@ -23,8 +23,11 @@ import { ObservationSpeciesItemComponent } from './profile/observation-species-i
 import { ProfileSpeciesComponent } from './profile/profile-species.component';
 
 @NgModule({
-  imports: [SharedModule, ProfileRoutingModule, IndividualModule, ActivityModule],
-  declarations: [
+  imports: [
+    SharedModule,
+    ProfileRoutingModule,
+    IndividualModule,
+    ActivityModule,
     ProfileComponent,
     ProfileSpeciesComponent,
     ProfileEditComponent,

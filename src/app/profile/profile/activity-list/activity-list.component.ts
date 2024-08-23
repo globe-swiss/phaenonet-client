@@ -3,11 +3,17 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Activity } from '../../../activity/activity';
 import { ActivityService } from '../../../activity/activity.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgFor, AsyncPipe } from '@angular/common';
+import { ActivityItemComponent } from '../activity-item/activity-item.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-activity-list',
   templateUrl: './activity-list.component.html',
-  styleUrls: ['./activity-list.component.scss']
+  styleUrls: ['./activity-list.component.scss'],
+  standalone: true,
+  imports: [TranslateModule, NgFor, ActivityItemComponent, MatButton, AsyncPipe]
 })
 export class ActivityListComponent implements OnInit {
   @Input() userId: string;
