@@ -18,7 +18,7 @@ export class AppComponent {
   title = 'phaenonet';
 
   constructor(
-    //ts: TranslateService,
+    ....
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
   ) {
