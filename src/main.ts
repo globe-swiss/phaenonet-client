@@ -4,6 +4,10 @@ import * as Sentry from '@sentry/angular-ivy';
 import { Integrations } from '@sentry/tracing';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent).catch(err => console.error(err));
 
 Sentry.init({
   enabled: environment.sentryEnabled,

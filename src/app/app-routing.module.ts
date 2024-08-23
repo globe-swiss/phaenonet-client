@@ -21,10 +21,6 @@ const routes: Routes = [
         loadChildren: () => import('./station/station.module').then(m => m.StationModule)
       },
       {
-        path: 'observations',
-        loadChildren: () => import('./observation/observation.module').then(m => m.ObservationModule)
-      },
-      {
         path: 'map',
         loadChildren: () => import('./map/map.module').then(m => m.MapModule)
       },

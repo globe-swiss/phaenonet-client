@@ -17,18 +17,11 @@ import * as Sentry from '@sentry/angular-ivy';
 import { Observable, from } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
+
 import { httpInterceptorProviders } from './http-interceptors';
-import { IndividualService } from './individual/individual.service';
 import { LoginModule } from './login/login.module';
-import { MapService } from './map/map.service';
-import { MasterdataService } from './masterdata/masterdata.service';
-import { UserService } from './profile/user.service';
-import { SensorsService } from './sensors/sensors.service';
 import { GlobalErrorHandler } from './shared/GlobalErrorHandler';
 import { SentryMissingTranslationHandler } from './shared/SentryMissingTranslationHandler';
-import { SharedModule } from './shared/shared.module';
 
 export class CustomTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<unknown> {
@@ -41,10 +34,7 @@ registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeIt, 'it');
 
 @NgModule({
-  declarations: [AppComponent],
-  bootstrap: [AppComponent],
   imports: [
-    SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
@@ -55,7 +45,6 @@ registerLocaleData(localeIt, 'it');
       },
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: SentryMissingTranslationHandler }
     }),
-    CoreModule,
     AppRoutingModule,
     LoginModule
   ],
@@ -75,11 +64,6 @@ registerLocaleData(localeIt, 'it');
       multi: true
     },
     httpInterceptorProviders,
-    MasterdataService,
-    UserService,
-    IndividualService,
-    SensorsService,
-    MapService,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideStorage(() => getStorage()),

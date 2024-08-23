@@ -1,29 +1,34 @@
 import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import browserUpdate from 'browser-update';
-import { LanguageService } from './core/language.service';
+import { RouterOutlet } from '@angular/router';
+import { TranslateLoader, TranslateService, TranslateStore } from '@ngx-translate/core';
+import { NavComponent } from './core/nav/nav.component';
+import { AppSnackBarComponent } from './messaging/app-snack-bar.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [AppSnackBarComponent, RouterOutlet, NavComponent],
+  providers: [TranslateService, TranslateStore]
 })
 export class AppComponent {
   title = 'phaenonet';
 
   constructor(
-    languageService: LanguageService,
+    //ts: TranslateService,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
   ) {
-    languageService.init();
+    // languageService.init();
 
-    browserUpdate({
-      api: 2018.12,
-      required: { e: 14, f: 60, o: 53, s: 11, c: 67 },
-      l: languageService.determineCurrentLang()
-    });
+    // browserUpdate({
+    //   api: 2018.12,
+    //   required: { e: 14, f: 60, o: 53, s: 11, c: 67 },
+    //   l: languageService.determineCurrentLang()
+    // });
 
     this.matIconRegistry.addSvgIcon(
       'subscribe-active',
