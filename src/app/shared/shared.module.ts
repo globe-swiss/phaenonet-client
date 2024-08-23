@@ -62,7 +62,6 @@ import { TypeGuardPipe } from './type-guard.pipe';
     TypeGuardPipe,
     SensorsBadgeComponent,
     SensorsBoxComponent
-  ],
-  providers: [LoadingGuard]
+  ]
 })
 export class SharedModule {}

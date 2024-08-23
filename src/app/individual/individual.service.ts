@@ -15,7 +15,7 @@ import { formatShortDate, formatShortDateTime } from '../shared/formatDate';
 import { Individual, SensorLiveData } from './individual';
 import { IndividualPhenophase } from './individual-phenophase';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IndividualService extends BaseResourceService<Individual> {
   individualsByYear$$: Map<number, Observable<(Individual & IdLike)[]>>;
   constructor(

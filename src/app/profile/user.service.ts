@@ -18,7 +18,7 @@ import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { Roles } from './Roles.enum';
 import { PhenonetUser } from './user';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserService extends BaseResourceService<PhenonetUser> {
   public publicUser$: Observable<PublicUser>;
   public publicUser: Signal<PublicUser>;

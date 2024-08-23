@@ -9,7 +9,7 @@ import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class StatisticsService extends BaseResourceService<Analytics> {
   constructor(
     alertService: AlertService,

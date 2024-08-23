@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SourceFilterType } from '../masterdata/source-type';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class FormPersistenceService {
   public mapFilter: FormGroup<{
     year: FormControl<number>;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class GeoposService {
   private geopos: BehaviorSubject<google.maps.LatLngLiteral> = new BehaviorSubject({ lat: 47.164364, lng: 8.518581 });
   private altitude: BehaviorSubject<number> = new BehaviorSubject(0);

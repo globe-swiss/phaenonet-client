@@ -38,7 +38,6 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
     IndividualHeaderGraphComponent,
     IndividualEditViewComponent
   ],
-  providers: [GeoposService],
   exports: [IndividualHeaderComponent]
 })
 export class IndividualModule {}
