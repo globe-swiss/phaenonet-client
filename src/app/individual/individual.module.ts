@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core';
-import { ActivityModule } from '../activity/activity.module';
-import { StorageModule } from '../core/storage/storage.module';
-import { MasterdataModule } from '../masterdata/masterdata.module';
-import { ObservationModule } from '../observation/observation.module';
-import { OpenModule } from '../open/open.module';
+
 import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
-import { SharedModule } from '../shared/shared.module';
+
 import { IndividualDescriptionBasicInfoComponent } from './individual-description/individual-description-basic-info.component';
 import { IndividualDescriptionButtonsComponent } from './individual-description/individual-description-buttons.component';
 import { IndividualDescriptionHeaderComponent } from './individual-description/individual-description-header.component';
@@ -22,13 +18,7 @@ import { IndividualHeaderGraphComponent } from './individual-header/individual-h
 
 @NgModule({
   imports: [
-    SharedModule,
     IndividualRoutingModule,
-    MasterdataModule,
-    ObservationModule,
-    ActivityModule,
-    OpenModule,
-    StorageModule,
     IndividualEditComponent,
     IndividualDetailComponent,
     PhenophaseDialogComponent,

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { OpenModule } from '../open/open.module';
-import { SharedModule } from '../shared/shared.module';
+
 import { LoggedOutComponent } from './logged-out.component';
 import { LoginDialogComponent } from './login-dialog.component';
 import { LoginFormComponent } from './login-form.component';
@@ -12,9 +11,7 @@ import { ResetPasswordComponent } from './reset-password.component';
 
 @NgModule({
   imports: [
-    SharedModule,
     LoginRoutingModule,
-    OpenModule,
     LoginComponent,
     LoginDialogComponent,
     LoginFormComponent,
@@ -22,7 +19,6 @@ import { ResetPasswordComponent } from './reset-password.component';
     LoggedOutComponent,
     ResetPasswordComponent,
     RegisterComponent
-  ],
-  providers: []
+  ]
 })
 export class LoginModule {}

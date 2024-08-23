@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { ActivityModule } from '../activity/activity.module';
+
 import { IndividualModule } from '../individual/individual.module';
-import { SharedModule } from '../shared/shared.module';
+
 import { ChangeEmailDialogComponent } from './profile-edit/change-email-dialog/change-email-dialog.component';
 import { ChangePasswordDialogComponent } from './profile-edit/change-password-dialog/change-password-dialog.component';
 import { ProfileEditComponent } from './profile-edit/profile-edit.component';
@@ -24,10 +24,8 @@ import { ProfileSpeciesComponent } from './profile/profile-species.component';
 
 @NgModule({
   imports: [
-    SharedModule,
     ProfileRoutingModule,
     IndividualModule,
-    ActivityModule,
     ProfileComponent,
     ProfileSpeciesComponent,
     ProfileEditComponent,
@@ -47,7 +45,6 @@ import { ProfileSpeciesComponent } from './profile/profile-species.component';
     InviteListComponent,
     InviteDialogComponent
   ],
-  providers: [],
   exports: []
 })
 export class ProfileModule {}
