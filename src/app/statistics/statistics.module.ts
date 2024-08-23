@@ -5,7 +5,6 @@ import { SharedModule } from '../shared/shared.module';
 import { StatisticsOverviewComponent } from './statistics-overview.component';
 import { StatisticsRoutingModule } from './statistics-routing.module';
 import { StatisticsComponent } from './statistics.component';
-import { StatisticsService } from './statistics.service';
 
 @NgModule({
   imports: [
@@ -16,7 +15,6 @@ import { StatisticsService } from './statistics.service';
     StatisticsComponent,
     StatisticsOverviewComponent
   ],
-  providers: [StatisticsService],
   exports: []
 })
 export class StatisticsModule {}

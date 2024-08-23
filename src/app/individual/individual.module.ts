@@ -41,7 +41,6 @@ import { IndividualHeaderGraphComponent } from './individual-header/individual-h
     IndividualHeaderGraphComponent,
     IndividualEditViewComponent
   ],
-  providers: [GeoposService],
   exports: [IndividualHeaderComponent]
 })
 export class IndividualModule {}

@@ -17,7 +17,7 @@ import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { Roles } from './Roles.enum';
 import { User } from './user';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserService extends BaseResourceService<User> implements OnDestroy {
   private subscriptions: Subscription = new Subscription();
   public publicUser$: Observable<PublicUser>;

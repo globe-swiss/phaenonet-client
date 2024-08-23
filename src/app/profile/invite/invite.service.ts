@@ -11,9 +11,7 @@ import { AlertService } from 'src/app/messaging/alert.service';
 import { FirestoreDebugService } from 'src/app/shared/firestore-debug.service';
 import { Invite } from './invite';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class InviteService extends BaseResourceService<Invite> {
   constructor(
     protected alertService: AlertService,

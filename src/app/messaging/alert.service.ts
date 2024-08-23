@@ -25,7 +25,7 @@ export class UntranslatedAlertMessage {
   duration: Option<number>;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AlertService {
   constructor(private translateService: TranslateService) {}
 

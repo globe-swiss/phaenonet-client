@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { LocalService } from '../shared/local.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LanguageService implements OnDestroy {
   private LOCALSTORAGE_KEY = 'lang';
   private subscriptions = new Subscription();

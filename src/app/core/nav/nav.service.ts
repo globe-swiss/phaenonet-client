@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class NavService implements OnDestroy {
   private DEFAULT_LOCATION = 'PhaenoNet';
   private location$: BehaviorSubject<string> = new BehaviorSubject(this.DEFAULT_LOCATION);

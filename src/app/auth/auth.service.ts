@@ -19,7 +19,7 @@ export const LOGGED_OUT_URL = '/auth/logged-out';
 
 const LOCALSTORAGE_LOGIN_RESULT_KEY = 'loginResult';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthService extends BaseService implements OnDestroy {
   browserIdHeaders: HttpHeaders;
 

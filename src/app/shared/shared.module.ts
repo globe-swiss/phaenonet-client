@@ -71,7 +71,6 @@ import { SensorsBoxComponent } from '../sensors/sensors-box.component';
     TypeGuardPipe,
     SensorsBadgeComponent,
     SensorsBoxComponent
-  ],
-  providers: [LoadingGuard]
+  ]
 })
 export class SharedModule {}

@@ -12,11 +12,11 @@ import { Species } from '../masterdata/species';
 import { AlertService } from '../messaging/alert.service';
 import { Observation } from '../observation/observation';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
+import { formatShortDate, formatShortDateTime } from '../shared/formatDate';
 import { Individual, SensorLiveData } from './individual';
 import { IndividualPhenophase } from './individual-phenophase';
-import { formatShortDate, formatShortDateTime } from '../shared/formatDate';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class IndividualService extends BaseResourceService<Individual> {
   individualsByYear$$: Map<number, Observable<(Individual & IdLike)[]>>;
   constructor(

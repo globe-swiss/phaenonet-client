@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import * as Sentry from '@sentry/angular-ivy';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class FirestoreDebugService {
   private readcnt: Map<string, number> = new Map();
   private writecnt: Map<string, number> = new Map();

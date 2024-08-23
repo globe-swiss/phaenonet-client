@@ -83,11 +83,6 @@ registerLocaleData(localeIt, 'it');
     httpInterceptorProviders,
     ScreenTrackingService,
     UserTrackingService,
-    MasterdataService,
-    UserService,
-    IndividualService,
-    SensorsService,
-    MapService,
     // { provide: DEBUG_MODE, useValue: true }
     provideHttpClient(withInterceptorsFromDi())
   ]

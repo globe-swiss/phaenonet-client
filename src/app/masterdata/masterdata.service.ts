@@ -65,7 +65,7 @@ interface ConfigStatic {
   species: ConfigStaticSpecies;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MasterdataService extends BaseService implements OnDestroy {
   private subscriptions = new Subscription();
   public availableYears$: Observable<number[]>;

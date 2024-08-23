@@ -5,9 +5,7 @@ import { environment } from 'src/environments/environment';
 
 export type StorageType = 'localStorage' | 'sessionStorage';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class LocalService {
   private localStorageMsgSent = false;
 
