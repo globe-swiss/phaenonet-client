@@ -54,52 +54,52 @@ CSS class	                          Level name	Native elements
 
 */
 
-$phaenonet-typography: mat.define-typography-config(
+$phaenonet-typography: mat.m2-define-typography-config(
   $font-family: '"Open Sans", "Roboto", sans-serif;',
   $headline-5:
-    mat.define-typography-level(
+    mat.m2-define-typography-level(
       $font-size: var(--h1-font-size),
       $line-height: var(--h1--line-height),
       $font-weight: var(--h1-font-weight)
     ),
   $headline-6:
-    mat.define-typography-level(
+    mat.m2-define-typography-level(
       $font-size: var(--h2-font-size),
       $line-height: var(--h2--line-height),
       $font-weight: var(--h2-font-weight)
     ),
   $subtitle-1:
-    mat.define-typography-level(
+    mat.m2-define-typography-level(
       $font-size: var(--t3-font-size),
       $line-height: var(--t3--line-height),
       $font-weight: var(--t3-font-weight)
     ),
   $body-2:
-    mat.define-typography-level(
+    mat.m2-define-typography-level(
       $font-size: var(--t3-font-size),
       $line-height: var(--t3--line-height),
       $font-weight: var(--t3-font-weight)
     ),
   $body-1:
-    mat.define-typography-level(
+    mat.m2-define-typography-level(
       $font-size: var(--t2-font-size),
       $line-height: var(--t2--line-height),
       $font-weight: var(--t2-font-weight)
     ),
   $subtitle-2:
-    mat.define-typography-level(
+    mat.m2-define-typography-level(
       $font-size: var(--t2-font-size),
       $line-height: var(--t2--line-height),
       $font-weight: var(--t2-font-weight)
     ),
   $button:
-    mat.define-typography-level(
+    mat.m2-define-typography-level(
       $font-size: var(--t4-font-size),
       $line-height: var(--t1--line-height),
       $font-weight: var(--t4-font-weight)
     ),
   $caption:
-    mat.define-typography-level(
+    mat.m2-define-typography-level(
       $font-size: var(--t3-font-size),
       $line-height: var(--t3--line-height),
       $font-weight: var(--t3-font-weight)
