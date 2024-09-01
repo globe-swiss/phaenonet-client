@@ -60,7 +60,6 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
   }
 
   @HostListener('window:resize', ['$event'])
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onResize(_: UIEvent): void {
     // re-render the svg on window resize
     this.changeEvent$.next(1);

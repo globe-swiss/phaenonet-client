@@ -10,7 +10,7 @@ export class LocaleInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
     const locale = this.translateService.currentLang || this.translateService.defaultLang;
 
-    let headers = request.headers.set('X-Locale', locale);
+    const headers = request.headers.set('X-Locale', locale);
 
     const modifiedRequest = request.clone({
       headers: headers

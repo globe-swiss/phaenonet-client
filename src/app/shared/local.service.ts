@@ -108,7 +108,6 @@ export class LocalService {
   }
 
   public setObjectCompressed<T>(storagetype: StorageType, key: string, obj: T): void {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     this.storageSet(storagetype, key, compress(JSON.stringify(obj)));
   }
 

@@ -4,7 +4,6 @@
 // // export HEADLESS=true && pnpm exec codeceptjs run
 // setHeadlessWhen(process.env.HEADLESS);
 
-// eslint-disable-next-line spaced-comment
 /**@type {CodeceptJS.MainConfig}**/
 exports.config = {
   tests: './src/tests/*_test.js',

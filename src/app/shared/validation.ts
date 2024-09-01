@@ -5,7 +5,7 @@ export function equalValidation(a: string, b: string, errorKey: string): Validat
     if (formGroup.get(a).value === formGroup.get(b).value) {
       return null;
     } else {
-      var obj: { [k: string]: any } = {};
+      const obj: { [k: string]: any } = {};
       obj[errorKey] = true;
       return obj;
     }
