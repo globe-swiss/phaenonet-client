@@ -11,7 +11,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v4.0.1
+    - uses: actions/setup-node@v4.0.3
       with:
         node-version: ${{ env.NODE_VERSION }}
     - name: Download Build Artifact
