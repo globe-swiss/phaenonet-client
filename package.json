@@ -60,7 +60,7 @@
     "eslint-plugin-jsdoc": "^48.11.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-prettier": "^5.2.1",
-    "firebase-tools": "^12.9.1",
+    "firebase-tools": "^13.16.0",
     "markdownlint-cli": "^0.39.0",
     "postcss": "^8.4.42",
     "prettier": "3.2.5",
