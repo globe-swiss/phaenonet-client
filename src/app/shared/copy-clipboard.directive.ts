@@ -21,7 +21,7 @@ export class CopyClipboardDirective {
 
   // workaround for safari/iphone https://bugs.webkit.org/show_bug.cgi?id=156529
   private copyClipboard(text: string) {
-    const textArea = document.createElement('input') as HTMLInputElement;
+    const textArea = document.createElement('input');
 
     textArea.value = text;
     document.body.appendChild(textArea);
