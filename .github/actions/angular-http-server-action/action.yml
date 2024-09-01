@@ -13,6 +13,6 @@ runs:
     - run: pnpm dlx angular-http-server --path ${{ inputs.path }} --p ${{ inputs.port }} &
       shell: bash
     - name: Wait on
-      uses: iFaxity/wait-on-action@v1.1.0
+      uses: iFaxity/wait-on-action@v1.2.1
       with:
         resource: http://localhost:${{ inputs.port }}
