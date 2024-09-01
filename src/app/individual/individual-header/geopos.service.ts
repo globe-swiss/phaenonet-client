@@ -24,7 +24,6 @@ export class GeoposService {
       .getElevationForLocations({ locations: [this.geopos.value] })
       .then(({ results }) => {
         if (results[0]) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
           this.altitude.next(Math.round(results[0].elevation));
         } else {
           console.error(`Elevation service no results found for: ${JSON.stringify(this.geopos.value)}`);

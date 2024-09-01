@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 Feature('Statistics');
 
 const delay = 0;

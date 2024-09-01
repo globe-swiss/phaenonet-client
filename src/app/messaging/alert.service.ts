@@ -20,8 +20,8 @@ export class UntranslatedAlertMessage {
   title: string;
   message: string;
   level: Level;
-  messageParams: Object;
-  titleParams: Object;
+  messageParams: object;
+  titleParams: object;
   duration: Option<number>;
 }
 
@@ -50,8 +50,8 @@ export class AlertService {
     title: string,
     message: string,
     duration: Option<number> = some(3000),
-    messageParams: Object = {},
-    titleParams: Object = {}
+    messageParams: object = {},
+    titleParams: object = {}
   ): void {
     this.simpleMessage(Level.INFO, title, message, duration, messageParams, titleParams);
   }
@@ -60,8 +60,8 @@ export class AlertService {
     title: string,
     message: string,
     duration: Option<number> = some(3000),
-    messageParams: Object = {},
-    titleParams: Object = {}
+    messageParams: object = {},
+    titleParams: object = {}
   ): void {
     this.simpleMessage(Level.ERROR, title, message, duration, messageParams, titleParams);
   }
@@ -71,8 +71,8 @@ export class AlertService {
     title: string,
     message: string,
     duration: Option<number> = some(3000),
-    messageParams: Object = {},
-    titleParams: Object = {}
+    messageParams: object = {},
+    titleParams: object = {}
   ): void {
     this.alertMessage({
       title: title,
