@@ -1,4 +1,5 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import { Observable, Subscription, combineLatest, from, of } from 'rxjs';
@@ -22,6 +23,7 @@ export class UserService extends BaseResourceService<PhenonetUser> implements On
   private subscriptions: Subscription = new Subscription();
   public publicUser$: Observable<PublicUser>;
   public user$: Observable<PhenonetUser>;
+  public user: Signal<PhenonetUser>;
   public roles$: Observable<string[]>;
 
   constructor(
@@ -39,7 +41,22 @@ export class UserService extends BaseResourceService<PhenonetUser> implements On
     this.publicUser$ = sharedFirebaseUser$.pipe(
       switchMap(firebaseUser => this.publicUserService.get(firebaseUser.uid))
     );
-    this.user$ = sharedFirebaseUser$.pipe(switchMap(firebaseUser => this.get(firebaseUser.uid)));
+    this.user$ = sharedFirebaseUser$.pipe(switchMap(firebaseUser => this.get(firebaseUser.uid))); // TODO check what happens if user is null - see block below
+    this.user = toSignal(this.user$);
+    // this.phenonetUser$ = this.firebaseUser$.pipe(
+    //   switchMap(user => {
+    //     if (user) {
+    //       return this.afs
+    //         .doc<PhenonetUser>(`users/${user.uid}`)
+    //         .valueChanges()
+    //         .pipe(tap(() => this.fds.addRead('users')));
+    //     } else {
+    //       return of(null) as Observable<PhenonetUser>;
+    //     }
+    //   })
+    // );
+    // this.subscriptions.add(this.phenonetUser$.subscribe()); // todo check
+
     // load roles or initialize roles array if public user document does not exist or roles array is not defined
     this.roles$ = this.publicUser$.pipe(map(publicUser => (publicUser && publicUser.roles ? publicUser.roles : [])));
   }
@@ -97,7 +114,7 @@ export class UserService extends BaseResourceService<PhenonetUser> implements On
   }
 
   getFollowedIndividuals(limit$: Observable<number>): Observable<Individual[]> {
-    return combineLatest([this.authService.user$, limit$, this.masterdataService.phenoYear$]).pipe(
+    return combineLatest([this.user$, limit$, this.masterdataService.phenoYear$]).pipe(
       filter(
         ([user, , year]) =>
           user.following_individuals !== undefined && user.following_individuals.length !== 0 && year !== undefined
@@ -107,7 +124,7 @@ export class UserService extends BaseResourceService<PhenonetUser> implements On
   }
 
   getFollowedUsers(limit$: Observable<number>): Observable<(PublicUser & IdLike)[]> {
-    return combineLatest([this.authService.user$, limit$]).pipe(
+    return combineLatest([this.user$, limit$]).pipe(
       filter(([user]) => user.following_users !== undefined && user.following_users.length !== 0),
       switchMap(([user, limit]) =>
         combineLatest(user.following_users.slice(0, limit).map(user_id => this.publicUserService.getWithId(user_id)))

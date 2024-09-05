@@ -30,8 +30,8 @@ export class LoginFormComponent {
     this.authService
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,  @typescript-eslint/no-unsafe-call
       .login(this.loginForm.controls.email.value.trim(), this.loginForm.controls.password.value)
-      .subscribe(user => {
-        if (user) {
+      .subscribe(success => {
+        if (success) {
           this.onLoginSuccess.emit();
         }
       });

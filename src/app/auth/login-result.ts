@@ -14,3 +14,5 @@ export class LoginResult {
     this.firebaseUser = firebaseUser;
   }
 }
+
+// TODO REMOVE THIS FILE

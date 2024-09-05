@@ -33,7 +33,7 @@ export class ProfileDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.email = this.authService.getUserEmail();
-    const user$ = this.authService.user$;
+    const user$ = this.userService.user$;
     this.nickname$ = user$.pipe(map(u => u.nickname));
     this.firstname$ = user$.pipe(map(u => u.firstname));
     this.lastname$ = user$.pipe(map(u => u.lastname));

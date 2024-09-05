@@ -1,31 +1,45 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Injectable, OnDestroy, Signal, inject } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import {
+  Auth,
+  EmailAuthProvider,
+  UserCredential,
+  createUserWithEmailAndPassword,
+  reauthenticateWithCredential,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  updateEmail,
+  updatePassword,
+  updateProfile,
+  user
+} from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import firebase from 'firebase/compat/app';
 import { none } from 'fp-ts/lib/Option';
 import { Observable, Subscription, from, of } from 'rxjs';
-import { map, switchAll, switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
-import { PhenonetUser } from '../profile/user';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { LocalService } from '../shared/local.service';
-import { LoginResult } from './login-result';
+import { PhenonetUser } from './../profile/user';
 
 export const LOGIN_URL = '/auth/login';
 export const LOGGED_OUT_URL = '/auth/logged-out';
 
-const LOCALSTORAGE_LOGIN_RESULT_KEY = 'loginResult';
+const LOCALSTORAGE_CREDENTIALS_KEY = 'credential_cache';
 
 @Injectable()
 export class AuthService extends BaseService implements OnDestroy {
   browserIdHeaders: HttpHeaders;
+  private afAuth = inject(Auth);
+  public firebaseUser$ = user(this.afAuth);
+  public authenticated: Signal<boolean>;
 
   private subscriptions = new Subscription();
-  public user$: Observable<PhenonetUser>;
-  public firebaseUser$: Observable<firebase.User>;
+
+  // public phenonetUser$: Observable<PhenonetUser>;
 
   // store the URL so we can redirect after logging in
   redirectUrl: string;
@@ -33,149 +47,105 @@ export class AuthService extends BaseService implements OnDestroy {
   constructor(
     alertService: AlertService,
     private router: Router,
-    private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private fds: FirestoreDebugService,
     private localService: LocalService
   ) {
     super(alertService);
 
-    this.firebaseUser$ = this.afAuth.authState.pipe(
-      // multiple events on login
-      tap(() => this.fds.addRead('firebaseUser'))
+    this.authenticated = toSignal(
+      this.firebaseUser$.pipe(
+        map(user => !!user) // Convert user object to boolean
+      ),
+      { initialValue: false }
     );
-    this.user$ = this.firebaseUser$.pipe(
-      switchMap(user => {
-        if (user) {
-          return this.afs
-            .doc<PhenonetUser>(`users/${user.uid}`)
-            .valueChanges()
-            .pipe(tap(() => this.fds.addRead('users')));
-        } else {
-          this.resetClientSession();
-          return of(null) as Observable<PhenonetUser>;
-        }
-      })
-    );
-    this.subscriptions.add(this.user$.subscribe());
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  login(email: string, password: string): Observable<PhenonetUser> {
+  login(email: string, password: string): Observable<boolean> {
     return from(
-      this.afAuth
-        .signInWithEmailAndPassword(email, password)
-        .then(firebaseResult => {
-          return this.handleUserLogin(firebaseResult);
+      signInWithEmailAndPassword(this.afAuth, email.trim(), password.trim())
+        .then(userCredential => {
+          this.setCredentialCache(userCredential);
+          return true;
         })
-        .catch(x => {
-          this.errorHandling(x);
-          return of(null) as Observable<PhenonetUser>;
+        .catch(error => {
+          this.errorHandling(error);
+          return false;
         })
-    ).pipe(switchAll());
-  }
-
-  private handleUserLogin(firebaseResult: firebase.auth.UserCredential): Observable<PhenonetUser> {
-    if (firebaseResult) {
-      this.user$.pipe(take(1)).subscribe(u => {
-        this.handleLoginResult(new LoginResult('LOGIN_OK', firebaseResult.user, u));
-      });
-
-      return this.user$;
-    } else {
-      return of(null) as Observable<PhenonetUser>;
-    }
-  }
-
-  private handleLoginResult(loginResult: LoginResult) {
-    if (loginResult && loginResult.status === 'LOGIN_OK') {
-      this.setLoginCache(loginResult);
-    }
+    );
   }
 
   logout(): void {
     void this.afAuth.signOut().then(() => {
+      this.resetClientSession();
       void this.router.navigate([LOGGED_OUT_URL]);
     });
   }
 
-  resetClientSession(): void {
-    this.localService.localStorageRemove(LOCALSTORAGE_LOGIN_RESULT_KEY);
-  }
-
   resetPassword(email: string): Observable<void> {
     return from(
-      this.afAuth.sendPasswordResetEmail(email).catch(() => {
+      sendPasswordResetEmail(this.afAuth, email).catch(() => {
         // silently ignore errors
       })
     );
   }
 
   async changeEmail(newEmail: string, currentPassword: string): Promise<void> {
-    const freshUser = await this.reauthUser(currentPassword);
     try {
-      await freshUser.updateEmail(newEmail);
-
-      const loginCache = this.getLoginCache();
-      loginCache.firebaseUser.email = newEmail;
-      this.setLoginCache(loginCache);
-
+      if (await this.reauthUser(currentPassword)) {
+        await updateEmail(this.afAuth.currentUser, newEmail);
+        // TODO check fro side effects - credential cache is not updated
+      }
       this.alertService.infoMessage('E-Mail geändert', 'Die E-Mail wurde erfolgreich geändert.');
     } catch (error) {
-      this.alertService.infoMessage(`${error.code}.title`, `${error.code}.message`);
-      throw error;
+      this.errorHandling(error);
     }
   }
 
-  changePassword(currentPassword: string, newPassword: string): void {
-    this.reauthUser(currentPassword).then(freshUser => {
-      const _ = freshUser.updatePassword(newPassword);
-      this.alertService.infoMessage('Passwort geändert', 'Das Passwort wurde erfolgreich geändert.');
-    });
+  async changePassword(currentPassword: string, newPassword: string): Promise<void> {
+    if (await this.reauthUser(currentPassword)) {
+      updatePassword(this.afAuth.currentUser, newPassword)
+        .then(() => this.alertService.infoMessage('Passwort geändert', 'Das Passwort wurde erfolgreich geändert.'))
+        .catch(error => this.errorHandling(error));
+    }
   }
 
   private async reauthUser(currentPassword: string) {
-    const credentials = firebase.auth.EmailAuthProvider.credential(this.getUserEmail(), currentPassword);
-    const user = await this.afAuth.currentUser;
+    const credentials = EmailAuthProvider.credential(this.getUserEmail(), currentPassword);
     try {
-      await user.reauthenticateWithCredential(credentials);
-      return this.afAuth.currentUser;
+      const UserCredential = await reauthenticateWithCredential(this.afAuth.currentUser, credentials);
+      this.setCredentialCache(UserCredential);
+      return true;
     } catch (error) {
-      this.alertService.errorMessage('Passwort falsch', 'Das aktuelle Passwort ist falsch.');
-      throw error;
+      return this.errorHandling(error);
     }
   }
 
-  register(
+  async register(
     email: string,
     password: string,
     nickname: string,
     firstname: string,
     lastname: string,
     locale: string
-  ): Observable<PhenonetUser> {
-    this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then(firebaseResult => {
-        firebaseResult.user.updateProfile({ displayName: nickname });
-
-        this.afs
-          .collection('users')
-          .doc(firebaseResult.user.uid)
-          .set({
-            nickname: nickname,
-            firstname: firstname,
-            lastname: lastname,
-            locale: locale
-          })
-          .then(_ => this.handleUserLogin(firebaseResult));
-      })
-      .catch(this.errorHandling.bind(this));
-
-    return this.user$;
+  ): Promise<void> {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(this.afAuth, email, password);
+      void updateProfile(this.afAuth.currentUser, { displayName: nickname });
+      this.setCredentialCache(userCredential);
+      void this.afs.collection('users').doc(this.afAuth.currentUser.uid).set({
+        nickname: nickname,
+        firstname: firstname,
+        lastname: lastname,
+        locale: locale
+      });
+    } catch (error) {
+      return this.errorHandling(error);
+    }
   }
 
   private removeCookie(name: string, path: string = '/') {
@@ -184,33 +154,21 @@ export class AuthService extends BaseService implements OnDestroy {
 
   // might report false on initial page loading until userId is set
   isLoggedIn(): boolean {
-    return this.getUserId() != null && this.getUser() != null;
+    // return this.getUserId() != null && this.getUser() != null;
+    return this.getCredentialCache() !== null; // TODO check if new check works
   }
 
-  isAuthenticated(redirectUrl: string): Observable<boolean> {
-    return this.user$.pipe(
-      take(1),
-      map(user => !!user && this.getUser() != null), // also check if user data is present
-      tap(authenticated => {
-        if (!authenticated) {
-          this.redirectUrl = redirectUrl;
-          void this.router.navigate([LOGIN_URL]);
-        }
-      })
-    );
-  }
-
-  getUserNickname(): string {
-    const user = this.getUser();
-    if (user) {
-      return user.nickname;
-    } else {
-      return 'Anonymous';
+  isAuthenticated(redirectUrl: string): Signal<boolean> {
+    //TODO rename
+    if (!this.authenticated()) {
+      this.redirectUrl = redirectUrl;
+      void this.router.navigate([LOGIN_URL]);
     }
+    return this.authenticated;
   }
 
   getUserEmail(): string {
-    const firebaseUser = this.getFirebaseUser();
+    const firebaseUser = this.afAuth.currentUser;
     if (firebaseUser) {
       return firebaseUser.email;
     } else {
@@ -218,20 +176,11 @@ export class AuthService extends BaseService implements OnDestroy {
     }
   }
 
-  getUser(): PhenonetUser | null {
-    return this.getLoginCache()?.user;
-  }
-
-  private getFirebaseUser(): firebase.User | null {
-    const cache = this.getLoginCache();
-    return cache?.firebaseUser;
-  }
-
   getUserId(): string {
-    return this.getFirebaseUser()?.uid;
+    return this.afAuth.currentUser.uid;
   }
 
-  private errorHandling(error: any) {
+  private errorHandling(error: any, throwError = false) {
     this.alertService.alertMessage({
       title: error.code + '.title',
       message: error.code + '.message',
@@ -242,14 +191,21 @@ export class AuthService extends BaseService implements OnDestroy {
       titleParams: Object,
       duration: none
     } as UntranslatedAlertMessage);
+    if (throwError) {
+      throw error;
+    } // TODO check where to throw errors
   }
 
-  private getLoginCache(): LoginResult | null {
-    const json = this.localService.localStorageGet(LOCALSTORAGE_LOGIN_RESULT_KEY);
-    return json ? (JSON.parse(json) as LoginResult) : null;
+  resetClientSession(): void {
+    this.localService.localStorageRemove(LOCALSTORAGE_CREDENTIALS_KEY);
   }
 
-  private setLoginCache(loginResult: LoginResult): void {
-    this.localService.localStorageSet(LOCALSTORAGE_LOGIN_RESULT_KEY, JSON.stringify(loginResult));
+  private getCredentialCache(): UserCredential | null {
+    const json = this.localService.localStorageGet(LOCALSTORAGE_CREDENTIALS_KEY);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return json ? JSON.parse(json) : null;
+  }
+  private setCredentialCache(userCredential: UserCredential): void {
+    this.localService.localStorageSet(LOCALSTORAGE_CREDENTIALS_KEY, JSON.stringify(userCredential));
   }
 }

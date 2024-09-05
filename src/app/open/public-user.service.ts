@@ -9,6 +9,7 @@ import { AlertService } from '../messaging/alert.service';
 import { Roles } from '../profile/Roles.enum';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { PublicUser } from './public-user';
+import { UserService } from '../profile/user.service';
 
 @Injectable()
 export class PublicUserService extends BaseResourceService<PublicUser> {
@@ -16,6 +17,7 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
     alertService: AlertService,
     protected afs: AngularFirestore,
     private authService: AuthService,
+    private userService: UserService,
     protected fds: FirestoreDebugService
   ) {
     super(alertService, afs, 'public_users', fds);
@@ -23,7 +25,7 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
 
   existingNickname(nickname: string): Observable<boolean> {
     if (nickname && nickname.length > 0) {
-      if (nickname === this.authService.getUserNickname()) {
+      if (nickname === this.userService.user().nickname) {
         return of(false);
       }
       return this.afs

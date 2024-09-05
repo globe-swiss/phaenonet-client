@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { LocalService } from '../shared/local.service';
+import { UserService } from '../profile/user.service';
 
 @Injectable()
 export class LanguageService implements OnDestroy {
@@ -15,11 +16,11 @@ export class LanguageService implements OnDestroy {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private translateService: TranslateService,
-    private authService: AuthService,
+    private userService: UserService,
     private localService: LocalService
   ) {
     this.subscriptions.add(
-      this.authService.user$.pipe(filter(user => !!user)).subscribe(user => this.changeLocale(user.locale))
+      this.userService.user$.pipe(filter(user => !!user)).subscribe(user => this.changeLocale(user.locale))
     );
   }
 
