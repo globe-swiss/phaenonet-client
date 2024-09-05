@@ -1,14 +1,16 @@
+import { getAnalytics, provideAnalytics } from '@angular/fire/analytics';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+
 import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import localeIt from '@angular/common/locales/it';
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService } from '@angular/fire/compat/analytics';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFirestoreModule, SETTINGS } from '@angular/fire/compat/firestore';
-import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { ScreenTrackingService, UserTrackingService } from '@angular/fire/compat/analytics';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,6 +18,7 @@ import { Router } from '@angular/router';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import * as Sentry from '@sentry/angular-ivy';
 import { Observable, from } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -55,11 +58,6 @@ registerLocaleData(localeIt, 'it');
       },
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: SentryMissingTranslationHandler }
     }),
-    AngularFireModule,
-    AngularFirestoreModule,
-    AngularFireAuthModule,
-    AngularFireStorageModule,
-    AngularFireAnalyticsModule,
     CoreModule,
     AppRoutingModule,
     LoginModule
@@ -88,6 +86,11 @@ registerLocaleData(localeIt, 'it');
     IndividualService,
     SensorsService,
     MapService,
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
+    provideAuth(() => getAuth()),
+    provideAnalytics(() => getAnalytics()),
     // { provide: DEBUG_MODE, useValue: true }
     provideHttpClient(withInterceptorsFromDi())
   ]
