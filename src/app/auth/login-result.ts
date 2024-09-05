@@ -1,14 +1,14 @@
 import firebase from 'firebase/compat/app';
-import { User } from '../profile/user';
+import { PhenonetUser } from '../profile/user';
 
 type LoginResultStatus = 'LOGIN_OK' | 'LOGIN_PASSWORD_CHANGE_REQUIRED';
 
 export class LoginResult {
   status: LoginResultStatus;
-  user: User;
+  user: PhenonetUser;
   firebaseUser: firebase.User;
 
-  constructor(status: LoginResultStatus, firebaseUser: firebase.User, user: User) {
+  constructor(status: LoginResultStatus, firebaseUser: firebase.User, user: PhenonetUser) {
     this.status = status;
     this.user = user;
     this.firebaseUser = firebaseUser;

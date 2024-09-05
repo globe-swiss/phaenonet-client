@@ -10,7 +10,7 @@ import { BaseDetailComponent } from '../../core/base-detail.component';
 import { LanguageService } from '../../core/language.service';
 import { NavService } from '../../core/nav/nav.service';
 import { PublicUserService } from '../../open/public-user.service';
-import { User } from '../../profile/user';
+import { PhenonetUser } from '../../profile/user';
 import { UserService } from '../../profile/user.service';
 import { ChangeEmailData } from './change-email-dialog/change-email-data';
 import { ChangeEmailDialogComponent } from './change-email-dialog/change-email-dialog.component';
@@ -21,7 +21,7 @@ import { ChangePasswordDialogComponent } from './change-password-dialog/change-p
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.scss']
 })
-export class ProfileEditComponent extends BaseDetailComponent<User> implements OnInit, OnDestroy {
+export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> implements OnInit, OnDestroy {
   editForm: UntypedFormGroup;
   private subscriptions = new Subscription();
   private initialLanguage: string;
@@ -66,7 +66,7 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
   save() {
     this.detailSubject$.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
-      const user: User = { ...detail, ...this.editForm.value } as User;
+      const user: PhenonetUser = { ...detail, ...this.editForm.value } as PhenonetUser;
 
       this.userService.upsert(user, this.detailId).subscribe(_ => {
         void this.router.navigate(['profile']);

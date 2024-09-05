@@ -9,7 +9,7 @@ import { Observable, Subscription, from, of } from 'rxjs';
 import { map, switchAll, switchMap, take, tap } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
-import { User } from '../profile/user';
+import { PhenonetUser } from '../profile/user';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { LocalService } from '../shared/local.service';
 import { LoginResult } from './login-result';
@@ -24,7 +24,7 @@ export class AuthService extends BaseService implements OnDestroy {
   browserIdHeaders: HttpHeaders;
 
   private subscriptions = new Subscription();
-  public user$: Observable<User>;
+  public user$: Observable<PhenonetUser>;
   public firebaseUser$: Observable<firebase.User>;
 
   // store the URL so we can redirect after logging in
@@ -48,12 +48,12 @@ export class AuthService extends BaseService implements OnDestroy {
       switchMap(user => {
         if (user) {
           return this.afs
-            .doc<User>(`users/${user.uid}`)
+            .doc<PhenonetUser>(`users/${user.uid}`)
             .valueChanges()
             .pipe(tap(() => this.fds.addRead('users')));
         } else {
           this.resetClientSession();
-          return of(null) as Observable<User>;
+          return of(null) as Observable<PhenonetUser>;
         }
       })
     );
@@ -64,7 +64,7 @@ export class AuthService extends BaseService implements OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  login(email: string, password: string): Observable<User> {
+  login(email: string, password: string): Observable<PhenonetUser> {
     return from(
       this.afAuth
         .signInWithEmailAndPassword(email, password)
@@ -73,12 +73,12 @@ export class AuthService extends BaseService implements OnDestroy {
         })
         .catch(x => {
           this.errorHandling(x);
-          return of(null) as Observable<User>;
+          return of(null) as Observable<PhenonetUser>;
         })
     ).pipe(switchAll());
   }
 
-  private handleUserLogin(firebaseResult: firebase.auth.UserCredential): Observable<User> {
+  private handleUserLogin(firebaseResult: firebase.auth.UserCredential): Observable<PhenonetUser> {
     if (firebaseResult) {
       this.user$.pipe(take(1)).subscribe(u => {
         this.handleLoginResult(new LoginResult('LOGIN_OK', firebaseResult.user, u));
@@ -86,7 +86,7 @@ export class AuthService extends BaseService implements OnDestroy {
 
       return this.user$;
     } else {
-      return of(null) as Observable<User>;
+      return of(null) as Observable<PhenonetUser>;
     }
   }
 
@@ -156,7 +156,7 @@ export class AuthService extends BaseService implements OnDestroy {
     firstname: string,
     lastname: string,
     locale: string
-  ): Observable<User> {
+  ): Observable<PhenonetUser> {
     this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then(firebaseResult => {
@@ -218,7 +218,7 @@ export class AuthService extends BaseService implements OnDestroy {
     }
   }
 
-  getUser(): User | null {
+  getUser(): PhenonetUser | null {
     return this.getLoginCache()?.user;
   }
 

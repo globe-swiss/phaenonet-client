@@ -15,13 +15,13 @@ import { PublicUser } from '../open/public-user';
 import { PublicUserService } from '../open/public-user.service';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { Roles } from './Roles.enum';
-import { User } from './user';
+import { PhenonetUser } from './user';
 
 @Injectable()
-export class UserService extends BaseResourceService<User> implements OnDestroy {
+export class UserService extends BaseResourceService<PhenonetUser> implements OnDestroy {
   private subscriptions: Subscription = new Subscription();
   public publicUser$: Observable<PublicUser>;
-  public user$: Observable<User>;
+  public user$: Observable<PhenonetUser>;
   public roles$: Observable<string[]>;
 
   constructor(
