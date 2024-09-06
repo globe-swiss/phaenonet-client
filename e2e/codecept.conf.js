@@ -69,7 +69,7 @@ exports.config = {
       enabled: true
     },
     subtitles: {
-      enabled: true
+      enabled: false
     },
     coverage: {
       enabled: true,

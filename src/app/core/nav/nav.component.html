@@ -10,7 +10,7 @@
         <div class="nav-component__buttons">
           <button
             class="left-border"
-            *ngIf="isLoggedIn()"
+            *ngIf="authenticated()"
             mat-button
             class="nav-component__button"
             [routerLink]="['profile']"
@@ -23,7 +23,7 @@
             class="nav-component__button"
             [routerLink]="['auth/login']"
             data-test-id="nav-button-login"
-            *ngIf="!isLoggedIn()"
+            *ngIf="!authenticated()"
           >
             {{ 'Anmelden' | translate }}
           </button>

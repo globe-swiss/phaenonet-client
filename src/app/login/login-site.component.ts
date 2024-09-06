@@ -25,7 +25,6 @@ export class LoginSiteComponent implements OnInit {
       queryParamsHandling: 'merge',
       preserveFragment: true // fragement = hash without #, e.g. example.com#hello => hello
     };
-
     void this.router.navigateByUrl(url, navigationExtras);
   }
 }

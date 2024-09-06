@@ -8,6 +8,7 @@ import { LanguageService } from '../core/language.service';
 import { NavService } from '../core/nav/nav.service';
 import { AlertService } from '../messaging/alert.service';
 import { PublicUserService } from '../open/public-user.service';
+import { UserService } from '../profile/user.service';
 import { equalValidation } from '../shared/validation';
 
 @Component({
@@ -32,6 +33,7 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private publicUserService: PublicUserService,
     private alertService: AlertService,
     private router: Router,
@@ -57,7 +59,7 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
     const equalValidator = equalValidation('password', 'passwordConfirm', 'passwordMissmatch');
     this.registerForm.setValidators(equalValidator);
     this.registerForm.updateValueAndValidity();
-    this.subscription = this.authService.user$.subscribe(user => {
+    this.subscription = this.userService.user$.subscribe(user => {
       if (user) {
         if (this.realRegisterRequest) {
           this.alertService.infoMessage(
@@ -99,11 +101,11 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   showRegisterForm(): boolean {
-    return !this.isLoggedIn();
+    return !this.authenticated();
   }
 
-  isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
+  authenticated(): boolean {
+    return this.authService.authenticated();
   }
 
   changeLocale(event: MatSelectChange): void {

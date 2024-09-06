@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
+import { Router } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LOGGED_OUT_URL } from 'src/app/app-routing.module';
 import { AuthService } from '../../../auth/auth.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../../../messaging/alert.service';
 import { PublicUser } from '../../../open/public-user';
@@ -28,12 +30,13 @@ export class ProfileDetailsComponent implements OnInit {
     protected authService: AuthService,
     protected alertService: AlertService,
     private userService: UserService,
-    private analytics: AngularFireAnalytics
+    private analytics: AngularFireAnalytics,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.email = this.authService.getUserEmail();
-    const user$ = this.authService.user$;
+    const user$ = this.userService.user$;
     this.nickname$ = user$.pipe(map(u => u.nickname));
     this.firstname$ = user$.pipe(map(u => u.firstname));
     this.lastname$ = user$.pipe(map(u => u.lastname));
@@ -60,5 +63,6 @@ export class ProfileDetailsComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+    void this.router.navigate([LOGGED_OUT_URL]);
   }
 }

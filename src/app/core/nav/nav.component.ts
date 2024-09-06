@@ -13,8 +13,8 @@ export class NavComponent {
     private languageService: LanguageService
   ) {}
 
-  isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
+  authenticated(): boolean {
+    return this.authService.authenticated();
   }
 
   lang(): string {

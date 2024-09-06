@@ -4,12 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { DisableNotAuthorizedDirective } from '../auth/disable-not-authorized.directive';
-import { DisableNotOwnerDirective } from '../auth/disable-not-owner.directive';
-import { RemoveNotAuthorizedDirective } from '../auth/remove-not-authorized.directive';
 import { MaterialModule } from '../core/material.module';
 import { NotFoundComponent } from '../core/not-found.component';
 import { SensorsBadgeComponent } from '../sensors/sensors-badge.component';
+import { SensorsBoxComponent } from '../sensors/sensors-box.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { CopyClipboardDirective } from './copy-clipboard.directive';
 import { LimitToPipe } from './limitTo.pipe';
@@ -20,7 +18,6 @@ import { ShortdatetimePipe } from './shortdatetime.pipe';
 import { IndividualSubscriptionButtonComponent } from './subscription/individual-subscription-button/individual-subscription-button.component';
 import { UserSubscriptionButtonComponent } from './subscription/user-subscription-button/user-subscription-button.component';
 import { TypeGuardPipe } from './type-guard.pipe';
-import { SensorsBoxComponent } from '../sensors/sensors-box.component';
 
 /**
  * The `SharedModule` is used to group common services and modules like {@link TranslateModule}.
@@ -36,9 +33,6 @@ import { SensorsBoxComponent } from '../sensors/sensors-box.component';
     GoogleMapsModule
   ],
   declarations: [
-    RemoveNotAuthorizedDirective,
-    DisableNotAuthorizedDirective,
-    DisableNotOwnerDirective,
     NotFoundComponent,
     CopyClipboardDirective,
     ConfirmationDialogComponent,
@@ -54,12 +48,9 @@ import { SensorsBoxComponent } from '../sensors/sensors-box.component';
   ],
   exports: [
     CommonModule,
-    DisableNotAuthorizedDirective,
-    DisableNotOwnerDirective,
     FormsModule,
     MaterialModule,
     ReactiveFormsModule,
-    RemoveNotAuthorizedDirective,
     CopyClipboardDirective,
     RouterModule,
     TranslateModule,

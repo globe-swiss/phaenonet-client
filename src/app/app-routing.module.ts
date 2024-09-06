@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LOGIN_URL } from './auth/auth.service';
 import { NotFoundComponent } from './core/not-found.component';
 import { LoadingGuard } from './shared/LoadingGuard';
+
+export const LOGIN_URL = '/auth/login';
+export const LOGGED_OUT_URL = '/auth/logged-out';
 
 const routes: Routes = [
   {

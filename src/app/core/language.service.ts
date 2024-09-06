@@ -3,8 +3,6 @@ import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
 import { LocalService } from '../shared/local.service';
 
 @Injectable()
@@ -15,12 +13,12 @@ export class LanguageService implements OnDestroy {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private translateService: TranslateService,
-    private authService: AuthService,
+    // private userService: UserService,
     private localService: LocalService
   ) {
-    this.subscriptions.add(
-      this.authService.user$.pipe(filter(user => !!user)).subscribe(user => this.changeLocale(user.locale))
-    );
+    // this.subscriptions.add(
+    //   this.userService.user$.pipe(filter(user => !!user)).subscribe(user => this.changeLocale(user.locale))
+    // ); / TODO check if this needs to be reimplmented
   }
 
   ngOnDestroy(): void {
@@ -51,6 +49,7 @@ export class LanguageService implements OnDestroy {
       userLang = this.parseLang(userLang);
     }
     if (userLang == null) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
       userLang = this.parseLang(navigator.language || ((navigator as any).userLanguage as string));
     }
     if (userLang != null) {

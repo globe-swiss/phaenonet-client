@@ -37,7 +37,7 @@ export class IndividualDetailComponent extends BaseDetailComponent<Individual> i
 
     window.scrollTo(0, 0);
 
-    this.isLoggedIn = this.authService.isLoggedIn();
+    this.isLoggedIn = this.authService.authenticated();
 
     this.isOwn$ = this.detailSubject$.pipe(
       filter(individual => individual !== undefined),

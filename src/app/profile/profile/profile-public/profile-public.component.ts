@@ -29,7 +29,7 @@ export class ProfilePublicComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isLoggedIn = this.authService.isLoggedIn();
+    this.isLoggedIn = this.authService.authenticated();
 
     this.nickname$ = this.user$.pipe(map(u => u.nickname));
     this.isRanger$ = this.publicUserService.isRanger(this.user$);

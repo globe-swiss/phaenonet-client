@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
-import { AlertService } from '../messaging/alert.service';
 
 @Component({
   selector: 'app-login-form',
@@ -9,9 +8,9 @@ import { AlertService } from '../messaging/alert.service';
   styleUrls: ['./login-form.component.scss']
 })
 export class LoginFormComponent {
-  loginForm = new UntypedFormGroup({
-    email: new UntypedFormControl(''),
-    password: new UntypedFormControl('')
+  loginForm = new FormGroup({
+    email: new FormControl<string>(''),
+    password: new FormControl<string>('')
   });
 
   loginFailed = false;
@@ -20,18 +19,14 @@ export class LoginFormComponent {
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   onLoginSuccess: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(
-    private authService: AuthService,
-    private alertService: AlertService
-  ) {}
+  constructor(private authService: AuthService) {}
 
   login(): void {
     this.loginFailed = false;
     this.authService
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,  @typescript-eslint/no-unsafe-call
       .login(this.loginForm.controls.email.value.trim(), this.loginForm.controls.password.value)
-      .subscribe(user => {
-        if (user) {
+      .subscribe(success => {
+        if (success) {
           this.onLoginSuccess.emit();
         }
       });
@@ -41,7 +36,7 @@ export class LoginFormComponent {
     return this.loginFailed;
   }
 
-  isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
+  authenticated(): boolean {
+    return this.authService.authenticated();
   }
 }
