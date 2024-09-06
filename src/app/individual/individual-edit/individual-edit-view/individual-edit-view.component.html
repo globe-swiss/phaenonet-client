@@ -4,7 +4,7 @@
       <input
         matInput
         name="geopos"
-        [value]="(geopos$ | async).lat + ', ' + (geopos$ | async).lng"
+        [value]="geopos().lat + ', ' + geopos().lng"
         placeholder="{{ 'Standort (Geo-Koordinaten)' | translate }}"
         type="text"
         disabled
@@ -14,11 +14,11 @@
     <mat-form-field>
       <input
         matInput
-        id="altitude"
-        formControlName="altitude"
+        name="altitude"
+        [value]="altitude()"
         placeholder="{{ 'Höhe m ü. M.' | translate }}"
-        type="text"
-        [disabled]="true"
+        type="number"
+        disabled
       />
     </mat-form-field>
   </div>
