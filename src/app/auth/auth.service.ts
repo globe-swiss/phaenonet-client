@@ -1,10 +1,9 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable, OnDestroy, Signal, inject } from '@angular/core';
+import { Injectable, OnDestroy, Signal, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   Auth,
   EmailAuthProvider,
-  UserCredential,
   createUserWithEmailAndPassword,
   reauthenticateWithCredential,
   sendPasswordResetEmail,
@@ -22,7 +21,7 @@ import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { LocalService } from '../shared/local.service';
 
-const LOCALSTORAGE_CREDENTIALS_KEY = 'credential_cache';
+const LOCALSTORAGE_LOGGEDIN_KEY = 'loggedin';
 
 @Injectable()
 export class AuthService extends BaseService implements OnDestroy {
@@ -35,7 +34,7 @@ export class AuthService extends BaseService implements OnDestroy {
 
   // public phenonetUser$: Observable<PhenonetUser>;
 
-  redirectUrl: string;
+  redirectUrl: string; // TODO move this -> login components
 
   constructor(
     alertService: AlertService,
@@ -48,8 +47,12 @@ export class AuthService extends BaseService implements OnDestroy {
       this.firebaseUser$.pipe(
         map(user => !!user) // Convert user object to boolean
       ),
-      { initialValue: false }
+      { initialValue: this.isCachedLoggedIn() }
     );
+
+    effect(() => {
+      this.setCachedLoginState(this.authenticated());
+    });
   }
 
   ngOnDestroy(): void {
@@ -59,8 +62,7 @@ export class AuthService extends BaseService implements OnDestroy {
   login(email: string, password: string): Observable<boolean> {
     return from(
       signInWithEmailAndPassword(this.afAuth, email.trim(), password.trim())
-        .then(userCredential => {
-          this.setCredentialCache(userCredential);
+        .then(() => {
           return true;
         })
         .catch(error => {
@@ -71,9 +73,7 @@ export class AuthService extends BaseService implements OnDestroy {
   }
 
   logout(): void {
-    void this.afAuth.signOut().then(() => {
-      this.resetClientSession();
-    });
+    void this.afAuth.signOut();
   }
 
   resetPassword(email: string): Observable<void> {
@@ -106,8 +106,7 @@ export class AuthService extends BaseService implements OnDestroy {
   private async reauthUser(currentPassword: string) {
     const credentials = EmailAuthProvider.credential(this.getUserEmail(), currentPassword);
     try {
-      const UserCredential = await reauthenticateWithCredential(this.afAuth.currentUser, credentials);
-      this.setCredentialCache(UserCredential);
+      await reauthenticateWithCredential(this.afAuth.currentUser, credentials);
       return true;
     } catch (error) {
       return this.errorHandling(error);
@@ -123,9 +122,8 @@ export class AuthService extends BaseService implements OnDestroy {
     locale: string
   ): Promise<void> {
     try {
-      const userCredential = await createUserWithEmailAndPassword(this.afAuth, email, password);
+      await createUserWithEmailAndPassword(this.afAuth, email, password);
       void updateProfile(this.afAuth.currentUser, { displayName: nickname });
-      this.setCredentialCache(userCredential);
       void this.afs.collection('users').doc(this.afAuth.currentUser.uid).set({
         nickname: nickname,
         firstname: firstname,
@@ -137,16 +135,12 @@ export class AuthService extends BaseService implements OnDestroy {
     }
   }
 
-  private removeCookie(name: string, path: string = '/') {
-    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT; path=' + path;
-  }
-
   /**
    * Sets url to be redirected after next successful login.
    * @param redirectUrl
    */
   setRedirect(redirectUrl: string): void {
-    this.redirectUrl = redirectUrl;
+    this.redirectUrl = redirectUrl; // TODO move this somewhere -> login components
   }
 
   getUserEmail(): string {
@@ -178,16 +172,15 @@ export class AuthService extends BaseService implements OnDestroy {
     } // TODO check where to throw errors
   }
 
-  resetClientSession(): void {
-    this.localService.localStorageRemove(LOCALSTORAGE_CREDENTIALS_KEY);
+  private setCachedLoginState(loggedIn: boolean): void {
+    if (loggedIn) {
+      this.localService.localStorageSet(LOCALSTORAGE_LOGGEDIN_KEY, '1');
+    } else {
+      this.localService.localStorageRemove(LOCALSTORAGE_LOGGEDIN_KEY);
+    }
   }
 
-  private getCredentialCache(): UserCredential | null {
-    const json = this.localService.localStorageGet(LOCALSTORAGE_CREDENTIALS_KEY);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return json ? JSON.parse(json) : null;
-  }
-  private setCredentialCache(userCredential: UserCredential): void {
-    this.localService.localStorageSet(LOCALSTORAGE_CREDENTIALS_KEY, JSON.stringify(userCredential));
+  private isCachedLoggedIn(): boolean {
+    return !!this.localService.localStorageGet(LOCALSTORAGE_LOGGEDIN_KEY);
   }
 }

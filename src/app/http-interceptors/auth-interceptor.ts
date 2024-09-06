@@ -17,7 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error, caught) => {
         if (error.status === 401) {
-          this.authService.resetClientSession();
+          this.authService.logout();
           let currentRef = this.dialog.openDialogs.find(x => x.componentInstance instanceof LoginDialogComponent);
           if (!currentRef) {
             currentRef = this.dialog.open(LoginDialogComponent, { disableClose: true });
