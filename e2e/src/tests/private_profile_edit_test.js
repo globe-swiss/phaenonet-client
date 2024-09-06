@@ -23,19 +23,19 @@ Scenario('test edit profile nick check', ({ I, profileEditPage, e2eTestUser }) =
 Scenario('test select languages', ({ I, profileEditPage, e2eTestUser }) => {
   I.login();
   I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
-  I.see('Deutsch'); // de
+  I.waitForText('Deutsch'); // de
   I.click(profileEditPage.languageSelect.dropdown);
   I.click(profileEditPage.languageSelect.values.fr);
-  I.see('Français');
-  I.see('Enregistrer');
+  I.waitForText('Français');
+  I.waitForText('Enregistrer');
   I.click(profileEditPage.languageSelect.dropdown);
   I.click(profileEditPage.languageSelect.values.it);
-  I.see('Italiano');
-  I.see('Salva');
+  I.waitForText('Italiano');
+  I.waitForText('Salva');
   I.click(profileEditPage.languageSelect.dropdown);
   I.click(profileEditPage.languageSelect.values.de);
-  I.see('Deutsch');
-  I.see('Speichern');
+  I.waitForText('Deutsch');
+  I.waitForText('Speichern');
 });
 
 Scenario('test edit profile email', async ({ I, profileEditPage, e2eTestUser }) => {
