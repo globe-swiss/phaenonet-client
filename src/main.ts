@@ -1,10 +1,10 @@
 import { enableProdMode } from '@angular/core';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import * as Sentry from '@sentry/angular-ivy';
 import { Integrations } from '@sentry/tracing';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
-import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 
 Sentry.init({
   enabled: environment.sentryEnabled,
@@ -45,15 +45,6 @@ if (environment.production) {
 void platformBrowserDynamic([
   {
     provide: FIREBASE_OPTIONS,
-    useValue: {
-      apiKey: 'AIzaSyAP01itULnjw9Gx5LRyE6qi_GLJKhBMUz4',
-      appId: '1:379498871574:web:6b33f0fa19cf8e38c3ee37',
-      authDomain: 'phaenonet-test.firebaseapp.com',
-      databaseURL: 'https://phaenonet-test.firebaseio.com',
-      measurementId: 'G-G3YRJD9PZ1',
-      messagingSenderId: '379498871574',
-      projectId: 'phaenonet-test',
-      storageBucket: 'phaenonet-test.appspot.com'
-    }
+    useValue: environment.firebaseConfig
   }
 ]).bootstrapModule(AppModule);
