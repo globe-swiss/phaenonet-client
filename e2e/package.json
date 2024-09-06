@@ -7,7 +7,7 @@
     "mocha": "^10.7.3",
     "mochawesome": "^7.1.3",
     "node-fetch": "^2.7.0",
-    "playwright": "^1.46.1",
+    "playwright": "^1.47.0",
     "uuid": "^10.0.0"
   },
   "description": "e2e test for phaenonet-client",
