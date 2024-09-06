@@ -1,17 +1,18 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, Signal, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { FirebaseError } from '@angular/fire/app';
 import {
   Auth,
   EmailAuthProvider,
+  authState,
   createUserWithEmailAndPassword,
   reauthenticateWithCredential,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   updateEmail,
   updatePassword,
-  updateProfile,
-  user
+  updateProfile
 } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { none } from 'fp-ts/lib/Option';
@@ -20,7 +21,6 @@ import { map } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { LocalService } from '../shared/local.service';
-import { FirebaseError } from '@angular/fire/app';
 
 const LOCALSTORAGE_LOGGEDIN_KEY = 'loggedin';
 
@@ -32,7 +32,7 @@ export class AuthService extends BaseService {
   /**
    * @deprecated use signals instead
    */
-  public firebaseUser$ = user(this.afAuth);
+  public firebaseUser$ = authState(this.afAuth);
 
   public authenticated: Signal<boolean>;
   public uid: Signal<string | null>;
@@ -46,7 +46,7 @@ export class AuthService extends BaseService {
     private localService: LocalService
   ) {
     super(alertService);
-    const firebaseUser$ = user(this.afAuth);
+    const firebaseUser$ = authState(this.afAuth);
     const firebaseUser = toSignal(firebaseUser$);
 
     this.authenticated = toSignal(
@@ -56,7 +56,10 @@ export class AuthService extends BaseService {
       { initialValue: this.isCachedLoggedIn() }
     );
 
-    this.uid = computed(() => firebaseUser()?.uid); // TODO check if to cache those values, as well
+    this.uid = computed(() => firebaseUser()?.uid);
+    /**
+     * // TODO This signal is not updated on email changes!
+     */
     this.email = computed(() => firebaseUser()?.email);
 
     effect(() => {
@@ -93,8 +96,8 @@ export class AuthService extends BaseService {
     try {
       if (await this.reauthUser(currentPassword)) {
         await updateEmail(this.afAuth.currentUser, newEmail);
+        this.alertService.infoMessage('E-Mail geändert', 'Die E-Mail wurde erfolgreich geändert.');
       }
-      this.alertService.infoMessage('E-Mail geändert', 'Die E-Mail wurde erfolgreich geändert.');
     } catch (error) {
       this.errorHandling(error as FirebaseError);
     }
