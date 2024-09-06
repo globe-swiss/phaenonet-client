@@ -9,15 +9,15 @@ Scenario('test edit profile', async ({ I, profileEditPage, e2eTestUser }) => {
 Scenario('test edit profile nick check', ({ I, profileEditPage, e2eTestUser }) => {
   I.login();
   I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
-  I.seeElement(profileEditPage.saveButtonEnabled);
+  I.waitForElement(profileEditPage.saveButtonEnabled);
   I.clearField(profileEditPage.fields.nickname);
   I.type('xy');
-  I.seeElement(profileEditPage.saveButtonDisabled);
+  I.waitForElement(profileEditPage.saveButtonDisabled);
   I.type('z'); // xyz must not exists
-  I.seeElement(profileEditPage.saveButtonEnabled);
+  I.waitForElement(profileEditPage.saveButtonEnabled);
   I.clearField(profileEditPage.fields.nickname);
   I.type(e2eTestUser.nickname);
-  I.seeElement(profileEditPage.saveButtonEnabled);
+  I.waitForElement(profileEditPage.saveButtonEnabled);
 });
 
 Scenario('test select languages', ({ I, profileEditPage, e2eTestUser }) => {

@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable, OnDestroy, Signal, effect, inject } from '@angular/core';
+import { Injectable, Signal, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   Auth,
@@ -15,7 +15,7 @@ import {
 } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { none } from 'fp-ts/lib/Option';
-import { Observable, Subscription, from } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
@@ -24,15 +24,18 @@ import { LocalService } from '../shared/local.service';
 const LOCALSTORAGE_LOGGEDIN_KEY = 'loggedin';
 
 @Injectable()
-export class AuthService extends BaseService implements OnDestroy {
+export class AuthService extends BaseService {
   browserIdHeaders: HttpHeaders;
   private afAuth = inject(Auth);
+
+  /**
+   * @deprecated use signals instead
+   */
   public firebaseUser$ = user(this.afAuth);
+
   public authenticated: Signal<boolean>;
-
-  private subscriptions = new Subscription();
-
-  // public phenonetUser$: Observable<PhenonetUser>;
+  public uid: Signal<string | null>;
+  public email: Signal<string | null>;
 
   redirectUrl: string; // TODO move this -> login components
 
@@ -42,21 +45,22 @@ export class AuthService extends BaseService implements OnDestroy {
     private localService: LocalService
   ) {
     super(alertService);
+    const firebaseUser$ = user(this.afAuth);
+    const firebaseUser = toSignal(firebaseUser$);
 
     this.authenticated = toSignal(
-      this.firebaseUser$.pipe(
+      firebaseUser$.pipe(
         map(user => !!user) // Convert user object to boolean
       ),
       { initialValue: this.isCachedLoggedIn() }
     );
 
+    this.uid = computed(() => firebaseUser()?.uid); // TODO check if to cache those values, as well
+    this.email = computed(() => firebaseUser()?.email);
+
     effect(() => {
       this.setCachedLoginState(this.authenticated());
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
   }
 
   login(email: string, password: string): Observable<boolean> {
@@ -143,6 +147,10 @@ export class AuthService extends BaseService implements OnDestroy {
     this.redirectUrl = redirectUrl; // TODO move this somewhere -> login components
   }
 
+  /**
+   *
+   * @returns @deprecated use signal instead
+   */
   getUserEmail(): string {
     const firebaseUser = this.afAuth.currentUser;
     if (firebaseUser) {
@@ -152,6 +160,10 @@ export class AuthService extends BaseService implements OnDestroy {
     }
   }
 
+  /**
+   *
+   * @returns @deprecated use signal instead
+   */
   getUserId(): string | null {
     return this.afAuth.currentUser?.uid;
   }

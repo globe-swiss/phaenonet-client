@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
@@ -6,12 +6,10 @@ import { AuthService } from 'src/app/auth/auth.service';
   templateUrl: './invite.component.html',
   styleUrls: ['./invite.component.scss']
 })
-export class InviteComponent implements OnInit {
-  detailId: string;
+export class InviteComponent {
+  detailId: Signal<string>;
 
-  constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {
-    this.detailId = this.authService.getUserId();
+  constructor(private authService: AuthService) {
+    this.detailId = this.authService.uid;
   }
 }
