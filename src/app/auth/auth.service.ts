@@ -152,8 +152,8 @@ export class AuthService extends BaseService implements OnDestroy {
     }
   }
 
-  getUserId(): string {
-    return this.afAuth.currentUser.uid;
+  getUserId(): string | null {
+    return this.afAuth.currentUser?.uid;
   }
 
   private errorHandling(error: any, throwError = false) {

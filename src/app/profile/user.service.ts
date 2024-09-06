@@ -41,7 +41,7 @@ export class UserService extends BaseResourceService<PhenonetUser> implements On
 
     const sharedFirebaseUser$ = this.authService.firebaseUser$.pipe(shareReplay({ bufferSize: 1, refCount: true }));
     this.publicUser$ = sharedFirebaseUser$.pipe(
-      switchMap(firebaseUser => this.publicUserService.get(firebaseUser.uid))
+      switchMap(firebaseUser => this.publicUserService.get(firebaseUser?.uid))
     );
     this.user$ = sharedFirebaseUser$.pipe(switchMap(firebaseUser => this.get(firebaseUser.uid))); // TODO check what happens if user is null - see block below
 
