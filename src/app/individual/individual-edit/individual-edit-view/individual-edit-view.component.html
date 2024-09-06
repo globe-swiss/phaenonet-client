@@ -137,7 +137,6 @@
     type="submit"
     id="create-button"
     [disabled]="createForm.invalid || (processing$ | async)"
-    [appDisableNotOwner]="(individual$ | async)?.user"
     [class.spinner]="processing$ | async"
   >
     {{ 'Objekt speichern' | translate }}

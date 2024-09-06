@@ -20,6 +20,7 @@ import { map } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
 import { LocalService } from '../shared/local.service';
+import { FirebaseError } from '@angular/fire/app';
 
 const LOCALSTORAGE_LOGGEDIN_KEY = 'loggedin';
 
@@ -70,7 +71,7 @@ export class AuthService extends BaseService {
           return true;
         })
         .catch(error => {
-          this.errorHandling(error);
+          this.errorHandling(error as FirebaseError);
           return false;
         })
     );
@@ -95,7 +96,7 @@ export class AuthService extends BaseService {
       }
       this.alertService.infoMessage('E-Mail geändert', 'Die E-Mail wurde erfolgreich geändert.');
     } catch (error) {
-      this.errorHandling(error);
+      this.errorHandling(error as FirebaseError);
     }
   }
 
@@ -103,7 +104,7 @@ export class AuthService extends BaseService {
     if (await this.reauthUser(currentPassword)) {
       updatePassword(this.afAuth.currentUser, newPassword)
         .then(() => this.alertService.infoMessage('Passwort geändert', 'Das Passwort wurde erfolgreich geändert.'))
-        .catch(error => this.errorHandling(error));
+        .catch(error => this.errorHandling(error as FirebaseError));
     }
   }
 
@@ -113,7 +114,7 @@ export class AuthService extends BaseService {
       await reauthenticateWithCredential(this.afAuth.currentUser, credentials);
       return true;
     } catch (error) {
-      return this.errorHandling(error);
+      return this.errorHandling(error as FirebaseError);
     }
   }
 
@@ -135,7 +136,7 @@ export class AuthService extends BaseService {
         locale: locale
       });
     } catch (error) {
-      return this.errorHandling(error);
+      return this.errorHandling(error as FirebaseError);
     }
   }
 
@@ -168,7 +169,9 @@ export class AuthService extends BaseService {
     return this.afAuth.currentUser?.uid;
   }
 
-  private errorHandling(error: any, throwError = false) {
+  private errorHandling(error: FirebaseError, throwError = false) {
+    console.log('error', error);
+
     this.alertService.alertMessage({
       title: error.code + '.title',
       message: error.code + '.message',
