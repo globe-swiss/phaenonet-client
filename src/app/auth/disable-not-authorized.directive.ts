@@ -11,7 +11,7 @@ export class DisableNotAuthorizedDirective implements AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    if (!this.authService.isLoggedIn()) {
+    if (!this.authService.authenticated()) {
       this.elementRef.nativeElement.disabled = true;
     }
   }

@@ -1,6 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, OnDestroy, Signal, inject } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
   Auth,
   EmailAuthProvider,
@@ -15,18 +15,12 @@ import {
   user
 } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Router } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
-import { Observable, Subscription, from, of } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { Observable, Subscription, from } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { BaseService } from '../core/base.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../messaging/alert.service';
-import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { LocalService } from '../shared/local.service';
-import { PhenonetUser } from './../profile/user';
-
-export const LOGIN_URL = '/auth/login';
-export const LOGGED_OUT_URL = '/auth/logged-out';
 
 const LOCALSTORAGE_CREDENTIALS_KEY = 'credential_cache';
 
@@ -41,14 +35,11 @@ export class AuthService extends BaseService implements OnDestroy {
 
   // public phenonetUser$: Observable<PhenonetUser>;
 
-  // store the URL so we can redirect after logging in
   redirectUrl: string;
 
   constructor(
     alertService: AlertService,
-    private router: Router,
     private afs: AngularFirestore,
-    private fds: FirestoreDebugService,
     private localService: LocalService
   ) {
     super(alertService);
@@ -82,7 +73,6 @@ export class AuthService extends BaseService implements OnDestroy {
   logout(): void {
     void this.afAuth.signOut().then(() => {
       this.resetClientSession();
-      void this.router.navigate([LOGGED_OUT_URL]);
     });
   }
 
@@ -98,7 +88,6 @@ export class AuthService extends BaseService implements OnDestroy {
     try {
       if (await this.reauthUser(currentPassword)) {
         await updateEmail(this.afAuth.currentUser, newEmail);
-        // TODO check fro side effects - credential cache is not updated
       }
       this.alertService.infoMessage('E-Mail geändert', 'Die E-Mail wurde erfolgreich geändert.');
     } catch (error) {
@@ -152,19 +141,12 @@ export class AuthService extends BaseService implements OnDestroy {
     document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT; path=' + path;
   }
 
-  // might report false on initial page loading until userId is set
-  isLoggedIn(): boolean {
-    // return this.getUserId() != null && this.getUser() != null;
-    return this.getCredentialCache() !== null; // TODO check if new check works
-  }
-
-  isAuthenticated(redirectUrl: string): Signal<boolean> {
-    //TODO rename
-    if (!this.authenticated()) {
-      this.redirectUrl = redirectUrl;
-      void this.router.navigate([LOGIN_URL]);
-    }
-    return this.authenticated;
+  /**
+   * Sets url to be redirected after next successful login.
+   * @param redirectUrl
+   */
+  setRedirect(redirectUrl: string): void {
+    this.redirectUrl = redirectUrl;
   }
 
   getUserEmail(): string {

@@ -41,7 +41,7 @@ export class LoginFormComponent {
     return this.loginFailed;
   }
 
-  isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
+  authenticated(): boolean {
+    return this.authService.authenticated();
   }
 }

@@ -101,11 +101,11 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   showRegisterForm(): boolean {
-    return !this.isLoggedIn();
+    return !this.authenticated();
   }
 
-  isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
+  authenticated(): boolean {
+    return this.authService.authenticated();
   }
 
   changeLocale(event: MatSelectChange): void {

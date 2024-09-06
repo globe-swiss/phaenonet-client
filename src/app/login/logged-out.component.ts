@@ -1,5 +1,5 @@
+import { LOGIN_URL } from './../app-routing.module';
 import { Component, OnInit } from '@angular/core';
-import { LOGIN_URL } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
 
 @Component({

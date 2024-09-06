@@ -11,7 +11,7 @@ export class RemoveNotAuthorizedDirective implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (!this.authService.isLoggedIn()) {
+    if (!this.authService.authenticated()) {
       this.elementRef.nativeElement.remove();
     }
   }

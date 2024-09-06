@@ -16,12 +16,12 @@ export class LanguageService implements OnDestroy {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private translateService: TranslateService,
-    private userService: UserService,
+    // private userService: UserService,
     private localService: LocalService
   ) {
-    this.subscriptions.add(
-      this.userService.user$.pipe(filter(user => !!user)).subscribe(user => this.changeLocale(user.locale))
-    );
+    // this.subscriptions.add(
+    //   this.userService.user$.pipe(filter(user => !!user)).subscribe(user => this.changeLocale(user.locale))
+    // ); / TODO check if this needs to be reimplmented
   }
 
   ngOnDestroy(): void {

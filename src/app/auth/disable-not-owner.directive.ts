@@ -14,7 +14,7 @@ export class DisableNotOwnerDirective implements AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    if (!this.authService.isLoggedIn() || this.authService.getUserId() !== this.owner) {
+    if (!this.authService.authenticated() || this.authService.getUserId() !== this.owner) {
       this.elementRef.nativeElement.disabled = true;
     }
   }

@@ -39,7 +39,9 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   ) {
     super(userService, route, router);
     this.editForm = new UntypedFormGroup({
-      nickname: new UntypedFormControl('', { asyncValidators: this.publicUserService.uniqueNicknameValidator() }),
+      nickname: new UntypedFormControl('', {
+        asyncValidators: this.publicUserService.uniqueNicknameValidator(this.userService.user()?.nickname) // signal will be undefined if redirected to the page after login
+      }),
       firstname: new UntypedFormControl(''),
       lastname: new UntypedFormControl(''),
       locale: new UntypedFormControl('de-CH')
@@ -68,7 +70,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
       // merge the detail with the new values from the form
       const user: PhenonetUser = { ...detail, ...this.editForm.value } as PhenonetUser;
 
-      this.userService.upsert(user, this.detailId).subscribe(_ => {
+      this.userService.upsert(user, this.detailId).subscribe(() => {
         void this.router.navigate(['profile']);
       });
     });

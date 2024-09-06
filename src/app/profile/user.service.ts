@@ -22,9 +22,11 @@ import { PhenonetUser } from './user';
 export class UserService extends BaseResourceService<PhenonetUser> implements OnDestroy {
   private subscriptions: Subscription = new Subscription();
   public publicUser$: Observable<PublicUser>;
+  public publicUser: Signal<PublicUser>;
   public user$: Observable<PhenonetUser>;
   public user: Signal<PhenonetUser>;
   public roles$: Observable<string[]>;
+  public roles: Signal<string[]>;
 
   constructor(
     private publicUserService: PublicUserService,
@@ -42,23 +44,15 @@ export class UserService extends BaseResourceService<PhenonetUser> implements On
       switchMap(firebaseUser => this.publicUserService.get(firebaseUser.uid))
     );
     this.user$ = sharedFirebaseUser$.pipe(switchMap(firebaseUser => this.get(firebaseUser.uid))); // TODO check what happens if user is null - see block below
-    this.user = toSignal(this.user$);
-    // this.phenonetUser$ = this.firebaseUser$.pipe(
-    //   switchMap(user => {
-    //     if (user) {
-    //       return this.afs
-    //         .doc<PhenonetUser>(`users/${user.uid}`)
-    //         .valueChanges()
-    //         .pipe(tap(() => this.fds.addRead('users')));
-    //     } else {
-    //       return of(null) as Observable<PhenonetUser>;
-    //     }
-    //   })
-    // );
+
     // this.subscriptions.add(this.phenonetUser$.subscribe()); // todo check
 
     // load roles or initialize roles array if public user document does not exist or roles array is not defined
     this.roles$ = this.publicUser$.pipe(map(publicUser => (publicUser && publicUser.roles ? publicUser.roles : [])));
+
+    this.user = toSignal(this.user$);
+    this.publicUser = toSignal(this.publicUser$);
+    this.roles = toSignal(this.roles$);
   }
 
   ngOnDestroy(): void {

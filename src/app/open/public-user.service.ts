@@ -3,21 +3,17 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';
 import { Roles } from '../profile/Roles.enum';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { PublicUser } from './public-user';
-import { UserService } from '../profile/user.service';
 
 @Injectable()
 export class PublicUserService extends BaseResourceService<PublicUser> {
   constructor(
     alertService: AlertService,
     protected afs: AngularFirestore,
-    private authService: AuthService,
-    private userService: UserService,
     protected fds: FirestoreDebugService
   ) {
     super(alertService, afs, 'public_users', fds);
@@ -25,9 +21,6 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
 
   existingNickname(nickname: string): Observable<boolean> {
     if (nickname && nickname.length > 0) {
-      if (nickname === this.userService.user().nickname) {
-        return of(false);
-      }
       return this.afs
         .collection<PublicUser>(this.collectionName, ref => ref.where('nickname', '==', nickname))
         .valueChanges()
