@@ -7,7 +7,7 @@ import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService } from '@angular/fire/compat/analytics';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFirestoreModule, SETTINGS } from '@angular/fire/compat/firestore';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -68,23 +68,23 @@ registerLocaleData(localeIt, 'it');
     LoginModule
   ],
   providers: [
-    // {
-    //   provide: ErrorHandler,
-    //   useClass: GlobalErrorHandler
-    // },
-    // {
-    //   provide: Sentry.TraceService,
-    //   deps: [Router]
-    // },
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: () => () => {},
-    //   deps: [Sentry.TraceService],
-    //   multi: true
-    // },
-    // httpInterceptorProviders,
-    // ScreenTrackingService,
-    // UserTrackingService,
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
+    },
+    {
+      provide: Sentry.TraceService,
+      deps: [Router]
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {},
+      deps: [Sentry.TraceService],
+      multi: true
+    },
+    httpInterceptorProviders,
+    ScreenTrackingService,
+    UserTrackingService,
     MasterdataService,
     UserService,
     IndividualService,
