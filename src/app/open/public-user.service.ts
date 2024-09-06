@@ -41,10 +41,10 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
     );
   }
 
-  uniqueNicknameValidator(initialValue: string = ''): AsyncValidatorFn {
+  uniqueNicknameValidator(currentNickname = ''): AsyncValidatorFn {
     return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
       const controlValue = control.value as string;
-      if (controlValue === null || controlValue.length === 0 || controlValue === initialValue) {
+      if (controlValue != null && controlValue === currentNickname) {
         return of(null);
       } else {
         if (controlValue.includes('/')) {

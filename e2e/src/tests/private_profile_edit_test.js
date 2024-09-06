@@ -42,7 +42,7 @@ Scenario('test edit profile email', async ({ I, profileEditPage, e2eTestUser }) 
   I.login();
   I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
   I.click(profileEditPage.editEmailIcon);
-  await I.checkVisual('private_profile_edit-edit_email');
+  await I.checkVisual('private_profile_edit-edit_email'); // add retry delay if flaky
 }).tag('visual');
 
 Scenario('test edit profile password', async ({ I, profileEditPage, e2eTestUser }) => {

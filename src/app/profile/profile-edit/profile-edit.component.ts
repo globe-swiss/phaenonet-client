@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { Component, effect, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -38,13 +38,27 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
     private authService: AuthService
   ) {
     super(userService, route, router);
-    this.editForm = new UntypedFormGroup({
-      nickname: new UntypedFormControl('', {
-        asyncValidators: this.publicUserService.uniqueNicknameValidator(this.userService.user()?.nickname) // signal will be undefined if redirected to the page after login
+    this.editForm = new FormGroup<{
+      nickname: FormControl<string>;
+      firstname: FormControl<string | null>;
+      lastname: FormControl<string | null>;
+      locale: FormControl<string>;
+    }>({
+      nickname: new FormControl('', {
+        asyncValidators: this.publicUserService.uniqueNicknameValidator(this.userService.user()?.nickname)
       }),
-      firstname: new UntypedFormControl(''),
-      lastname: new UntypedFormControl(''),
-      locale: new UntypedFormControl('de-CH')
+      firstname: new FormControl(''),
+      lastname: new FormControl(''),
+      locale: new FormControl('de-CH')
+    });
+
+    // user will be initialy undefined if page is loaded from URL,
+    // updates validator once the user is set - enabling to save the page entering the current username
+    effect(() => {
+      this.editForm
+        .get('nickname')
+        .setAsyncValidators(this.publicUserService.uniqueNicknameValidator(this.userService.user()?.nickname));
+      this.editForm.get('nickname')?.updateValueAndValidity();
     });
   }
 
