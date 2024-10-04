@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - uses: pnpm/action-setup@v4.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.0.3
+      - uses: actions/setup-node@v4.0.4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -49,7 +49,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
       - name: Download Build Artifact
         uses: ./.github/actions/download-zip-artifact
         with:
@@ -75,13 +75,13 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - uses: pnpm/action-setup@v4.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.0.3
+      - uses: actions/setup-node@v4.0.4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -119,7 +119,7 @@ jobs:
           expires: 30d
         if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
       - name: Codecov
-        uses: codecov/codecov-action@v4.5.0
+        uses: codecov/codecov-action@v4.6.0
         with:
           use_oidc: true
           file: ./e2e/output/coverage-reports/codecov.json
@@ -131,13 +131,13 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - uses: pnpm/action-setup@v4.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.0.3
+      - uses: actions/setup-node@v4.0.4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
