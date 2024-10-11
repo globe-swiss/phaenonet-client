@@ -40,7 +40,7 @@ export class AuthService extends BaseService {
   public uid: Signal<string | null>;
   public email: WritableSignal<string | null> = signal<string | null>(null);
 
-  redirectUrl: string; // TODO move this -> login components
+  redirectUrl: string; // TODO move this -> login components + needs to be reset after redirect
 
   constructor(
     alertService: AlertService,
