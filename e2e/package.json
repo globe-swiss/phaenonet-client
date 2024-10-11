@@ -2,18 +2,18 @@
   "author": "",
   "dependencies": {
     "@codeceptjs/ui": "^1.2.0",
-    "codeceptjs": "^3.6.5",
+    "codeceptjs": "^3.6.7",
     "codeceptjs-resemblehelper": "^1.9.7",
     "mocha": "^10.7.3",
     "mochawesome": "^7.1.3",
     "node-fetch": "^2.7.0",
-    "playwright": "^1.47.0",
+    "playwright": "^1.48.0",
     "uuid": "^10.0.0"
   },
   "description": "e2e test for phaenonet-client",
   "devDependencies": {
     "eslint-plugin-codeceptjs": "^1.3.0",
-    "firebase-tools": "^13.16.0"
+    "firebase-tools": "^13.22.0"
   },
   "license": "ISC",
   "main": "codecept.conf.js",
