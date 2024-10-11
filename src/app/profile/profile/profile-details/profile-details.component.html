@@ -32,7 +32,7 @@
     <div class="profile-details__label">{{ 'Nachname' | translate }}</div>
     <div class="profile-details__value" data-test-id="profile-details-lastname">{{ lastname$ | async }}</div>
     <div class="profile-details__label">{{ 'E-Mail' | translate }}</div>
-    <div class="profile-details__value" data-test-id="profile-details-email">{{ email }}</div>
+    <div class="profile-details__value" data-test-id="profile-details-email">{{ email() }}</div>
     <div class="profile-details__label">{{ 'Sprache' | translate }}</div>
     <div class="profile-details__value" data-test-id="profile-details-locale">{{ locale$ | async | translate }}</div>
     <div class="profile-details__buttons">

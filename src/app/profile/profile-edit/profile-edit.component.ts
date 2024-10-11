@@ -70,7 +70,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
     this.subscriptions.add(
       this.detailSubject$.subscribe(detail => {
         this.editForm.reset(detail);
-        this.email = this.authService.getUserEmail();
+        this.email = this.authService.email();
       })
     );
   }

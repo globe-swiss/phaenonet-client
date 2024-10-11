@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Signal } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { Router } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
@@ -22,7 +22,7 @@ export class ProfileDetailsComponent implements OnInit {
   nickname$: Observable<string>;
   firstname$: Observable<string>;
   lastname$: Observable<string>;
-  email: string;
+  email: Signal<string>;
   locale$: Observable<string>;
   isRanger$: Observable<boolean>;
 
@@ -35,7 +35,7 @@ export class ProfileDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.email = this.authService.getUserEmail();
+    this.email = this.authService.email;
     const user$ = this.userService.user$;
     this.nickname$ = user$.pipe(map(u => u.nickname));
     this.firstname$ = user$.pipe(map(u => u.firstname));

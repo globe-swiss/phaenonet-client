@@ -61,7 +61,6 @@ export class AuthService extends BaseService {
     this.uid = computed(() => firebaseUser()?.uid);
 
     onIdTokenChanged(this.afAuth, user => {
-      console.log('statechange set email', user.email);
       this.email.set(user.email);
     });
 
@@ -115,7 +114,7 @@ export class AuthService extends BaseService {
   }
 
   private async reauthUser(currentPassword: string) {
-    const credentials = EmailAuthProvider.credential(this.getUserEmail(), currentPassword);
+    const credentials = EmailAuthProvider.credential(this.email(), currentPassword);
     try {
       await reauthenticateWithCredential(this.afAuth.currentUser, credentials);
       return true;
@@ -152,19 +151,6 @@ export class AuthService extends BaseService {
    */
   setRedirect(redirectUrl: string): void {
     this.redirectUrl = redirectUrl; // TODO move this somewhere -> login components
-  }
-
-  /**
-   *
-   * @returns @deprecated use signal instead
-   */
-  getUserEmail(): string {
-    const firebaseUser = this.afAuth.currentUser;
-    if (firebaseUser) {
-      return firebaseUser.email;
-    } else {
-      return 'Anonymous';
-    }
   }
 
   /**
