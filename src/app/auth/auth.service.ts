@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable, Signal, computed, effect, inject } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FirebaseError } from '@angular/fire/app';
 import {
@@ -7,9 +7,11 @@ import {
   EmailAuthProvider,
   authState,
   createUserWithEmailAndPassword,
+  onIdTokenChanged,
   reauthenticateWithCredential,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  signOut,
   updateEmail,
   updatePassword,
   updateProfile
@@ -36,7 +38,7 @@ export class AuthService extends BaseService {
 
   public authenticated: Signal<boolean>;
   public uid: Signal<string | null>;
-  public email: Signal<string | null>;
+  public email: WritableSignal<string | null> = signal<string | null>(null);
 
   redirectUrl: string; // TODO move this -> login components
 
@@ -57,10 +59,11 @@ export class AuthService extends BaseService {
     );
 
     this.uid = computed(() => firebaseUser()?.uid);
-    /**
-     * // TODO This signal is not updated on email changes!
-     */
-    this.email = computed(() => firebaseUser()?.email);
+
+    onIdTokenChanged(this.afAuth, user => {
+      console.log('statechange set email', user.email);
+      this.email.set(user.email);
+    });
 
     effect(() => {
       this.setCachedLoginState(this.authenticated());
@@ -81,7 +84,7 @@ export class AuthService extends BaseService {
   }
 
   logout(): void {
-    void this.afAuth.signOut();
+    void signOut(this.afAuth);
   }
 
   resetPassword(email: string): Observable<void> {
