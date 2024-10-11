@@ -44,7 +44,7 @@
       </mat-form-field>
       <mat-form-field class="profile-edit__form-field">
         <mat-label>{{ 'E-Mail' | translate }}</mat-label>
-        <input matInput type="text" id="email" readonly [value]="email" />
+        <input matInput type="text" id="email" readonly [value]="email()" />
         <mat-icon matSuffix color="primary" (click)="changeEmail()" data-test-id="editEmailIcon">edit</mat-icon>
       </mat-form-field>
       <mat-form-field class="profile-edit__form-field">

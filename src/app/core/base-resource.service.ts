@@ -1,5 +1,5 @@
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { from, identity, Observable } from 'rxjs';
+import { from, identity, Observable, of } from 'rxjs';
 import { first, mergeMap, tap } from 'rxjs/operators';
 import { IdLike } from '../masterdata/masterdata-like';
 import { AlertService } from '../messaging/alert.service';
@@ -44,6 +44,10 @@ export abstract class BaseResourceService<T> extends BaseService implements Reso
   }
 
   get(id: string): Observable<T> {
+    if (id == null) {
+      console.error(`Fixme: get document with null value on ${this.collectionName}`);
+      return of(null);
+    }
     return this.afs
       .collection<T>(this.collectionName)
       .doc<T>(id)

@@ -1,4 +1,4 @@
-import { Component, effect, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit, Signal } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
@@ -25,7 +25,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   editForm: UntypedFormGroup;
   private subscriptions = new Subscription();
   private initialLanguage: string;
-  email: string;
+  email: Signal<string>;
 
   constructor(
     private navService: NavService,
@@ -38,12 +38,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
     private authService: AuthService
   ) {
     super(userService, route, router);
-    this.editForm = new FormGroup<{
-      nickname: FormControl<string>;
-      firstname: FormControl<string | null>;
-      lastname: FormControl<string | null>;
-      locale: FormControl<string>;
-    }>({
+    this.editForm = new FormGroup({
       nickname: new FormControl('', {
         asyncValidators: this.publicUserService.uniqueNicknameValidator(this.userService.user()?.nickname)
       }),
@@ -66,11 +61,11 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
     super.ngOnInit();
     this.navService.setLocation('Profil bearbeiten');
     this.initialLanguage = this.languageService.determineCurrentLang();
+    this.email = this.authService.email;
 
     this.subscriptions.add(
       this.detailSubject$.subscribe(detail => {
         this.editForm.reset(detail);
-        this.email = this.authService.email();
       })
     );
   }
@@ -103,7 +98,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
 
     dialogRef.afterClosed().subscribe((result: ChangePasswordData) => {
       if (result) {
-        this.authService.changePassword(result.currentPassword, result.password);
+        void this.authService.changePassword(result.currentPassword, result.password);
       }
     });
   }
@@ -116,7 +111,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
 
     dialogRef.afterClosed().subscribe((result: ChangeEmailData) => {
       if (result) {
-        void this.authService.changeEmail(result.email, result.password).then(_ => (this.email = result.email));
+        void this.authService.changeEmail(result.email, result.password);
       }
     });
   }
@@ -126,6 +121,6 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   }
 
   isOwner(): boolean {
-    return this.authService.getUserId() === this.detailId;
+    return this.authService.uid() === this.detailId;
   }
 }

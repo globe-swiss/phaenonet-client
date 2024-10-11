@@ -61,7 +61,7 @@ export class AuthService extends BaseService {
     this.uid = computed(() => firebaseUser()?.uid);
 
     onIdTokenChanged(this.afAuth, user => {
-      this.email.set(user.email);
+      this.email.set(user ? user.email : null);
     });
 
     effect(() => {

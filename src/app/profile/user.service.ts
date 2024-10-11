@@ -43,7 +43,7 @@ export class UserService extends BaseResourceService<PhenonetUser> implements On
     this.publicUser$ = sharedFirebaseUser$.pipe(
       switchMap(firebaseUser => this.publicUserService.get(firebaseUser?.uid))
     );
-    this.user$ = sharedFirebaseUser$.pipe(switchMap(firebaseUser => this.get(firebaseUser?.uid))); // TODO check what happens if user is null - see block below
+    this.user$ = sharedFirebaseUser$.pipe(switchMap(firebaseUser => this.get(firebaseUser?.uid)));
 
     // load roles or initialize roles array if public user document does not exist or roles array is not defined
     this.roles$ = this.publicUser$.pipe(map(publicUser => (publicUser && publicUser.roles ? publicUser.roles : [])));
