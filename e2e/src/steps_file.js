@@ -63,7 +63,7 @@ module.exports = function () {
       this.amOnPage(url || page.url);
       this.waitForComponents(components || page.components || []);
     },
-    async checkVisual(filename, tolerance = 0, retryParams = { retries: 3, wait: 0.2 }) {
+    async checkVisual(filename, tolerance = 0, retryParams = { retries: 3, wait: 0.5 }) {
       if (prepareBaseImage) {
         this.wait(5);
       }
