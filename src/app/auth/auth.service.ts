@@ -162,7 +162,7 @@ export class AuthService extends BaseService {
   }
 
   private errorHandling(error: FirebaseError, throwError = false) {
-    console.log('error', error);
+    console.error('error', error);
 
     this.alertService.alertMessage({
       title: error.code + '.title',

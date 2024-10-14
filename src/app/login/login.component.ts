@@ -24,23 +24,14 @@ export class LoginComponent implements OnInit {
     password: new FormControl<string>('')
   });
 
-  loginFailed = false;
-
   login(): void {
-    this.loginFailed = false;
     this.authService
       .login(this.loginForm.controls.email.value.trim(), this.loginForm.controls.password.value)
       .subscribe(success => {
-        console.log('login', success);
-
         if (success) {
           this.onLoginSuccess();
         }
       });
-  }
-
-  isLoginFailed(): boolean {
-    return this.loginFailed;
   }
 
   authenticated(): boolean {
@@ -48,6 +39,10 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginSuccess(): void {
-    void this.router.navigate([this.authService.redirectUrl ? this.authService.redirectUrl : '/profile']);
+    // add some delay to avoid login race condition on authGuard
+    setTimeout(
+      () => void this.router.navigate([this.authService.redirectUrl ? this.authService.redirectUrl : '/profile']),
+      100
+    );
   }
 }

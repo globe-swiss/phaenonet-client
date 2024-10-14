@@ -23,9 +23,6 @@
           <mat-label>{{ 'Passwort' | translate }} </mat-label>
           <input matInput type="password" formControlName="password" id="password" required />
         </mat-form-field>
-        <p *ngIf="loginFailed">
-          <mat-error>{{ 'Anmeldung fehlgeschlagen' | translate }}</mat-error>
-        </p>
         <button
           mat-flat-button
           color="primary"
