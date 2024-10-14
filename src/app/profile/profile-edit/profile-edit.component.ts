@@ -1,5 +1,5 @@
-import { Component, effect, OnDestroy, OnInit, Signal } from '@angular/core';
-import { FormControl, FormGroup, UntypedFormGroup } from '@angular/forms';
+import { Component, effect, OnDestroy, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,10 +22,16 @@ import { ChangePasswordDialogComponent } from './change-password-dialog/change-p
   styleUrls: ['./profile-edit.component.scss']
 })
 export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> implements OnInit, OnDestroy {
-  editForm: UntypedFormGroup;
+  editForm: FormGroup<{
+    nickname: FormControl<string>;
+    firstname: FormControl<string>;
+    lastname: FormControl<string>;
+    locale: FormControl<string>;
+  }>;
   private subscriptions = new Subscription();
   private initialLanguage: string;
   email: Signal<string>;
+  formInitialized: WritableSignal<boolean> = signal(false);
 
   constructor(
     private navService: NavService,
@@ -66,6 +72,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
     this.subscriptions.add(
       this.detailSubject$.subscribe(detail => {
         this.editForm.reset(detail);
+        this.formInitialized.set(true);
       })
     );
   }
