@@ -8,7 +8,6 @@ import { ResetPasswordComponent } from './reset-password.component';
 const routes: Routes = [
   {
     path: '',
-    component: LoginComponent,
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'logged-out', component: LoggedOutComponent },
