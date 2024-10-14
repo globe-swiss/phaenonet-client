@@ -5,6 +5,7 @@ import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
 
 @Component({
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })

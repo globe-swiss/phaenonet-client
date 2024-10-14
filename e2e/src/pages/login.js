@@ -4,13 +4,13 @@ module.exports = {
   url: '/auth/login',
   components: {
     navigation: { css: 'app-nav' },
-    form: { css: 'app-login-form' }
+    login: { css: 'app-login' }
   },
   fields: {
-    email: { css: 'app-login-form #email' },
-    password: { css: 'app-login-form #password' }
+    email: { css: 'app-login #email' },
+    password: { css: 'app-login #password' }
   },
-  loginButton: { css: 'app-login-form #login-button' },
+  loginButton: { css: 'app-login #login-button' },
   resetPasswordLink: { css: '[data-test-id=resetPassword]' },
   registerNowLink: { css: '[data-test-id=registerNow]' },
 
