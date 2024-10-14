@@ -40,7 +40,7 @@ export class AuthService extends BaseService {
   public uid: Signal<string | null>;
   public email: WritableSignal<string | null> = signal<string | null>(null);
 
-  redirectUrl: string; // TODO move this -> login components + needs to be reset after redirect
+  redirectUrl: string;
 
   constructor(
     alertService: AlertService,
@@ -150,7 +150,7 @@ export class AuthService extends BaseService {
    * @param redirectUrl
    */
   setRedirect(redirectUrl: string): void {
-    this.redirectUrl = redirectUrl; // TODO move this somewhere -> login components
+    this.redirectUrl = redirectUrl;
   }
 
   /**
@@ -176,7 +176,7 @@ export class AuthService extends BaseService {
     } as UntranslatedAlertMessage);
     if (throwError) {
       throw error;
-    } // TODO check where to throw errors
+    }
   }
 
   private setCachedLoginState(loggedIn: boolean): void {

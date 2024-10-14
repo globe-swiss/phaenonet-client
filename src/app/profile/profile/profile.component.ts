@@ -8,7 +8,6 @@ import { BaseDetailComponent } from '../../core/base-detail.component';
 import { NavService } from '../../core/nav/nav.service';
 import { PublicUser } from '../../open/public-user';
 import { PublicUserService } from '../../open/public-user.service';
-import { UserService } from '../user.service';
 
 @Component({
   templateUrl: './profile.component.html',
@@ -19,7 +18,6 @@ export class ProfileComponent extends BaseDetailComponent<PublicUser> implements
     private navService: NavService,
     protected route: ActivatedRoute,
     private publicUserService: PublicUserService,
-    private userService: UserService,
     public dialog: MatDialog,
     private authService: AuthService,
     protected router: Router
@@ -35,17 +33,16 @@ export class ProfileComponent extends BaseDetailComponent<PublicUser> implements
   protected getDetailId(): Observable<string> {
     return super.getDetailId().pipe(
       catchError(() =>
-        this.userService.user$.pipe(
-          // TODO check??!?!
+        // wait till user is loaded before geting uid (reload own profile page)
+        this.authService.firebaseUser$.pipe(
           first(),
-          // load the user first to be sure firebase is logged in
-          map(() => this.authService.getUserId())
+          map(() => this.authService.uid())
         )
       )
     );
   }
 
   isOwner(): boolean {
-    return this.authService.getUserId() === this.detailId;
+    return this.authService.uid() === this.detailId;
   }
 }

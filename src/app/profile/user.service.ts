@@ -1,9 +1,10 @@
-import { Injectable, OnDestroy, Signal } from '@angular/core';
+import { effect, Injectable, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
-import { Observable, Subscription, combineLatest, from, of } from 'rxjs';
+import { combineLatest, from, Observable, of } from 'rxjs';
 import { filter, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { LanguageService } from 'src/app/core/language.service';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { Individual } from '../individual/individual';
@@ -19,8 +20,7 @@ import { Roles } from './Roles.enum';
 import { PhenonetUser } from './user';
 
 @Injectable()
-export class UserService extends BaseResourceService<PhenonetUser> implements OnDestroy {
-  private subscriptions: Subscription = new Subscription();
+export class UserService extends BaseResourceService<PhenonetUser> {
   public publicUser$: Observable<PublicUser>;
   public publicUser: Signal<PublicUser>;
   public user$: Observable<PhenonetUser>;
@@ -35,6 +35,7 @@ export class UserService extends BaseResourceService<PhenonetUser> implements On
     private authService: AuthService,
     private individualService: IndividualService,
     private masterdataService: MasterdataService,
+    private languageService: LanguageService,
     protected fds: FirestoreDebugService
   ) {
     super(alertService, afs, 'users', fds);
@@ -51,10 +52,8 @@ export class UserService extends BaseResourceService<PhenonetUser> implements On
     this.user = toSignal(this.user$);
     this.publicUser = toSignal(this.publicUser$);
     this.roles = toSignal(this.roles$);
-  }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+    effect(() => (this.user() ? this.languageService.changeLocale(this.user().locale) : null));
   }
 
   followIndividual(target: string | Observable<Individual>): Observable<void> {
