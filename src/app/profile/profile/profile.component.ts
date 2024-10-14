@@ -33,16 +33,16 @@ export class ProfileComponent extends BaseDetailComponent<PublicUser> implements
   protected getDetailId(): Observable<string> {
     return super.getDetailId().pipe(
       catchError(() =>
-        this.authService.user$.pipe(
+        // wait till user is loaded before geting uid (reload own profile page)
+        this.authService.firebaseUser$.pipe(
           first(),
-          // load the user first to be sure firebase is logged in
-          map(() => this.authService.getUserId())
+          map(() => this.authService.uid())
         )
       )
     );
   }
 
   isOwner(): boolean {
-    return this.authService.getUserId() === this.detailId;
+    return this.authService.uid() === this.detailId;
   }
 }

@@ -38,7 +38,7 @@ module.exports = function () {
     selectDropdownValue(dropdownLocator, value, delay = 0) {
       this.click(dropdownLocator);
       // option might no be present if role check is still pending
-      this.retry().click({ css: `mat-option[ng-reflect-value='${value}']` });
+      this.retry({ retries: 3, minTimeout: 200 }).click({ css: `mat-option[ng-reflect-value='${value}']` });
       this.wait(delay);
     },
     async createDefaultIndividual(species = undefined) {
@@ -63,7 +63,7 @@ module.exports = function () {
       this.amOnPage(url || page.url);
       this.waitForComponents(components || page.components || []);
     },
-    async checkVisual(filename, tolerance = 0, retryParams = { retries: 3, wait: 0.2 }) {
+    async checkVisual(filename, tolerance = 0, retryParams = { retries: 3, wait: 0.5 }) {
       if (prepareBaseImage) {
         this.wait(5);
       }

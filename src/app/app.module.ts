@@ -7,7 +7,7 @@ import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService } from '@angular/fire/compat/analytics';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFirestoreModule, SETTINGS } from '@angular/fire/compat/firestore';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -29,6 +29,9 @@ import { SensorsService } from './sensors/sensors.service';
 import { GlobalErrorHandler } from './shared/GlobalErrorHandler';
 import { SentryMissingTranslationHandler } from './shared/SentryMissingTranslationHandler';
 import { SharedModule } from './shared/shared.module';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { environment } from 'src/environments/environment';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 
 export class CustomTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<unknown> {
@@ -75,7 +78,6 @@ registerLocaleData(localeIt, 'it');
     },
     {
       provide: APP_INITIALIZER,
-
       useFactory: () => () => {},
       deps: [Sentry.TraceService],
       multi: true
@@ -88,6 +90,8 @@ registerLocaleData(localeIt, 'it');
     IndividualService,
     SensorsService,
     MapService,
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAuth(() => getAuth()),
     // { provide: DEBUG_MODE, useValue: true }
     provideHttpClient(withInterceptorsFromDi())
   ]

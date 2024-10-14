@@ -42,15 +42,9 @@ if (environment.production) {
   window.console.log = () => {};
 }
 
-function loadConfig() {
-  fetch('/__/firebase/init.json')
-    .then(response =>
-      response.json().then(config =>
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        platformBrowserDynamic([{ provide: FIREBASE_OPTIONS, useValue: config }]).bootstrapModule(AppModule)
-      )
-    )
-    .catch(() => Sentry.captureMessage('Could not fetch firebase config.', 'fatal'));
-}
-
-void loadConfig();
+void platformBrowserDynamic([
+  {
+    provide: FIREBASE_OPTIONS,
+    useValue: environment.firebaseConfig
+  }
+]).bootstrapModule(AppModule);

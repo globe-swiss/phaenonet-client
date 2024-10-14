@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { LOGIN_URL } from '../app-routing.module';
 
 @Injectable()
 export class AuthGuard {
@@ -10,15 +10,20 @@ export class AuthGuard {
     private router: Router
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.checkLogin(state.url);
   }
 
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.canActivate(route, state);
   }
 
-  checkLogin(url: string): Observable<boolean> {
-    return this.authService.isAuthenticated(url);
+  checkLogin(url: string): boolean {
+    if (this.authService.authenticated()) {
+      return true;
+    } else {
+      this.authService.setRedirect(url);
+      void this.router.navigate([LOGIN_URL]);
+    }
   }
 }

@@ -3,86 +3,88 @@
     <div class="profile-edit__title">
       <h2 translate>PROFIL BEARBEITEN</h2>
     </div>
-    <form [formGroup]="editForm" class="profile-edit__right-column" data-test-id="editForm">
-      <mat-form-field class="profile-edit__form-field">
-        <mat-label>{{ 'Anzeigename bei PhaenoNet (öffentlich)' | translate }} </mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="nickname"
-          id="nickname"
-          placeholder="{{ 'Nickname' | translate }}"
-          minlength="3"
-          required
-        />
-        <mat-error *ngIf="editForm.get('nickname').hasError('existingNickname')">
-          {{ 'Dieser Nickname ist bereits vergeben.' | translate }}
-        </mat-error>
-        <mat-error *ngIf="editForm.get('nickname').hasError('minlength')">
-          {{ 'Der Nickname muss mindestens 3 Zeichen lang sein.' | translate }}
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="profile-edit__form-field">
-        <mat-label>{{ 'Vorname' | translate }}</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="firstname"
-          id="firstname"
-          placeholder="{{ 'Vorname' | translate }}"
-        />
-      </mat-form-field>
-      <mat-form-field class="profile-edit__form-field">
-        <mat-label>{{ 'Nachname' | translate }}</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="lastname"
-          id="lastname"
-          placeholder="{{ 'Nachname' | translate }}"
-        />
-      </mat-form-field>
-      <mat-form-field class="profile-edit__form-field">
-        <mat-label>{{ 'E-Mail' | translate }}</mat-label>
-        <input matInput type="text" id="email" readonly [value]="email" />
-        <mat-icon matSuffix color="primary" (click)="changeEmail()" data-test-id="editEmailIcon">edit</mat-icon>
-      </mat-form-field>
-      <mat-form-field class="profile-edit__form-field">
-        <mat-label>{{ 'Passwort' | translate }}</mat-label>
-        <input matInput type="password" id="password-placeholder" readonly value="************" />
-        <mat-icon matSuffix color="primary" (click)="changePassword()" data-test-id="editPasswordIcon">edit</mat-icon>
-      </mat-form-field>
-      <div>
+    @if (formInitialized()) {
+      <form [formGroup]="editForm" class="profile-edit__right-column" data-test-id="editForm">
         <mat-form-field class="profile-edit__form-field">
-          <mat-select id="langueselect" formControlName="locale" (selectionChange)="changeLocale($event)">
-            <mat-option value="de-CH">Deutsch</mat-option>
-            <mat-option value="fr-CH">Français</mat-option>
-            <mat-option value="it-CH">Italiano</mat-option>
-          </mat-select>
+          <mat-label>{{ 'Anzeigename bei PhaenoNet (öffentlich)' | translate }} </mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="nickname"
+            id="nickname"
+            placeholder="{{ 'Nickname' | translate }}"
+            minlength="3"
+            required
+          />
+          <mat-error *ngIf="editForm.get('nickname').hasError('existingNickname')">
+            {{ 'Dieser Nickname ist bereits vergeben.' | translate }}
+          </mat-error>
+          <mat-error *ngIf="editForm.get('nickname').hasError('minlength')">
+            {{ 'Der Nickname muss mindestens 3 Zeichen lang sein.' | translate }}
+          </mat-error>
         </mat-form-field>
-      </div>
-      <div class="profile-edit__buttons">
-        <button
-          mat-flat-button
-          color="primary"
-          type="submit"
-          (click)="save()"
-          id="save-button"
-          [disabled]="editForm.invalid"
-          class="profile-edit__button"
-        >
-          {{ 'Speichern' | translate }}
-        </button>
-        <button
-          mat-flat-button
-          color="accent"
-          (click)="cancel()"
-          id="cancel-button"
-          class="profile-edit__button profile-edit__button--secondary"
-        >
-          {{ 'Abbrechen' | translate }}
-        </button>
-      </div>
-    </form>
+        <mat-form-field class="profile-edit__form-field">
+          <mat-label>{{ 'Vorname' | translate }}</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="firstname"
+            id="firstname"
+            placeholder="{{ 'Vorname' | translate }}"
+          />
+        </mat-form-field>
+        <mat-form-field class="profile-edit__form-field">
+          <mat-label>{{ 'Nachname' | translate }}</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="lastname"
+            id="lastname"
+            placeholder="{{ 'Nachname' | translate }}"
+          />
+        </mat-form-field>
+        <mat-form-field class="profile-edit__form-field">
+          <mat-label>{{ 'E-Mail' | translate }}</mat-label>
+          <input matInput type="text" id="email" readonly [value]="email()" />
+          <mat-icon matSuffix color="primary" (click)="changeEmail()" data-test-id="editEmailIcon">edit</mat-icon>
+        </mat-form-field>
+        <mat-form-field class="profile-edit__form-field">
+          <mat-label>{{ 'Passwort' | translate }}</mat-label>
+          <input matInput type="password" id="password-placeholder" readonly value="************" />
+          <mat-icon matSuffix color="primary" (click)="changePassword()" data-test-id="editPasswordIcon">edit</mat-icon>
+        </mat-form-field>
+        <div>
+          <mat-form-field class="profile-edit__form-field">
+            <mat-select id="langueselect" formControlName="locale" (selectionChange)="changeLocale($event)">
+              <mat-option value="de-CH">Deutsch</mat-option>
+              <mat-option value="fr-CH">Français</mat-option>
+              <mat-option value="it-CH">Italiano</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="profile-edit__buttons">
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            (click)="save()"
+            id="save-button"
+            [disabled]="editForm.invalid"
+            class="profile-edit__button"
+          >
+            {{ 'Speichern' | translate }}
+          </button>
+          <button
+            mat-flat-button
+            color="accent"
+            (click)="cancel()"
+            id="cancel-button"
+            class="profile-edit__button profile-edit__button--secondary"
+          >
+            {{ 'Abbrechen' | translate }}
+          </button>
+        </div>
+      </form>
+    }
   </div>
 </div>

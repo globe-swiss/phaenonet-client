@@ -1,7 +1,8 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { some } from 'fp-ts/lib/Option';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest } from 'rxjs';
@@ -43,22 +44,22 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
   selectableForests$: Observable<Forest[]>;
   selectableDistances$: Observable<Distance[]>;
   selectableIrrigations$: Observable<Irrigation[]>;
-  geopos$: Observable<google.maps.LatLngLiteral>;
 
-  altitudeInput = new UntypedFormControl({ value: '', disabled: true });
+  geopos: Signal<google.maps.LatLngLiteral>;
+  altitude: Signal<number>;
 
-  createForm = new UntypedFormGroup({
-    altitude: this.altitudeInput,
-    species: new UntypedFormControl(''),
-    name: new UntypedFormControl(''),
-    description: new UntypedFormControl(''),
-    exposition: new UntypedFormControl(''),
-    gradient: new UntypedFormControl(0, [Validators.min(0), Validators.max(100)]),
-    shade: new UntypedFormControl(''),
-    habitat: new UntypedFormControl(''),
-    forest: new UntypedFormControl(''),
-    less100: new UntypedFormControl(''),
-    watering: new UntypedFormControl('')
+  createForm = new FormGroup({
+    altitude: new FormControl<number>(0),
+    species: new FormControl<string>(''),
+    name: new FormControl<string>(''),
+    description: new FormControl<string>(''),
+    exposition: new FormControl<string>(''),
+    gradient: new FormControl<number>(0, [Validators.min(0), Validators.max(100)]),
+    shade: new FormControl<string>(''),
+    habitat: new FormControl<string>(''),
+    forest: new FormControl<string>(''),
+    less100: new FormControl<string>(''),
+    watering: new FormControl<string>('')
   });
 
   constructor(
@@ -70,12 +71,12 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     private analytics: AngularFireAnalytics,
     private alertService: AlertService,
     private userService: UserService
-  ) {}
+  ) {
+    this.geopos = toSignal(this.geoposService.geopos$);
+    this.altitude = toSignal(this.geoposService.altitude$);
+  }
 
   ngOnInit(): void {
-    this.geopos$ = this.geoposService.geopos$;
-    this.subscriptions.add(this.geoposService.altitude$.subscribe(altitude => this.altitudeInput.setValue(altitude)));
-
     this.selectableSpecies$ = this.masterdataService
       .getObservableSpecies(this.userService.roles$)
       .pipe(map(species => this.masterdataService.sortTranslatedMasterData(species)));
@@ -89,13 +90,13 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
 
     combineLatest([this.individual$, this.userService.getSource()])
       .pipe(first())
-      .subscribe(([detail, source]) => {
+      .subscribe(([individual, source]) => {
         if (this.createNewIndividual) {
-          detail.gradient = 0;
-          detail.type = 'individual';
-          detail.source = source;
+          individual.gradient = 0;
+          individual.type = 'individual';
+          individual.source = source;
         }
-        this.createForm.reset(detail);
+        this.createForm.reset(individual);
       });
   }
 

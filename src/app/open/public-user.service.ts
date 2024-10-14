@@ -3,7 +3,6 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';
 import { Roles } from '../profile/Roles.enum';
@@ -15,7 +14,6 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
   constructor(
     alertService: AlertService,
     protected afs: AngularFirestore,
-    private authService: AuthService,
     protected fds: FirestoreDebugService
   ) {
     super(alertService, afs, 'public_users', fds);
@@ -23,9 +21,6 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
 
   existingNickname(nickname: string): Observable<boolean> {
     if (nickname && nickname.length > 0) {
-      if (nickname === this.authService.getUserNickname()) {
-        return of(false);
-      }
       return this.afs
         .collection<PublicUser>(this.collectionName, ref => ref.where('nickname', '==', nickname))
         .valueChanges()
@@ -46,10 +41,10 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
     );
   }
 
-  uniqueNicknameValidator(initialValue: string = ''): AsyncValidatorFn {
+  uniqueNicknameValidator(currentNickname = ''): AsyncValidatorFn {
     return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
       const controlValue = control.value as string;
-      if (controlValue === null || controlValue.length === 0 || controlValue === initialValue) {
+      if (controlValue != null && controlValue === currentNickname) {
         return of(null);
       } else {
         if (controlValue.includes('/')) {

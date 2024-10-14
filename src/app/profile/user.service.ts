@@ -1,8 +1,10 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { effect, Injectable, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
-import { Observable, Subscription, combineLatest, from, of } from 'rxjs';
+import { combineLatest, from, Observable, of } from 'rxjs';
 import { filter, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { LanguageService } from 'src/app/core/language.service';
 import { AuthService } from '../auth/auth.service';
 import { BaseResourceService } from '../core/base-resource.service';
 import { Individual } from '../individual/individual';
@@ -15,14 +17,16 @@ import { PublicUser } from '../open/public-user';
 import { PublicUserService } from '../open/public-user.service';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { Roles } from './Roles.enum';
-import { User } from './user';
+import { PhenonetUser } from './user';
 
 @Injectable()
-export class UserService extends BaseResourceService<User> implements OnDestroy {
-  private subscriptions: Subscription = new Subscription();
+export class UserService extends BaseResourceService<PhenonetUser> {
   public publicUser$: Observable<PublicUser>;
-  public user$: Observable<User>;
+  public publicUser: Signal<PublicUser>;
+  public user$: Observable<PhenonetUser>;
+  public user: Signal<PhenonetUser>;
   public roles$: Observable<string[]>;
+  public roles: Signal<string[]>;
 
   constructor(
     private publicUserService: PublicUserService,
@@ -31,21 +35,25 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
     private authService: AuthService,
     private individualService: IndividualService,
     private masterdataService: MasterdataService,
+    private languageService: LanguageService,
     protected fds: FirestoreDebugService
   ) {
     super(alertService, afs, 'users', fds);
 
     const sharedFirebaseUser$ = this.authService.firebaseUser$.pipe(shareReplay({ bufferSize: 1, refCount: true }));
     this.publicUser$ = sharedFirebaseUser$.pipe(
-      switchMap(firebaseUser => this.publicUserService.get(firebaseUser.uid))
+      switchMap(firebaseUser => this.publicUserService.get(firebaseUser?.uid))
     );
-    this.user$ = sharedFirebaseUser$.pipe(switchMap(firebaseUser => this.get(firebaseUser.uid)));
+    this.user$ = sharedFirebaseUser$.pipe(switchMap(firebaseUser => this.get(firebaseUser?.uid)));
+
     // load roles or initialize roles array if public user document does not exist or roles array is not defined
     this.roles$ = this.publicUser$.pipe(map(publicUser => (publicUser && publicUser.roles ? publicUser.roles : [])));
-  }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+    this.user = toSignal(this.user$);
+    this.publicUser = toSignal(this.publicUser$);
+    this.roles = toSignal(this.roles$);
+
+    effect(() => (this.user() ? this.languageService.changeLocale(this.user().locale) : null));
   }
 
   followIndividual(target: string | Observable<Individual>): Observable<void> {
@@ -97,7 +105,7 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
   }
 
   getFollowedIndividuals(limit$: Observable<number>): Observable<Individual[]> {
-    return combineLatest([this.authService.user$, limit$, this.masterdataService.phenoYear$]).pipe(
+    return combineLatest([this.user$, limit$, this.masterdataService.phenoYear$]).pipe(
       filter(
         ([user, , year]) =>
           user.following_individuals !== undefined && user.following_individuals.length !== 0 && year !== undefined
@@ -107,7 +115,7 @@ export class UserService extends BaseResourceService<User> implements OnDestroy 
   }
 
   getFollowedUsers(limit$: Observable<number>): Observable<(PublicUser & IdLike)[]> {
-    return combineLatest([this.authService.user$, limit$]).pipe(
+    return combineLatest([this.user$, limit$]).pipe(
       filter(([user]) => user.following_users !== undefined && user.following_users.length !== 0),
       switchMap(([user, limit]) =>
         combineLatest(user.following_users.slice(0, limit).map(user_id => this.publicUserService.getWithId(user_id)))

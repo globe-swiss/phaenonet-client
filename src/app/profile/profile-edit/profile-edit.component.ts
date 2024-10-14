@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { Component, effect, OnDestroy, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { BaseDetailComponent } from '../../core/base-detail.component';
 import { LanguageService } from '../../core/language.service';
 import { NavService } from '../../core/nav/nav.service';
 import { PublicUserService } from '../../open/public-user.service';
-import { User } from '../../profile/user';
+import { PhenonetUser } from '../../profile/user';
 import { UserService } from '../../profile/user.service';
 import { ChangeEmailData } from './change-email-dialog/change-email-data';
 import { ChangeEmailDialogComponent } from './change-email-dialog/change-email-dialog.component';
@@ -21,11 +21,17 @@ import { ChangePasswordDialogComponent } from './change-password-dialog/change-p
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.scss']
 })
-export class ProfileEditComponent extends BaseDetailComponent<User> implements OnInit, OnDestroy {
-  editForm: UntypedFormGroup;
+export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> implements OnInit, OnDestroy {
+  editForm: FormGroup<{
+    nickname: FormControl<string>;
+    firstname: FormControl<string>;
+    lastname: FormControl<string>;
+    locale: FormControl<string>;
+  }>;
   private subscriptions = new Subscription();
   private initialLanguage: string;
-  email: string;
+  email: Signal<string>;
+  formInitialized: WritableSignal<boolean> = signal(false);
 
   constructor(
     private navService: NavService,
@@ -38,11 +44,22 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
     private authService: AuthService
   ) {
     super(userService, route, router);
-    this.editForm = new UntypedFormGroup({
-      nickname: new UntypedFormControl('', { asyncValidators: this.publicUserService.uniqueNicknameValidator() }),
-      firstname: new UntypedFormControl(''),
-      lastname: new UntypedFormControl(''),
-      locale: new UntypedFormControl('de-CH')
+    this.editForm = new FormGroup({
+      nickname: new FormControl('', {
+        asyncValidators: this.publicUserService.uniqueNicknameValidator(this.userService.user()?.nickname)
+      }),
+      firstname: new FormControl(''),
+      lastname: new FormControl(''),
+      locale: new FormControl('de-CH')
+    });
+
+    // user will be initialy undefined if page is loaded from URL,
+    // updates validator once the user is set - enabling to save the page entering the current username
+    effect(() => {
+      this.editForm
+        .get('nickname')
+        .setAsyncValidators(this.publicUserService.uniqueNicknameValidator(this.userService.user()?.nickname));
+      this.editForm.get('nickname')?.updateValueAndValidity();
     });
   }
 
@@ -50,11 +67,12 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
     super.ngOnInit();
     this.navService.setLocation('Profil bearbeiten');
     this.initialLanguage = this.languageService.determineCurrentLang();
+    this.email = this.authService.email;
 
     this.subscriptions.add(
       this.detailSubject$.subscribe(detail => {
         this.editForm.reset(detail);
-        this.email = this.authService.getUserEmail();
+        this.formInitialized.set(true);
       })
     );
   }
@@ -66,9 +84,9 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
   save() {
     this.detailSubject$.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
-      const user: User = { ...detail, ...this.editForm.value } as User;
+      const user: PhenonetUser = { ...detail, ...this.editForm.value } as PhenonetUser;
 
-      this.userService.upsert(user, this.detailId).subscribe(_ => {
+      this.userService.upsert(user, this.detailId).subscribe(() => {
         void this.router.navigate(['profile']);
       });
     });
@@ -87,7 +105,7 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
 
     dialogRef.afterClosed().subscribe((result: ChangePasswordData) => {
       if (result) {
-        this.authService.changePassword(result.currentPassword, result.password);
+        void this.authService.changePassword(result.currentPassword, result.password);
       }
     });
   }
@@ -100,7 +118,7 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
 
     dialogRef.afterClosed().subscribe((result: ChangeEmailData) => {
       if (result) {
-        void this.authService.changeEmail(result.email, result.password).then(_ => (this.email = result.email));
+        void this.authService.changeEmail(result.email, result.password);
       }
     });
   }
@@ -110,6 +128,6 @@ export class ProfileEditComponent extends BaseDetailComponent<User> implements O
   }
 
   isOwner(): boolean {
-    return this.authService.getUserId() === this.detailId;
+    return this.authService.uid() === this.detailId;
   }
 }
