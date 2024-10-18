@@ -8,7 +8,6 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService } from '@angular/fire/compat/analytics';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -60,7 +59,6 @@ registerLocaleData(localeIt, 'it');
     }),
     AngularFireModule,
     AngularFirestoreModule,
-    AngularFireAuthModule,
     AngularFireAnalyticsModule,
     CoreModule,
     AppRoutingModule,
