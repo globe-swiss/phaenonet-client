@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
 
@@ -18,9 +16,7 @@ export class ResetPasswordComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
-    private navService: NavService,
-    private analytics: AngularFireAnalytics
+    private navService: NavService
   ) {}
 
   ngOnInit(): void {
@@ -30,7 +26,6 @@ export class ResetPasswordComponent implements OnInit {
   resetPassword(): void {
     this.authService.resetPassword(this.resetPasswordForm.controls.email.value).subscribe(_ => {
       this.resetPasswordEmailSent = true;
-      void this.analytics.logEvent('passwordreset.submit');
     });
   }
 }

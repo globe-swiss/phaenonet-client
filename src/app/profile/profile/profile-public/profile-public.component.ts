@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { none } from 'fp-ts/lib/Option';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -24,8 +23,7 @@ export class ProfilePublicComponent implements OnInit {
   constructor(
     protected authService: AuthService,
     protected alertService: AlertService,
-    private publicUserService: PublicUserService,
-    private analytics: AngularFireAnalytics
+    private publicUserService: PublicUserService
   ) {}
 
   ngOnInit(): void {
@@ -33,8 +31,6 @@ export class ProfilePublicComponent implements OnInit {
 
     this.nickname$ = this.user$.pipe(map(u => u.nickname));
     this.isRanger$ = this.publicUserService.isRanger(this.user$);
-
-    void this.analytics.logEvent('profile.public.view');
   }
 
   get profileLink(): string {

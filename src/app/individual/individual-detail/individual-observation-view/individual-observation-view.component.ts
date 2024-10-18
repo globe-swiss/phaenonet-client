@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { deleteField } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
@@ -7,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
 import { combineLatest, Observable } from 'rxjs';
-import { filter, first, map, mergeAll, switchMap, tap } from 'rxjs/operators';
+import { filter, first, map, mergeAll, switchMap } from 'rxjs/operators';
 import { UserService } from 'src/app/profile/user.service';
 import { altitudeLimits } from '../../../masterdata/altitude-limits';
 import { IdLike } from '../../../masterdata/masterdata-like';
@@ -38,7 +37,6 @@ export class ObservationViewComponent implements OnInit {
     private dialog: MatDialog,
     private observationService: ObservationService,
     private masterdataService: MasterdataService,
-    private analytics: AngularFireAnalytics,
     private userService: UserService,
     public individualService: IndividualService,
     protected router: Router,
@@ -154,20 +152,11 @@ export class ObservationViewComponent implements OnInit {
               ].join('_');
 
               this.observationService.upsert(observation, observationId);
-
-              void this.analytics.logEvent(observation.created ? 'observation.modify' : 'observation.create', {
-                species: detail.species,
-                phenophase: result.phenophase.id
-              });
             });
           });
       } else if (!result?.observation.toNullable().date) {
         // delete observation
-        phenophaseObservation.observation.map(po =>
-          this.observationService
-            .delete((<IdLike>(<unknown>po)).id)
-            .then(() => this.analytics.logEvent('observation.delete'))
-        );
+        phenophaseObservation.observation.map(po => this.observationService.delete((<IdLike>(<unknown>po)).id));
       }
     });
   }

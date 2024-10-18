@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import _ from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
-import { filter, first, map, mergeAll, switchMap } from 'rxjs/operators';
+import { map, mergeAll, switchMap } from 'rxjs/operators';
 import { BaseDetailComponent } from '../core/base-detail.component';
 import { NavService } from '../core/nav/nav.service';
 import { Individual } from '../individual/individual';
@@ -45,7 +44,6 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
     private observationService: ObservationService,
     private masterdataService: MasterdataService,
     public dialog: MatDialog,
-    private analytics: AngularFireAnalytics,
     protected router: Router
   ) {
     super(individualService, route, router);
@@ -54,18 +52,6 @@ export class StationDetailComponent extends BaseDetailComponent<Individual> impl
   ngOnInit(): void {
     super.ngOnInit();
     this.navService.setLocation('Messstation');
-
-    this.detailSubject$
-      .pipe(
-        first(),
-        filter(station => station !== undefined)
-      )
-      .subscribe(detail => {
-        void this.analytics.logEvent('station.view', {
-          current: detail.year === this.masterdataService.getPhenoYear(),
-          year: detail.year
-        });
-      });
 
     this.id$ = this.route.paramMap.pipe(map(params => params.get('id')));
 

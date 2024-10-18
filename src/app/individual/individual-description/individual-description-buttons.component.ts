@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
@@ -26,8 +25,7 @@ export class IndividualDescriptionButtonsComponent {
     private router: Router,
     private dialog: MatDialog,
     private individualService: IndividualService,
-    private alertService: AlertService,
-    private analytics: AngularFireAnalytics
+    private alertService: AlertService
   ) {}
 
   deleteIndividual(): void {
@@ -66,7 +64,6 @@ export class IndividualDescriptionButtonsComponent {
             this.individualService
               .delete(this.individualId)
               .then(() => {
-                void this.analytics.logEvent('individual.delete');
                 this.alertService.infoMessage('Löschen erfolgreich', 'Das Objekt wurde gelöscht.');
               })
               .catch(() => {

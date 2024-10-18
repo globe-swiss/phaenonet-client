@@ -1,6 +1,5 @@
-import { Component, Input, OnDestroy, OnInit, Signal, inject } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { Storage, ref, uploadBytes } from '@angular/fire/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -68,7 +67,6 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     private masterdataService: MasterdataService,
     private individualService: IndividualService,
     private geoposService: GeoposService,
-    private analytics: AngularFireAnalytics,
     private alertService: AlertService,
     private userService: UserService
   ) {
@@ -120,11 +118,6 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
         }
       });
     });
-    if (this.createNewIndividual) {
-      void this.analytics.logEvent('individual-create.submit');
-    } else {
-      void this.analytics.logEvent('individual-modify.submit');
-    }
   }
 
   onFileSelected(event: Event): void {
@@ -146,7 +139,6 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
         );
         void this.router.navigate(['individuals', this.toIndividualId(individual)]);
       });
-    void this.analytics.logEvent('individual.upload-image');
   }
 
   removeUploadedFile(): void {

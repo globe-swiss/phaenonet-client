@@ -1,5 +1,4 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { Observable, ReplaySubject } from 'rxjs';
 import { filter, first, map, mergeAll } from 'rxjs/operators';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
@@ -35,8 +34,7 @@ export class IndividualHeaderMapComponent implements OnInit {
   constructor(
     private geoposService: GeoposService,
     private individualService: IndividualService,
-    private masterdataService: MasterdataService,
-    private analytics: AngularFireAnalytics
+    private masterdataService: MasterdataService
   ) {}
 
   ngOnInit(): void {
@@ -117,7 +115,6 @@ export class IndividualHeaderMapComponent implements OnInit {
           );
         });
       }
-      void this.analytics.logEvent('individual.locate-me');
     }
   }
 }
