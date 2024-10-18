@@ -1,5 +1,12 @@
 <div class="map-overview">
-  <google-map width="100%" height="100%" [center]="mapParams.center" [zoom]="mapParams.zoom" [options]="options">
+  <google-map
+    width="100%"
+    height="100%"
+    [center]="mapParams.center"
+    [zoom]="mapParams.zoom"
+    [mapTypeId]="mapTypeId"
+    [options]="options"
+  >
     <map-marker
       #marker="mapMarker"
       *ngFor="let individualWithMarkerOpts of mapMarkers$ | async"
@@ -53,7 +60,10 @@
       [routerLink]="'/individuals/new/edit'"
     >
       <mat-icon>add</mat-icon>
-      <span>{{ 'Objekt hinzufügen' | translate }}</span>
+      <span translate>{{ 'Objekt hinzufügen' }}</span>
+    </button>
+    <button mat-flat-button class="map-overview__extended-flat-button" color="primary" (click)="switchView()">
+      <mat-icon>map</mat-icon>
     </button>
   </div>
   <div class="map-overview__map-filter" data-test-id="filter-component">
