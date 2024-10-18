@@ -1,7 +1,7 @@
-import { Component, Input, OnDestroy, OnInit, Signal } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Signal, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { Storage, ref, uploadBytes } from '@angular/fire/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { some } from 'fp-ts/lib/Option';
@@ -64,7 +64,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private afStorage: AngularFireStorage,
+    private afStorage: Storage,
     private masterdataService: MasterdataService,
     private individualService: IndividualService,
     private geoposService: GeoposService,
@@ -135,9 +135,8 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
 
   private uploadImage(individual: Individual, file: File) {
     const path = this.individualService.getImagePath(individual);
-    const ref = this.afStorage.ref(path);
-    ref
-      .put(file, { contentType: file.type })
+    const storageRef = ref(this.afStorage, path);
+    uploadBytes(storageRef, file, { contentType: file.type })
       .then(() => this.router.navigate(['individuals', this.toIndividualId(individual)]))
       .catch(() => {
         this.alertService.errorMessage(
