@@ -79,12 +79,15 @@ export abstract class BaseResourceService<T> extends BaseService implements Reso
    * @param t the object to be created or updated
    * @param id the id of the object
    */
-  upsert(t: Partial<T>, id: string): Observable<T> {
-    const { created, modified, ...withoutDates } = t as any;
-    delete withoutDates.id;
+  upsert(t: Partial<T>, uid: string): Observable<T> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+    const { id, created, modified, ...withoutDates }: any = t;
+
     this.fds.addWrite(`${this.collectionName} (upsert)`);
 
-    const docPromise = setDoc(this.getDocRef(id), withoutDates, { merge: true }).then(() => this.get(id).pipe(first()));
+    const docPromise = setDoc(this.getDocRef(uid), withoutDates, { merge: true }).then(() =>
+      this.get(uid).pipe(first())
+    );
     return from(docPromise).pipe(mergeMap(identity));
   }
 

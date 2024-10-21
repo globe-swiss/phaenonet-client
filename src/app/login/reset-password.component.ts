@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { NavService } from '../core/nav/nav.service';
 
@@ -8,8 +8,8 @@ import { NavService } from '../core/nav/nav.service';
   styleUrls: ['./reset-password.component.scss']
 })
 export class ResetPasswordComponent implements OnInit {
-  resetPasswordForm = new UntypedFormGroup({
-    email: new UntypedFormControl('')
+  resetPasswordForm = new FormGroup({
+    email: new FormControl('')
   });
 
   resetPasswordEmailSent = false;
