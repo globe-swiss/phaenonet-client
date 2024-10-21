@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, Signal } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { Router } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -30,7 +29,6 @@ export class ProfileDetailsComponent implements OnInit {
     protected authService: AuthService,
     protected alertService: AlertService,
     private userService: UserService,
-    private analytics: AngularFireAnalytics,
     private router: Router
   ) {}
 
@@ -42,8 +40,6 @@ export class ProfileDetailsComponent implements OnInit {
     this.lastname$ = user$.pipe(map(u => u.lastname));
     this.locale$ = user$.pipe(map(u => u.locale));
     this.isRanger$ = this.userService.isRanger();
-
-    void this.analytics.logEvent('profile.details.view');
   }
 
   get profileLink(): string {

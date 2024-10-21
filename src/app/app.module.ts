@@ -4,11 +4,10 @@ import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import localeIt from '@angular/common/locales/it';
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService } from '@angular/fire/compat/analytics';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,6 +15,7 @@ import { Router } from '@angular/router';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import * as Sentry from '@sentry/angular-ivy';
 import { Observable, from } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -29,9 +29,6 @@ import { SensorsService } from './sensors/sensors.service';
 import { GlobalErrorHandler } from './shared/GlobalErrorHandler';
 import { SentryMissingTranslationHandler } from './shared/SentryMissingTranslationHandler';
 import { SharedModule } from './shared/shared.module';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { environment } from 'src/environments/environment';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 
 export class CustomTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<unknown> {
@@ -58,11 +55,6 @@ registerLocaleData(localeIt, 'it');
       },
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: SentryMissingTranslationHandler }
     }),
-    AngularFireModule,
-    AngularFirestoreModule,
-    AngularFireAuthModule,
-    AngularFireStorageModule,
-    AngularFireAnalyticsModule,
     CoreModule,
     AppRoutingModule,
     LoginModule
@@ -83,8 +75,6 @@ registerLocaleData(localeIt, 'it');
       multi: true
     },
     httpInterceptorProviders,
-    ScreenTrackingService,
-    UserTrackingService,
     MasterdataService,
     UserService,
     IndividualService,
@@ -92,6 +82,8 @@ registerLocaleData(localeIt, 'it');
     MapService,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
+    provideStorage(() => getStorage()),
+    provideFirestore(() => getFirestore()),
     // { provide: DEBUG_MODE, useValue: true }
     provideHttpClient(withInterceptorsFromDi())
   ]

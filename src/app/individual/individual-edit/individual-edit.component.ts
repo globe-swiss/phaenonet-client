@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseDetailComponent } from '../../core/base-detail.component';
 import { NavService } from '../../core/nav/nav.service';
@@ -17,7 +16,6 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
     private navService: NavService,
     protected route: ActivatedRoute,
     private individualService: IndividualService,
-    private analytics: AngularFireAnalytics,
     protected router: Router
   ) {
     super(individualService, route, router);
@@ -30,11 +28,9 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
 
     if (this.route.snapshot.params.id === 'new') {
       this.navService.setLocation('Objekt erfassen');
-      this.analytics.logEvent('individual-create.view');
       this.isNewIndividual = true;
     } else {
       this.navService.setLocation('Objekt bearbeiten');
-      this.analytics.logEvent('individual-modify.view');
       this.isNewIndividual = false;
     }
   }

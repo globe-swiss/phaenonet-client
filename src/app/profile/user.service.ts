@@ -1,8 +1,7 @@
 import { effect, Injectable, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
-import { combineLatest, from, Observable, of } from 'rxjs';
+import { arrayRemove, arrayUnion, Firestore } from '@angular/fire/firestore';
+import { combineLatest, Observable, of } from 'rxjs';
 import { filter, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { LanguageService } from 'src/app/core/language.service';
 import { AuthService } from '../auth/auth.service';
@@ -31,7 +30,7 @@ export class UserService extends BaseResourceService<PhenonetUser> {
   constructor(
     private publicUserService: PublicUserService,
     alertService: AlertService,
-    protected afs: AngularFirestore,
+    protected afs: Firestore,
     private authService: AuthService,
     private individualService: IndividualService,
     private masterdataService: MasterdataService,
@@ -98,9 +97,13 @@ export class UserService extends BaseResourceService<PhenonetUser> {
     );
   }
 
+  // TODO test upsert! (former update op)
   private followUnfollow(partial: Partial<unknown>): Observable<void> {
-    return from(this.afs.collection('users').doc(this.authService.getUserId()).update(partial)).pipe(
-      tap(() => this.fds.addWrite('users (followUnfollow)'))
+    return this.upsert(partial, this.authService.getUserId()).pipe(
+      tap(() => this.fds.addWrite('users (followUnfollow)')),
+      map(() => {
+        return; // map to void
+      })
     );
   }
 

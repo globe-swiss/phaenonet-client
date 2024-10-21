@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AlertService } from 'src/app/messaging/alert.service';
@@ -24,7 +23,6 @@ export class UserSubscriptionButtonComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private analytics: AngularFireAnalytics,
     private alertService: AlertService
   ) {}
 
@@ -42,8 +40,6 @@ export class UserSubscriptionButtonComponent implements OnInit {
       .subscribe(() =>
         this.alertService.infoMessage('Aktivitäten abonniert', 'Sie haben die Aktivitäten des Benutzers abonniert.')
       );
-
-    void this.analytics.logEvent('follow-user');
   }
 
   unfollow(): void {
@@ -55,6 +51,5 @@ export class UserSubscriptionButtonComponent implements OnInit {
           'Sie erhalten keine Aktivitäten mehr zu diesem Benutzer.'
         )
       );
-    void this.analytics.logEvent('unfollow-user');
   }
 }

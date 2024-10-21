@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Firestore, where } from '@angular/fire/firestore';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { PublicUser } from './public-user';
 export class PublicUserService extends BaseResourceService<PublicUser> {
   constructor(
     alertService: AlertService,
-    protected afs: AngularFirestore,
+    protected afs: Firestore,
     protected fds: FirestoreDebugService
   ) {
     super(alertService, afs, 'public_users', fds);
@@ -21,14 +21,11 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
 
   existingNickname(nickname: string): Observable<boolean> {
     if (nickname && nickname.length > 0) {
-      return this.afs
-        .collection<PublicUser>(this.collectionName, ref => ref.where('nickname', '==', nickname))
-        .valueChanges()
-        .pipe(
-          tap(x => this.fds.addRead(`${this.collectionName} (existingNickname)`, x.length)),
-          first(),
-          map(users => users.length > 0)
-        );
+      return this.queryCollection(where('nickname', '==', nickname)).pipe(
+        tap(x => this.fds.addRead(`${this.collectionName} (existingNickname)`, x.length)),
+        first(),
+        map(users => users.length > 0)
+      );
     } else {
       return of(false);
     }

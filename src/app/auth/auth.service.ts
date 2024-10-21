@@ -1,10 +1,11 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable, Signal, WritableSignal, computed, effect, inject, signal } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, effect, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FirebaseError } from '@angular/fire/app';
 import {
   Auth,
   EmailAuthProvider,
+  User,
   authState,
   createUserWithEmailAndPassword,
   onIdTokenChanged,
@@ -16,7 +17,7 @@ import {
   updatePassword,
   updateProfile
 } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { none } from 'fp-ts/lib/Option';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -29,12 +30,11 @@ const LOCALSTORAGE_LOGGEDIN_KEY = 'loggedin';
 @Injectable()
 export class AuthService extends BaseService {
   browserIdHeaders: HttpHeaders;
-  private afAuth = inject(Auth);
 
   /**
    * @deprecated use signals instead
    */
-  public firebaseUser$ = authState(this.afAuth);
+  public firebaseUser$: Observable<User>;
 
   public authenticated: Signal<boolean>;
   public uid: Signal<string | null>;
@@ -44,15 +44,16 @@ export class AuthService extends BaseService {
 
   constructor(
     alertService: AlertService,
-    private afs: AngularFirestore,
+    private afs: Firestore,
+    private afAuth: Auth,
     private localService: LocalService
   ) {
     super(alertService);
-    const firebaseUser$ = authState(this.afAuth);
-    const firebaseUser = toSignal(firebaseUser$);
+    this.firebaseUser$ = authState(this.afAuth);
+    const firebaseUser = toSignal(this.firebaseUser$);
 
     this.authenticated = toSignal(
-      firebaseUser$.pipe(
+      this.firebaseUser$.pipe(
         map(user => !!user) // Convert user object to boolean
       ),
       { initialValue: this.isCachedLoggedIn() }
@@ -134,7 +135,7 @@ export class AuthService extends BaseService {
     try {
       await createUserWithEmailAndPassword(this.afAuth, email, password);
       void updateProfile(this.afAuth.currentUser, { displayName: nickname });
-      void this.afs.collection('users').doc(this.afAuth.currentUser.uid).set({
+      void setDoc(doc(this.afs, 'users', this.afAuth.currentUser.uid), {
         nickname: nickname,
         firstname: firstname,
         lastname: lastname,

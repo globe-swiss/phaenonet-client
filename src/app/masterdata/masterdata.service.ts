@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { map, mergeAll, publishReplay, refCount, shareReplay, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -77,19 +77,15 @@ export class MasterdataService extends BaseService implements OnDestroy {
 
   constructor(
     alertService: AlertService,
-    private afs: AngularFirestore,
+    private afs: Firestore,
     private languageService: LanguageService,
     private fds: FirestoreDebugService
   ) {
     super(alertService);
-    this.configDynamic$ = this.afs
-      .collection<ConfigDynamic>('definitions')
-      .doc<ConfigDynamic>('config_dynamic')
-      .valueChanges()
-      .pipe(
-        tap(() => this.fds.addRead('config_dynamic')),
-        shareReplay(1)
-      );
+    this.configDynamic$ = docData(doc(this.afs, 'definitions', 'config_dynamic')).pipe(
+      tap(() => this.fds.addRead('config_dynamic')),
+      shareReplay(1)
+    ) as Observable<ConfigDynamic>;
     this.availableYears$ = this.configDynamic$.pipe(
       map(config => this.range(config.phenoyear, config.first_year - 1, -1))
     );

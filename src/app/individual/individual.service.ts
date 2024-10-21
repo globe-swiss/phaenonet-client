@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { Firestore, limit, where } from '@angular/fire/firestore';
+import { deleteObject, getDownloadURL, ref, Storage } from '@angular/fire/storage';
 import { combineLatest, from, Observable, of } from 'rxjs';
 import { first, map, mergeAll, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
@@ -10,20 +10,19 @@ import { MasterdataService } from '../masterdata/masterdata.service';
 import { Phenophase } from '../masterdata/phaenophase';
 import { Species } from '../masterdata/species';
 import { AlertService } from '../messaging/alert.service';
-import { Observation } from '../observation/observation';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
+import { formatShortDate, formatShortDateTime } from '../shared/formatDate';
 import { Individual, SensorLiveData } from './individual';
 import { IndividualPhenophase } from './individual-phenophase';
-import { formatShortDate, formatShortDateTime } from '../shared/formatDate';
 
 @Injectable()
 export class IndividualService extends BaseResourceService<Individual> {
   individualsByYear$$: Map<number, Observable<(Individual & IdLike)[]>>;
   constructor(
     alertService: AlertService,
-    protected afs: AngularFirestore,
+    protected afs: Firestore,
     private authService: AuthService,
-    private afStorage: AngularFireStorage,
+    private afStorage: Storage,
     private masterdataService: MasterdataService,
     protected fds: FirestoreDebugService
   ) {
@@ -51,7 +50,7 @@ export class IndividualService extends BaseResourceService<Individual> {
 
   upsert(individual: Individual): Observable<Individual> {
     if (!individual.individual) {
-      individual.individual = this.afs.createId();
+      individual.individual = this.createId();
       individual.user = this.authService.getUserId();
     }
 
@@ -62,30 +61,27 @@ export class IndividualService extends BaseResourceService<Individual> {
     return super.upsert(individual, `${individual.year}_${individual.individual}`);
   }
 
-  listByUserAndYear(userId: string, year: number, limit: number = 1000): Observable<(Individual & IdLike)[]> {
-    return this.afs
-      .collection<Individual>(this.collectionName, ref =>
-        ref.where('user', '==', userId).where('year', '==', year).limit(limit)
-      )
-      .valueChanges({ idField: 'id' })
-      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByUserAndYear)`, x.length)));
+  listByUserAndYear(userId: string, year: number, limitAmount: number = 1000): Observable<(Individual & IdLike)[]> {
+    return this.queryCollection(where('user', '==', userId), where('year', '==', year), limit(limitAmount)).pipe(
+      tap(x => this.fds.addRead(`${this.collectionName} (listByUserAndYear)`, x.length))
+    );
   }
 
   listByUserAndSpecies(
     userId: string,
     year: number,
     species: string,
-    limit: number = 1000
+    limitAmount: number = 1000
   ): Observable<(Individual & IdLike)[]> {
-    return this.afs
-      .collection<Individual>(this.collectionName, ref =>
-        ref.where('user', '==', userId).where('year', '==', year).where('species', '==', species).limit(limit)
-      )
-      .valueChanges({ idField: 'id' })
-      .pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByUserAndSpecies)`, x.length)));
+    return this.queryCollection(
+      where('user', '==', userId),
+      where('year', '==', year),
+      where('species', '==', species),
+      limit(limitAmount)
+    ).pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByUserAndSpecies)`, x.length)));
   }
 
-  listByIds(individuals: string[], year: number, limit: number = 100): Observable<(Individual & IdLike)[]> {
+  listByIds(individuals: string[], year: number, limitAmount: number = 100): Observable<(Individual & IdLike)[]> {
     const chunkSize = 10; // Maximum number of values for each "in" operator
     const chunks = [];
 
@@ -96,11 +92,7 @@ export class IndividualService extends BaseResourceService<Individual> {
 
     return combineLatest(
       chunks.map(chunk =>
-        this.afs
-          .collection<Individual>(this.collectionName, ref =>
-            ref.where('individual', 'in', chunk).where('year', '==', year).limit(limit)
-          )
-          .valueChanges({ idField: 'id' })
+        this.queryCollection(where('individual', 'in', chunk), where('year', '==', year), limit(limitAmount))
       )
     ).pipe(
       map(results => results.flat()),
@@ -153,13 +145,10 @@ export class IndividualService extends BaseResourceService<Individual> {
    * @returns list of all selectable individuals
    */
   getSelectableIndividuals(individual: string, includeOwned: boolean): Observable<(Individual & IdLike)[]> {
-    return this.afs
-      .collection<Individual>(this.collectionName, ref => ref.where('individual', '==', individual))
-      .valueChanges({ idField: 'id' })
-      .pipe(
-        tap(x => this.fds.addRead(`${this.collectionName} (getSelectableIndividuals)`, x.length)),
-        map(individuals => individuals.filter(i => includeOwned || i.last_observation_date))
-      );
+    return this.queryCollection(where('individual', '==', individual)).pipe(
+      tap(x => this.fds.addRead(`${this.collectionName} (getSelectableIndividuals)`, x.length)),
+      map(individuals => individuals.filter(i => includeOwned || i.last_observation_date))
+    );
   }
 
   getPhenophaseNameIfDefined(individual: Individual): Observable<Phenophase> {
@@ -192,36 +181,21 @@ export class IndividualService extends BaseResourceService<Individual> {
   getImageUrl(individual: Individual, thumbnail = false): Observable<string | null> {
     const path = this.getImagePath(individual, thumbnail);
 
-    return from(
-      this.afStorage
-        .ref(path)
-        .getDownloadURL()
-        .toPromise()
-        .catch(() => null)
-    ) as Observable<string | null>;
+    return from(getDownloadURL(ref(this.afStorage, path)).catch(() => null)) as Observable<string | null>;
   }
 
   hasObservations(individualId: string): Observable<boolean> {
-    return this.afs
-      .collection<Observation>('observations', ref => ref.where('individual_id', '==', individualId).limit(1))
-      .valueChanges()
-      .pipe(
-        tap(x => this.fds.addRead('observations (hasObservations)', x.length)),
-        map(observations => {
-          return observations.length > 0;
-        })
-      );
+    return this.queryCollection(where('individual_id', '==', individualId), limit(1)).pipe(
+      tap(x => this.fds.addRead('observations (hasObservations)', x.length)),
+      map(observations => {
+        return observations.length > 0;
+      })
+    );
   }
 
   deleteImages(individual: Individual): void {
-    this.afStorage.storage
-      .ref(this.getImagePath(individual, true))
-      .delete()
-      .catch(() => null); // ignore if image does not exist
-    this.afStorage.storage
-      .ref(this.getImagePath(individual, false))
-      .delete()
-      .catch(() => null); // ignore if image does not exist
+    deleteObject(ref(this.afStorage, this.getImagePath(individual, true))).catch(() => null); // ignore if image does not exist
+    deleteObject(ref(this.afStorage, this.getImagePath(individual, false))).catch(() => null); // ignore if image does not exist
   }
 
   composedId(individual: Individual): string {

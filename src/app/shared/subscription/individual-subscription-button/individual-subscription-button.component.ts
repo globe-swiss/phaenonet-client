@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { Observable } from 'rxjs';
 import { Individual } from 'src/app/individual/individual';
-import { AuthService } from '../../../auth/auth.service';
 import { AlertService } from '../../../messaging/alert.service';
 import { UserService } from '../../../profile/user.service';
 
@@ -17,7 +15,6 @@ export class IndividualSubscriptionButtonComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private analytics: AngularFireAnalytics,
     private alertService: AlertService
   ) {}
 
@@ -39,6 +36,5 @@ export class IndividualSubscriptionButtonComponent implements OnInit {
       .subscribe(() =>
         this.alertService.infoMessage('Aktivitäten gekündigt', 'Sie erhalten keine Aktivitäten mehr zu diesem Objekt.')
       );
-    this.analytics.logEvent('unfollow-individual');
   }
 }

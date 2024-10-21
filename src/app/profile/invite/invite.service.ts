@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { increment } from '@angular/fire/firestore';
+import { Firestore, increment, where } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -17,7 +16,7 @@ import { Invite } from './invite';
 export class InviteService extends BaseResourceService<Invite> {
   constructor(
     protected alertService: AlertService,
-    protected afs: AngularFirestore,
+    protected afs: Firestore,
     protected authService: AuthService,
     protected languageService: LanguageService,
     protected fds: FirestoreDebugService
@@ -36,10 +35,9 @@ export class InviteService extends BaseResourceService<Invite> {
   }
 
   getInvites(): Observable<(Invite & IdLike)[]> {
-    return this.afs
-      .collection<Invite>(this.collectionName, ref => ref.where('user', '==', this.authService.getUserId()))
-      .valueChanges({ idField: 'id' })
-      .pipe(tap(x => this.fds.addRead('activities (getInvites)', x.length)));
+    return this.queryCollection(where('user', '==', this.authService.getUserId())).pipe(
+      tap(x => this.fds.addRead('activities (getInvites)', x.length))
+    );
   }
 
   resendInvite(invite: Invite, id: string) {
