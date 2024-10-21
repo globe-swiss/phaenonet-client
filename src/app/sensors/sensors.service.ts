@@ -1,41 +1,37 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Firestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { BaseResourceService } from '../core/base-resource.service';
 import { AlertService } from '../messaging/alert.service';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
-import { DailySensorData, Sensors } from './sensors';
+import { DailySensorData, SensorDataInternal, Sensors } from './sensors';
 
 @Injectable()
 export class SensorsService extends BaseResourceService<Sensors> {
   constructor(
     alertService: AlertService,
-    protected afs: AngularFirestore,
+    protected afs: Firestore,
     protected fds: FirestoreDebugService
   ) {
     super(alertService, afs, 'sensors', fds);
   }
 
   getSensorData(individual_id: string): Observable<DailySensorData[]> {
-    return this.afs
-      .collection<{ data: { [name: string]: Sensors }; year: number }>(this.collectionName)
-      .doc(individual_id)
-      .valueChanges()
-      .pipe(
-        tap(() => this.fds.addRead(`${this.collectionName} (getSensorData)`, 1)),
-        filter(sensors => sensors !== undefined),
-        map(sensors => {
-          const data = sensors.data;
-          const keys = Object.keys(data);
+    return this.get(individual_id).pipe(
+      tap(() => this.fds.addRead(`${this.collectionName} (getSensorData)`, 1)),
+      filter(sensors => sensors !== undefined),
+      map(sensors => {
+        const data = sensors.data;
+        const keys = Object.keys(data);
 
-          const v = keys.sort().map(key => ({ day: key, ...data[key] }));
-          return v.map(this.#toDailySensorData);
-        })
-      );
+        const v = keys.sort().map(key => ({ day: key, ...data[key] }));
+        return v.map(this.#toDailySensorData);
+      })
+    );
   }
 
-  #toDailySensorData = (sensors: Sensors & { day: string }) => {
+  #toDailySensorData = (sensors: SensorDataInternal & { day: string }) => {
     const s: DailySensorData = {
       airHumidity: sensors.ahs / sensors.n,
       airTemperature: sensors.ats / sensors.n,

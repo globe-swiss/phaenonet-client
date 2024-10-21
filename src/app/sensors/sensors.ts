@@ -1,4 +1,4 @@
-export interface Sensors {
+export interface SensorDataInternal {
   ahs: number; // air humidity
   ats: number; // air temperature
   shs: number; // soil humidity
@@ -12,4 +12,12 @@ export interface DailySensorData {
   soilHumidity: number;
   soilTemperature: number;
   day: Date;
+}
+
+/**
+ * Database representation
+ */
+export interface Sensors {
+  data: { [name: string]: SensorDataInternal };
+  year: number;
 }

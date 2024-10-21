@@ -1,5 +1,4 @@
 import { enableProdMode } from '@angular/core';
-import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import * as Sentry from '@sentry/angular-ivy';
 import { Integrations } from '@sentry/tracing';
@@ -42,9 +41,4 @@ if (environment.production) {
   window.console.log = () => {};
 }
 
-void platformBrowserDynamic([
-  {
-    provide: FIREBASE_OPTIONS,
-    useValue: environment.firebaseConfig
-  }
-]).bootstrapModule(AppModule);
+void platformBrowserDynamic().bootstrapModule(AppModule);

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
 import { IndividualType, MapIndividual } from '../individual/individual';
@@ -31,22 +31,18 @@ export interface IndividualWithMarkerOpt {
 @Injectable()
 export class MapService {
   constructor(
-    protected afs: AngularFirestore,
+    protected afs: Firestore,
     protected fds: FirestoreDebugService,
     private masterdataService: MasterdataService
   ) {}
 
   getMapIndividuals(year: number): Observable<MapIndividual[]> {
-    return this.afs
-      .collection('maps')
-      .doc<MapData>(year.toString())
-      .valueChanges()
-      .pipe(
-        first(), // do not subscribe to changes
-        map(mapData => this.convertIndividuals(mapData)),
-        map(mapIndividuals => this.filterMapIndividuals(mapIndividuals)),
-        tap(() => this.fds.addRead('maps'))
-      );
+    return docData(doc(this.afs, 'maps', year.toString())).pipe(
+      first(), // do not subscribe to changes
+      map((mapData: MapData) => this.convertIndividuals(mapData)),
+      map(mapIndividuals => this.filterMapIndividuals(mapIndividuals)),
+      tap(() => this.fds.addRead('maps'))
+    );
   }
 
   filterMapIndividuals(mapIndividuals: MapIndividual[]): MapIndividual[] {
