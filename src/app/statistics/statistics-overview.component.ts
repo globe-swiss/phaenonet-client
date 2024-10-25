@@ -218,9 +218,10 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
     // required height for the y-axis based on the abount of domains to display
     const requiredHeight = resultingDomain.length * 12 + margin.top + margin.bottom;
     // svg component height to fill screen without scrollbar or to the minimum required to display the y-axis
-    this.svgComponentHeight = Math.max(window.innerHeight - offsetTop - 5, requiredHeight);
+    const svgComponentHeight = Math.max(window.innerHeight - offsetTop - 5, requiredHeight);
+    this.svgComponentHeight = svgComponentHeight;
 
-    const yAxisHeight = this.svgComponentHeight - (margin.top + margin.bottom);
+    const yAxisHeight = svgComponentHeight - (margin.top + margin.bottom);
     let y = d3Scale.scaleBand().domain(resultingDomain).padding(0.4);
     // do not round on large domains to prevent large gaps on top/bottom of the y-axis
     if (resultingDomain.length > 30) {
@@ -338,21 +339,28 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
         .attr('stroke', '#262626')
         .attr('stroke-width', 0.5)
         .on('mouseover', function (_event: MouseEvent, d: AnalyticsValue) {
+          const tooltip = d3.select('#tooltip');
+          tooltip.classed('hidden', false);
+          const tooltipHeight = (tooltip.node() as HTMLElement).getBoundingClientRect().height;
           const xPosition =
             parseFloat(d3.select(this).attr('x')) +
             margin.left +
             offsetLeft -
             parseFloat(d3.select(this).attr('width')) / 2;
 
-          const yPosition = parseFloat(d3.select(this).attr('y')) + margin.top + offsetTop;
+          // Ensures the tooltip is positioned within the SVG bounds to prevent off-screen rendering and scrollbar issues, particularly in Edge.
+          const yPosition = Math.min(
+            parseFloat(d3.select(this).attr('y')) + margin.top + offsetTop,
+            svgComponentHeight - tooltipHeight + offsetTop
+          );
 
-          d3.select('#tooltip')
+          tooltip
             .style('left', `${xPosition}px`)
             .style('top', `${yPosition}px`)
             .select('#value')
             .text(`${formatShortDate(d.quantile_25)} - ${formatShortDate(d.quantile_75)}`);
 
-          d3.select('#tooltip')
+          tooltip
             .style('left', `${xPosition}px`)
             .style('top', `${yPosition}px`)
             .select('#median')
@@ -363,11 +371,7 @@ export class StatisticsOverviewComponent implements OnInit, OnDestroy {
             .pipe(
               first(),
               map(phenophase => {
-                d3.select('#tooltip')
-                  .select('#title')
-                  .text(self.translateService.instant(phenophase.de) as string);
-
-                d3.select('#tooltip').classed('hidden', false);
+                tooltip.select('#title').text(self.translateService.instant(phenophase.de) as string);
               })
             )
             .subscribe();
