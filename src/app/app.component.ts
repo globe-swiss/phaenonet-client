@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
-import { TranslateLoader, TranslateService, TranslateStore } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { NavComponent } from './core/nav/nav.component';
 import { AppSnackBarComponent } from './messaging/app-snack-bar.component';
 
@@ -11,14 +11,12 @@ import { AppSnackBarComponent } from './messaging/app-snack-bar.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   standalone: true,
-  imports: [AppSnackBarComponent, RouterOutlet, NavComponent],
-  providers: [TranslateService, TranslateStore]
+  imports: [AppSnackBarComponent, RouterOutlet, NavComponent, TranslateModule]
 })
 export class AppComponent {
   title = 'phaenonet';
 
   constructor(
-    ....
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
   ) {

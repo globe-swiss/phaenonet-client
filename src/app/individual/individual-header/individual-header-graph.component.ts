@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
@@ -28,6 +28,7 @@ import { IndividualService } from '../individual.service';
   selector: 'app-individual-header-graph',
   templateUrl: './individual-header-graph.component.html',
   styleUrls: ['./individual-header-graph.component.scss'],
+  imports: [TranslateModule],
   standalone: true
 })
 export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDestroy {
