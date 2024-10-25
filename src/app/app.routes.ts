@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { LOGIN_URL } from './auth/auth.service';
 import { NotFoundComponent } from './core/not-found.component';
 import { IndividualDetailComponent } from './individual/individual-detail/individual-detail.component';
 import { LoginComponent } from './login/login.component';
@@ -8,6 +7,9 @@ import { ProfileComponent } from './profile/profile/profile.component';
 import { LoadingGuard } from './shared/LoadingGuard';
 import { StationDetailComponent } from './station/station-detail.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+
+export const LOGIN_URL = '/auth/login';
+export const LOGGED_OUT_URL = '/auth/logged-out';
 
 export const routes: Routes = [
   {

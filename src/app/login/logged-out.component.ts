@@ -1,4 +1,4 @@
-import { LOGIN_URL } from './../app-routing.module';
+import { LOGIN_URL } from '../app.routes';
 import { Component, OnInit } from '@angular/core';
 import { NavService } from '../core/nav/nav.service';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardActions } from '@angular/material/card';

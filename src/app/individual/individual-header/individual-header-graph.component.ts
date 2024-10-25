@@ -20,7 +20,7 @@ import { Observation } from 'src/app/observation/observation';
 import { ObservationService } from 'src/app/observation/observation.service';
 import { DailySensorData } from 'src/app/sensors/sensors';
 import { SensorsService } from 'src/app/sensors/sensors.service';
-import { Margin } from 'src/app/statistics/statistics-overview.component';
+import { Margin } from 'src/app/statistics/statistics.component';
 import { Individual } from '../individual';
 import { IndividualService } from '../individual.service';
 

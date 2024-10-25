@@ -3,7 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { none } from 'fp-ts/lib/Option';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LOGGED_OUT_URL } from 'src/app/app-routing.module';
+import { LOGGED_OUT_URL } from '../../../app.routes';
 import { AuthService } from '../../../auth/auth.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../../../messaging/alert.service';
 import { PublicUser } from '../../../open/public-user';
