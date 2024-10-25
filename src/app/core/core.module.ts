@@ -17,9 +17,8 @@ import { NavService } from './nav/nav.service';
  * The `CoreModule` is used to group singleton services like {@link ExceptionService} and single-use components like {@link NavComponent}.
  */
 @NgModule({
-  imports: [SharedModule, AuthModule],
+  imports: [SharedModule, AuthModule, NavComponent, AppSnackBarComponent, AlertComponent],
   exports: [AuthModule, MaterialModule, NavComponent, AppSnackBarComponent, TranslateModule],
-  declarations: [NavComponent, AppSnackBarComponent, AlertComponent],
   providers: [AlertService, AuthService, ExceptionService, LanguageService, NavService, TranslateService]
 })
 export class CoreModule {

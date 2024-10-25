@@ -30,9 +30,7 @@ import { TypeGuardPipe } from './type-guard.pipe';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    GoogleMapsModule
-  ],
-  declarations: [
+    GoogleMapsModule,
     NotFoundComponent,
     CopyClipboardDirective,
     ConfirmationDialogComponent,

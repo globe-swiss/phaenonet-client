@@ -8,8 +8,16 @@ import { RegisterComponent } from './register.component';
 import { ResetPasswordComponent } from './reset-password.component';
 
 @NgModule({
-  imports: [SharedModule, LoginRoutingModule, OpenModule],
-  declarations: [LoginComponent, LoginComponent, LoggedOutComponent, ResetPasswordComponent, RegisterComponent],
+  imports: [
+    SharedModule,
+    LoginRoutingModule,
+    OpenModule,
+    LoginComponent,
+    LoginComponent,
+    LoggedOutComponent,
+    ResetPasswordComponent,
+    RegisterComponent
+  ],
   providers: []
 })
 export class LoginModule {}

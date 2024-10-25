@@ -6,11 +6,29 @@ import { PublicUserService } from 'src/app/open/public-user.service';
 import { AuthService } from '../../../auth/auth.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '../../../messaging/alert.service';
 import { PublicUser } from '../../../open/public-user';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { CopyClipboardDirective } from '../../../shared/copy-clipboard.directive';
+import { UserSubscriptionButtonComponent } from '../../../shared/subscription/user-subscription-button/user-subscription-button.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile-public',
   templateUrl: './profile-public.component.html',
-  styleUrls: ['./profile-public.component.scss']
+  styleUrls: ['./profile-public.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    CopyClipboardDirective,
+    UserSubscriptionButtonComponent,
+    AsyncPipe,
+    TranslateModule
+  ]
 })
 export class ProfilePublicComponent implements OnInit {
   @Input() userId: string;

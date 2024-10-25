@@ -7,8 +7,7 @@ import { MapRoutingModule } from './map-routing.module';
 import { MapComponent } from './map.component';
 
 @NgModule({
-  imports: [SharedModule, MapRoutingModule, GoogleMapsModule, IndividualModule],
-  declarations: [MapComponent, MapOverviewComponent],
+  imports: [SharedModule, MapRoutingModule, GoogleMapsModule, IndividualModule, MapComponent, MapOverviewComponent],
   providers: [],
   exports: []
 })

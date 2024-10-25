@@ -27,7 +27,8 @@ import { IndividualService } from '../individual.service';
 @Component({
   selector: 'app-individual-header-graph',
   templateUrl: './individual-header-graph.component.html',
-  styleUrls: ['./individual-header-graph.component.scss']
+  styleUrls: ['./individual-header-graph.component.scss'],
+  standalone: true
 })
 export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Input() individual$: ReplaySubject<Individual>;

@@ -8,11 +8,32 @@ import { Species } from '../../masterdata/species';
 import { PublicUserService } from '../../open/public-user.service';
 import { Individual, SensorLiveData } from '../individual';
 import { IndividualService } from '../individual.service';
+import { NgIf, NgStyle, AsyncPipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { SensorsBoxComponent } from '../../sensors/sensors-box.component';
+import { ShortdatePipe } from '../../shared/shortdate.pipe';
 
 @Component({
   selector: 'app-individual-description-header',
   templateUrl: './individual-description-header.component.html',
-  styleUrls: ['./individual-description-header.component.scss']
+  styleUrls: ['./individual-description-header.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    NgStyle,
+    RouterLink,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    SensorsBoxComponent,
+    AsyncPipe,
+    ShortdatePipe
+  ]
 })
 export class IndividualDescriptionHeaderComponent implements OnInit {
   @Input() individual$: Observable<Individual>; // injected ReplaySubject

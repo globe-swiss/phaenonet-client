@@ -5,11 +5,17 @@ import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { Individual } from '../individual';
 import { IndividualService } from '../individual.service';
 import { GeoposService } from './geopos.service';
+import { GoogleMap, MapMarker } from '@angular/google-maps';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-individual-header-map',
   templateUrl: './individual-header-map.component.html',
-  styleUrls: ['./individual-header-map.component.scss']
+  styleUrls: ['./individual-header-map.component.scss'],
+  standalone: true,
+  imports: [GoogleMap, MapMarker, NgIf, MatFabButton, MatIcon, AsyncPipe]
 })
 export class IndividualHeaderMapComponent implements OnInit {
   @Input() individual$: ReplaySubject<Individual>;

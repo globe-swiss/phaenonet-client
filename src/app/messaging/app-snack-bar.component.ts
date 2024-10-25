@@ -6,7 +6,8 @@ import { AlertMessage, AlertService, Level } from './alert.service';
 
 @Component({
   selector: 'app-snack-bar',
-  templateUrl: 'app-snack-bar.component.html'
+  templateUrl: 'app-snack-bar.component.html',
+  standalone: true
 })
 export class AppSnackBarComponent implements OnInit, OnDestroy {
   subscriptions = new Subscription();

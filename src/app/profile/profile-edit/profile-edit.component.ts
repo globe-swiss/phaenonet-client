@@ -1,7 +1,7 @@
 import { Component, effect, OnDestroy, OnInit, signal, Signal, WritableSignal } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelectChange, MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -16,10 +16,33 @@ import { ChangeEmailData } from './change-email-dialog/change-email-data';
 import { ChangeEmailDialogComponent } from './change-email-dialog/change-email-dialog.component';
 import { ChangePasswordData } from './change-password-dialog/change-password-data';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
+import { NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
+import { MatOption } from '@angular/material/core';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   templateUrl: './profile-edit.component.html',
-  styleUrls: ['./profile-edit.component.scss']
+  styleUrls: ['./profile-edit.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatIcon,
+    MatSuffix,
+    MatSelect,
+    MatOption,
+    MatButton
+  ]
 })
 export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> implements OnInit, OnDestroy {
   editForm: FormGroup<{

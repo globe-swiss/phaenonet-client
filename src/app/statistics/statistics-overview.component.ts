@@ -1,6 +1,12 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  AbstractControl,
+  UntypedFormControl,
+  UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import * as d3 from 'd3-selection';
@@ -20,6 +26,13 @@ import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
 import { AnalyticsValue } from './analytics-value';
 import { StatisticsService } from './statistics.service';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { NgFor, AsyncPipe } from '@angular/common';
+import { MatOption } from '@angular/material/core';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
 
 export interface Margin {
   top: number;
@@ -44,7 +57,22 @@ const allYear = 'all';
 @Component({
   encapsulation: ViewEncapsulation.None,
   templateUrl: './statistics-overview.component.html',
-  styleUrls: ['./statistics-overview.component.scss']
+  styleUrls: ['./statistics-overview.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    NgFor,
+    MatOption,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    AsyncPipe,
+    TranslateModule
+  ]
 })
 export class StatisticsOverviewComponent implements OnInit, OnDestroy {
   @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef<HTMLDivElement>;

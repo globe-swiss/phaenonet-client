@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { deleteField } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelectChange, MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
@@ -18,11 +18,34 @@ import { PhenophaseObservationsGroup } from '../../../observation/phenophase-obs
 import { Individual } from '../../individual';
 import { IndividualService } from '../../individual.service';
 import { PhenophaseDialogComponent } from '../../phenophase-dialog.component';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { MatOption } from '@angular/material/core';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatDatepickerInput, MatDatepicker } from '@angular/material/datepicker';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-individual-observation-view',
   templateUrl: './individual-observation-view.component.html',
-  styleUrls: ['./individual-observation-view.component.scss']
+  styleUrls: ['./individual-observation-view.component.scss'],
+  standalone: true,
+  imports: [
+    MatSelect,
+    NgFor,
+    MatOption,
+    NgIf,
+    MatFormField,
+    MatInput,
+    MatDatepickerInput,
+    MatLabel,
+    TranslateModule,
+    MatDatepicker,
+    MatIcon,
+    MatSuffix,
+    AsyncPipe
+  ]
 })
 export class ObservationViewComponent implements OnInit {
   @Input() individual$: Observable<Individual>;

@@ -8,8 +8,14 @@ import { StatisticsComponent } from './statistics.component';
 import { StatisticsService } from './statistics.service';
 
 @NgModule({
-  imports: [SharedModule, StatisticsRoutingModule, ObservationModule, MasterdataModule],
-  declarations: [StatisticsComponent, StatisticsOverviewComponent],
+  imports: [
+    SharedModule,
+    StatisticsRoutingModule,
+    ObservationModule,
+    MasterdataModule,
+    StatisticsComponent,
+    StatisticsOverviewComponent
+  ],
   providers: [StatisticsService],
   exports: []
 })

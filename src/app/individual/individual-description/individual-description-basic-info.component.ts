@@ -10,11 +10,16 @@ import { Irrigation } from '../../masterdata/irrigation';
 import { MasterdataService } from '../../masterdata/masterdata.service';
 import { Shade } from '../../masterdata/shade';
 import { Individual } from '../individual';
+import { TranslateModule } from '@ngx-translate/core';
+import { AsyncPipe } from '@angular/common';
+import { RoundPipe } from '../../shared/round.pipe';
 
 @Component({
   selector: 'app-individual-description-basic-info',
   templateUrl: './individual-description-basic-info.component.html',
-  styleUrls: ['./individual-description-basic-info.component.scss']
+  styleUrls: ['./individual-description-basic-info.component.scss'],
+  standalone: true,
+  imports: [TranslateModule, AsyncPipe, RoundPipe]
 })
 export class IndividualDescriptionBasicInfoComponent implements OnInit {
   @Input() individual$: Observable<Individual>; // injected ReplaySubject

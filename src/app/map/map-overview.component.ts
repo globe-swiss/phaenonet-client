@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { Observable, combineLatest } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
@@ -9,10 +9,20 @@ import { MapIndividual } from '../individual/individual';
 import { MasterdataService } from '../masterdata/masterdata.service';
 import { SourceFilterType } from '../masterdata/source-type';
 import { Species } from '../masterdata/species';
-import { TypeGuard } from '../shared/type-guard.pipe';
+import { TypeGuard, TypeGuardPipe } from '../shared/type-guard.pipe';
 import { LocalService } from './../shared/local.service';
 import { IndividualInfoWindowData, MapInfoService, StationInfoWindowData } from './map-info.service';
 import { IndividualWithMarkerOpt, MapService } from './map.service';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { SensorsBadgeComponent } from '../sensors/sensors-badge.component';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { ShortdatePipe } from '../shared/shortdate.pipe';
 
 type InfoWindowData = IndividualInfoWindowData | StationInfoWindowData;
 
@@ -20,7 +30,29 @@ const allSpecies = { id: 'ALL', de: 'Alle' } as Species;
 
 @Component({
   templateUrl: './map-overview.component.html',
-  styleUrls: ['./map-overview.component.scss']
+  styleUrls: ['./map-overview.component.scss'],
+  standalone: true,
+  imports: [
+    GoogleMap,
+    NgFor,
+    MapMarker,
+    MapInfoWindow,
+    NgIf,
+    RouterLink,
+    SensorsBadgeComponent,
+    MatIcon,
+    MatButton,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    AsyncPipe,
+    TranslateModule,
+    ShortdatePipe,
+    TypeGuardPipe
+  ]
 })
 export class MapOverviewComponent implements OnInit, OnDestroy {
   @ViewChild(GoogleMap, { static: false }) googleMap: GoogleMap;

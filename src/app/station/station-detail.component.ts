@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelectChange, MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { findFirst } from 'fp-ts/lib/Array';
 import _ from 'lodash';
@@ -18,10 +18,32 @@ import { Observation } from '../observation/observation';
 import { ObservationService } from '../observation/observation.service';
 import { PhenophaseObservation } from './phenophase-observation';
 import { SpeciesPhenophaseObservations } from './species-phenophase-observations';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { IndividualHeaderComponent } from '../individual/individual-header/individual-header.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatOption } from '@angular/material/core';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatDatepickerInput, MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
   templateUrl: './station-detail.component.html',
-  styleUrls: ['./station-detail.component.scss']
+  styleUrls: ['./station-detail.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    IndividualHeaderComponent,
+    TranslateModule,
+    MatSelect,
+    NgFor,
+    MatOption,
+    MatFormField,
+    MatInput,
+    MatDatepickerInput,
+    MatLabel,
+    MatDatepicker,
+    AsyncPipe
+  ]
 })
 export class StationDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
   availablePhenophases$: Observable<Phenophase[]>;

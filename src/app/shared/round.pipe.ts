@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'round'
+  name: 'round',
+  standalone: true
 })
 export class RoundPipe implements PipeTransform {
   transform(value: number) {

@@ -19,8 +19,13 @@ import { IndividualRoutingModule } from './individual-routing.module';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
 
 @NgModule({
-  imports: [SharedModule, IndividualRoutingModule, MasterdataModule, ObservationModule, ActivityModule, OpenModule],
-  declarations: [
+  imports: [
+    SharedModule,
+    IndividualRoutingModule,
+    MasterdataModule,
+    ObservationModule,
+    ActivityModule,
+    OpenModule,
     IndividualEditComponent,
     IndividualDetailComponent,
     PhenophaseDialogComponent,
