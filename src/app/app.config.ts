@@ -27,6 +27,8 @@ import { UserService } from './profile/user.service';
 import { SensorsService } from './sensors/sensors.service';
 import { GlobalErrorHandler } from './shared/GlobalErrorHandler';
 import { SentryMissingTranslationHandler } from './shared/SentryMissingTranslationHandler';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MomentDateAdapter, provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 Sentry.init({
   enabled: environment.sentryEnabled,
@@ -115,6 +117,7 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     // { provide: DEBUG_MODE, useValue: true }
     provideHttpClient(withInterceptorsFromDi()),
-    provideAnimations()
+    provideAnimations(),
+    provideMomentDateAdapter()
   ]
 };
