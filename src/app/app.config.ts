@@ -9,26 +9,26 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { Router, provideRouter } from '@angular/router';
+import { DatetimeAdapter } from '@mat-datetimepicker/core';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import * as Sentry from '@sentry/angular-ivy';
 import { Integrations } from '@sentry/tracing';
 import { Observable, from } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { routes } from './app.routes';
+import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/app-moment-date-adapter';
 import { httpInterceptorProviders } from './http-interceptors';
 import { IndividualService } from './individual/individual.service';
-import { LoginModule } from './login/login.module';
 import { MapService } from './map/map.service';
 import { MasterdataService } from './masterdata/masterdata.service';
 import { UserService } from './profile/user.service';
 import { SensorsService } from './sensors/sensors.service';
 import { GlobalErrorHandler } from './shared/GlobalErrorHandler';
 import { SentryMissingTranslationHandler } from './shared/SentryMissingTranslationHandler';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MomentDateAdapter, provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 Sentry.init({
   enabled: environment.sentryEnabled,
@@ -88,8 +88,7 @@ export const appConfig: ApplicationConfig = {
           useClass: CustomTranslateLoader
         },
         missingTranslationHandler: { provide: MissingTranslationHandler, useClass: SentryMissingTranslationHandler }
-      }),
-      LoginModule
+      })
     ),
     {
       provide: ErrorHandler,
@@ -115,9 +114,23 @@ export const appConfig: ApplicationConfig = {
     provideAuth(() => getAuth()),
     provideStorage(() => getStorage()),
     provideFirestore(() => getFirestore()),
-    // { provide: DEBUG_MODE, useValue: true }
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),
-    provideMomentDateAdapter()
+    { provide: DateAdapter, useClass: AppMomentDateAdapter },
+    { provide: DatetimeAdapter, useClass: AppMomentDatetimeAdapter },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'l'
+        },
+        display: {
+          dateInput: 'L',
+          monthYearLabel: 'MMM YYYY',
+          dateA11yLabel: 'LL',
+          monthYearA11yLabel: 'MMMM YYYY'
+        }
+      } as MatDateFormats
+    }
   ]
 };
