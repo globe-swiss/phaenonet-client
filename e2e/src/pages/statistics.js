@@ -2,7 +2,7 @@ module.exports = {
   url: '/statistics',
   components: {
     navigation: { css: 'app-nav' },
-    statistics: { css: '[data-test-id=statistics-overview-component]' }
+    statistics: { css: '[data-test-id=statistics-component]' }
   },
   filter: {
     phenoyear: {
