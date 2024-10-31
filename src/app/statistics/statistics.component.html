@@ -2,7 +2,7 @@
   <div class="statistics__chart-view">
     <div class="statistics__statistics-filter">
       <div>
-        <form [formGroup]="filter">
+        <form [formGroup]="filter" *ngIf="translationsLoaded">
           <mat-form-field>
             <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
             <mat-select formControlName="year" data-test-id="select-year">

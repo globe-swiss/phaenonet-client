@@ -1,12 +1,13 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import {
-  AbstractControl,
-  UntypedFormControl,
-  UntypedFormGroup,
-  FormsModule,
-  ReactiveFormsModule
-} from '@angular/forms';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconButton } from '@angular/material/button';
+import { MatOption } from '@angular/material/core';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatSelect } from '@angular/material/select';
+import { MatTooltip } from '@angular/material/tooltip';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import * as d3 from 'd3-selection';
@@ -26,13 +27,6 @@ import { Analytics } from './analytics';
 import { AnalyticsType } from './analytics-type';
 import { AnalyticsValue } from './analytics-value';
 import { StatisticsService } from './statistics.service';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatSelect } from '@angular/material/select';
-import { NgFor, AsyncPipe } from '@angular/common';
-import { MatOption } from '@angular/material/core';
-import { MatIconButton } from '@angular/material/button';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
 
 export interface Margin {
   top: number;
@@ -71,7 +65,8 @@ const allYear = 'all';
     MatTooltip,
     MatIcon,
     AsyncPipe,
-    TranslateModule
+    TranslateModule,
+    NgIf
   ]
 })
 export class StatisticsComponent implements OnInit, OnDestroy {
@@ -83,13 +78,18 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   selectableAnalyticsTypes: AnalyticsType[] = ['species', 'altitude'];
   selectableSpecies$: Observable<Species[]>;
 
-  selectedYear: AbstractControl;
-  filter: UntypedFormGroup;
+  filter: FormGroup<{
+    year: FormControl<string>;
+    datasource: FormControl<SourceFilterType>;
+    analyticsType: FormControl<AnalyticsType>;
+    species: FormControl<string>;
+  }>;
   private redraw$ = new Subject();
   private subscription = new Subscription();
 
   private year: number | null; // null if all year
   private data: Analytics[];
+  translationsLoaded = false;
 
   svgComponentHeight = 0;
 
@@ -115,26 +115,32 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.navService.setLocation('Auswertungen');
 
+    // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
+    this.subscription.add(
+      this.translateService.get(this.selectableDatasources).subscribe(() => {
+        this.translationsLoaded = true;
+      })
+    );
+
     if (!this.formPersistanceService.statisticFilter) {
-      this.selectedYear = new UntypedFormControl();
-      this.filter = new UntypedFormGroup({
-        year: this.selectedYear,
-        datasource: new UntypedFormControl(this.selectableDatasources[0]),
-        analyticsType: new UntypedFormControl(this.selectableAnalyticsTypes[0]),
-        species: new UntypedFormControl(allSpecies.id)
+      this.filter = new FormGroup({
+        year: new FormControl(''),
+        datasource: new FormControl(this.selectableDatasources[0]),
+        analyticsType: new FormControl(this.selectableAnalyticsTypes[0]),
+        species: new FormControl(allSpecies.id)
       });
-      this.masterdataService.phenoYear$.pipe(first()).subscribe(year => this.selectedYear.patchValue(String(year)));
+      this.masterdataService.phenoYear$
+        .pipe(first())
+        .subscribe(year => this.filter.controls.year.patchValue(String(year)));
       this.formPersistanceService.statisticFilter = this.filter;
     } else {
       this.filter = this.formPersistanceService.statisticFilter;
-      this.selectedYear = this.formPersistanceService.statisticFilter.controls.year;
     }
 
     this.selectableSpecies$ = this.filter.valueChanges.pipe(
       startWith(''),
       switchMap(() => this.masterdataService.getSpecies()),
       map(species => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const datasource = this.filter.controls.datasource.value;
         if (datasource == 'all') {
           return species;
@@ -153,9 +159,9 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       map(species => this.masterdataService.sortTranslatedMasterData(species)),
       map(species => [allSpecies].concat(species)),
       tap(species => {
-        const formAnalyticsType = this.filter.controls.analyticsType.value as AnalyticsType;
-        const formSpecies = this.filter.controls.species.value as string;
-        const formYear = this.filter.controls.year.value as string;
+        const formAnalyticsType = this.filter.controls.analyticsType.value;
+        const formSpecies = this.filter.controls.species.value;
+        const formYear = this.filter.controls.year.value;
         // set to valid single species if analytics type is 'altitude' and 'all' species is selected
         if (
           (formAnalyticsType === 'altitude' && formSpecies === allSpecies.id) ||
@@ -181,10 +187,10 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       this.redraw$
         .pipe(
           switchMap(() => {
-            const year = this.filter.controls.year.value as string;
-            const datasource = this.filter.controls.datasource.value as SourceFilterType;
-            const analyticsType = this.filter.controls.analyticsType.value as AnalyticsType;
-            const species = this.filter.controls.species.value as string;
+            const year = this.filter.controls.year.value;
+            const datasource = this.filter.controls.datasource.value;
+            const analyticsType = this.filter.controls.analyticsType.value;
+            const species = this.filter.controls.species.value;
 
             this.year = year === allYear ? null : parseInt(year, 10);
 
