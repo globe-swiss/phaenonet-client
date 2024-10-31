@@ -7,10 +7,10 @@ import { formatShortDate } from './formatDate';
   standalone: true
 })
 export class ShortdatePipe implements PipeTransform {
-  transform(value: Timestamp, ...args: unknown[]): unknown {
+  transform(value: Timestamp, ..._: unknown[]): unknown {
     try {
       return formatShortDate(value.toDate());
-    } catch (error) {
+    } catch {
       return value;
     }
   }
