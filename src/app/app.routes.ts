@@ -7,7 +7,7 @@ import { LoggedOutComponent } from './login/logged-out.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register.component';
 import { ResetPasswordComponent } from './login/reset-password.component';
-import { MapOverviewComponent } from './map/map-overview.component';
+import { MapComponent } from './map/map.component';
 import { InviteComponent } from './profile/invite/invite.component';
 import { ProfileEditComponent } from './profile/profile-edit/profile-edit.component';
 import { ProfileSpeciesComponent } from './profile/profile/profile-species.component';
@@ -43,7 +43,7 @@ export const routes: Routes = [
       {
         path: 'map',
         children: [
-          { path: '', component: MapOverviewComponent },
+          { path: '', component: MapComponent },
           { path: '**', redirectTo: '/map', pathMatch: 'full' }
         ]
       },
