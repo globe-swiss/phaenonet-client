@@ -85,7 +85,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     species: FormControl<string>;
   }>;
   private redraw$ = new Subject();
-  private subscription = new Subscription();
+  private subscriptions = new Subscription();
 
   private year: number | null; // null if all year
   private data: Analytics[];
@@ -116,8 +116,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     this.navService.setLocation('Auswertungen');
 
     // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
-    this.subscription.add(
-      this.translateService.get(this.selectableDatasources).subscribe(() => {
+    this.subscriptions.add(
+      this.translateService.get(this.selectableDatasources[0]).subscribe(() => {
         this.translationsLoaded = true;
       })
     );
@@ -183,7 +183,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       map(years => [allYear, ...years.map(year => String(year))])
     );
 
-    this.subscription.add(
+    this.subscriptions.add(
       this.redraw$
         .pipe(
           switchMap(() => {
@@ -206,7 +206,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   private toKey(analytics: Analytics) {

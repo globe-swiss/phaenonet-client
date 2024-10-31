@@ -51,7 +51,7 @@
       <span>{{ 'Objekt hinzufügen' | translate }}</span>
     </button>
   </div>
-  <div class="map__map-filter" data-test-id="filter-component">
+  <div class="map__map-filter" data-test-id="filter-component" *ngIf="translationsLoaded">
     <form [formGroup]="filter">
       <div class="map__map-filter__year">
         <mat-form-field>

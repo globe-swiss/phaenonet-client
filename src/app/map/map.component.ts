@@ -8,8 +8,8 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { Observable, combineLatest } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Observable, Subscription, combineLatest } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { FormPersistenceService } from '../core/form-persistence.service';
 import { NavService } from '../core/nav/nav.service';
@@ -91,17 +91,28 @@ export class MapComponent implements OnInit, OnDestroy {
     data: InfoWindowData
   ): data is StationInfoWindowData => data?.type === 'station';
 
+  private subscriptions = new Subscription();
+  translationsLoaded = false;
+
   constructor(
     private navService: NavService,
     private mapService: MapService,
     private masterdataService: MasterdataService,
     private formPersistanceService: FormPersistenceService,
     private localService: LocalService,
-    private mapInfoService: MapInfoService
+    private mapInfoService: MapInfoService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
     this.navService.setLocation('Karte');
+
+    // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
+    this.subscriptions.add(
+      this.translateService.get(this.datasourceFilterValues[0]).subscribe(() => {
+        this.translationsLoaded = true;
+      })
+    );
 
     this.mapParams = this.localService.sessionStorageGetObjectCompressed('mapParams');
     if (!this.mapParams) {
@@ -141,6 +152,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
     this.localService.sessionStorageSetObjectCompressed('mapParams', {
       center: this.googleMap.getCenter(),
       zoom: this.googleMap.getZoom()
