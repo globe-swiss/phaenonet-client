@@ -16,8 +16,8 @@ import { UserSubscriptionButtonComponent } from '../shared/user-subscription.wid
 
 @Component({
   selector: 'app-profile-public',
-  templateUrl: './profile-public.component.html',
-  styleUrls: ['./profile-public.component.scss'],
+  templateUrl: './profile-public.page.html',
+  styleUrls: ['./profile-public.page.scss'],
   standalone: true,
   imports: [
     NgIf,

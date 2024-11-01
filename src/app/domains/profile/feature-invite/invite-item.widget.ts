@@ -12,8 +12,8 @@ import { InviteService } from './invite.service';
 
 @Component({
   selector: 'app-invite-item',
-  templateUrl: './invite-item.component.html',
-  styleUrls: ['./invite-item.component.scss'],
+  templateUrl: './invite-item.widget.html',
+  styleUrls: ['./invite-item.widget.scss'],
   standalone: true,
   imports: [RouterLink, NgIf, UserSubscriptionButtonComponent, MatFabButton, MatIcon, TranslateModule, ShortdatePipe]
 })

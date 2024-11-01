@@ -50,8 +50,8 @@ const allYear = 'all';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.scss'],
+  templateUrl: './statistics.page.html',
+  styleUrls: ['./statistics.page.scss'],
   standalone: true,
   imports: [
     FormsModule,

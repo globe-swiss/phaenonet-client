@@ -15,7 +15,6 @@ import { MasterdataService } from '@masterdata/masterdata.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import { Observation } from '@shared/models/observation.model';
-import { ObservationService } from '@shared/observation.service';
 import { UserService } from '@shared/services/user.service';
 import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
@@ -23,13 +22,14 @@ import { combineLatest, Observable } from 'rxjs';
 import { filter, first, map, mergeAll, switchMap } from 'rxjs/operators';
 import { PhenophaseObservation } from '../../profile/shared/phenophase-observation.model';
 import { PhenophaseObservationsGroup } from '../../profile/shared/phenophase-observations-group.model';
-import { IndividualService } from '../individual.service';
+import { IndividualService } from '../shared/individual.service';
+import { ObservationService } from '../shared/observation.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
 
 @Component({
   selector: 'app-individual-observation-view',
-  templateUrl: './individual-observation-view.component.html',
-  styleUrls: ['./individual-observation-view.component.scss'],
+  templateUrl: './individual-observation.widget.html',
+  styleUrls: ['./individual-observation.widget.scss'],
   standalone: true,
   imports: [
     MatSelect,

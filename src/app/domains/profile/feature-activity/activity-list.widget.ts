@@ -10,8 +10,8 @@ import { ActivityService } from './activity.service';
 
 @Component({
   selector: 'app-activity-list',
-  templateUrl: './activity-list.component.html',
-  styleUrls: ['./activity-list.component.scss'],
+  templateUrl: './activity-list.widget.html',
+  styleUrls: ['./activity-list.widget.scss'],
   standalone: true,
   imports: [TranslateModule, NgFor, ActivityItemComponent, MatButton, AsyncPipe]
 })

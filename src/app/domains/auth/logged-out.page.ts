@@ -7,8 +7,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NavService } from '@shared/components/nav.service';
 
 @Component({
-  templateUrl: './logged-out.component.html',
-  styleUrls: ['./logged-out.component.scss'],
+  templateUrl: './logged-out.page.html',
+  styleUrls: ['./logged-out.page.scss'],
   standalone: true,
   imports: [
     MatCard,

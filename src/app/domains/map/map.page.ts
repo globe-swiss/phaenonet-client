@@ -29,8 +29,8 @@ type InfoWindowData = IndividualInfoWindowData | StationInfoWindowData;
 const allSpecies = { id: 'ALL', de: 'Alle' } as Species;
 
 @Component({
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss'],
+  templateUrl: './map.page.html',
+  styleUrls: ['./map.page.scss'],
   standalone: true,
   imports: [
     GoogleMap,

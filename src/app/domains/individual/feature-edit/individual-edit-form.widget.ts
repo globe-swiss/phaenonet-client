@@ -20,19 +20,19 @@ import { MasterdataService } from '@masterdata/masterdata.service';
 import { Shade } from '@masterdata/shade.model';
 import { Species } from '@masterdata/species.model';
 import { TranslateModule } from '@ngx-translate/core';
-import { GeoposService } from '@shared/geopos.service';
 import { Individual } from '@shared/models/individual.model';
 import { AlertService } from '@shared/services/alert.service';
 import { UserService } from '@shared/services/user.service';
 import { some } from 'fp-ts/lib/Option';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { IndividualService } from '../individual.service';
+import { IndividualService } from '../shared/individual.service';
+import { GeoposService } from '../shared/geopos.service';
 
 @Component({
   selector: 'app-individual-edit-view',
-  templateUrl: './individual-edit-view.component.html',
-  styleUrls: ['./individual-edit-view.component.scss'],
+  templateUrl: './individual-edit-form.widget.html',
+  styleUrls: ['./individual-edit-form.widget.scss'],
   standalone: true,
   imports: [
     NgIf,

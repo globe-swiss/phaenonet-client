@@ -1,6 +1,6 @@
-@import '../../../theming/mixins';
+@import 'src/theming/mixins';
 
-@import '../../../theming/typography';
+@import 'src/theming/typography';
 
 .profile-species {
   @include detail-view;

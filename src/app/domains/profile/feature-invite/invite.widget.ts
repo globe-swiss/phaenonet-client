@@ -5,8 +5,8 @@ import { InviteListComponent } from './invite-list.widget';
 
 @Component({
   selector: 'app-invite',
-  templateUrl: './invite.component.html',
-  styleUrls: ['./invite.component.scss'],
+  templateUrl: './invite.widget.html',
+  styleUrls: ['./invite.widget.scss'],
   standalone: true,
   imports: [NgIf, InviteListComponent]
 })

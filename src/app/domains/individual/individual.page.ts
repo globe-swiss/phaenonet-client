@@ -18,8 +18,8 @@ import { IndividualHeaderComponent } from './shared/individual-header.component'
 import { IndividualService } from './shared/individual.service';
 
 @Component({
-  templateUrl: './individual-detail.component.html',
-  styleUrls: ['./individual-detail.component.scss'],
+  templateUrl: './individual.page.html',
+  styleUrls: ['./individual.page.scss'],
   standalone: true,
   imports: [
     NgIf,

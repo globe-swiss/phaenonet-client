@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 
-@import './../../theming/mixins';
-@import './../../theming/typography';
+@import 'src/theming/mixins';
+@import 'src/theming/typography';
 
 .register {
   @include card-view;

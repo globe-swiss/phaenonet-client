@@ -7,8 +7,8 @@ import { NavService } from '@shared/components/nav.service';
 
 @Component({
   selector: 'app-not-found',
-  templateUrl: './not-found.component.html',
-  styleUrls: ['./not-found.component.scss'],
+  templateUrl: './not-found.page.html',
+  styleUrls: ['./not-found.page.scss'],
   standalone: true,
   imports: [
     MatCard,

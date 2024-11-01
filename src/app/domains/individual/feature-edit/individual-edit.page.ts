@@ -3,14 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseDetailComponent } from '@core/components/base-detail.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NavService } from '@shared/components/nav.service';
-import { IndividualHeaderComponent } from '@shared/individual-header.component';
 import { Individual } from '@shared/models/individual.model';
-import { IndividualService } from '../individual.service';
+import { IndividualHeaderComponent } from '../shared/individual-header.component';
+import { IndividualService } from '../shared/individual.service';
 import { IndividualEditViewComponent } from './individual-edit-form.widget';
 
 @Component({
-  templateUrl: './individual-edit.component.html',
-  styleUrls: ['./individual-edit.component.scss'],
+  templateUrl: './individual-edit.page.html',
+  styleUrls: ['./individual-edit.page.scss'],
   standalone: true,
   imports: [IndividualHeaderComponent, TranslateModule, IndividualEditViewComponent]
 })

@@ -6,7 +6,7 @@ import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { LanguageService } from '@core/services/language.service';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { map, mergeAll, publishReplay, refCount, shareReplay, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment } from '~/environments/environment';
 import configStatic_import from '../../../../assets/config_static.json';
 import { AlertService } from '../../services/alert.service';
 import { hasSensor, Individual, MapIndividual } from '../individual.model';

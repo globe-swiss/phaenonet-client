@@ -27,8 +27,8 @@ import { PhenophaseObservation } from './station-phenophase-observation.model';
 import { SpeciesPhenophaseObservations } from './station-species-phenophase-observations.model';
 
 @Component({
-  templateUrl: './station.component.html',
-  styleUrls: ['./station.component.scss'],
+  templateUrl: './station.page.html',
+  styleUrls: ['./station.page.scss'],
   standalone: true,
   imports: [
     NgIf,

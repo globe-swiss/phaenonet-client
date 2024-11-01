@@ -19,7 +19,7 @@ import * as Sentry from '@sentry/angular-ivy';
 import { Integrations } from '@sentry/tracing';
 import { UserService } from '@shared/services/user.service';
 import { Observable, from } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '~/environments/environment';
 import { routes } from './app.routes';
 import { httpInterceptorProviders } from './core/providers';
 import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/providers/app-moment-date-adapter';

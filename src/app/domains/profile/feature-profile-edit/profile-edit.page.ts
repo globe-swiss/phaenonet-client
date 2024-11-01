@@ -25,8 +25,8 @@ import { ChangePasswordDialogComponent } from './change-password-dialog.componen
 import { ChangePasswordData } from './change-password.model';
 
 @Component({
-  templateUrl: './profile-edit.component.html',
-  styleUrls: ['./profile-edit.component.scss'],
+  templateUrl: './profile-edit.page.html',
+  styleUrls: ['./profile-edit.page.scss'],
   standalone: true,
   imports: [
     NgIf,

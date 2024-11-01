@@ -16,8 +16,8 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-individual-description-basic-info',
-  templateUrl: './individual-description-basic-info.component.html',
-  styleUrls: ['./individual-description-basic-info.component.scss'],
+  templateUrl: './basic-info.widget.html',
+  styleUrls: ['./basic-info.widget.scss'],
   standalone: true,
   imports: [TranslateModule, AsyncPipe, RoundPipe]
 })

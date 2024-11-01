@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as Sentry from '@sentry/angular-ivy';
-import { environment } from 'src/environments/environment';
+import { environment } from '~/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class FirestoreDebugService {

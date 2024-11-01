@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-individual-subscription-button',
-  templateUrl: './individual-subscription-button.component.html',
-  styleUrls: ['./individual-subscription-button.component.scss'],
+  templateUrl: './individual-subscription.widget.html',
+  styleUrls: ['./individual-subscription.widget.scss'],
   standalone: true,
   imports: [NgIf, MatFabButton, MatIcon, AsyncPipe]
 })

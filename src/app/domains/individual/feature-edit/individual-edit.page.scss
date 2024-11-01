@@ -1,4 +1,4 @@
-@import '../../../theming/mixins';
+@import 'src/theming/mixins';
 
 .individual-edit {
   @include detail-view;

@@ -1,4 +1,4 @@
-@import '../../../theming/mixins';
+@import 'src/theming/mixins';
 
 .profile-component {
   @include detail-view;

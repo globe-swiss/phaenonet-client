@@ -21,13 +21,13 @@ import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest, zip } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { Margin } from 'src/app/domains/statistics/statistics.page';
+import { Margin } from '~/app/domains/statistics/statistics.page';
 import { IndividualService } from './individual.service';
 
 @Component({
   selector: 'app-individual-header-graph',
-  templateUrl: './individual-header-graph.component.html',
-  styleUrls: ['./individual-header-graph.component.scss'],
+  templateUrl: './individual-header-graph.widget.html',
+  styleUrls: ['./individual-header-graph.widget.scss'],
   imports: [TranslateModule],
   standalone: true
 })

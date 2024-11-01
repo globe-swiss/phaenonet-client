@@ -1,4 +1,4 @@
-@import './../../theming/mixins';
+@import 'src/theming/mixins';
 
 .not-found {
   @include card-view;

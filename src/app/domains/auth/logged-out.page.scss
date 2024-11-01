@@ -1,4 +1,4 @@
-@import './../../theming/mixins';
+@import 'src/theming/mixins';
 
 .logged-out {
   @include card-view;

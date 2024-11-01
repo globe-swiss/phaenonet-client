@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 
-@import '../../theming/typography';
-@import '../../theming/custom-colours';
+@import 'src/theming/typography';
+@import 'src/theming/custom-colours';
 
 .sensor-badge {
   display: flex;

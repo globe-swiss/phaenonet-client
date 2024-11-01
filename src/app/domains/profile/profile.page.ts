@@ -16,8 +16,8 @@ import { BaseDetailComponent } from '@core/components/base-detail.component';
 import { AuthService } from '@core/services/auth.service';
 
 @Component({
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
+  templateUrl: './profile.page.html',
+  styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [
     NgIf,

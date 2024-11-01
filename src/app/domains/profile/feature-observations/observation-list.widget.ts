@@ -19,8 +19,8 @@ import { IndividualService } from '@app/domains/individual/shared/individual.ser
 
 @Component({
   selector: 'app-observation-list',
-  templateUrl: './observation-list.component.html',
-  styleUrls: ['./observation-list.component.scss'],
+  templateUrl: './observation-list.widget.html',
+  styleUrls: ['./observation-list.widget.scss'],
   standalone: true,
   imports: [
     NgIf,

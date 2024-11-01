@@ -12,8 +12,8 @@ import { IndividualService } from './individual.service';
 
 @Component({
   selector: 'app-individual-header-map',
-  templateUrl: './individual-header-map.component.html',
-  styleUrls: ['./individual-header-map.component.scss'],
+  templateUrl: './individual-header-map.widget.html',
+  styleUrls: ['./individual-header-map.widget.scss'],
   standalone: true,
   imports: [GoogleMap, MapMarker, NgIf, MatFabButton, MatIcon, AsyncPipe]
 })

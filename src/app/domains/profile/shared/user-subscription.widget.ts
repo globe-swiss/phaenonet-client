@@ -10,8 +10,8 @@ import { map, shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-subscription-button',
-  templateUrl: './user-subscription-button.component.html',
-  styleUrls: ['./user-subscription-button.component.scss'],
+  templateUrl: './user-subscription.widget.html',
+  styleUrls: ['./user-subscription.widget.scss'],
   standalone: true,
   imports: [NgIf, MatFabButton, MatIcon, MatButton, TranslateModule, AsyncPipe]
 })

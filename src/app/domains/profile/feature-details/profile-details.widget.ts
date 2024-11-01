@@ -17,8 +17,8 @@ import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile-details',
-  templateUrl: './profile-details.component.html',
-  styleUrls: ['./profile-details.component.scss'],
+  templateUrl: './profile-details.widget.html',
+  styleUrls: ['./profile-details.widget.scss'],
   standalone: true,
   imports: [
     TranslateModule,

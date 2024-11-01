@@ -13,8 +13,8 @@ import { IndividualService } from '@app/domains/individual/shared/individual.ser
 
 @Component({
   selector: 'app-follow-list',
-  templateUrl: './follow-list.component.html',
-  styleUrls: ['./follow-list.component.scss'],
+  templateUrl: './follow-list.widget.html',
+  styleUrls: ['./follow-list.widget.scss'],
   standalone: true,
   imports: [TranslateModule, NgFor, UserItemComponent, ObservationItemComponent, MatButton, RouterLink, AsyncPipe]
 })

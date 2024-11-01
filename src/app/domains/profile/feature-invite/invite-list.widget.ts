@@ -13,8 +13,8 @@ import { InviteService } from './invite.service';
 
 @Component({
   selector: 'app-invite-list',
-  templateUrl: './invite-list.component.html',
-  styleUrls: ['./invite-list.component.scss'],
+  templateUrl: './invite-list.widget.html',
+  styleUrls: ['./invite-list.widget.scss'],
   standalone: true,
   imports: [TranslateModule, NgIf, NgFor, InviteItemComponent, MatButton, AsyncPipe]
 })

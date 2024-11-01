@@ -1,9 +1,9 @@
 @use '@angular/material' as mat;
 
-@import './../../theming/mixins';
-@import './../../theming/typography';
+@import 'src/theming/mixins';
+@import 'src/theming/typography';
 
-@import './../../theming/palettes';
+@import 'src/theming/palettes';
 
 .login-form {
   @include card-view;

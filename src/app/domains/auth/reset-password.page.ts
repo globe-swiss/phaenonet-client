@@ -10,8 +10,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NavService } from '@shared/components/nav.service';
 
 @Component({
-  templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.scss'],
+  templateUrl: './reset-password.page.html',
+  styleUrls: ['./reset-password.page.scss'],
   standalone: true,
   imports: [
     MatCard,

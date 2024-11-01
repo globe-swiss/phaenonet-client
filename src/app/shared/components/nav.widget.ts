@@ -9,8 +9,8 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-nav',
-  templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.scss'],
+  templateUrl: './nav.widget.html',
+  styleUrls: ['./nav.widget.scss'],
   standalone: true,
   imports: [MatToolbar, MatToolbarRow, NgIf, MatButton, RouterLink, TranslateModule]
 })
