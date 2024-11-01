@@ -1,18 +1,38 @@
+import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
-import { formatShortDateTime } from 'src/app/shared/formatDate';
 import { MasterdataService } from '../../masterdata/masterdata.service';
 import { Phenophase } from '../../masterdata/phaenophase';
 import { Species } from '../../masterdata/species';
 import { PublicUserService } from '../../open/public-user.service';
-import { Individual, SensorLiveData } from '../individual';
+import { SensorsBoxComponent } from '../../sensors/sensors-box.component';
+import { ShortdatePipe } from '../../shared/shortdate.pipe';
+import { Individual } from '../individual';
 import { IndividualService } from '../individual.service';
 
 @Component({
   selector: 'app-individual-description-header',
   templateUrl: './individual-description-header.component.html',
-  styleUrls: ['./individual-description-header.component.scss']
+  styleUrls: ['./individual-description-header.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    NgStyle,
+    RouterLink,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    SensorsBoxComponent,
+    AsyncPipe,
+    ShortdatePipe
+  ]
 })
 export class IndividualDescriptionHeaderComponent implements OnInit {
   @Input() individual$: Observable<Individual>; // injected ReplaySubject

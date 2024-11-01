@@ -28,7 +28,7 @@ export interface IndividualWithMarkerOpt {
   markerOptions: google.maps.MarkerOptions;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MapService {
   constructor(
     protected afs: Firestore,

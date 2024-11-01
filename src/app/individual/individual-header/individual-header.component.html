@@ -1,38 +1,38 @@
 <div class="individual-header">
-  <ng-container *ngIf="mapOrGraph === 'Map'">
+  <ng-container *ngIf="headerType === HeaderTypes.Map">
     <app-individual-header-map [individual$]="individual$" [mode]="mode"></app-individual-header-map>
   </ng-container>
   <app-individual-header-graph
-    [displayHumidity]="mapOrGraph === 'Humidity'"
-    [displayTemperature]="mapOrGraph === 'Temperature'"
+    [displayHumidity]="headerType === HeaderTypes.Humidity"
+    [displayTemperature]="headerType === HeaderTypes.Temperature"
     [individual$]="individual$"
-    *ngIf="mapOrGraph !== 'Map'"
+    *ngIf="headerType !== HeaderTypes.Map"
   ></app-individual-header-graph>
   <div class="individual-header__button-row" *ngIf="mode === 'detail' && (individual$ | async)?.sensor">
     <button
       mat-fab
-      (click)="mapOrGraph = 'Map'"
+      (click)="headerType = HeaderTypes.Map"
       class="individual-header__button individual-header__button--graph"
       data-test-id="mapButton"
-      [color]="mapOrGraph === 'Map' ? 'selected' : ''"
+      [color]="headerType === HeaderTypes.Map ? 'selected' : ''"
     >
       <mat-icon svgIcon="map-pin"></mat-icon>
     </button>
     <button
       mat-fab
-      (click)="mapOrGraph = 'Temperature'"
+      (click)="headerType = HeaderTypes.Temperature"
       class="individual-header__button individual-header__button--humidity"
       data-test-id="temperatureButton"
-      [color]="mapOrGraph === 'Temperature' ? 'selected' : ''"
+      [color]="headerType === HeaderTypes.Temperature ? 'selected' : ''"
     >
       <mat-icon svgIcon="temperature"></mat-icon>
     </button>
     <button
       mat-fab
-      (click)="mapOrGraph = 'Humidity'"
+      (click)="headerType = HeaderTypes.Humidity"
       class="individual-header__button individual-header__button--temp"
       data-test-id="humidityButton"
-      [color]="mapOrGraph === 'Humidity' ? 'selected' : ''"
+      [color]="headerType === HeaderTypes.Humidity ? 'selected' : ''"
     >
       <mat-icon svgIcon="humidity"></mat-icon>
     </button>

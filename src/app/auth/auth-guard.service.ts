@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { LOGIN_URL } from '../app.routes';
 import { AuthService } from './auth.service';
-import { LOGIN_URL } from '../app-routing.module';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthGuard {
   constructor(
     private authService: AuthService,

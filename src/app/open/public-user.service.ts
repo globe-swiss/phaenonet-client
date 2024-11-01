@@ -9,7 +9,7 @@ import { Roles } from '../profile/Roles.enum';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { PublicUser } from './public-user';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PublicUserService extends BaseResourceService<PublicUser> {
   constructor(
     alertService: AlertService,

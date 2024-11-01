@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AlertService } from '../../messaging/alert.service';
@@ -10,11 +10,16 @@ import {
 } from '../../shared/confirmation-dialog/confirmation-dialog.component';
 import { Individual } from '../individual';
 import { IndividualService } from '../individual.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-individual-description-buttons',
   templateUrl: './individual-description-buttons.component.html',
-  styleUrls: ['./individual-description-buttons.component.scss']
+  styleUrls: ['./individual-description-buttons.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatButton, RouterLink, AsyncPipe, TranslateModule]
 })
 export class IndividualDescriptionButtonsComponent {
   @Input() individual$: Observable<Individual>; // injected ReplaySubject

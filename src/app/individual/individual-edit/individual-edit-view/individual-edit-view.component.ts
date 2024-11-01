@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Storage, ref, uploadBytes } from '@angular/fire/storage';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { some } from 'fp-ts/lib/Option';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest } from 'rxjs';
@@ -20,11 +20,36 @@ import { Species } from '../../../masterdata/species';
 import { Individual } from '../../individual';
 import { GeoposService } from '../../individual-header/geopos.service';
 import { IndividualService } from '../../individual.service';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-individual-edit-view',
   templateUrl: './individual-edit-view.component.html',
-  styleUrls: ['./individual-edit-view.component.scss']
+  styleUrls: ['./individual-edit-view.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    NgFor,
+    MatIcon,
+    MatSuffix,
+    MatButton,
+    AsyncPipe,
+    TranslateModule
+  ]
 })
 export class IndividualEditViewComponent implements OnInit, OnDestroy {
   @Input() individual$: ReplaySubject<Individual>;

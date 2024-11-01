@@ -28,6 +28,6 @@ module.exports = {
     }
   },
   mapMarker: { css: 'google-map map-marker' },
-  addObjectButton: { css: '.map-overview__map-actions button' },
+  addObjectButton: { css: '.map__map-actions button' },
   dismissButton: { css: 'button.dismissButton' }
 };

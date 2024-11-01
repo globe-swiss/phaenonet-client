@@ -1,8 +1,11 @@
 import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
-@Directive({ selector: '[app-copy-clipboard]' })
+@Directive({
+  selector: '[appCopyClipboard]',
+  standalone: true
+})
 export class CopyClipboardDirective {
-  @Input('app-copy-clipboard')
+  @Input('appCopyClipboard')
   public payload: string;
 
   @Output()

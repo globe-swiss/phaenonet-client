@@ -7,7 +7,7 @@ import { AlertService } from '../messaging/alert.service';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { DailySensorData, SensorDataInternal, Sensors } from './sensors';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SensorsService extends BaseResourceService<Sensors> {
   constructor(
     alertService: AlertService,

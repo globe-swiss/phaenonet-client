@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RouterOutlet } from '@angular/router';
 import browserUpdate from 'browser-update';
 import { LanguageService } from './core/language.service';
+import { NavComponent } from './core/nav/nav.component';
+import { AppSnackBarComponent } from './messaging/app-snack-bar.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [AppSnackBarComponent, RouterOutlet, NavComponent]
 })
 export class AppComponent {
   title = 'phaenonet';

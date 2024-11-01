@@ -7,7 +7,7 @@ import { interval, Observable, of, Subject } from 'rxjs';
  * Mitigating problems with Safari 14 when loading the page with cached
  * resources.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LoadingGuard {
   testLoaded(): boolean {
     try {

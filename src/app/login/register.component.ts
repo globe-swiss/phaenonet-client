@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatSelectChange } from '@angular/material/select';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectChange, MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
@@ -10,11 +10,37 @@ import { AlertService } from '../messaging/alert.service';
 import { PublicUserService } from '../open/public-user.service';
 import { UserService } from '../profile/user.service';
 import { equalValidation } from '../shared/validation';
+import { NgIf } from '@angular/common';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatOption } from '@angular/material/core';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    TranslateModule,
+    MatCardSubtitle,
+    MatCardContent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatSelect,
+    MatOption,
+    MatButton
+  ]
 })
 export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('nickname') nicknameField!: ElementRef;

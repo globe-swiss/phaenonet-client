@@ -9,10 +9,28 @@ import { NavService } from '../../core/nav/nav.service';
 import { MasterdataService } from '../../masterdata/masterdata.service';
 import { Individual } from '../individual';
 import { IndividualService } from '../individual.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { IndividualHeaderComponent } from '../individual-header/individual-header.component';
+import { IndividualSubscriptionButtonComponent } from '../../shared/subscription/individual-subscription-button/individual-subscription-button.component';
+import { IndividualDescriptionHeaderComponent } from '../individual-description/individual-description-header.component';
+import { IndividualDescriptionBasicInfoComponent } from '../individual-description/individual-description-basic-info.component';
+import { ObservationViewComponent } from './individual-observation-view/individual-observation-view.component';
+import { IndividualDescriptionButtonsComponent } from '../individual-description/individual-description-buttons.component';
 
 @Component({
   templateUrl: './individual-detail.component.html',
-  styleUrls: ['./individual-detail.component.scss']
+  styleUrls: ['./individual-detail.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    IndividualHeaderComponent,
+    IndividualSubscriptionButtonComponent,
+    IndividualDescriptionHeaderComponent,
+    IndividualDescriptionBasicInfoComponent,
+    ObservationViewComponent,
+    IndividualDescriptionButtonsComponent,
+    AsyncPipe
+  ]
 })
 export class IndividualDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
   isEditable$: Observable<boolean>;

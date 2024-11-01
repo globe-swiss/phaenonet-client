@@ -7,7 +7,7 @@ import { AlertService } from '../messaging/alert.service';
 import { FirestoreDebugService } from '../shared/firestore-debug.service';
 import { Activity } from './activity';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ActivityService extends BaseResourceService<Activity> {
   constructor(
     alertService: AlertService,

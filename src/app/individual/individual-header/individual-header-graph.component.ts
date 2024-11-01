@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
@@ -20,14 +20,16 @@ import { Observation } from 'src/app/observation/observation';
 import { ObservationService } from 'src/app/observation/observation.service';
 import { DailySensorData } from 'src/app/sensors/sensors';
 import { SensorsService } from 'src/app/sensors/sensors.service';
-import { Margin } from 'src/app/statistics/statistics-overview.component';
+import { Margin } from 'src/app/statistics/statistics.component';
 import { Individual } from '../individual';
 import { IndividualService } from '../individual.service';
 
 @Component({
   selector: 'app-individual-header-graph',
   templateUrl: './individual-header-graph.component.html',
-  styleUrls: ['./individual-header-graph.component.scss']
+  styleUrls: ['./individual-header-graph.component.scss'],
+  imports: [TranslateModule],
+  standalone: true
 })
 export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Input() individual$: ReplaySubject<Individual>;

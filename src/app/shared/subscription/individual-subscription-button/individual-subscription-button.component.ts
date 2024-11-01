@@ -3,11 +3,16 @@ import { Observable } from 'rxjs';
 import { Individual } from 'src/app/individual/individual';
 import { AlertService } from '../../../messaging/alert.service';
 import { UserService } from '../../../profile/user.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-individual-subscription-button',
   templateUrl: './individual-subscription-button.component.html',
-  styleUrls: ['./individual-subscription-button.component.scss']
+  styleUrls: ['./individual-subscription-button.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatFabButton, MatIcon, AsyncPipe]
 })
 export class IndividualSubscriptionButtonComponent implements OnInit {
   @Input() individual$: Observable<Individual>;

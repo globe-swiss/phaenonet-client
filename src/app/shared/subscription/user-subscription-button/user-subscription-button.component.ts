@@ -3,11 +3,17 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AlertService } from 'src/app/messaging/alert.service';
 import { UserService } from 'src/app/profile/user.service';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatFabButton, MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-subscription-button',
   templateUrl: './user-subscription-button.component.html',
-  styleUrls: ['./user-subscription-button.component.scss']
+  styleUrls: ['./user-subscription-button.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatFabButton, MatIcon, MatButton, TranslateModule, AsyncPipe]
 })
 export class UserSubscriptionButtonComponent implements OnInit {
   @Input() userId: string;

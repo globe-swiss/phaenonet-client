@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
 import { LocalService } from '../shared/local.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LanguageService {
   private LOCALSTORAGE_KEY = 'lang';
 

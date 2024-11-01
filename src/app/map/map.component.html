@@ -1,4 +1,4 @@
-<div class="map-overview">
+<div class="map">
   <google-map width="100%" height="100%" [center]="mapParams.center" [zoom]="mapParams.zoom" [options]="options">
     <map-marker
       #marker="mapMarker"
@@ -10,21 +10,21 @@
     </map-marker>
     <map-info-window>
       <ng-container *ngIf="infoWindowData$ | async | guardType: isIndividualInfoWindowData as d">
-        <div [routerLink]="d.url" class="map-overview__info-window">
-          <div class="map-overview__info-window-image-container">
-            <img class="map-overview__info-window-image" *ngIf="d.imgUrl$ | async" [src]="d.imgUrl$ | async" />
+        <div [routerLink]="d.url" class="map__info-window">
+          <div class="map__info-window-image-container">
+            <img class="map__info-window-image" *ngIf="d.imgUrl$ | async" [src]="d.imgUrl$ | async" />
           </div>
-          <div class="map-overview__info-window-text">
-            <div class="map-overview__info-window-label">
+          <div class="map__info-window-text">
+            <div class="map__info-window-label">
               {{ d.species_name | translate }}
               <app-sensors-badge [sensorLiveData]="d.sensor"></app-sensors-badge>
             </div>
-            <div class="map-overview__info-window-value">{{ d.individual_name }}</div>
-            <div class="map-overview__info-window-label" *ngIf="d.phenophase_name">
+            <div class="map__info-window-value">{{ d.individual_name }}</div>
+            <div class="map__info-window-label" *ngIf="d.phenophase_name">
               {{ 'Letzte Beobachtung' | translate }}:
               {{ d.last_observation_date | shortdate }}
             </div>
-            <div *ngIf="d.phenophase_name" class="map-overview__info-window-value">
+            <div *ngIf="d.phenophase_name" class="map__info-window-value">
               {{ d.phenophase_name | translate }}
             </div>
           </div>
@@ -32,10 +32,10 @@
         </div>
       </ng-container>
       <ng-container *ngIf="infoWindowData$ | async | guardType: isStationInfoWindowData as d">
-        <div class="map-overview__info-window" [routerLink]="d.url">
+        <div class="map__info-window" [routerLink]="d.url">
           <img src="assets/img/pic_placeholder.svg" style="max-height: 100px" />
-          <div class="map-overview__info-window-text">
-            <div class="map-overview__info-window-caption">
+          <div class="map__info-window-text">
+            <div class="map__info-window-caption">
               {{ d.source | translate }}
             </div>
             <div>{{ d.individual_name }}</div>
@@ -45,20 +45,15 @@
       </ng-container>
     </map-info-window>
   </google-map>
-  <div class="map-overview__map-actions" data-test-id="actions-component">
-    <button
-      mat-flat-button
-      class="map-overview__extended-flat-button"
-      color="primary"
-      [routerLink]="'/individuals/new/edit'"
-    >
+  <div class="map__map-actions" data-test-id="actions-component">
+    <button mat-flat-button class="map__extended-flat-button" color="primary" [routerLink]="'/individuals/new/edit'">
       <mat-icon>add</mat-icon>
       <span>{{ 'Objekt hinzufügen' | translate }}</span>
     </button>
   </div>
-  <div class="map-overview__map-filter" data-test-id="filter-component">
+  <div class="map__map-filter" data-test-id="filter-component" *ngIf="translationsLoaded">
     <form [formGroup]="filter">
-      <div class="map-overview__map-filter__year">
+      <div class="map__map-filter__year">
         <mat-form-field>
           <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
           <mat-select formControlName="year" data-test-id="select-year">
@@ -66,7 +61,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="map-overview__map-filter__datasource">
+      <div class="map__map-filter__datasource">
         <mat-form-field>
           <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
           <mat-select formControlName="datasource" data-test-id="select-source">
@@ -76,7 +71,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="map-overview__map-filter__species">
+      <div class="map__map-filter__species">
         <mat-form-field>
           <mat-label>{{ 'Art' | translate }}</mat-label>
           <mat-select formControlName="species" data-test-id="select-species">

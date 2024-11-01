@@ -31,9 +31,7 @@ export interface StationInfoWindowData {
   url: string[];
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class MapInfoService {
   private individualIdSubject = new ReplaySubject<string>(1);
   public readonly infoWindowData$: Observable<IndividualInfoWindowData | StationInfoWindowData>;

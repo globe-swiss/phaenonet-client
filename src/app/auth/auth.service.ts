@@ -27,7 +27,7 @@ import { LocalService } from '../shared/local.service';
 
 const LOCALSTORAGE_LOGGEDIN_KEY = 'loggedin';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthService extends BaseService {
   browserIdHeaders: HttpHeaders;
 

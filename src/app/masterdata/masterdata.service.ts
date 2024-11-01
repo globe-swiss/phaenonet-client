@@ -1,4 +1,5 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { map, mergeAll, publishReplay, refCount, shareReplay, tap } from 'rxjs/operators';
@@ -65,12 +66,12 @@ interface ConfigStatic {
   species: ConfigStaticSpecies;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MasterdataService extends BaseService implements OnDestroy {
   private subscriptions = new Subscription();
   public availableYears$: Observable<number[]>;
   public phenoYear$: Observable<number>;
-  private phenoYear: number;
+  public phenoYear: Signal<number>;
   private configDynamic$: Observable<ConfigDynamic>;
   private configDynamic: ConfigDynamic;
   private configStatic = <ConfigStatic>configStatic_import;
@@ -94,7 +95,7 @@ export class MasterdataService extends BaseService implements OnDestroy {
       shareReplay(1)
     );
 
-    this.subscriptions.add(this.phenoYear$.subscribe(year => (this.phenoYear = year)));
+    this.phenoYear = toSignal(this.phenoYear$);
     this.subscriptions.add(this.configDynamic$.subscribe(config => (this.configDynamic = config)));
   }
 
@@ -106,14 +107,18 @@ export class MasterdataService extends BaseService implements OnDestroy {
     return this.configStatic.phenophases[phenophase]?.color;
   }
 
+  /**
+   * @deprecated use signal phenoYear instead
+   * @returns
+   */
   public getPhenoYear(): number {
-    return this.phenoYear;
+    return this.phenoYear();
   }
 
   public getLimits(species: string, phenophase: string): AltitudeLimits | null {
     try {
       return this.configDynamic.limits[species][phenophase];
-    } catch (TypeError) {
+    } catch {
       if (!environment.production) {
         console.warn(`No limits found for ${species}.${phenophase}`);
       }

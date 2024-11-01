@@ -4,10 +4,15 @@ import { BaseDetailComponent } from '../../core/base-detail.component';
 import { NavService } from '../../core/nav/nav.service';
 import { Individual } from '../individual';
 import { IndividualService } from '../individual.service';
+import { IndividualHeaderComponent } from '../individual-header/individual-header.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { IndividualEditViewComponent } from './individual-edit-view/individual-edit-view.component';
 
 @Component({
   templateUrl: './individual-edit.component.html',
-  styleUrls: ['./individual-edit.component.scss']
+  styleUrls: ['./individual-edit.component.scss'],
+  standalone: true,
+  imports: [IndividualHeaderComponent, TranslateModule, IndividualEditViewComponent]
 })
 export class IndividualEditComponent extends BaseDetailComponent<Individual> implements OnInit {
   isNewIndividual: boolean;

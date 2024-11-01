@@ -3,13 +3,14 @@ import { Timestamp } from '@angular/fire/firestore';
 import { formatShortDateTime } from './formatDate';
 
 @Pipe({
-  name: 'shortdatetime'
+  name: 'shortdatetime',
+  standalone: true
 })
 export class ShortdatetimePipe implements PipeTransform {
-  transform(value: Timestamp, ...args: unknown[]): unknown {
+  transform(value: Timestamp, ..._: unknown[]): unknown {
     try {
       return formatShortDateTime(value.toDate());
-    } catch (error) {
+    } catch {
       return value;
     }
   }

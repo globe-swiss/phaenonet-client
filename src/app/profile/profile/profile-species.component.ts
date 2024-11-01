@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSelectChange } from '@angular/material/select';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { MatSelectChange, MatSelect } from '@angular/material/select';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { parseInt } from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -10,6 +10,10 @@ import { IndividualPhenophase } from 'src/app/individual/individual-phenophase';
 import { IndividualService } from 'src/app/individual/individual.service';
 import { MasterdataService } from 'src/app/masterdata/masterdata.service';
 import { NavService } from '../../core/nav/nav.service';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatOption } from '@angular/material/core';
+import { ObservationItemComponent } from './observation-item/observation-item.component';
 
 class Data {
   year: number;
@@ -20,7 +24,19 @@ class Data {
 }
 @Component({
   templateUrl: './profile-species.component.html',
-  styleUrls: ['./profile-species.component.scss']
+  styleUrls: ['./profile-species.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    RouterLink,
+    MatIcon,
+    MatSelect,
+    NgFor,
+    MatOption,
+    ObservationItemComponent,
+    AsyncPipe,
+    TranslateModule
+  ]
 })
 export class ProfileSpeciesComponent implements OnInit {
   latestIndividualObservations$: Observable<IndividualPhenophase[]>;
