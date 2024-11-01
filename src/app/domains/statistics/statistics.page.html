@@ -1,0 +1,60 @@
+<div class="statistics" data-test-id="statistics-component">
+  <div class="statistics__chart-view">
+    <div class="statistics__statistics-filter">
+      <div>
+        <form [formGroup]="filter" *ngIf="translationsLoaded">
+          <mat-form-field>
+            <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
+            <mat-select formControlName="year" data-test-id="select-year">
+              <mat-option *ngFor="let year of selectableYears$ | async" [value]="year"
+                >{{ year | translate }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
+            <mat-select formControlName="datasource" data-test-id="select-source">
+              <mat-option *ngFor="let datasource of selectableDatasources" [value]="datasource"
+                >{{ datasource | translate }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'Auswertung' | translate }}</mat-label>
+            <mat-select formControlName="analyticsType" data-test-id="select-analyticsType">
+              <mat-option *ngFor="let analyticsType of selectableAnalyticsTypes" [value]="analyticsType"
+                >{{ analyticsType | translate }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'Art' | translate }}</mat-label>
+            <mat-select formControlName="species" data-test-id="select-species">
+              <mat-option *ngFor="let s of selectableSpecies$ | async" [value]="s.id"
+                >{{ s.de | translate }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <button
+            mat-icon-button
+            class="statistics-info-button"
+            matTooltip="{{
+              'Dargestellt sind der Median (mittleres Eintrittsdatum der Phase; Strich in der Box) und das 25% sowie das 75% Quantil, was bedeutet, dass 50% der beobachteten Werte innerhalb der farbigen Box liegen.'
+                | translate
+            }}"
+          >
+            <mat-icon>info</mat-icon>
+          </button>
+        </form>
+      </div>
+      <div #statisticsContainer>
+        <svg id="statistics-graph" width="100%" attr.height="{{ svgComponentHeight }}px"></svg>
+      </div>
+      <div id="tooltip" class="statistics__tooltip hidden">
+        <p><strong id="title">Phenophase</strong></p>
+        <p><span id="value"></span></p>
+        <p><span id="median"></span></p>
+      </div>
+    </div>
+  </div>
+</div>
