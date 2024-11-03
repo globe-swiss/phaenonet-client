@@ -4,6 +4,6 @@
     <app-profile-public *ngIf="!isOwner()" [user$]="detailSubject$" [userId]="detailId"></app-profile-public>
     <app-observation-list [userId]="detailId"></app-observation-list>
     <app-follow-list *ngIf="isOwner()"></app-follow-list>
-    <app-activity-list *ngIf="isOwner()" [userId]="detailId"></app-activity-list>
+    <app-activity *ngIf="isOwner()" [userId]="detailId"></app-activity>
   </ng-container>
 </div>

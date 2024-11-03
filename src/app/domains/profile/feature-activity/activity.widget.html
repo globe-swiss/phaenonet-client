@@ -1,11 +1,11 @@
-<div class="activity-list">
-  <div class="activity-list__title">
+<div class="activity">
+  <div class="activity__title">
     <h2 translate>AKTIVITÄTEN</h2>
   </div>
-  <div class="activity-list__content">
+  <div class="activity__content">
     <app-activity-item *ngFor="let activity of activities$ | async" [activity]="activity"></app-activity-item>
     <button
-      class="activity-list__button activity-list__button--more"
+      class="activity__button activity__button--more"
       mat-flat-button
       color="accent"
       (click)="showAllActivities()"

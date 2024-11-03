@@ -9,13 +9,13 @@ import { Activity } from './activity.model';
 import { ActivityService } from './activity.service';
 
 @Component({
-  selector: 'app-activity-list',
-  templateUrl: './activity-list.widget.html',
-  styleUrls: ['./activity-list.widget.scss'],
+  selector: 'app-activity',
+  templateUrl: './activity.widget.html',
+  styleUrls: ['./activity.widget.scss'],
   standalone: true,
   imports: [TranslateModule, NgFor, ActivityItemComponent, MatButton, AsyncPipe]
 })
-export class ActivityListComponent implements OnInit {
+export class ActivityComponent implements OnInit {
   @Input() userId: string;
 
   private limitActivities$ = new BehaviorSubject<number>(8);

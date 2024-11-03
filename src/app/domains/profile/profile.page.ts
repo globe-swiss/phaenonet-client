@@ -2,18 +2,18 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BaseDetailComponent } from '@core/components/base-detail.component';
+import { AuthService } from '@core/services/auth.service';
 import { NavService } from '@shared/components/nav.service';
 import { PublicUser } from '@shared/models/public-user.model';
 import { PublicUserService } from '@shared/services/public-user.service';
 import { Observable } from 'rxjs';
 import { catchError, first, map } from 'rxjs/operators';
-import { ActivityListComponent } from './feature-activity/activity-list.widget';
+import { ActivityComponent } from './feature-activity/activity.widget';
 import { ProfileDetailsComponent } from './feature-details/profile-details.widget';
 import { FollowListComponent } from './feature-following/follow-list.widget';
 import { ObservationListComponent } from './feature-observations/observation-list.widget';
 import { ProfilePublicComponent } from './feature-public-profile/profile-public.page';
-import { BaseDetailComponent } from '@core/components/base-detail.component';
-import { AuthService } from '@core/services/auth.service';
 
 @Component({
   templateUrl: './profile.page.html',
@@ -25,7 +25,7 @@ import { AuthService } from '@core/services/auth.service';
     ProfilePublicComponent,
     ObservationListComponent,
     FollowListComponent,
-    ActivityListComponent,
+    ActivityComponent,
     AsyncPipe
   ]
 })
