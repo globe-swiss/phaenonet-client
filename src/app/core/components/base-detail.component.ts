@@ -1,6 +1,6 @@
 import { Directive, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { ResourceService } from '@core/services/resource.service';
+import { BaseResourceService } from '@core/services/base-resource.service';
 import { Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
 import { filter, flatMap, switchMap, tap } from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ export class BaseDetailComponent<T> implements OnInit, OnDestroy {
   detailId: string;
 
   constructor(
-    protected resourceService: ResourceService<T>,
+    protected resourceService: BaseResourceService<T>,
     protected route: ActivatedRoute,
     protected router: Router
   ) {}

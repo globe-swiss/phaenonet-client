@@ -16,13 +16,12 @@ import {
 } from '@angular/fire/firestore';
 import { BaseService } from '@core/services/base.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
-import { ResourceService } from '@core/services/resource.service';
 import { IdLike } from '@masterdata/masterdata-like.model';
 import { AlertService } from '@shared/services/alert.service';
 import { from, identity, Observable, of } from 'rxjs';
 import { first, mergeMap, tap } from 'rxjs/operators';
 
-export abstract class BaseResourceService<T> extends BaseService implements ResourceService<T> {
+export abstract class BaseResourceService<T> extends BaseService {
   protected converter: FirestoreDataConverter<T & IdLike> = {
     toFirestore: (data: T & IdLike): DocumentData => {
       return { ...data };
