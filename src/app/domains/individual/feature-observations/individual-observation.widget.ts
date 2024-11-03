@@ -9,11 +9,10 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { altitudeLimits } from '@masterdata/altitude-limits.model';
-import { IdLike } from '@masterdata/masterdata-like.model';
-import { MasterdataService } from '@masterdata/masterdata.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { altitudeLimits } from '@shared/models/altitude-limits.model';
 import { Individual } from '@shared/models/individual.model';
+import { MasterdataService } from '@shared/models/masterdata.service';
 import { Observation } from '@shared/models/observation.model';
 import { UserService } from '@shared/services/user.service';
 import { findFirst } from 'fp-ts/lib/Array';
@@ -25,6 +24,7 @@ import { PhenophaseObservationsGroup } from '../../profile/shared/phenophase-obs
 import { IndividualService } from '../shared/individual.service';
 import { ObservationService } from '../shared/observation.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
+import { IdLike } from '@shared/models/masterdata.model';
 
 @Component({
   selector: 'app-individual-observation-view',

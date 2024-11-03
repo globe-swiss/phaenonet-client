@@ -10,24 +10,26 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
-import { Description } from '@masterdata/description.model';
-import { Distance } from '@masterdata/distance.model';
-import { Exposition } from '@masterdata/exposition.model';
-import { Forest } from '@masterdata/forest.model';
-import { Habitat } from '@masterdata/habitat.model';
-import { Irrigation } from '@masterdata/irrigation.model';
-import { MasterdataService } from '@masterdata/masterdata.service';
-import { Shade } from '@masterdata/shade.model';
-import { Species } from '@masterdata/species.model';
 import { TranslateModule } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
+import {
+  Description,
+  Distance,
+  Exposition,
+  Forest,
+  Habitat,
+  Irrigation,
+  Shade,
+  Species
+} from '@shared/models/masterdata.model';
+import { MasterdataService } from '@shared/models/masterdata.service';
 import { AlertService } from '@shared/services/alert.service';
 import { UserService } from '@shared/services/user.service';
 import { some } from 'fp-ts/lib/Option';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { IndividualService } from '../shared/individual.service';
 import { GeoposService } from '../shared/geopos.service';
+import { IndividualService } from '../shared/individual.service';
 
 @Component({
   selector: 'app-individual-edit-view',

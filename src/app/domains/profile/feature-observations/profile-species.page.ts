@@ -9,7 +9,7 @@ import { IndividualService } from '@app/domains/individual/shared/individual.ser
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NavService } from '@shared/components/nav.service';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
-import { MasterdataService } from '@shared/models/masterdata/masterdata.service';
+import { MasterdataService } from '@shared/models/masterdata.service';
 import { parseInt } from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';

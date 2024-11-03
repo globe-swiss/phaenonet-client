@@ -1,15 +1,9 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { Description } from '@masterdata/description.model';
-import { Distance } from '@masterdata/distance.model';
-import { Exposition } from '@masterdata/exposition.model';
-import { Forest } from '@masterdata/forest.model';
-import { Habitat } from '@masterdata/habitat.model';
-import { Irrigation } from '@masterdata/irrigation.model';
-import { MasterdataService } from '@masterdata/masterdata.service';
-import { Shade } from '@masterdata/shade.model';
 import { TranslateModule } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
+import { Description, Distance, Exposition, Forest, Habitat, Irrigation, Shade } from '@shared/models/masterdata.model';
+import { MasterdataService } from '@shared/models/masterdata.service';
 import { RoundPipe } from '@shared/utils/round.pipe';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';

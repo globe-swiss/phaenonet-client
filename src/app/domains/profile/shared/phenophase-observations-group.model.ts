@@ -1,4 +1,4 @@
-import { PhenophaseGroup } from '@masterdata/phaenophase-group.model';
+import { PhenophaseGroup } from '@shared/models/masterdata.model';
 import { PhenophaseObservation } from './phenophase-observation.model';
 
 export class PhenophaseObservationsGroup {

@@ -27,7 +27,7 @@ import { GlobalErrorHandler } from './core/providers/global-error-handler';
 import { SentryMissingTranslationHandler } from './core/providers/sentry-missing-translation-handler';
 import { IndividualService } from './domains/individual/shared/individual.service';
 import { MapService } from './domains/map/map.service';
-import { MasterdataService } from './shared/models/masterdata/masterdata.service';
+import { MasterdataService } from './shared/models/masterdata.service';
 import { SensorsService } from './shared/services/sensors.service';
 
 Sentry.init({

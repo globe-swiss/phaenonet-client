@@ -7,10 +7,9 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
-import { MasterdataService } from '@masterdata/masterdata.service';
-import { Species } from '@masterdata/species.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NavService } from '@shared/components/nav.service';
+import { MasterdataService } from '@shared/models/masterdata.service';
 import { Observation } from '@shared/models/observation.model';
 import { SourceFilterType } from '@shared/models/source-type.model';
 import { FormPersistenceService } from '@shared/services/form-persistence.service';
@@ -27,6 +26,7 @@ import { AnalyticsType } from './analytics-type.model';
 import { AnalyticsValue } from './analytics-value.model';
 import { Analytics } from './analytics.model';
 import { StatisticsService } from './statistics.service';
+import { Species } from '@shared/models/masterdata.model';
 
 export interface Margin {
   top: number;

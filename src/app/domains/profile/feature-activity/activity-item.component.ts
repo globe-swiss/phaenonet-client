@@ -1,8 +1,8 @@
 import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { MasterdataService } from '@masterdata/masterdata.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { MasterdataService } from '@shared/models/masterdata.service';
 import { formatShortDateTime } from '@shared/utils/formatDate';
 import { Activity } from './activity.model';
 

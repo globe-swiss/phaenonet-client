@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { MaybeIdLike } from '@masterdata/masterdata-like.model';
 import { TranslateModule } from '@ngx-translate/core';
+import { MaybeIdLike } from '@shared/models/masterdata.model';
 import { PublicUser } from '@shared/models/public-user.model';
 
 @Component({

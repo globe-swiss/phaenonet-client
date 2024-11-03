@@ -7,23 +7,26 @@ import { LanguageService } from '@core/services/language.service';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { map, mergeAll, publishReplay, refCount, shareReplay, tap } from 'rxjs/operators';
 import { environment } from '~/environments/environment';
-import configStatic_import from '../../../../assets/config_static.json';
-import { AlertService } from '../../services/alert.service';
-import { hasSensor, Individual, MapIndividual } from '../individual.model';
-import { Roles } from '../user-roles.enum';
+import configStatic_import from '../../../assets/config_static.json';
+import { AlertService } from '../services/alert.service';
 import { AltitudeLimits } from './altitude-limits.model';
-import { Comment } from './comment.model';
-import { Description } from './description.model';
-import { Distance } from './distance.model';
-import { Exposition } from './exposition.model';
-import { Forest } from './forest.model';
-import { Habitat } from './habitat.model';
-import { Irrigation } from './irrigation.model';
-import { MasterdataLike, SortedMasterdataLike } from './masterdata-like.model';
-import { PhenophaseGroup } from './phaenophase-group.model';
-import { Phenophase } from './phaenophase.model';
-import { Shade } from './shade.model';
-import { Species } from './species.model';
+import { hasSensor, Individual, MapIndividual } from './individual.model';
+import {
+  Comment,
+  Description,
+  Distance,
+  Exposition,
+  Forest,
+  Habitat,
+  Irrigation,
+  MasterdataLike,
+  Phenophase,
+  PhenophaseGroup,
+  Shade,
+  SortedMasterdataLike,
+  Species
+} from './masterdata.model';
+import { Roles } from './user-roles.enum';
 
 export interface MasterdataCollection {
   [index: string]: Record<string, unknown>;

@@ -1,6 +1,5 @@
-import { AltitudeLimit } from '@masterdata/altitude-limits.model';
-import { Comment } from '@masterdata/comment.model';
-import { Phenophase } from '@masterdata/phaenophase.model';
+import { AltitudeLimit } from '@shared/models/altitude-limits.model';
+import { Phenophase, Comment } from '@shared/models/masterdata.model';
 import { Observation } from '@shared/models/observation.model';
 import { Option } from 'fp-ts/lib/Option';
 

@@ -5,17 +5,17 @@ import { MatOption } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
-import { LanguageService } from '@core/services/language.service';
+import { IndividualService } from '@app/domains/individual/shared/individual.service'; // fixme
 import { AuthService } from '@core/services/auth.service';
+import { LanguageService } from '@core/services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
-import { MasterdataService } from '@shared/models/masterdata/masterdata.service';
+import { MasterdataService } from '@shared/models/masterdata.service';
 import { gropupBy } from '@shared/utils/group-by';
 import { Observable, ReplaySubject } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
-import { ObservationSpeciesItemComponent } from './observation-species-item.component';
 import { ObservationItemComponent } from '../shared/observation-item.component';
-import { IndividualService } from '@app/domains/individual/shared/individual.service'; // fixme
+import { ObservationSpeciesItemComponent } from './observation-species-item.component';
 
 @Component({
   selector: 'app-observation-list',

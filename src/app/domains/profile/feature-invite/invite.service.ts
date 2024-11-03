@@ -4,11 +4,11 @@ import { AuthService } from '@core/services/auth.service';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { LanguageService } from '@core/services/language.service';
-import { IdLike } from '@masterdata/masterdata-like.model';
 import { AlertService } from '@shared/services/alert.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Invite } from './invite.model';
+import { IdLike } from '@shared/models/masterdata.model';
 
 @Injectable({ providedIn: 'root' })
 export class InviteService extends BaseResourceService<Invite> {

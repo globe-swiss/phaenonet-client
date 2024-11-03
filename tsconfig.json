@@ -19,7 +19,6 @@
     "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": true,
     "paths": {
-      "@masterdata/*": ["src/app/shared/models/masterdata/*"],
       "@shared/*": ["src/app/shared/*"],
       "@core/*": ["src/app/core/*"],
       "@app/*": ["src/app/*"],

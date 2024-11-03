@@ -2,9 +2,9 @@ import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { MasterdataService } from '@masterdata/masterdata.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
+import { MasterdataService } from '@shared/models/masterdata.service';
 import { formatShortDate } from '@shared/utils/formatDate';
 
 @Component({

@@ -16,7 +16,7 @@ import {
 } from '@angular/fire/firestore';
 import { BaseService } from '@core/services/base.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
-import { IdLike } from '@masterdata/masterdata-like.model';
+import { IdLike } from '@shared/models/masterdata.model';
 import { AlertService } from '@shared/services/alert.service';
 import { from, identity, Observable, of } from 'rxjs';
 import { first, mergeMap, tap } from 'rxjs/operators';

@@ -10,9 +10,9 @@ import {
   ViewChild
 } from '@angular/core';
 import { ObservationService } from '@app/domains/individual/shared/observation.service';
-import { MasterdataService } from '@masterdata/masterdata.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
+import { MasterdataService } from '@shared/models/masterdata.service';
 import { Observation } from '@shared/models/observation.model';
 import { DailySensorData } from '@shared/models/sensors';
 import { SensorsService } from '@shared/services/sensors.service';

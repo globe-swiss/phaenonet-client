@@ -1,4 +1,4 @@
-import { Phenophase } from '@masterdata/phaenophase.model';
+import { Phenophase } from '@shared/models/masterdata.model';
 import { Observation } from '@shared/models/observation.model';
 import { Option } from 'fp-ts/lib/Option';
 
