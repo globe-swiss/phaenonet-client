@@ -3,7 +3,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { LanguageService } from '@core/services/language.service';
-import { AppSnackBarComponent } from '@shared/components/app-snack-bar.component';
+import { AppSnackBarComponent } from '@shared/components/alert.widget';
 import { NavComponent } from '@shared/components/nav.widget';
 import browserUpdate from 'browser-update';
 
