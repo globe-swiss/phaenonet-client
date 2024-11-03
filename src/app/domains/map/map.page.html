@@ -60,9 +60,9 @@
         <mat-form-field>
           <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
           <mat-select formControlName="datasource" data-test-id="select-source">
-            <mat-option *ngFor="let datasource of datasourceFilterValues" [value]="datasource"
-              >{{ datasource | translate }}</mat-option
-            >
+            <mat-option *ngFor="let datasource of datasourceFilterValues" [value]="datasource">{{
+              datasource | translate
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -70,9 +70,9 @@
         <mat-form-field>
           <mat-label>{{ 'Art' | translate }}</mat-label>
           <mat-select formControlName="species" data-test-id="select-species">
-            <mat-option *ngFor="let specie of speciesFilterValues$ | async" [value]="specie.id"
-              >{{ specie.de | translate }}</mat-option
-            >
+            <mat-option *ngFor="let specie of speciesFilterValues$ | async" [value]="specie.id">{{
+              specie.de | translate
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

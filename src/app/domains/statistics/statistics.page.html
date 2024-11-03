@@ -6,33 +6,33 @@
           <mat-form-field>
             <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
             <mat-select formControlName="year" data-test-id="select-year">
-              <mat-option *ngFor="let year of selectableYears$ | async" [value]="year"
-                >{{ year | translate }}</mat-option
-              >
+              <mat-option *ngFor="let year of selectableYears$ | async" [value]="year">{{
+                year | translate
+              }}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field>
             <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
             <mat-select formControlName="datasource" data-test-id="select-source">
-              <mat-option *ngFor="let datasource of selectableDatasources" [value]="datasource"
-                >{{ datasource | translate }}</mat-option
-              >
+              <mat-option *ngFor="let datasource of selectableDatasources" [value]="datasource">{{
+                datasource | translate
+              }}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field>
             <mat-label>{{ 'Auswertung' | translate }}</mat-label>
             <mat-select formControlName="analyticsType" data-test-id="select-analyticsType">
-              <mat-option *ngFor="let analyticsType of selectableAnalyticsTypes" [value]="analyticsType"
-                >{{ analyticsType | translate }}</mat-option
-              >
+              <mat-option *ngFor="let analyticsType of selectableAnalyticsTypes" [value]="analyticsType">{{
+                analyticsType | translate
+              }}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field>
             <mat-label>{{ 'Art' | translate }}</mat-label>
             <mat-select formControlName="species" data-test-id="select-species">
-              <mat-option *ngFor="let s of selectableSpecies$ | async" [value]="s.id"
-                >{{ s.de | translate }}</mat-option
-              >
+              <mat-option *ngFor="let s of selectableSpecies$ | async" [value]="s.id">{{
+                s.de | translate
+              }}</mat-option>
             </mat-select>
           </mat-form-field>
           <button
