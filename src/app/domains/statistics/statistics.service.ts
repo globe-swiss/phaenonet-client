@@ -6,8 +6,7 @@ import { SourceFilterType } from '@shared/models/source-type.model';
 import { AlertService } from '@shared/services/alert.service';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { AnalyticsType } from './analytics-type.model';
-import { Analytics } from './analytics.model';
+import { Analytics, AnalyticsType } from './statistics.model';
 
 @Injectable({ providedIn: 'root' })
 export class StatisticsService extends BaseResourceService<Analytics> {

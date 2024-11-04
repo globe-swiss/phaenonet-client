@@ -9,6 +9,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NavService } from '@shared/components/nav.service';
+import { Species } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
 import { Observation } from '@shared/models/observation.model';
 import { SourceFilterType } from '@shared/models/source-type.model';
@@ -21,12 +22,8 @@ import * as d3Time from 'd3-time';
 import moment from 'moment';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { AltitudeGroup } from './altitude-group.model';
-import { AnalyticsType } from './analytics-type.model';
-import { AnalyticsValue } from './analytics-value.model';
-import { Analytics } from './analytics.model';
+import { AltitudeGroup, Analytics, AnalyticsType, AnalyticsValue } from './statistics.model';
 import { StatisticsService } from './statistics.service';
-import { Species } from '@shared/models/masterdata.model';
 
 export interface Margin {
   top: number;
