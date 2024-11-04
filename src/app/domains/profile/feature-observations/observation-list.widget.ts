@@ -5,7 +5,7 @@ import { MatOption } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
-import { IndividualService } from '@app/domains/individual/shared/individual.service'; // fixme
+import { IndividualService } from '@app/domains/individual/individual.service'; // fixme
 import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
 import { TranslateModule } from '@ngx-translate/core';

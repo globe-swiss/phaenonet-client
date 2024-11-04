@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { IndividualService } from '@app/domains/individual/shared/individual.service'; //fixme
+import { IndividualService } from '@app/domains/individual/individual.service'; //fixme
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NavService } from '@shared/components/nav.service';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';

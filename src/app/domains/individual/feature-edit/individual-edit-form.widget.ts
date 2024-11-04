@@ -28,8 +28,8 @@ import { UserService } from '@shared/services/user.service';
 import { some } from 'fp-ts/lib/Option';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { GeoposService } from '../shared/geopos.service';
-import { IndividualService } from '../shared/individual.service';
+import { GeoposService } from '../geopos.service';
+import { IndividualService } from '../individual.service';
 
 @Component({
   selector: 'app-individual-edit-view',

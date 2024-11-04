@@ -4,7 +4,7 @@
 
 @import 'src/theming/mixins';
 
-.individual-description-buttons {
+.individual-buttons {
   &__buttons {
     @include buttons;
   }

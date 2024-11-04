@@ -7,8 +7,8 @@ import { Individual } from '@shared/models/individual.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
 import { Observable, ReplaySubject } from 'rxjs';
 import { filter, first, map, mergeAll } from 'rxjs/operators';
-import { GeoposService } from './geopos.service';
-import { IndividualService } from './individual.service';
+import { GeoposService } from '../geopos.service';
+import { IndividualService } from '../individual.service';
 
 @Component({
   selector: 'app-individual-header-map',

@@ -9,12 +9,12 @@ import { Individual } from '@shared/models/individual.model';
 import { AlertService } from '@shared/services/alert.service';
 import { combineLatest, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { IndividualService } from '../shared/individual.service';
+import { IndividualService } from '../individual.service';
 
 @Component({
-  selector: 'app-individual-description-buttons',
-  templateUrl: './individual-description-buttons.widget.html',
-  styleUrls: ['./individual-description-buttons.widget.scss'],
+  selector: 'app-individual-buttons',
+  templateUrl: './individual-buttons.widget.html',
+  styleUrls: ['./individual-buttons.widget.scss'],
   standalone: true,
   imports: [NgIf, MatButton, RouterLink, AsyncPipe, TranslateModule]
 })

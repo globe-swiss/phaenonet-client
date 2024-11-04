@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { altitudeLimits } from '@shared/models/altitude-limits.model';
 import { Individual } from '@shared/models/individual.model';
+import { IdLike } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
 import { Observation } from '@shared/models/observation.model';
 import { UserService } from '@shared/services/user.service';
@@ -21,10 +22,9 @@ import { combineLatest, Observable } from 'rxjs';
 import { filter, first, map, mergeAll, switchMap } from 'rxjs/operators';
 import { PhenophaseObservation } from '../../profile/shared/phenophase-observation.model';
 import { PhenophaseObservationsGroup } from '../../profile/shared/phenophase-observations-group.model';
-import { IndividualService } from '../shared/individual.service';
-import { ObservationService } from '../shared/observation.service';
+import { IndividualService } from '../individual.service';
+import { ObservationService } from '../observation.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
-import { IdLike } from '@shared/models/masterdata.model';
 
 @Component({
   selector: 'app-individual-observation-view',

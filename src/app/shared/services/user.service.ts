@@ -1,7 +1,7 @@
 import { effect, Injectable, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { arrayRemove, arrayUnion, Firestore } from '@angular/fire/firestore';
-import { IndividualService } from '@app/domains/individual/shared/individual.service'; // fixme
+import { IndividualService } from '@app/domains/individual/individual.service'; // fixme
 import { AuthService } from '@core/services/auth.service';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';

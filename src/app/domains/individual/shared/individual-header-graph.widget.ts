@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { ObservationService } from '@app/domains/individual/shared/observation.service';
+import { ObservationService } from '@app/domains/individual/observation.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
@@ -22,7 +22,7 @@ import * as d3Scale from 'd3-scale';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest, zip } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { Margin } from '~/app/domains/statistics/statistics.page';
-import { IndividualService } from './individual.service';
+import { IndividualService } from '../individual.service';
 
 @Component({
   selector: 'app-individual-header-graph',

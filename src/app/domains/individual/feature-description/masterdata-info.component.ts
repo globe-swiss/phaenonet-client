@@ -9,9 +9,9 @@ import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-individual-description-basic-info',
-  templateUrl: './basic-info.widget.html',
-  styleUrls: ['./basic-info.widget.scss'],
+  selector: 'app-masterdata-info',
+  templateUrl: './masterdata-info.component.html',
+  styleUrls: ['./masterdata-info.component.scss'],
   standalone: true,
   imports: [TranslateModule, AsyncPipe, RoundPipe]
 })
@@ -26,9 +26,7 @@ export class IndividualDescriptionBasicInfoComponent implements OnInit {
   distance$: Observable<Distance>;
   irrigation$: Observable<Irrigation>;
 
-  constructor(
-    private masterdataService: MasterdataService // private publicUserService: PublicUserService,
-  ) {}
+  constructor(private masterdataService: MasterdataService) {}
 
   ngOnInit(): void {
     this.description$ = this.individual$.pipe(

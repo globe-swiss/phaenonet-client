@@ -26,7 +26,7 @@ import { routes } from './app.routes';
 import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/providers/app-moment-date-adapter';
 import { GlobalErrorHandler } from './core/providers/global-error-handler';
 import { SentryMissingTranslationHandler } from './core/providers/sentry-missing-translation-handler';
-import { IndividualService } from './domains/individual/shared/individual.service';
+import { IndividualService } from './domains/individual/individual.service';
 import { MapService } from './domains/map/map.service';
 import { MasterdataService } from './shared/models/masterdata.service';
 import { SensorsService } from './shared/services/sensors.service';

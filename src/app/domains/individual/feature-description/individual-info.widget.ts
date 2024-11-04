@@ -12,13 +12,13 @@ import { PublicUserService } from '@shared/services/public-user.service';
 import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
-import { IndividualService } from '../shared/individual.service';
+import { IndividualService } from '../individual.service';
 import { SensorsBoxComponent } from './sensors-box.component';
 
 @Component({
-  selector: 'app-individual-description-header',
-  templateUrl: './individual-description-header.widget.html',
-  styleUrls: ['./individual-description-header.widget.scss'],
+  selector: 'app-individual-info',
+  templateUrl: './individual-info.widget.html',
+  styleUrls: ['./individual-info.widget.scss'],
   standalone: true,
   imports: [
     NgIf,

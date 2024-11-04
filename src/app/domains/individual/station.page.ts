@@ -18,11 +18,10 @@ import { findFirst } from 'fp-ts/lib/Array';
 import _ from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeAll, switchMap } from 'rxjs/operators';
+import { PhenophaseObservation, SpeciesPhenophaseObservations } from './individual.model';
+import { IndividualService } from './individual.service';
+import { ObservationService } from './observation.service';
 import { IndividualHeaderComponent } from './shared/individual-header.component';
-import { IndividualService } from './shared/individual.service';
-import { ObservationService } from './shared/observation.service';
-import { PhenophaseObservation } from './station-phenophase-observation.model';
-import { SpeciesPhenophaseObservations } from './station-species-phenophase-observations.model';
 
 @Component({
   templateUrl: './station.page.html',

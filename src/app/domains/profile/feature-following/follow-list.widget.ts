@@ -2,14 +2,14 @@ import { AsyncPipe, NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { IndividualService } from '@app/domains/individual/individual.service'; // fixme
 import { TranslateModule } from '@ngx-translate/core';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
 import { PublicUser } from '@shared/models/public-user.model';
 import { UserService } from '@shared/services/user.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UserItemComponent } from './user-item.component';
 import { ObservationItemComponent } from '../shared/observation-item.component';
-import { IndividualService } from '@app/domains/individual/shared/individual.service'; // fixme
+import { UserItemComponent } from './user-item.component';
 
 @Component({
   selector: 'app-follow-list',

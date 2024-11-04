@@ -9,13 +9,13 @@ import { Individual } from '@shared/models/individual.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { IndividualDescriptionBasicInfoComponent } from './feature-description/basic-info.widget';
-import { IndividualDescriptionButtonsComponent } from './feature-description/individual-description-buttons.widget';
-import { IndividualDescriptionHeaderComponent } from './feature-description/individual-description-header.widget';
+import { IndividualDescriptionButtonsComponent } from './feature-buttons/individual-buttons.widget';
+import { IndividualDescriptionHeaderComponent } from './feature-description/individual-info.widget';
+import { IndividualDescriptionBasicInfoComponent } from './feature-description/masterdata-info.component';
 import { ObservationViewComponent } from './feature-observations/individual-observation.widget';
 import { IndividualSubscriptionButtonComponent } from './feature-subscription/individual-subscription.widget';
+import { IndividualService } from './individual.service';
 import { IndividualHeaderComponent } from './shared/individual-header.component';
-import { IndividualService } from './shared/individual.service';
 
 @Component({
   templateUrl: './individual.page.html',

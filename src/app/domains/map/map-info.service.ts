@@ -6,7 +6,7 @@ import { IdLike, Phenophase, Species } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
 import { combineLatest, defer, iif, Observable, of, ReplaySubject } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
-import { IndividualService } from '../individual/shared/individual.service'; // fixme
+import { IndividualService } from '../individual/individual.service'; // fixme
 
 export interface IndividualInfoWindowData {
   marker: MapMarker;
