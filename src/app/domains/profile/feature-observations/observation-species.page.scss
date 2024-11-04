@@ -2,7 +2,7 @@
 
 @import 'src/theming/typography';
 
-.profile-species {
+.observation-species {
   @include detail-view;
 
   @include for-tablet-and-smaller {
