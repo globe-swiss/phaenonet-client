@@ -11,7 +11,7 @@ import { IndividualDetailComponent } from './domains/individual/individual.page'
 import { StationComponent } from './domains/individual/station.page';
 import { MapComponent } from './domains/map/map.page';
 import { InviteComponent } from './domains/profile/feature-invite/invite.widget';
-import { ProfileSpeciesComponent } from './domains/profile/feature-observations/profile-species.page';
+import { ProfileSpeciesComponent } from './domains/profile/feature-observations/observation-species.page';
 import { ProfileEditComponent } from './domains/profile/feature-profile-edit/profile-edit.page';
 import { ProfileComponent } from './domains/profile/profile.page';
 import { StatisticsComponent } from './domains/statistics/statistics.page';

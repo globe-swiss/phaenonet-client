@@ -23,8 +23,8 @@ class Data {
   avaiableYears: number[];
 }
 @Component({
-  templateUrl: './profile-species.page.html',
-  styleUrls: ['./profile-species.page.scss'],
+  templateUrl: './observation-species.page.html',
+  styleUrls: ['./observation-species.page.scss'],
   standalone: true,
   imports: [
     NgIf,
