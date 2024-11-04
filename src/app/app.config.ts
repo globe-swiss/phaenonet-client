@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import localeIt from '@angular/common/locales/it';
@@ -13,6 +13,8 @@ import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { Router, provideRouter } from '@angular/router';
+import { HeaderInterceptor } from '@core/providers/header.interceptor';
+import { LocaleInterceptor } from '@core/providers/locale.interceptor';
 import { DatetimeAdapter } from '@mat-datetimepicker/core';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import * as Sentry from '@sentry/angular-ivy';
@@ -21,7 +23,6 @@ import { UserService } from '@shared/services/user.service';
 import { Observable, from } from 'rxjs';
 import { environment } from '~/environments/environment';
 import { routes } from './app.routes';
-import { httpInterceptorProviders } from './core/providers';
 import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/providers/app-moment-date-adapter';
 import { GlobalErrorHandler } from './core/providers/global-error-handler';
 import { SentryMissingTranslationHandler } from './core/providers/sentry-missing-translation-handler';
@@ -104,7 +105,10 @@ export const appConfig: ApplicationConfig = {
       deps: [Sentry.TraceService],
       multi: true
     },
-    httpInterceptorProviders,
+    [
+      { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
+      { provide: HTTP_INTERCEPTORS, useClass: LocaleInterceptor, multi: true }
+    ],
     MasterdataService,
     UserService,
     IndividualService,
