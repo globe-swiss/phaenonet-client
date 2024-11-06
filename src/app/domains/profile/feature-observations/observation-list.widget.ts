@@ -5,12 +5,12 @@ import { MatOption } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
-import { IndividualService } from '@app/domains/individual/individual.service'; // fixme
 import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
+import { IndividualService } from '@shared/services/individual.service'; // fixme
 import { gropupBy } from '@shared/utils/group-by';
 import { Observable, ReplaySubject } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';

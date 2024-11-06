@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { ObservationService } from '@app/domains/individual/observation.service';
+import { ObservationService } from '@app/domains/individual/shared/observation.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
@@ -21,8 +21,7 @@ import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest, zip } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { Margin } from '~/app/domains/statistics/statistics.page';
-import { IndividualService } from '../individual.service';
+import { IndividualService } from '../../../shared/services/individual.service';
 
 @Component({
   selector: 'app-individual-header-graph',
@@ -105,7 +104,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
 
     svg.selectAll('*').remove();
 
-    const margin: Margin = { top: 40, right: 15, bottom: 70, left: 50 };
+    const margin = { top: 40, right: 15, bottom: 70, left: 50 };
 
     const width = boundingBox.width - margin.left - margin.right;
     const height = boundingBox.height - (margin.top + margin.bottom);

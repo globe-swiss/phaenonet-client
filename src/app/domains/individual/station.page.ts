@@ -8,8 +8,8 @@ import { MatInput } from '@angular/material/input';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseDetailComponent } from '@core/components/base-detail.component';
+import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { NavService } from '@shared/components/nav.service';
 import { Individual } from '@shared/models/individual.model';
 import { Comment, Phenophase, PhenophaseGroup } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
@@ -18,10 +18,10 @@ import { findFirst } from 'fp-ts/lib/Array';
 import _ from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeAll, switchMap } from 'rxjs/operators';
-import { PhenophaseObservation, SpeciesPhenophaseObservations } from './individual.model';
-import { IndividualService } from './individual.service';
-import { ObservationService } from './observation.service';
+import { IndividualService } from '../../shared/services/individual.service';
 import { IndividualHeaderComponent } from './shared/individual-header.component';
+import { PhenophaseObservation, SpeciesPhenophaseObservations } from './shared/individual.model';
+import { ObservationService } from './shared/observation.service';
 
 @Component({
   templateUrl: './station.page.html',
@@ -57,7 +57,7 @@ export class StationComponent extends BaseDetailComponent<Individual> implements
   staticComments = {};
 
   constructor(
-    private navService: NavService,
+    private titleService: TitleService,
     protected route: ActivatedRoute,
     public individualService: IndividualService,
     private observationService: ObservationService,
@@ -70,7 +70,7 @@ export class StationComponent extends BaseDetailComponent<Individual> implements
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.navService.setLocation('Messstation');
+    this.titleService.setLocation('Messstation');
 
     this.id$ = this.route.paramMap.pipe(map(params => params.get('id')));
 

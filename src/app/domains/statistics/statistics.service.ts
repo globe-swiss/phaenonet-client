@@ -3,7 +3,6 @@ import { Firestore, where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { SourceFilterType } from '@shared/models/source-type.model';
-import { AlertService } from '@shared/services/alert.service';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Analytics, AnalyticsType } from './statistics.model';
@@ -11,11 +10,10 @@ import { Analytics, AnalyticsType } from './statistics.model';
 @Injectable({ providedIn: 'root' })
 export class StatisticsService extends BaseResourceService<Analytics> {
   constructor(
-    alertService: AlertService,
     protected afs: Firestore,
     protected fds: FirestoreDebugService
   ) {
-    super(alertService, afs, 'analytics_result', fds);
+    super(afs, 'analytics_result', fds);
   }
 
   listByYear(

@@ -5,16 +5,14 @@ import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { DailySensorData, SensorDataInternal, Sensors } from '@shared/models/sensors';
 import { Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
-import { AlertService } from './alert.service';
 
 @Injectable({ providedIn: 'root' })
 export class SensorsService extends BaseResourceService<Sensors> {
   constructor(
-    alertService: AlertService,
     protected afs: Firestore,
     protected fds: FirestoreDebugService
   ) {
-    super(alertService, afs, 'sensors', fds);
+    super(afs, 'sensors', fds);
   }
 
   getSensorData(individual_id: string): Observable<DailySensorData[]> {

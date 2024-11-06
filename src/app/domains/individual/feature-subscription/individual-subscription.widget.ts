@@ -2,8 +2,8 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { AlertService } from '@core/services/alert.service';
 import { Individual } from '@shared/models/individual.model';
-import { AlertService } from '@shared/services/alert.service';
 import { UserService } from '@shared/services/user.service';
 import { Observable } from 'rxjs';
 

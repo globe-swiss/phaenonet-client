@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { MapMarker } from '@angular/google-maps';
+import { IdLike } from '@core/core.model';
 import { Individual, SensorLiveData } from '@shared/models/individual.model';
-import { IdLike, Phenophase, Species } from '@shared/models/masterdata.model';
+import { Phenophase, Species } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
 import { combineLatest, defer, iif, Observable, of, ReplaySubject } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
-import { IndividualService } from '../individual/individual.service'; // fixme
+import { IndividualService } from '@shared/services/individual.service';
 
 export interface IndividualInfoWindowData {
   marker: MapMarker;

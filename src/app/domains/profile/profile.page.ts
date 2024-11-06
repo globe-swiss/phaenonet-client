@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseDetailComponent } from '@core/components/base-detail.component';
 import { AuthService } from '@core/services/auth.service';
-import { NavService } from '@shared/components/nav.service';
+import { TitleService } from '@core/services/title.service';
 import { PublicUser } from '@shared/models/public-user.model';
 import { PublicUserService } from '@shared/services/public-user.service';
 import { Observable } from 'rxjs';
@@ -31,7 +31,7 @@ import { ProfilePublicComponent } from './feature-public-profile/profile-public.
 })
 export class ProfileComponent extends BaseDetailComponent<PublicUser> implements OnInit {
   constructor(
-    private navService: NavService,
+    private titleService: TitleService,
     protected route: ActivatedRoute,
     private publicUserService: PublicUserService,
     public dialog: MatDialog,
@@ -43,7 +43,7 @@ export class ProfileComponent extends BaseDetailComponent<PublicUser> implements
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.navService.setLocation('Profil');
+    this.titleService.setLocation('Profil');
   }
 
   protected getDetailId(): Observable<string> {

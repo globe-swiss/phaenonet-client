@@ -2,10 +2,10 @@ import { AsyncPipe, NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { IndividualService } from '@app/domains/individual/individual.service'; // fixme
 import { TranslateModule } from '@ngx-translate/core';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
 import { PublicUser } from '@shared/models/public-user.model';
+import { IndividualService } from '@shared/services/individual.service'; // fixme
 import { UserService } from '@shared/services/user.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ObservationItemComponent } from '../shared/observation-item.component';

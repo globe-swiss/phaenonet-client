@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Firestore, limit, orderBy, where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
-import { AlertService } from '@shared/services/alert.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Activity } from './activity.model';
@@ -10,11 +9,10 @@ import { Activity } from './activity.model';
 @Injectable({ providedIn: 'root' })
 export class ActivityService extends BaseResourceService<Activity> {
   constructor(
-    alertService: AlertService,
     protected afs: Firestore,
     protected fds: FirestoreDebugService
   ) {
-    super(alertService, afs, 'activities', fds);
+    super(afs, 'activities', fds);
   }
 
   listByUser(userId: string, limitAmount: number = 8): Observable<Activity[]> {

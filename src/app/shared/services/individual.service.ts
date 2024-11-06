@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Firestore, limit, where } from '@angular/fire/firestore';
 import { deleteObject, getDownloadURL, ref, Storage } from '@angular/fire/storage';
+import { IdLike } from '@core/core.model';
 import { AuthService } from '@core/services/auth.service';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
 import { Individual, SensorLiveData } from '@shared/models/individual.model';
-import { IdLike, Phenophase, Species } from '@shared/models/masterdata.model';
+import { Phenophase, Species } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
-import { AlertService } from '@shared/services/alert.service';
 import { formatShortDate, formatShortDateTime } from '@shared/utils/formatDate';
 import { combineLatest, from, Observable, of } from 'rxjs';
 import { first, map, mergeAll, tap } from 'rxjs/operators';
@@ -17,14 +17,13 @@ import { first, map, mergeAll, tap } from 'rxjs/operators';
 export class IndividualService extends BaseResourceService<Individual> {
   individualsByYear$$: Map<number, Observable<(Individual & IdLike)[]>>;
   constructor(
-    alertService: AlertService,
     protected afs: Firestore,
     private authService: AuthService,
     private afStorage: Storage,
     private masterdataService: MasterdataService,
     protected fds: FirestoreDebugService
   ) {
-    super(alertService, afs, 'individuals', fds);
+    super(afs, 'individuals', fds);
     this.individualsByYear$$ = new Map();
   }
 

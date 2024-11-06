@@ -3,13 +3,13 @@ import { Component, Input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterLink } from '@angular/router';
+import { AlertService } from '@core/services/alert.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog.component';
 import { Individual } from '@shared/models/individual.model';
-import { AlertService } from '@shared/services/alert.service';
 import { combineLatest, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { IndividualService } from '../individual.service';
+import { IndividualService } from '../../../shared/services/individual.service';
 
 @Component({
   selector: 'app-individual-buttons',

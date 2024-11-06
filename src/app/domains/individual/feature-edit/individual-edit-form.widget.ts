@@ -10,6 +10,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
+import { AlertService } from '@core/services/alert.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import {
@@ -23,13 +24,12 @@ import {
   Species
 } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
-import { AlertService } from '@shared/services/alert.service';
 import { UserService } from '@shared/services/user.service';
 import { some } from 'fp-ts/lib/Option';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { GeoposService } from '../geopos.service';
-import { IndividualService } from '../individual.service';
+import { IndividualService } from '../../../shared/services/individual.service';
+import { GeoposService } from '../shared/geopos.service';
 
 @Component({
   selector: 'app-individual-edit-view',

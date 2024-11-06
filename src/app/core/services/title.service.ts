@@ -5,19 +5,19 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class NavService implements OnDestroy {
+export class TitleService implements OnDestroy {
   private DEFAULT_LOCATION = 'PhaenoNet';
   private location$: BehaviorSubject<string> = new BehaviorSubject(this.DEFAULT_LOCATION);
   private subscriptions = new Subscription();
 
   constructor(
-    private translateService: TranslateService,
-    private titleService: Title
+    translateService: TranslateService,
+    private title: Title
   ) {
     this.subscriptions.add(
       this.location$
         .pipe(switchMap(untranslatedLocation => translateService.get(untranslatedLocation)))
-        .subscribe(translatedLocation => this.titleService.setTitle(translatedLocation))
+        .subscribe(translatedLocation => this.title.setTitle(translatedLocation))
     );
 
     this.subscriptions.add(

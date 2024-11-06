@@ -1,25 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Firestore, increment, where } from '@angular/fire/firestore';
+import { IdLike } from '@core/core.model';
+import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { LanguageService } from '@core/services/language.service';
-import { AlertService } from '@shared/services/alert.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Invite } from './invite.model';
-import { IdLike } from '@shared/models/masterdata.model';
 
 @Injectable({ providedIn: 'root' })
 export class InviteService extends BaseResourceService<Invite> {
   constructor(
-    protected alertService: AlertService,
     protected afs: Firestore,
-    protected authService: AuthService,
-    protected languageService: LanguageService,
-    protected fds: FirestoreDebugService
+    protected fds: FirestoreDebugService,
+    private alertService: AlertService,
+    private authService: AuthService,
+    private languageService: LanguageService
   ) {
-    super(alertService, afs, 'invites', fds);
+    super(afs, 'invites', fds);
   }
 
   addInvite(email: string) {

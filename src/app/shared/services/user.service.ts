@@ -1,21 +1,20 @@
 import { effect, Injectable, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { arrayRemove, arrayUnion, Firestore } from '@angular/fire/firestore';
-import { IndividualService } from '@app/domains/individual/individual.service'; // fixme
+import { IdLike } from '@core/core.model';
 import { AuthService } from '@core/services/auth.service';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { LanguageService } from '@core/services/language.service';
 import { Individual } from '@shared/models/individual.model';
-import { IdLike } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
 import { PublicUser } from '@shared/models/public-user.model';
 import { SourceType } from '@shared/models/source-type.model';
 import { Roles } from '@shared/models/user-roles.enum';
 import { PhenonetUser } from '@shared/models/user.model';
+import { IndividualService } from '@shared/services/individual.service'; // fixme
 import { combineLatest, Observable, of } from 'rxjs';
 import { filter, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
-import { AlertService } from './alert.service';
 import { PublicUserService } from './public-user.service';
 
 @Injectable({ providedIn: 'root' })
@@ -29,7 +28,6 @@ export class UserService extends BaseResourceService<PhenonetUser> {
 
   constructor(
     private publicUserService: PublicUserService,
-    alertService: AlertService,
     protected afs: Firestore,
     private authService: AuthService,
     private individualService: IndividualService,
@@ -37,7 +35,7 @@ export class UserService extends BaseResourceService<PhenonetUser> {
     private languageService: LanguageService,
     protected fds: FirestoreDebugService
   ) {
-    super(alertService, afs, 'users', fds);
+    super(afs, 'users', fds);
 
     const sharedFirebaseUser$ = this.authService.firebaseUser$.pipe(shareReplay({ bufferSize: 1, refCount: true }));
     this.publicUser$ = sharedFirebaseUser$.pipe(

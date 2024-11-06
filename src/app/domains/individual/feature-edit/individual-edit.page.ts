@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseDetailComponent } from '@core/components/base-detail.component';
+import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { NavService } from '@shared/components/nav.service';
 import { Individual } from '@shared/models/individual.model';
-import { IndividualService } from '../individual.service';
+import { IndividualService } from '../../../shared/services/individual.service';
 import { IndividualHeaderComponent } from '../shared/individual-header.component';
 import { IndividualEditViewComponent } from './individual-edit-form.widget';
 
@@ -18,7 +18,7 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
   isNewIndividual: boolean;
 
   constructor(
-    private navService: NavService,
+    private titleService: TitleService,
     protected route: ActivatedRoute,
     private individualService: IndividualService,
     protected router: Router
@@ -32,10 +32,10 @@ export class IndividualEditComponent extends BaseDetailComponent<Individual> imp
     window.scrollTo(0, 0);
 
     if (this.route.snapshot.params.id === 'new') {
-      this.navService.setLocation('Objekt erfassen');
+      this.titleService.setLocation('Objekt erfassen');
       this.isNewIndividual = true;
     } else {
-      this.navService.setLocation('Objekt bearbeiten');
+      this.titleService.setLocation('Objekt bearbeiten');
       this.isNewIndividual = false;
     }
   }

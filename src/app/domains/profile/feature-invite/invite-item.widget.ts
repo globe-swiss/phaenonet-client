@@ -4,11 +4,11 @@ import { MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { MaybeIdLike } from '@shared/models/masterdata.model';
 import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
 import { UserSubscriptionButtonComponent } from '../shared/user-subscription.widget';
 import { Invite } from './invite.model';
 import { InviteService } from './invite.service';
+import { MaybeIdLike } from '@core/core.model';
 
 @Component({
   selector: 'app-invite-item',

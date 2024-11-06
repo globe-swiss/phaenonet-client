@@ -6,8 +6,8 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { NavService } from '@shared/components/nav.service';
 
 @Component({
   selector: 'app-login',
@@ -35,11 +35,11 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private navService: NavService
+    private titleService: TitleService
   ) {}
 
   ngOnInit(): void {
-    this.navService.setLocation('Anmeldung');
+    this.titleService.setLocation('Anmeldung');
   }
 
   loginForm = new FormGroup({

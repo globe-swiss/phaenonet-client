@@ -3,8 +3,8 @@ import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { LOGIN_URL } from '@app/app.routes';
+import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { NavService } from '@shared/components/nav.service';
 
 @Component({
   templateUrl: './logged-out.page.html',
@@ -24,9 +24,9 @@ import { NavService } from '@shared/components/nav.service';
 export class LoggedOutComponent implements OnInit {
   loginUrl = LOGIN_URL;
 
-  constructor(private navService: NavService) {}
+  constructor(private titleService: TitleService) {}
 
   ngOnInit(): void {
-    this.navService.setLocation('Abgemeldet');
+    this.titleService.setLocation('Abgemeldet');
   }
 }

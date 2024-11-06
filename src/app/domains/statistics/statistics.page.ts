@@ -7,11 +7,10 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
+import { TitleService } from '@core/services/title.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { NavService } from '@shared/components/nav.service';
 import { Species } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
-import { Observation } from '@shared/models/observation.model';
 import { SourceFilterType } from '@shared/models/source-type.model';
 import { FormPersistenceService } from '@shared/services/form-persistence.service';
 import { formatShortDate } from '@shared/utils/formatDate';
@@ -22,28 +21,8 @@ import * as d3Time from 'd3-time';
 import moment from 'moment';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { AltitudeGroup, Analytics, AnalyticsType, AnalyticsValue } from './statistics.model';
+import { allSpecies, allYear, AltitudeGroup, Analytics, AnalyticsType, AnalyticsValue } from './statistics.model';
 import { StatisticsService } from './statistics.service';
-
-export interface Margin {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-}
-
-export interface ObservationData {
-  species: string;
-  groupedByPhenophase: GroupedByPhenophaseGroup[];
-}
-
-export interface GroupedByPhenophaseGroup {
-  phenophaseGroup: string;
-  observations: Observation[];
-}
-
-const allSpecies = { id: 'all', de: 'Alle' } as Species;
-const allYear = 'all';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -91,7 +70,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   svgComponentHeight = 0;
 
   constructor(
-    private navService: NavService,
+    private titleService: TitleService,
     private statisticsService: StatisticsService,
     private masterdataService: MasterdataService,
     private formPersistanceService: FormPersistenceService,
@@ -110,7 +89,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.navService.setLocation('Auswertungen');
+    this.titleService.setLocation('Auswertungen');
 
     // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
     this.subscriptions.add(
@@ -223,7 +202,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
     svg.selectAll('*').remove();
 
-    const margin: Margin = { top: 0, right: 20, bottom: 30, left: 130 };
+    const margin = { top: 0, right: 20, bottom: 30, left: 130 };
     const offsetLeft = this.statisticsContainer.nativeElement.offsetLeft;
     const offsetTop = this.statisticsContainer.nativeElement.offsetTop;
     const width = boundingBox.width - margin.left - margin.right;

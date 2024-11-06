@@ -19,17 +19,12 @@ import { DatetimeAdapter } from '@mat-datetimepicker/core';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import * as Sentry from '@sentry/angular-ivy';
 import { Integrations } from '@sentry/tracing';
-import { UserService } from '@shared/services/user.service';
 import { Observable, from } from 'rxjs';
 import { environment } from '~/environments/environment';
 import { routes } from './app.routes';
 import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/providers/app-moment-date-adapter';
 import { GlobalErrorHandler } from './core/providers/global-error-handler';
 import { SentryMissingTranslationHandler } from './core/providers/sentry-missing-translation-handler';
-import { IndividualService } from './domains/individual/individual.service';
-import { MapService } from './domains/map/map.service';
-import { MasterdataService } from './shared/models/masterdata.service';
-import { SensorsService } from './shared/services/sensors.service';
 
 Sentry.init({
   enabled: environment.sentryEnabled,
@@ -109,11 +104,6 @@ export const appConfig: ApplicationConfig = {
       { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
       { provide: HTTP_INTERCEPTORS, useClass: LocaleInterceptor, multi: true }
     ],
-    MasterdataService,
-    UserService,
-    IndividualService,
-    SensorsService,
-    MapService,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideStorage(() => getStorage()),

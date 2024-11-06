@@ -1,13 +1,5 @@
 import { SourceType } from '@shared/models/source-type.model';
 
-export interface IdLike {
-  id: string;
-}
-
-export interface MaybeIdLike {
-  id?: string;
-}
-
 export class MasterdataLike {
   id: string;
   de: string;

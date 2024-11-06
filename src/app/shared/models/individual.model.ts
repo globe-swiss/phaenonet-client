@@ -1,6 +1,6 @@
 import { Timestamp } from '@angular/fire/firestore';
 import { SourceType } from './source-type.model';
-import { IdLike } from './masterdata.model';
+import { IdLike } from '@core/core.model';
 
 export type IndividualType = 'individual' | 'station';
 

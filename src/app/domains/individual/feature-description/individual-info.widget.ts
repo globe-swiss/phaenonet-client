@@ -12,7 +12,7 @@ import { PublicUserService } from '@shared/services/public-user.service';
 import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
-import { IndividualService } from '../individual.service';
+import { IndividualService } from '../../../shared/services/individual.service';
 import { SensorsBoxComponent } from './sensors-box.component';
 
 @Component({

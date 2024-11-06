@@ -5,11 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { IndividualService } from '@app/domains/individual/individual.service'; //fixme
+import { TitleService } from '@core/services/title.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { NavService } from '@shared/components/nav.service';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
+import { IndividualService } from '@shared/services/individual.service'; //fixme
 import { parseInt } from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -43,7 +43,7 @@ export class ProfileSpeciesComponent implements OnInit {
   data$: Observable<Data>;
 
   constructor(
-    private navService: NavService,
+    private titleService: TitleService,
     protected route: ActivatedRoute,
     public dialog: MatDialog,
     private individualService: IndividualService,
@@ -68,7 +68,7 @@ export class ProfileSpeciesComponent implements OnInit {
 
         const id = params.get('id');
 
-        this.navService.setLocation('species');
+        this.titleService.setLocation('species');
 
         return { year, species, speciesText, id, avaiableYears };
       })

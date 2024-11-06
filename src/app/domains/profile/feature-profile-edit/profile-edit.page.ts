@@ -12,8 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseDetailComponent } from '@core/components/base-detail.component';
 import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
+import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { NavService } from '@shared/components/nav.service';
 import { PhenonetUser } from '@shared/models/user.model';
 import { PublicUserService } from '@shared/services/public-user.service';
 import { UserService } from '@shared/services/user.service';
@@ -57,7 +57,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   formInitialized: WritableSignal<boolean> = signal(false);
 
   constructor(
-    private navService: NavService,
+    private titleService: TitleService,
     protected router: Router,
     protected route: ActivatedRoute,
     private userService: UserService,
@@ -88,7 +88,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.navService.setLocation('Profil bearbeiten');
+    this.titleService.setLocation('Profil bearbeiten');
     this.initialLanguage = this.languageService.determineCurrentLang();
     this.email = this.authService.email;
 

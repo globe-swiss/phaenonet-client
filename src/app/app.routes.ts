@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { NotFoundComponent } from './core/components/not-found.page';
 import { AuthGuard } from './core/providers/auth.guard';
+import { NotFoundComponent } from './core/components/not-found.page';
 import { LoadingGuard } from './core/providers/loading.guard';
 import { LoggedOutComponent } from './domains/auth/logged-out.page';
 import { LoginComponent } from './domains/auth/login.page';

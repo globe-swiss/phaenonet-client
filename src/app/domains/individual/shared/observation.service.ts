@@ -3,18 +3,16 @@ import { Firestore, where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { Observation } from '@shared/models/observation.model';
-import { AlertService } from '@shared/services/alert.service';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ObservationService extends BaseResourceService<Observation> {
   constructor(
-    alertService: AlertService,
     protected afs: Firestore,
     protected fds: FirestoreDebugService
   ) {
-    super(alertService, afs, 'observations', fds);
+    super(afs, 'observations', fds);
   }
 
   listByIndividual(individualId: string): Observable<Observation[]> {

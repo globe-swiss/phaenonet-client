@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
+import { IdLike } from '@core/core.model';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { IndividualType, MapIndividual } from '@shared/models/individual.model';
-import { IdLike } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
 import { SourceFilterType, SourceType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';

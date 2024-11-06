@@ -6,8 +6,8 @@ import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle }
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { AuthService } from '@core/services/auth.service';
+import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { NavService } from '@shared/components/nav.service';
 
 @Component({
   templateUrl: './reset-password.page.html',
@@ -38,11 +38,11 @@ export class ResetPasswordComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private navService: NavService
+    private titleService: TitleService
   ) {}
 
   ngOnInit(): void {
-    this.navService.setLocation('Passwort zurücksetzen');
+    this.titleService.setLocation('Passwort zurücksetzen');
   }
 
   resetPassword(): void {

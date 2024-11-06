@@ -19,8 +19,7 @@ import {
 } from '@angular/fire/auth';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { LocalService } from '@app/core/services/local.service';
-import { BaseService } from '@core/services/base.service';
-import { AlertService, Level, UntranslatedAlertMessage } from '@shared/services/alert.service';
+import { AlertService, Level, UntranslatedAlertMessage } from '@core/services/alert.service';
 import { none } from 'fp-ts/lib/Option';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -28,7 +27,7 @@ import { map } from 'rxjs/operators';
 const LOCALSTORAGE_LOGGEDIN_KEY = 'loggedin';
 
 @Injectable({ providedIn: 'root' })
-export class AuthService extends BaseService {
+export class AuthService {
   browserIdHeaders: HttpHeaders;
 
   /**
@@ -43,12 +42,11 @@ export class AuthService extends BaseService {
   redirectUrl: string;
 
   constructor(
-    alertService: AlertService,
+    private alertService: AlertService,
     private afs: Firestore,
     private afAuth: Auth,
     private localService: LocalService
   ) {
-    super(alertService);
     this.firebaseUser$ = authState(this.afAuth);
     const firebaseUser = toSignal(this.firebaseUser$);
 

@@ -9,11 +9,11 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PhenophaseObservation, PhenophaseObservationsGroup } from '@app/domains/profile/profile.model';
+import { PhenophaseObservation, PhenophaseObservationsGroup } from '@app/domains/profile/shared/profile.model';
+import { IdLike } from '@core/core.model';
 import { TranslateModule } from '@ngx-translate/core';
 import { altitudeLimits } from '@shared/models/altitude-limits.model';
 import { Individual } from '@shared/models/individual.model';
-import { IdLike } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
 import { Observation } from '@shared/models/observation.model';
 import { UserService } from '@shared/services/user.service';
@@ -21,8 +21,8 @@ import { findFirst } from 'fp-ts/lib/Array';
 import { some } from 'fp-ts/lib/Option';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, first, map, mergeAll, switchMap } from 'rxjs/operators';
-import { IndividualService } from '../individual.service';
-import { ObservationService } from '../observation.service';
+import { IndividualService } from '../../../shared/services/individual.service';
+import { ObservationService } from '../shared/observation.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
 
 @Component({

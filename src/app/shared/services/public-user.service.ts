@@ -7,16 +7,14 @@ import { PublicUser } from '@shared/models/public-user.model';
 import { Roles } from '@shared/models/user-roles.enum';
 import { Observable, of } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
-import { AlertService } from './alert.service';
 
 @Injectable({ providedIn: 'root' })
 export class PublicUserService extends BaseResourceService<PublicUser> {
   constructor(
-    alertService: AlertService,
     protected afs: Firestore,
     protected fds: FirestoreDebugService
   ) {
-    super(alertService, afs, 'public_users', fds);
+    super(afs, 'public_users', fds);
   }
 
   existingNickname(nickname: string): Observable<boolean> {

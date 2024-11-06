@@ -14,14 +14,12 @@ import {
   QueryDocumentSnapshot,
   setDoc
 } from '@angular/fire/firestore';
-import { BaseService } from '@core/services/base.service';
+import { IdLike } from '@core/core.model';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
-import { IdLike } from '@shared/models/masterdata.model';
-import { AlertService } from '@shared/services/alert.service';
 import { from, identity, Observable, of } from 'rxjs';
 import { first, mergeMap, tap } from 'rxjs/operators';
 
-export abstract class BaseResourceService<T> extends BaseService {
+export abstract class BaseResourceService<T> {
   protected converter: FirestoreDataConverter<T & IdLike> = {
     toFirestore: (data: T & IdLike): DocumentData => {
       return { ...data };
@@ -38,12 +36,10 @@ export abstract class BaseResourceService<T> extends BaseService {
   protected collectionRef: CollectionReference<T & IdLike, DocumentData>;
 
   constructor(
-    protected alertService: AlertService,
     protected afs: Firestore,
     protected collectionName: string,
     protected fds: FirestoreDebugService
   ) {
-    super(alertService);
     this.collectionRef = collection(this.afs, this.collectionName).withConverter(this.converter);
   }
 

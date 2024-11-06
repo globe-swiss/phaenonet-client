@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { Individual } from './individual.model';
-import { IdLike, Species, Phenophase } from './masterdata.model';
+import { Species, Phenophase } from './masterdata.model';
+import { IdLike } from '@core/core.model';
 
 export class IndividualPhenophase {
   individual: Individual & IdLike;

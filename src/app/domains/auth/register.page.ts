@@ -8,11 +8,11 @@ import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
+import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
+import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { NavService } from '@shared/components/nav.service';
-import { AlertService } from '@shared/services/alert.service';
 import { PublicUserService } from '@shared/services/public-user.service';
 import { UserService } from '@shared/services/user.service';
 import { equalValidation } from '@shared/utils/validation';
@@ -63,12 +63,12 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
     private publicUserService: PublicUserService,
     private alertService: AlertService,
     private router: Router,
-    private navService: NavService,
+    private titleService: TitleService,
     private languageService: LanguageService
   ) {}
 
   ngOnInit(): void {
-    this.navService.setLocation('Registrierung');
+    this.titleService.setLocation('Registrierung');
     this.registerForm = new FormGroup({
       nickname: new FormControl('', {
         updateOn: 'blur',

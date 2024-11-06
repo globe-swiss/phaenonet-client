@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
+import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { NavService } from '@shared/components/nav.service';
 
 @Component({
   selector: 'app-not-found',
@@ -22,9 +22,9 @@ import { NavService } from '@shared/components/nav.service';
   ]
 })
 export class NotFoundComponent implements OnInit {
-  constructor(private navService: NavService) {}
+  constructor(private titleService: TitleService) {}
 
   ngOnInit(): void {
-    this.navService.setLocation('Hier ist etwas schiefgelaufen.');
+    this.titleService.setLocation('Hier ist etwas schiefgelaufen.');
   }
 }

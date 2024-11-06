@@ -1,7 +1,7 @@
 import { NgFor } from '@angular/common';
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AlertService } from '@shared/services/alert.service';
+import { AlertService } from '@core/services/alert.service';
 import { Subscription } from 'rxjs';
 
 @Component({

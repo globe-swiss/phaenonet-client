@@ -9,8 +9,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatSelect } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
 import { LocalService } from '@core/services/local.service';
+import { TitleService } from '@core/services/title.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { NavService } from '@shared/components/nav.service';
 import { MapIndividual } from '@shared/models/individual.model';
 import { Species } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
@@ -95,7 +95,7 @@ export class MapComponent implements OnInit, OnDestroy {
   translationsLoaded = false;
 
   constructor(
-    private navService: NavService,
+    private titleService: TitleService,
     private mapService: MapService,
     private masterdataService: MasterdataService,
     private formPersistanceService: FormPersistenceService,
@@ -105,7 +105,7 @@ export class MapComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.navService.setLocation('Karte');
+    this.titleService.setLocation('Karte');
 
     // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
     this.subscriptions.add(
