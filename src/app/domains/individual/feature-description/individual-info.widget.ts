@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import { Phenophase, Species } from '@shared/models/masterdata.model';
-import { MasterdataService } from '@shared/models/masterdata.service';
+import { MasterdataService } from '@shared/services/masterdata.service';
 import { PublicUserService } from '@shared/services/public-user.service';
 import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
 import { combineLatest, Observable } from 'rxjs';

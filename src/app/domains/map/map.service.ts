@@ -4,8 +4,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { IdLike } from '@core/core.model';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { IndividualType, MapIndividual } from '@shared/models/individual.model';
-import { MasterdataService } from '@shared/models/masterdata.service';
 import { SourceFilterType, SourceType } from '@shared/models/source-type.model';
+import { MasterdataService } from '@shared/services/masterdata.service';
 import { Observable } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
 

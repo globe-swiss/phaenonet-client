@@ -8,8 +8,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
-import { MasterdataService } from '@shared/models/masterdata.service';
 import { IndividualService } from '@shared/services/individual.service'; //fixme
+import { MasterdataService } from '@shared/services/masterdata.service';
 import { parseInt } from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';

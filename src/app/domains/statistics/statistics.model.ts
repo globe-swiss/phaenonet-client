@@ -25,13 +25,6 @@ export class Analytics {
   values: AnalyticsValue[];
 }
 
-export interface Margin {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-}
-
 export interface ObservationData {
   species: string;
   groupedByPhenophase: GroupedByPhenophaseGroup[];

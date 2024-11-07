@@ -4,7 +4,7 @@ import { GoogleMap, MapMarker } from '@angular/google-maps';
 import { MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Individual } from '@shared/models/individual.model';
-import { MasterdataService } from '@shared/models/masterdata.service';
+import { MasterdataService } from '@shared/services/masterdata.service';
 import { Observable, ReplaySubject } from 'rxjs';
 import { filter, first, map, mergeAll } from 'rxjs/operators';
 import { IndividualService } from '../../../shared/services/individual.service';

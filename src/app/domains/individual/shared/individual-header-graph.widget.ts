@@ -12,9 +12,9 @@ import {
 import { ObservationService } from '@app/domains/individual/shared/observation.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
-import { MasterdataService } from '@shared/models/masterdata.service';
 import { Observation } from '@shared/models/observation.model';
 import { DailySensorData } from '@shared/models/sensors';
+import { MasterdataService } from '@shared/services/masterdata.service';
 import { SensorsService } from '@shared/services/sensors.service';
 import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';

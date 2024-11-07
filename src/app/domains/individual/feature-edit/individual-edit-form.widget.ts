@@ -23,7 +23,7 @@ import {
   Shade,
   Species
 } from '@shared/models/masterdata.model';
-import { MasterdataService } from '@shared/models/masterdata.service';
+import { MasterdataService } from '@shared/services/masterdata.service';
 import { UserService } from '@shared/services/user.service';
 import { some } from 'fp-ts/lib/Option';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest } from 'rxjs';

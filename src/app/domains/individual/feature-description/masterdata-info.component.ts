@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import { Description, Distance, Exposition, Forest, Habitat, Irrigation, Shade } from '@shared/models/masterdata.model';
-import { MasterdataService } from '@shared/models/masterdata.service';
+import { MasterdataService } from '@shared/services/masterdata.service';
 import { RoundPipe } from '@shared/utils/round.pipe';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';

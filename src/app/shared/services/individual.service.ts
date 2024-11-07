@@ -8,7 +8,7 @@ import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
 import { Individual, SensorLiveData } from '@shared/models/individual.model';
 import { Phenophase, Species } from '@shared/models/masterdata.model';
-import { MasterdataService } from '@shared/models/masterdata.service';
+import { MasterdataService } from '@shared/services/masterdata.service';
 import { formatShortDate, formatShortDateTime } from '@shared/utils/formatDate';
 import { combineLatest, from, Observable, of } from 'rxjs';
 import { first, map, mergeAll, tap } from 'rxjs/operators';

@@ -7,12 +7,12 @@ import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { LanguageService } from '@core/services/language.service';
 import { Individual } from '@shared/models/individual.model';
-import { MasterdataService } from '@shared/models/masterdata.service';
 import { PublicUser } from '@shared/models/public-user.model';
 import { SourceType } from '@shared/models/source-type.model';
 import { Roles } from '@shared/models/user-roles.enum';
 import { PhenonetUser } from '@shared/models/user.model';
 import { IndividualService } from '@shared/services/individual.service'; // fixme
+import { MasterdataService } from '@shared/services/masterdata.service';
 import { combineLatest, Observable, of } from 'rxjs';
 import { filter, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { PublicUserService } from './public-user.service';

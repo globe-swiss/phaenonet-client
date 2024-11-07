@@ -6,7 +6,7 @@ import { BaseDetailComponent } from '@core/components/base-detail.component';
 import { AuthService } from '@core/services/auth.service';
 import { TitleService } from '@core/services/title.service';
 import { Individual } from '@shared/models/individual.model';
-import { MasterdataService } from '@shared/models/masterdata.service';
+import { MasterdataService } from '@shared/services/masterdata.service';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { IndividualService } from '../../shared/services/individual.service';

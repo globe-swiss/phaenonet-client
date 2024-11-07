@@ -9,8 +9,8 @@ import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
-import { MasterdataService } from '@shared/models/masterdata.service';
 import { IndividualService } from '@shared/services/individual.service'; // fixme
+import { MasterdataService } from '@shared/services/masterdata.service';
 import { gropupBy } from '@shared/utils/group-by';
 import { Observable, ReplaySubject } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';

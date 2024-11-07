@@ -5,10 +5,10 @@ import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { LanguageService } from '@core/services/language.service';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { map, mergeAll, publishReplay, refCount, shareReplay, tap } from 'rxjs/operators';
-import { environment } from '~/environments/environment';
 import configStatic_import from '~/assets/config_static.json';
-import { AltitudeLimits } from './altitude-limits.model';
-import { hasSensor, Individual, MapIndividual } from './individual.model';
+import { environment } from '~/environments/environment';
+import { AltitudeLimits } from '../models/altitude-limits.model';
+import { hasSensor, Individual, MapIndividual } from '../models/individual.model';
 import {
   Comment,
   Description,
@@ -23,8 +23,8 @@ import {
   Shade,
   SortedMasterdataLike,
   Species
-} from './masterdata.model';
-import { Roles } from './user-roles.enum';
+} from '../models/masterdata.model';
+import { Roles } from '../models/user-roles.enum';
 
 export interface MasterdataCollection {
   [index: string]: Record<string, unknown>;
