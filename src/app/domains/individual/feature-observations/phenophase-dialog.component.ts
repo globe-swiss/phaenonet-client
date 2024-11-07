@@ -18,11 +18,11 @@ import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field'
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
-import { PhenophaseObservation } from '@app/domains/profile/shared/profile.model';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observation } from '@shared/models/observation.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { PhenophaseObservation } from '../shared/individual.model';
 
 @Component({
   selector: 'app-phenohase-dialog',

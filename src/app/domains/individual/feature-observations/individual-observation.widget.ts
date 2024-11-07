@@ -9,7 +9,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PhenophaseObservation, PhenophaseObservationsGroup } from '@app/domains/profile/shared/profile.model';
 import { IdLike } from '@core/core.model';
 import { TranslateModule } from '@ngx-translate/core';
 import { altitudeLimits } from '@shared/models/altitude-limits.model';
@@ -22,6 +21,7 @@ import { some } from 'fp-ts/lib/Option';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, first, map, mergeAll, switchMap } from 'rxjs/operators';
 import { IndividualService } from '../../../shared/services/individual.service';
+import { PhenophaseObservation, PhenophaseObservationsGroup } from '../shared/individual.model';
 import { ObservationService } from '../shared/observation.service';
 import { PhenophaseDialogComponent } from './phenophase-dialog.component';
 
