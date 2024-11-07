@@ -15,7 +15,6 @@ import { MapIndividual } from '@shared/models/individual.model';
 import { Species } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
 import { SourceFilterType } from '@shared/models/source-type.model';
-import { FormPersistenceService } from '@shared/services/form-persistence.service';
 import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
 import { TypeGuard, TypeGuardPipe } from '@shared/utils/type-guard.pipe';
 import { Observable, Subscription, combineLatest } from 'rxjs';
@@ -98,7 +97,6 @@ export class MapComponent implements OnInit, OnDestroy {
     private titleService: TitleService,
     private mapService: MapService,
     private masterdataService: MasterdataService,
-    private formPersistanceService: FormPersistenceService,
     private localService: LocalService,
     private mapInfoService: MapInfoService,
     private translateService: TranslateService
@@ -169,7 +167,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private initFilters(): void {
-    if (!this.formPersistanceService.mapFilter) {
+    if (!this.mapService.mapFilterState) {
       const selectedYear = new FormControl<number>(Number.NaN);
       this.filter = new FormGroup({
         year: selectedYear,
@@ -177,9 +175,9 @@ export class MapComponent implements OnInit, OnDestroy {
         species: new FormControl<string>(allSpecies.id)
       });
       this.masterdataService.phenoYear$.pipe(first()).subscribe(year => selectedYear.patchValue(year));
-      this.formPersistanceService.mapFilter = this.filter;
+      this.mapService.mapFilterState = this.filter;
     } else {
-      this.filter = this.formPersistanceService.mapFilter;
+      this.filter = this.mapService.mapFilterState;
     }
   }
 

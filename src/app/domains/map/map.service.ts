@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
+import { FormControl, FormGroup } from '@angular/forms';
 import { IdLike } from '@core/core.model';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { IndividualType, MapIndividual } from '@shared/models/individual.model';
@@ -29,7 +30,15 @@ export interface IndividualWithMarkerOpt {
 }
 
 @Injectable({ providedIn: 'root' })
+
+// requires to be provided in root to save awhen leaving the component
 export class MapService {
+  public mapFilterState: FormGroup<{
+    year: FormControl<number>;
+    datasource: FormControl<SourceFilterType>;
+    species: FormControl<string>;
+  }>;
+
   constructor(
     protected afs: Firestore,
     protected fds: FirestoreDebugService,

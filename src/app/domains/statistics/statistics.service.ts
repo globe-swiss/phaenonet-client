@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, where } from '@angular/fire/firestore';
+import { FormControl, FormGroup } from '@angular/forms';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { SourceFilterType } from '@shared/models/source-type.model';
@@ -9,6 +10,14 @@ import { Analytics, AnalyticsType } from './statistics.model';
 
 @Injectable({ providedIn: 'root' })
 export class StatisticsService extends BaseResourceService<Analytics> {
+  // requires to be provided in root to save awhen leaving the component
+  public statisticFilterState: FormGroup<{
+    year: FormControl<string>;
+    datasource: FormControl<SourceFilterType>;
+    analyticsType: FormControl<AnalyticsType>;
+    species: FormControl<string>;
+  }>;
+
   constructor(
     protected afs: Firestore,
     protected fds: FirestoreDebugService

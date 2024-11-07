@@ -12,7 +12,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Species } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/models/masterdata.service';
 import { SourceFilterType } from '@shared/models/source-type.model';
-import { FormPersistenceService } from '@shared/services/form-persistence.service';
 import { formatShortDate } from '@shared/utils/formatDate';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
@@ -73,7 +72,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     private titleService: TitleService,
     private statisticsService: StatisticsService,
     private masterdataService: MasterdataService,
-    private formPersistanceService: FormPersistenceService,
     private translateService: TranslateService
   ) {}
 
@@ -98,7 +96,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       })
     );
 
-    if (!this.formPersistanceService.statisticFilter) {
+    if (!this.statisticsService.statisticFilterState) {
       this.filter = new FormGroup({
         year: new FormControl(''),
         datasource: new FormControl(this.selectableDatasources[0]),
@@ -108,9 +106,9 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       this.masterdataService.phenoYear$
         .pipe(first())
         .subscribe(year => this.filter.controls.year.patchValue(String(year)));
-      this.formPersistanceService.statisticFilter = this.filter;
+      this.statisticsService.statisticFilterState = this.filter;
     } else {
-      this.filter = this.formPersistanceService.statisticFilter;
+      this.filter = this.statisticsService.statisticFilterState;
     }
 
     this.selectableSpecies$ = this.filter.valueChanges.pipe(
