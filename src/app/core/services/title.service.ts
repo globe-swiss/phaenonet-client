@@ -17,7 +17,7 @@ export class TitleService implements OnDestroy {
     this.subscriptions.add(
       this.location$
         .pipe(switchMap(untranslatedLocation => translateService.get(untranslatedLocation)))
-        .subscribe(translatedLocation => this.title.setTitle(translatedLocation))
+        .subscribe(translatedLocation => this.title.setTitle(translatedLocation as string))
     );
 
     this.subscriptions.add(

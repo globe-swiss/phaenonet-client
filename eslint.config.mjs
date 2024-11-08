@@ -86,8 +86,6 @@ export default [
     }
   },
   {
-    // Sheriff plugin configuration for TypeScript files
-    files: ['**/*.ts'],
     ...sheriff.configs.all
   },
   ...compat.extends('plugin:@angular-eslint/template/recommended', 'plugin:prettier/recommended').map(config => ({
