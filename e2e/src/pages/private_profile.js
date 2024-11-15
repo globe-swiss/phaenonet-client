@@ -4,7 +4,7 @@ module.exports = {
     navigation: { css: 'app-nav' },
     profile: { css: 'app-profile-details' },
     observations: { css: 'app-observation-list' },
-    activities: { css: 'app-activity-list' }
+    activities: { css: 'app-activity' }
   },
   profile: {
     title: { css: 'app-profile-details [data-test-id=profile-details-title]' },

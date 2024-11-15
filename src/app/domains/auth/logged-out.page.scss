@@ -1,0 +1,13 @@
+@import 'src/theming/mixins';
+
+.logged-out {
+  @include card-view;
+
+  &__content {
+    @include card-view-content;
+  }
+
+  &__button {
+    @include button;
+  }
+}

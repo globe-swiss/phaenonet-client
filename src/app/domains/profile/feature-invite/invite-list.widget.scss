@@ -1,0 +1,36 @@
+@use '@angular/material' as mat;
+
+@import 'src/theming/mixins';
+
+@import 'src/theming/typography';
+
+.invite-list {
+  @include detail-view-content;
+
+  &__title {
+    @include left-column;
+
+    &:not(:first-of-type) {
+      @include for-tablet-and-smaller {
+        padding-top: 40px;
+      }
+    }
+  }
+
+  &__right-column {
+    @include profile-detail-right-column;
+  }
+
+  &__content {
+    @include profile-detail-right-column;
+    @include typo-t2;
+  }
+
+  &__button {
+    @include button;
+  }
+
+  &__buttons {
+    @include buttons;
+  }
+}

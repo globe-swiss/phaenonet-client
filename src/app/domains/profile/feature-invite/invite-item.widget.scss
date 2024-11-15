@@ -1,0 +1,39 @@
+@use '@angular/material' as mat;
+
+@import 'src/theming/typography';
+
+@import 'src/theming/mixins';
+
+.invite-card {
+  @include teaser-card;
+
+  &__image {
+    @include teaser-image;
+  }
+
+  &__description {
+    @include teaser-description;
+  }
+
+  &__label {
+    @include detail-label;
+  }
+
+  &__value {
+    @include teaser-name;
+  }
+
+  &__value--last {
+    padding-bottom: 0;
+  }
+
+  &__buttons {
+    margin-left: auto;
+    display: flex;
+    padding-right: 25px;
+  }
+
+  &__button {
+    align-self: center;
+  }
+}

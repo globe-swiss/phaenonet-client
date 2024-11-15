@@ -1,0 +1,26 @@
+@use '@angular/material' as mat;
+
+@import 'src/theming/mixins';
+
+@import 'src/theming/typography';
+
+.activity {
+  @include detail-view-content;
+  @include profile-detail-bottom-padding;
+
+  &__title {
+    @include left-column;
+  }
+
+  &__content {
+    @include profile-detail-right-column;
+  }
+
+  &__button {
+    @include button;
+
+    &--more {
+      margin-top: 0;
+    }
+  }
+}

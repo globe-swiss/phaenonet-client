@@ -2,6 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import js from '@eslint/js';
 import { FlatCompat } from '@eslint/eslintrc';
+import sheriff from '@softarc/eslint-plugin-sheriff';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -83,6 +84,9 @@ export default [
       'no-underscore-dangle': 'off',
       'no-unused-vars': 'off'
     }
+  },
+  {
+    ...sheriff.configs.all
   },
   ...compat.extends('plugin:@angular-eslint/template/recommended', 'plugin:prettier/recommended').map(config => ({
     ...config,

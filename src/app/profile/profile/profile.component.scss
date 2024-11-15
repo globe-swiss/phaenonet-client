@@ -1,9 +1,0 @@
-@import '../../../theming/mixins';
-
-.profile-component {
-  @include detail-view;
-
-  @include for-tablet-and-smaller {
-    max-width: 550px;
-  }
-}

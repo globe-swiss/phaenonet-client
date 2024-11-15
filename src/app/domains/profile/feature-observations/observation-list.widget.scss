@@ -1,0 +1,34 @@
+@use '@angular/material' as mat;
+
+@import 'src/theming/mixins';
+
+@import 'src/theming/typography';
+
+.observation-list {
+  @include detail-view-content;
+  @include profile-detail-bottom-padding;
+
+  &__title {
+    @include left-column;
+  }
+
+  &__content {
+    @include profile-detail-right-column;
+  }
+
+  &__button {
+    @include button;
+
+    &--more {
+      @include button-first-on-mobile;
+    }
+  }
+
+  &__buttons {
+    @include buttons;
+  }
+
+  &__year {
+    @include year-select;
+  }
+}

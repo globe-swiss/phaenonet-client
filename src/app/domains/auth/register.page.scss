@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+
+@import 'src/theming/mixins';
+@import 'src/theming/typography';
+
+.register {
+  @include card-view;
+
+  &__content {
+    @include card-view-content;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__button {
+    @include button;
+  }
+}

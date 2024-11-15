@@ -9,15 +9,46 @@ PhaenoNet is set up with two Firebase projects instances. These projects have a 
 - [phaenonet](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the production instance
 - [phaenonet-test](https://console.firebase.google.com/u/0/project/phaenonet/overview) as the test instance
 
-## Development
+## Project Structure
 
-The application will be using the database and access rules of the `phaenonet-test` project for all use-cases described in this section.
+This structure organizes the app into `core`, `shared`, and `domain` areas, each serving distinct purposes.
 
-### GitHub Codespaces
+```plaintext
+/
+├── src/
+│   ├── app/
+│   │   ├── core/                     # Core application services and utilities
+│   │   │   ├── components/           # Core reusable components
+│   │   │   ├── providers/            # App-wide providers (e.g., global error handler)
+│   │   │   ├── services/             # Singleton services (e.g., auth service)
+│   │   │   ├── models/               # App-wide data models
+│   │   │   └── utils/                # Utility functions and helpers
+│   │   │
+│   │   ├── shared/                   # Shared resources across modules
+│   │   │   ├── components/           # Shared UI components
+│   │   │   ├── services/             # Reusable, stateless services
+│   │   │   ├── models/               # Shared data models
+│   │   │   └── utils/                # Utility functions and helpers
+│   │   │
+│   │   ├── domains/                  # Business domains and feature areas
+│   │   │   ├── auth/                 # Authentication domain
+│   │   │   │   ├── feature-login/    # Specific feature, e.g., login
+│   │   │   │   └── shared/           # Auth domain-specific shared items
+│   │   │   ├── individual/           # Individual user-related domain
+│   │   │   │   └── feature-profile/  # Feature folder for profile functions
+│   │   │   ├── map/                  # Map domain
+│   │   │   ├── profile/              # Profile domain
+:   :   :   └── statistics/           # Statistics domain
 
-Launch the Codespace in GitHub using the `codespace` branch. It will checkout the master branch, initialize the submodules, and rebuild the container. This process may take some minutes to finish.
+```
 
-### CSS
+### Component Naming Conventions
+
+- **page**: Components that have a route (e.g., `login.page.ts`).
+- **widget**: "Smart" components interacting with services or managing complex data (e.g., `user.widget.ts`).
+- **component**: "Dumb" UI-only components that e.g. communicate via `@Input()` and `@Output()` (e.g., `button.component.ts`).
+
+### CSS conventions
 
 The CSS is developed according to [BEM](http://getbem.com/introduction/).
 
@@ -52,6 +83,14 @@ mixins.scss:
   ...
 }
 ```
+
+## Development
+
+The application will be using the database and access rules of the `phaenonet-test` project for all use-cases described in this section.
+
+### GitHub Codespaces
+
+Launch the Codespace in GitHub using the `codespace` branch. It will checkout the master branch, initialize the submodules, and rebuild the container. This process may take some minutes to finish.
 
 ### Serve locally
 

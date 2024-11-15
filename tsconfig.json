@@ -17,7 +17,13 @@
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2019", "dom"],
     "allowSyntheticDefaultImports": true,
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "paths": {
+      "@shared/*": ["src/app/shared/*"],
+      "@core/*": ["src/app/core/*"],
+      "@app/*": ["src/app/*"],
+      "~/*": ["src/*"]
+    }
   },
   "angularCompilerOptions": {
     "strictTemplates": true

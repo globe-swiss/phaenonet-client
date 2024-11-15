@@ -1,0 +1,37 @@
+<div class="masterdata-info">
+  <div class="masterdata-info__label">{{ 'Umgebung' | translate }}</div>
+  <div class="masterdata-info__value" data-test-id="environment">
+    {{ (description$ | async)?.de | translate }}
+  </div>
+  <div class="masterdata-info__label">{{ 'Höhe' | translate }}</div>
+  <div class="masterdata-info__value" data-test-id="altitude">
+    <span class="masterdata-info__value">{{ (individual$ | async)?.altitude | round }}</span>
+    <span class="masterdata-info__value-addition" translate> {{ 'm ü. M.' }}</span>
+  </div>
+  <div class="masterdata-info__label">{{ 'Exposition' | translate }}</div>
+  <div class="masterdata-info__value" data-test-id="exposition">
+    {{ (exposition$ | async)?.de | translate }}
+  </div>
+  <div class="masterdata-info__label">{{ 'Hangneigung' | translate }}</div>
+  <div class="masterdata-info__value" data-test-id="gradient">{{ (individual$ | async)?.gradient }}%</div>
+  <div class="masterdata-info__label">{{ 'Schatten' | translate }}</div>
+  <div class="masterdata-info__value" data-test-id="shadow">
+    {{ (shade$ | async)?.de | translate }}
+  </div>
+  <div class="masterdata-info__label">{{ 'Bewässerung' | translate }}</div>
+  <div class="masterdata-info__value" data-test-id="irrigation">
+    {{ (irrigation$ | async)?.de | translate }}
+  </div>
+  <div class="masterdata-info__label">{{ 'Distanz zu Gebäude / Strasse' | translate }}</div>
+  <div class="masterdata-info__value" data-test-id="distance">
+    {{ (distance$ | async)?.de | translate }}
+  </div>
+  <div class="masterdata-info__label">{{ 'Habitat' | translate }}</div>
+  <div class="masterdata-info__value" data-test-id="habitat">
+    {{ (habitat$ | async)?.de | translate }}
+  </div>
+  <div class="masterdata-info__label">{{ 'Waldtyp' | translate }}</div>
+  <div class="masterdata-info__value" data-test-id="forestType">
+    {{ (forest$ | async)?.de | translate }}
+  </div>
+</div>

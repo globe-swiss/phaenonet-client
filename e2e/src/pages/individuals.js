@@ -7,8 +7,8 @@ module.exports = {
   components: {
     navigation: { css: 'app-nav' },
     header: { css: 'app-individual-header[mode=detail]' },
-    descriptionHeader: { css: 'app-individual-description-header' },
-    descriptionInfo: { css: 'app-individual-description-basic-info' },
+    descriptionHeader: { css: 'app-individual-info' },
+    descriptionInfo: { css: 'app-masterdata-info' },
     observations: { css: 'app-individual-observation-view' },
     observationContent: { css: '[data-test-id=observationDate]' }
   },
@@ -50,8 +50,8 @@ module.exports = {
   },
   followButton: { css: '[data-test-id=followButton]' },
   unfollowButton: { css: '[data-test-id=unfollowButton]' },
-  editButton: { css: 'app-individual-description-buttons #edit-button' },
-  deleteButton: { css: 'app-individual-description-buttons #delete-button' },
+  editButton: { css: 'app-individual-buttons #edit-button' },
+  deleteButton: { css: 'app-individual-buttons #delete-button' },
   deleteDialog: {
     deleteConfirmationButton: { css: 'app-confirmation-dialog button[ng-reflect-dialog-result=true]' }
   },

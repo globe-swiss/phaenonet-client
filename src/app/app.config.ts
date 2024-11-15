@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import localeIt from '@angular/common/locales/it';
@@ -13,22 +13,18 @@ import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { Router, provideRouter } from '@angular/router';
+import { HeaderInterceptor } from '@core/providers/header.interceptor';
+import { LocaleInterceptor } from '@core/providers/locale.interceptor';
 import { DatetimeAdapter } from '@mat-datetimepicker/core';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import * as Sentry from '@sentry/angular-ivy';
 import { Integrations } from '@sentry/tracing';
 import { Observable, from } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '~/environments/environment';
 import { routes } from './app.routes';
-import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/app-moment-date-adapter';
-import { httpInterceptorProviders } from './http-interceptors';
-import { IndividualService } from './individual/individual.service';
-import { MapService } from './map/map.service';
-import { MasterdataService } from './masterdata/masterdata.service';
-import { UserService } from './profile/user.service';
-import { SensorsService } from './sensors/sensors.service';
-import { GlobalErrorHandler } from './shared/GlobalErrorHandler';
-import { SentryMissingTranslationHandler } from './shared/SentryMissingTranslationHandler';
+import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/providers/app-moment-date-adapter';
+import { GlobalErrorHandler } from './core/providers/global-error-handler';
+import { SentryMissingTranslationHandler } from './core/providers/sentry-missing-translation-handler';
 
 Sentry.init({
   enabled: environment.sentryEnabled,
@@ -104,12 +100,10 @@ export const appConfig: ApplicationConfig = {
       deps: [Sentry.TraceService],
       multi: true
     },
-    httpInterceptorProviders,
-    MasterdataService,
-    UserService,
-    IndividualService,
-    SensorsService,
-    MapService,
+    [
+      { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
+      { provide: HTTP_INTERCEPTORS, useClass: LocaleInterceptor, multi: true }
+    ],
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideStorage(() => getStorage()),

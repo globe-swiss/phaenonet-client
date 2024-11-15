@@ -1,0 +1,36 @@
+<div class="individual-detail" *ngIf="(detailSubject$ | async) !== null">
+  <div class="individual-detail__card">
+    <app-individual-header [individual$]="detailSubject$" mode="detail"></app-individual-header>
+    <div class="individual-detail__subscription-button" *ngIf="isLoggedIn && (isOwn$ | async) === false">
+      <app-individual-subscription-button [individual$]="detailSubject$"></app-individual-subscription-button>
+    </div>
+    <div class="individual-detail__content">
+      <app-individual-info
+        *ngIf="detailSubject$ | async"
+        class="individual-detail__description-header"
+        [individual$]="detailSubject$"
+      ></app-individual-info>
+      <app-masterdata-info
+        *ngIf="detailSubject$ | async"
+        class="individual-detail__basic-info"
+        [individual$]="detailSubject$"
+      ></app-masterdata-info>
+      <div class="individual-detail__right_pane">
+        <app-individual-observation-view
+          class="individual-detail__observation-view"
+          [individual$]="detailSubject$"
+          [isEditable$]="isEditable$"
+          [isOwn$]="isOwn$"
+        ></app-individual-observation-view>
+        <app-individual-buttons
+          *ngIf="detailSubject$ | async"
+          class="individual-detail__buttons"
+          [individual$]="detailSubject$"
+          [individualId]="detailId"
+          [isEditable$]="isEditable$"
+        >
+        </app-individual-buttons>
+      </div>
+    </div>
+  </div>
+</div>

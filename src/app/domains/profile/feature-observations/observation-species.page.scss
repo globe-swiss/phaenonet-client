@@ -1,0 +1,57 @@
+@import 'src/theming/mixins';
+
+@import 'src/theming/typography';
+
+.observation-species {
+  @include detail-view;
+
+  @include for-tablet-and-smaller {
+    max-width: 550px;
+  }
+
+  &-component {
+    @include detail-view-content;
+
+    &__title {
+      @include left-column;
+      text-decoration: none;
+      display: flex;
+      align-items: flex-start;
+
+      mat-icon {
+        --icon-size: 13px;
+        height: var(--icon-size);
+        width: var(--icon-size);
+        font-size: calc(var(--icon-size) - 3px);
+        padding-right: 0.75rem;
+      }
+
+      h2 {
+        margin-bottom: 0;
+      }
+    }
+
+    &__title_container {
+      display: flex;
+      align-items: center;
+    }
+
+    &__year {
+      @include profile-detail-right-column;
+      @include year-select;
+    }
+
+    &__content {
+      @include profile-detail-right-column;
+    }
+
+    &__species-year {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__no-entries {
+      @include profile-detail-right-column;
+    }
+  }
+}
