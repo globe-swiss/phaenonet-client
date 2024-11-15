@@ -122,7 +122,7 @@ jobs:
         uses: codecov/codecov-action@v5.0.0
         with:
           use_oidc: true
-          file: ./e2e/output/coverage-reports/codecov.json
+          files: ./e2e/output/coverage-reports/codecov.json
           flags: e2e
         if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
   checks:
