@@ -6,7 +6,7 @@ Before(async ({ I }) => {
 
 Scenario('public profile page loggedout', async ({ I, publicProfilePage, publicUser }) => {
   I.visit(publicProfilePage, publicProfilePage.url(publicUser.id));
-  I.selectDropdownValue(publicProfilePage.yearDropdown, 2018, 10);
+  I.selectDropdownValue(publicProfilePage.yearDropdown, 2018, true);
   I.waitForText('Winterlinde');
   await I.checkVisual('public_profile-loggedout', 0, { retries: 3, wait: 1 });
 }).tag('visual');

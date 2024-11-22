@@ -29,13 +29,7 @@ Scenario('test initial filter', ({ I, mapPage }) => {
 
 Scenario('test regression on map markers for 2018', ({ I, mapPage }) => {
   I.visit(mapPage);
-  I.waitForDropdown(mapPage.filter.phenoyear.dropdown);
-  // I.ss("-0")
-  // I.click("[data-test-id=select-year]")
-  // I.ss("-1")
-  // I.click({ css: "mat-option[ng-reflect-value='2018']" })
-  // I.ss("-2")
-  I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
+  I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018, true);
   I.waitNumberOfVisibleElements(mapPage.mapMarker, 387); // 2018, all, all
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.values.phenonet);
   I.waitNumberOfVisibleElements(mapPage.mapMarker, 231); // 2018, phenonet, all
