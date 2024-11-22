@@ -35,12 +35,14 @@ module.exports = function () {
     amLoggedOut() {
       this.see('Anmelden', navbarComponent.signinProfileButton); // fixme: better way to check if logged in
     },
-    selectDropdownValue(dropdownLocator, value, waitForOption = 0) {
+    selectDropdownValue(dropdownLocator, value, waitForDropdownValues = false) {
+      if (waitForDropdownValues) {
+        this.waitForDropdown(dropdownLocator);
+      }
       this.click(dropdownLocator);
       const optionLocator = { css: `mat-option[ng-reflect-value='${value}']` };
-      this.waitForElement(optionLocator, waitForOption); // option might no be present if role check is still pending
+      this.waitForElement(optionLocator); // option might no be present if role check is still pending
       this.click(optionLocator);
-      this.wait(waitForOption);
     },
     async createDefaultIndividual(species = undefined) {
       this.visit(individualsEditPage, individualsEditPage.newIndividualUrl);
