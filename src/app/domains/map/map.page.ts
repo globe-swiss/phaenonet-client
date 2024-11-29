@@ -147,6 +147,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       ),
       map(individuals => this.mapService.getMapMarkers(individuals))
     );
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    window.addEventListener('beforeunload', this.saveState.bind(this));
   }
 
   ngAfterViewInit(): void {
@@ -157,7 +160,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    window.removeEventListener('beforeunload', this.saveState.bind(this));
     this.subscriptions.unsubscribe();
+    this.saveState();
+  }
+
+  private saveState() {
     this.localService.sessionStorageSetObjectCompressed('mapParams', {
       center: this.googleMap.getCenter(),
       zoom: this.googleMap.getZoom()
