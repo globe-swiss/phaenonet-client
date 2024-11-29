@@ -61,6 +61,8 @@
 
   &__map-actions {
     position: fixed;
+    display: flex;
+    gap: 0.5rem;
     left: 13.5%;
     bottom: 5%;
 
@@ -70,25 +72,31 @@
   }
 
   // dynamic size + shadow
-  &__extended-flat-button {
+  &__flat-button {
     box-shadow:
       0 3px 5px -1px rgba(0, 0, 0, 0.2),
       0 6px 10px 0 rgba(0, 0, 0, 0.14),
       0 1px 18px 0 rgba(0, 0, 0, 0.12);
-    margin-top: 2.5rem;
+  }
 
-    @include for-tablet-and-smaller {
-      border-radius: 25px;
-      padding-left: 15px;
-      padding-right: 15px;
-      height: 57px;
+  &__fab-button {
+    width: 70px;
+    height: 70px;
+  }
+
+  // button visible on tablet and desktop resolutions
+  &__desktop-button {
+    display: inline;
+    @include for-phone {
+      display: none;
     }
+  }
 
-    .mat-icon {
-      margin-right: 10px;
-      @include for-tablet-and-smaller {
-        margin-right: 5px;
-      }
+  // button visible on phone resolutions
+  &__mobile-button {
+    display: none;
+    @include for-phone {
+      display: inline;
     }
   }
 
