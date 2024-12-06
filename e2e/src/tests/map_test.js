@@ -43,23 +43,26 @@ Scenario('test regression on map markers for 2018', ({ I, mapPage }) => {
   I.waitNumberOfVisibleElements(mapPage.mapMarker, 154); // 2018, all, sycamore
 });
 
-Scenario.todo('test marker no img', () => {
-  /** v3.5.10
-  Now we expose the WebElements that are returned by the WebHelper and you could make the subsequence actions on them.
+Scenario('test marker img', async ({ I, mapPage }) => {
+  I.visit(mapPage);
+  I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.values.phenonet, true);
+  I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
+  I.selectDropdownValue(mapPage.filter.species.dropdown, mapPage.filter.species.values.hazel);
+  I.waitNumberOfVisibleElements(mapPage.mapMarker, 54);
 
-  // Playwright helper would return the Locator
-
-  I.amOnPage('/form/focus_blur_elements');
-  const webElements = await I.grabWebElements('#button');
-  webElements[0].click();
-  */
-  // click marker without image
-  // test visual element
+  await I.clickXY(930, 690, 'individuals/2018_1531');
+  await I.checkVisual('map-test_marker_img', 0.05, { retries: 3, wait: 1 });
 }).tag('visual');
 
-Scenario.todo('test marker img', () => {
-  // click marker with image
-  // test visual element
+Scenario('test marker no img', async ({ I, mapPage }) => {
+  I.visit(mapPage);
+  I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.values.phenonet, true);
+  I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
+  I.selectDropdownValue(mapPage.filter.species.dropdown, mapPage.filter.species.values.hazel);
+  I.waitNumberOfVisibleElements(mapPage.mapMarker, 54);
+
+  await I.clickXY(250, 400, 'individuals/2018_864');
+  await I.checkVisual('map-test_marker_no_img', 0.05, { retries: 3, wait: 1 });
 }).tag('visual');
 
 Scenario.todo('test marker with sensor no img', () => {

@@ -91,6 +91,11 @@ module.exports = function () {
       this.mockRoute('https://khm*.googleapis.com/**', route => route.abort());
       this.mockRoute('https://maps.googleapis.com/maps/**', route => route.abort());
       this.mockRoute('https://maps.googleapis.com/maps/api/js?*', route => route.continue());
+    },
+    async clickXY(x, y, comment = '') {
+      await this.usePlaywrightTo(`click xy (${comment})`, async ({ page }) => {
+        page.mouse.click(x, y);
+      });
     }
   });
 };
