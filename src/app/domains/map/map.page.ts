@@ -183,6 +183,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapInfoService.loadInfo(individualId);
   }
 
+  closeInfoWindow(): void {
+    this.infoWindow.close();
+  }
+
   private initFilters(): void {
     if (!this.mapService.mapFilterState) {
       const selectedYear = new FormControl<number>(Number.NaN);
