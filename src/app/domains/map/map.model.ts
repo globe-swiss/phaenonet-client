@@ -6,9 +6,10 @@ interface BasemapDefinition {
   styles: google.maps.MapTypeStyle[]; // Use Google Maps type for styles
 }
 
+// do not reference google maps api directly as it is not loaded, yet.
 export const basemaps: BasemapDefinition[] = [
   {
-    mapTypeID: google.maps.MapTypeId.TERRAIN,
+    mapTypeID: 'terrain' as google.maps.MapTypeId,
     styles: [
       {
         featureType: 'all',
@@ -205,7 +206,7 @@ export const basemaps: BasemapDefinition[] = [
     ]
   },
   {
-    mapTypeID: google.maps.MapTypeId.HYBRID,
+    mapTypeID: 'hybrid' as google.maps.MapTypeId,
     styles: [
       {
         featureType: 'all',
@@ -402,7 +403,7 @@ export const basemaps: BasemapDefinition[] = [
     ]
   },
   {
-    mapTypeID: google.maps.MapTypeId.ROADMAP,
+    mapTypeID: 'roadmap' as google.maps.MapTypeId,
     styles: [
       {
         featureType: 'all',
