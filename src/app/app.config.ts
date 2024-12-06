@@ -25,6 +25,7 @@ import { routes } from './app.routes';
 import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/providers/app-moment-date-adapter';
 import { GlobalErrorHandler } from './core/providers/global-error-handler';
 import { SentryMissingTranslationHandler } from './core/providers/sentry-missing-translation-handler';
+import { GoogleMapsLoaderService } from '@core/services/google-maps-loader.service';
 
 Sentry.init({
   enabled: environment.sentryEnabled,
@@ -74,6 +75,12 @@ registerLocaleData(localeIt, 'it');
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (googleMapsLoader: GoogleMapsLoaderService) => () => googleMapsLoader.load(),
+      deps: [GoogleMapsLoaderService],
+      multi: true
+    },
     provideRouter(routes),
     importProvidersFrom(
       BrowserModule,

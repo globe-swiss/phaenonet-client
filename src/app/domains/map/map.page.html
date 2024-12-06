@@ -1,5 +1,5 @@
 <div class="map">
-  <google-map width="100%" height="100%" [center]="mapParams.center" [zoom]="mapParams.zoom" [options]="options">
+  <google-map width="100%" height="100%" [options]="staticOptions">
     <map-marker
       #marker="mapMarker"
       *ngFor="let individualWithMarkerOpts of mapMarkers$ | async"
@@ -41,9 +41,20 @@
     </map-info-window>
   </google-map>
   <div class="map__map-actions" data-test-id="actions-component">
-    <button mat-flat-button class="map__extended-flat-button" color="primary" [routerLink]="'/individuals/new/edit'">
+    <button
+      mat-flat-button
+      class="map__flat-button map__desktop-button"
+      color="primary"
+      [routerLink]="'/individuals/new/edit'"
+    >
       <mat-icon>add</mat-icon>
       <span>{{ 'Objekt hinzufügen' | translate }}</span>
+    </button>
+    <button mat-fab class="map__fab-button map__mobile-button" color="primary" [routerLink]="'/individuals/new/edit'">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button mat-fab color="accent" class="map__fab-button" (click)="switchView()">
+      <mat-icon>map</mat-icon>
     </button>
   </div>
   <div class="map__map-filter" data-test-id="filter-component" *ngIf="translationsLoaded">

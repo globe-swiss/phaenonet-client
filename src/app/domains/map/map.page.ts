@@ -1,8 +1,8 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatFabButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -17,9 +17,10 @@ import { SourceFilterType } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
 import { TypeGuard, TypeGuardPipe } from '@shared/utils/type-guard.pipe';
-import { Observable, Subscription, combineLatest } from 'rxjs';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { IndividualInfoWindowData, MapInfoService, StationInfoWindowData } from './map-info.service';
+import { basemaps, defaultBasemap as defaultBasemapIndex, defaultMapParams } from './map.model';
 import { IndividualWithMarkerOpt, MapService } from './map.service';
 import { SensorsBadgeComponent } from './sensors-badge.component';
 
@@ -50,17 +51,21 @@ const allSpecies = { id: 'ALL', de: 'Alle' } as Species;
     AsyncPipe,
     TranslateModule,
     ShortdatePipe,
-    TypeGuardPipe
+    TypeGuardPipe,
+    MatFabButton
   ]
 })
-export class MapComponent implements OnInit, OnDestroy {
+export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(GoogleMap, { static: false }) googleMap: GoogleMap;
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
 
+  // saved parameters
+  private basemapIndex: number;
+  private mapParams: { center: { lat: number; lng: number }; zoom: number };
   // Initial Map values
-  mapParams: { center: { lat: number; lng: number }; zoom: number };
-  readonly options: google.maps.MapOptions = {
-    mapTypeId: google.maps.MapTypeId.TERRAIN,
+  readonly staticOptions: google.maps.MapOptions = {
+    mapTypeId: basemaps[0].mapTypeID,
+    styles: basemaps[0].styles,
     mapTypeControl: false,
     fullscreenControl: false,
     streetViewControl: false,
@@ -112,11 +117,6 @@ export class MapComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.mapParams = this.localService.sessionStorageGetObjectCompressed('mapParams');
-    if (!this.mapParams) {
-      this.mapParams = { center: { lat: 46.818188, lng: 8.227512 }, zoom: 9 };
-    }
-
     // open info window on the last marker that was clicked when new data is available
     this.infoWindowData$ = this.mapInfoService.infoWindowData$.pipe(
       tap(() => this.infoWindow.open(this.markerClicked))
@@ -147,14 +147,31 @@ export class MapComponent implements OnInit, OnDestroy {
       ),
       map(individuals => this.mapService.getMapMarkers(individuals))
     );
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    window.addEventListener('beforeunload', this.saveState.bind(this));
+  }
+
+  ngAfterViewInit(): void {
+    this.basemapIndex = this.localService.localStorageGetObjectCompressed('basemapIndex') ?? defaultBasemapIndex;
+    this.mapParams = this.localService.sessionStorageGetObjectCompressed('mapParams') ?? defaultMapParams;
+    this.googleMap.googleMap.setOptions({ center: this.mapParams.center, zoom: this.mapParams.zoom });
+    this.setBasemap(this.basemapIndex);
   }
 
   ngOnDestroy(): void {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    window.removeEventListener('beforeunload', this.saveState.bind(this));
     this.subscriptions.unsubscribe();
+    this.saveState();
+  }
+
+  private saveState() {
     this.localService.sessionStorageSetObjectCompressed('mapParams', {
       center: this.googleMap.getCenter(),
       zoom: this.googleMap.getZoom()
     });
+    this.localService.localStorageSetObjectCompressed('basemapIndex', this.basemapIndex);
   }
 
   getColor(phenophase: string): string | null {
@@ -209,5 +226,15 @@ export class MapComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  switchView() {
+    this.basemapIndex = (this.basemapIndex + 1) % basemaps.length;
+    this.setBasemap(this.basemapIndex);
+  }
+
+  private setBasemap(index: number) {
+    this.googleMap.googleMap.setOptions({ mapTypeId: basemaps[index].mapTypeID });
+    this.googleMap.googleMap.setOptions({ styles: basemaps[index].styles });
   }
 }
