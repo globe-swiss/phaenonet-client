@@ -90,7 +90,7 @@ mat-dialog-container .mdc-dialog__container .mat-mdc-dialog-surface {
 }
 
 // ***** GOOGLE MAPS *****
-// remove padding from info window
+// remove left padding from info window
 #phaenonet-body .gm-style .gm-style-iw-c {
   padding: 0 !important;
 }
@@ -101,6 +101,6 @@ mat-dialog-container .mdc-dialog__container .mat-mdc-dialog-surface {
 }
 
 // remove close icon from info window
-#phaenonet-body button.gm-ui-hover-effect {
+#phaenonet-body .gm-style .gm-style-iw-chr {
   display: none !important;
 }
