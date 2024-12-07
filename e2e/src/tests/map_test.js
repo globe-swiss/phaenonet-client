@@ -46,8 +46,8 @@ Scenario('test regression on map markers for 2018', ({ I, mapPage }) => {
 Scenario('test marker img', async ({ I, mapPage }) => {
   I.visit(mapPage);
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.values.phenonet, true);
-  I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
-  I.selectDropdownValue(mapPage.filter.species.dropdown, mapPage.filter.species.values.hazel);
+  I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018, true);
+  I.selectDropdownValue(mapPage.filter.species.dropdown, mapPage.filter.species.values.hazel, true);
   I.waitNumberOfVisibleElements(mapPage.mapMarker, 54);
 
   await I.clickXY(930, 690, 'individuals/2018_1531');
@@ -57,8 +57,8 @@ Scenario('test marker img', async ({ I, mapPage }) => {
 Scenario('test marker no img', async ({ I, mapPage }) => {
   I.visit(mapPage);
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.values.phenonet, true);
-  I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018);
-  I.selectDropdownValue(mapPage.filter.species.dropdown, mapPage.filter.species.values.hazel);
+  I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018, true);
+  I.selectDropdownValue(mapPage.filter.species.dropdown, mapPage.filter.species.values.hazel, true);
   I.waitNumberOfVisibleElements(mapPage.mapMarker, 54);
 
   await I.clickXY(250, 400, 'individuals/2018_864');
