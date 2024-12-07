@@ -27,7 +27,12 @@ module.exports = {
       }
     }
   },
-  mapMarker: { css: 'google-map map-marker' },
+  mapMarker: { css: '[data-test-id=map-marker]' },
+  infoWindow: {
+    window: { css: '[data-test-id=info-window]' },
+    individualImage: { css: '[data-test-id=individual-image]' },
+    individualPlaceholder: { css: '[data-test-id=individual-placeholder]' }
+  },
   addObjectButton: { css: '.map__map-actions button' },
   dismissButton: { css: 'button.dismissButton' }
 };

@@ -15,7 +15,7 @@ import { Comment, Phenophase, PhenophaseGroup } from '@shared/models/masterdata.
 import { Observation } from '@shared/models/observation.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { findFirst } from 'fp-ts/lib/Array';
-import _ from 'lodash';
+import { groupBy as _groupBy, map as _map } from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeAll, switchMap } from 'rxjs/operators';
 import { IndividualService } from '../../shared/services/individual.service';
@@ -85,10 +85,10 @@ export class StationComponent extends BaseDetailComponent<Individual> implements
         });
 
         // group by species and individual name
-        const observationsBySpecies = _.groupBy(observations, o => [o.species, o.tree_id]);
+        const observationsBySpecies = _groupBy(observations, o => [o.species, o.tree_id]);
 
         return combineLatest(
-          _.map(observationsBySpecies, (os, keys) => {
+          _map(observationsBySpecies, (os, keys) => {
             const [speciesId, treeId] = keys.split(','); // unpack species and individual name
 
             return combineLatest([
