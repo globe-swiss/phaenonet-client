@@ -6,7 +6,7 @@ module.exports = {
   },
   components: {
     navigation: { css: 'app-nav' },
-    header: { css: 'app-individual-header[mode=detail]' },
+    header: { css: 'app-individual-header' },
     descriptionHeader: { css: 'app-individual-info' },
     descriptionInfo: { css: 'app-masterdata-info' },
     observations: { css: 'app-individual-observation-view' },

@@ -10,7 +10,7 @@ module.exports = {
   },
   components: {
     navigation: { css: 'app-nav' },
-    header: { css: 'app-individual-header' },
+    header: { css: 'app-individual-edit-header' },
     form: { css: 'app-individual-edit-form' },
     saveButton: { css: 'button[type=submit]' }
   },
