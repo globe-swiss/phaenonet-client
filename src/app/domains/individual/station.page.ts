@@ -19,7 +19,7 @@ import { groupBy as _groupBy, map as _map } from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeAll, switchMap } from 'rxjs/operators';
 import { IndividualService } from '../../shared/services/individual.service';
-import { IndividualHeaderComponent } from './shared/individual-header.component';
+import { IndividualHeaderComponent } from './feature-header/individual-header.component';
 import { PhenophaseObservation, SpeciesPhenophaseObservations } from './shared/individual.model';
 import { ObservationService } from './shared/observation.service';
 
