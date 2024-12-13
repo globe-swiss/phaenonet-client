@@ -12,7 +12,6 @@ import { HeaderViews } from './individual-header.model';
 @Component({
   selector: 'app-individual-header',
   templateUrl: './individual-header.component.html',
-  styleUrls: ['./individual-header.component.scss'],
   standalone: true,
   imports: [
     IndividualHeaderMapComponent,

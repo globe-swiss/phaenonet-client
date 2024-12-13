@@ -1,8 +1,8 @@
-<div class="individual-header__button-row">
+<div class="individual-header-actions__button-row">
   <button
     mat-fab
     (click)="onHeaderViewSelect(HeaderViews.Map)"
-    class="individual-header__button individual-header__button--graph"
+    class="individual-header-actions__button individual-header-actions__button--graph"
     data-test-id="mapButton"
     [color]="headerViewSelected() === HeaderViews.Map ? 'selected' : ''"
   >
@@ -11,7 +11,7 @@
   <button
     mat-fab
     (click)="onHeaderViewSelect(HeaderViews.Temperature)"
-    class="individual-header__button individual-header__button--humidity"
+    class="individual-header-actions__button individual-header-actions__button--humidity"
     data-test-id="temperatureButton"
     [color]="headerViewSelected() === HeaderViews.Temperature ? 'selected' : ''"
   >
@@ -20,7 +20,7 @@
   <button
     mat-fab
     (click)="onHeaderViewSelect(HeaderViews.Humidity)"
-    class="individual-header__button individual-header__button--temp"
+    class="individual-header-actions__button individual-header-actions__button--temp"
     data-test-id="humidityButton"
     [color]="headerViewSelected() === HeaderViews.Humidity ? 'selected' : ''"
   >
