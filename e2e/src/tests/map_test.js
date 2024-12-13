@@ -43,14 +43,16 @@ Scenario('test regression on map markers for 2018', ({ I, mapPage }) => {
   I.waitNumberOfVisibleElements(mapPage.mapMarker, 154); // 2018, all, sycamore
 });
 
-Scenario('test marker img', async ({ I, mapPage }) => {
+Scenario('test marker with img', async ({ I, mapPage }) => {
   I.visit(mapPage);
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.values.phenonet, true);
   I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018, true);
   I.selectDropdownValue(mapPage.filter.species.dropdown, mapPage.filter.species.values.hazel, true);
   I.waitNumberOfVisibleElements(mapPage.mapMarker, 54);
+  await mapPage.waitForMarkers();
 
   await I.clickXY(930, 690, 'individuals/2018_1531');
+  await I.waitForImage(mapPage.infoWindow.individualImage);
   await I.checkVisual('map-test_marker_img', 0.05, { retries: 3, wait: 1 });
 }).tag('visual');
 
@@ -60,6 +62,7 @@ Scenario('test marker no img', async ({ I, mapPage }) => {
   I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018, true);
   I.selectDropdownValue(mapPage.filter.species.dropdown, mapPage.filter.species.values.hazel, true);
   I.waitNumberOfVisibleElements(mapPage.mapMarker, 54);
+  await mapPage.waitForMarkers();
 
   await I.clickXY(250, 400, 'individuals/2018_864');
   await I.checkVisual('map-test_marker_no_img', 0.05, { retries: 3, wait: 1 });
