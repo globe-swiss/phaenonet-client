@@ -1,7 +1,5 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit, signal } from '@angular/core';
-import { MatFabButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 import { Individual } from '@shared/models/individual.model';
 import { map, Observable, ReplaySubject } from 'rxjs';
 import { IndividualHeaderActionsComponent } from './individual-header-actions.component';
@@ -13,14 +11,7 @@ import { HeaderViews } from './individual-header.model';
   selector: 'app-individual-header',
   templateUrl: './individual-header.component.html',
   standalone: true,
-  imports: [
-    IndividualHeaderMapComponent,
-    IndividualHeaderGraphComponent,
-    IndividualHeaderActionsComponent,
-    MatFabButton,
-    MatIcon,
-    AsyncPipe
-  ]
+  imports: [IndividualHeaderMapComponent, IndividualHeaderGraphComponent, IndividualHeaderActionsComponent, AsyncPipe]
 })
 export class IndividualHeaderComponent implements OnInit {
   @Input() individual$: ReplaySubject<Individual>;
