@@ -7,12 +7,13 @@ import { Individual } from '@shared/models/individual.model';
 import { IndividualService } from '../../../shared/services/individual.service';
 import { IndividualHeaderComponent } from '../shared/individual-header.component';
 import { IndividualEditViewComponent } from './individual-edit-form.widget';
+import { IndividualEditHeaderComponent } from './individual-edit-header.widget';
 
 @Component({
   templateUrl: './individual-edit.page.html',
   styleUrls: ['./individual-edit.page.scss'],
   standalone: true,
-  imports: [IndividualHeaderComponent, TranslateModule, IndividualEditViewComponent]
+  imports: [IndividualHeaderComponent, TranslateModule, IndividualEditViewComponent, IndividualEditHeaderComponent]
 })
 export class IndividualEditComponent extends BaseDetailComponent<Individual> implements OnInit {
   isNewIndividual: boolean;

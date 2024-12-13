@@ -1,0 +1,21 @@
+<div class="individual-edit-header">
+  <google-map
+    class="individual-edit-header__map"
+    [width]="null"
+    height="100%"
+    [center]="geopos$ | async"
+    [options]="mapOptions"
+  >
+    <map-marker
+      #marker
+      [position]="geopos$ | async"
+      [options]="markerOptions"
+      (mapDragend)="updateGeopos($event)"
+    ></map-marker>
+  </google-map>
+</div>
+<div class="individual-edit-header__locate-me">
+  <button mat-fab color="accent" (click)="locateMe()">
+    <mat-icon svgIcon="locateMe"></mat-icon>
+  </button>
+</div>

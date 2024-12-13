@@ -32,7 +32,7 @@ import { IndividualService } from '../../../shared/services/individual.service';
 import { GeoposService } from '../shared/geopos.service';
 
 @Component({
-  selector: 'app-individual-edit-view',
+  selector: 'app-individual-edit-form',
   templateUrl: './individual-edit-form.widget.html',
   styleUrls: ['./individual-edit-form.widget.scss'],
   standalone: true,
