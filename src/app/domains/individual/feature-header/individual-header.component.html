@@ -1,0 +1,14 @@
+<div>
+  @if (currentView() === HeaderViews.Map) {
+    <app-individual-header-map [individual$]="individual$"></app-individual-header-map>
+  } @else {
+    <app-individual-header-graph
+      [displayHumidity]="currentView() === HeaderViews.Humidity"
+      [displayTemperature]="currentView() === HeaderViews.Temperature"
+      [individual$]="individual$"
+    ></app-individual-header-graph>
+  }
+  @if (hasSensor$ | async) {
+    <app-individual-header-actions (onSelectView)="currentView.set($event)"></app-individual-header-actions>
+  }
+</div>

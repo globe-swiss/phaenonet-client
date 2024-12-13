@@ -1,19 +1,18 @@
 <div class="individual-edit">
   <div class="individual-edit__card">
-    <app-individual-header
+    <app-individual-edit-header
       class="individual-edit__header"
       [individual$]="detailSubject$"
-      mode="edit"
-    ></app-individual-header>
+    ></app-individual-edit-header>
     <div class="individual-edit__content">
       <div class="individual-edit__left-content">
         <h2 translate>OBJEKT ERFASSEN</h2>
       </div>
-      <app-individual-edit-view
+      <app-individual-edit-form
         class="individual-edit__right-content"
         [individual$]="detailSubject$"
         [createNewIndividual]="isNewIndividual"
-      ></app-individual-edit-view>
+      ></app-individual-edit-form>
     </div>
   </div>
 </div>

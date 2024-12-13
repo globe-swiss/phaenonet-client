@@ -1,0 +1,29 @@
+<div class="individual-header-actions__button-row">
+  <button
+    mat-fab
+    (click)="onHeaderViewSelect(HeaderViews.Map)"
+    class="individual-header-actions__button individual-header-actions__button--graph"
+    data-test-id="mapButton"
+    [color]="headerViewSelected() === HeaderViews.Map ? 'selected' : ''"
+  >
+    <mat-icon svgIcon="map-pin"></mat-icon>
+  </button>
+  <button
+    mat-fab
+    (click)="onHeaderViewSelect(HeaderViews.Temperature)"
+    class="individual-header-actions__button individual-header-actions__button--humidity"
+    data-test-id="temperatureButton"
+    [color]="headerViewSelected() === HeaderViews.Temperature ? 'selected' : ''"
+  >
+    <mat-icon svgIcon="temperature"></mat-icon>
+  </button>
+  <button
+    mat-fab
+    (click)="onHeaderViewSelect(HeaderViews.Humidity)"
+    class="individual-header-actions__button individual-header-actions__button--temp"
+    data-test-id="humidityButton"
+    [color]="headerViewSelected() === HeaderViews.Humidity ? 'selected' : ''"
+  >
+    <mat-icon svgIcon="humidity"></mat-icon>
+  </button>
+</div>

@@ -9,8 +9,6 @@ export class GoogleMapsLoaderService {
   private loadPromise: Promise<void> | null = null;
 
   load(): Promise<void> {
-    console.log('load maps');
-
     if (this.apiLoaded) {
       return Promise.resolve();
     }
@@ -24,7 +22,6 @@ export class GoogleMapsLoaderService {
           try {
             await this.initLibraries();
             this.apiLoaded = true;
-            console.log('maps api loaded');
 
             resolve();
           } catch (error) {
@@ -41,12 +38,9 @@ export class GoogleMapsLoaderService {
   }
 
   private async initLibraries(): Promise<void> {
-    console.log('init map libs start');
-
     await google.maps.importLibrary('core');
     await google.maps.importLibrary('maps');
     await google.maps.importLibrary('marker');
     await google.maps.importLibrary('elevation');
-    console.log('init map libs end');
   }
 }

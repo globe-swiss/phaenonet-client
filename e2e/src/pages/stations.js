@@ -7,7 +7,7 @@ module.exports = {
   },
   components: {
     navigation: { css: 'app-nav' },
-    header: { css: 'app-individual-header[mode=detail]' },
+    header: { css: 'app-individual-header' },
     description: { css: '[data-test-id=station-description]' },
     observations: { css: '[data-test-id=station-observations]' }
   }

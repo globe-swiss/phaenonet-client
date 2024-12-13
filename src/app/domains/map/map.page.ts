@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 import { LocalService } from '@core/services/local.service';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { basemaps, MapType } from '@shared/models/basemaps.model';
 import { MapIndividual } from '@shared/models/individual.model';
 import { Species } from '@shared/models/masterdata.model';
 import { SourceFilterType } from '@shared/models/source-type.model';
@@ -20,7 +21,6 @@ import { TypeGuard, TypeGuardPipe } from '@shared/utils/type-guard.pipe';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { IndividualInfoWindowData, MapInfoService, StationInfoWindowData } from './map-info.service';
-import { basemaps, defaultBasemap as defaultBasemapIndex, defaultMapParams } from './map.model';
 import { IndividualWithMarkerOpt, MapService } from './map.service';
 import { SensorsBadgeComponent } from './sensors-badge.component';
 
@@ -59,13 +59,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(GoogleMap, { static: false }) googleMap: GoogleMap;
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
 
+  private defaultMapParams = { center: { lat: 46.818188, lng: 8.227512 }, zoom: 9 };
+  private defaultBasemapIndex = MapType.TERRAIN;
+
   // saved parameters
   private basemapIndex: number;
   private mapParams: { center: { lat: number; lng: number }; zoom: number };
   // Initial Map values
   readonly staticOptions: google.maps.MapOptions = {
-    mapTypeId: basemaps[0].mapTypeID,
-    styles: basemaps[0].styles,
+    mapTypeId: basemaps[MapType.TERRAIN].mapTypeID,
+    styles: basemaps[MapType.TERRAIN].styles,
     mapTypeControl: false,
     fullscreenControl: false,
     streetViewControl: false,
@@ -153,8 +156,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.basemapIndex = this.localService.localStorageGetObjectCompressed('basemapIndex') ?? defaultBasemapIndex;
-    this.mapParams = this.localService.sessionStorageGetObjectCompressed('mapParams') ?? defaultMapParams;
+    this.basemapIndex = this.localService.localStorageGetObjectCompressed('basemapIndex') ?? this.defaultBasemapIndex;
+    this.mapParams = this.localService.sessionStorageGetObjectCompressed('mapParams') ?? this.defaultMapParams;
     this.googleMap.googleMap.setOptions({ center: this.mapParams.center, zoom: this.mapParams.zoom });
     this.setBasemap(this.basemapIndex);
   }
