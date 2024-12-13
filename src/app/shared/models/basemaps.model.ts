@@ -1,9 +1,12 @@
-export const defaultMapParams = { center: { lat: 46.818188, lng: 8.227512 }, zoom: 9 };
-export const defaultBasemap = 0;
-
 interface BasemapDefinition {
   mapTypeID: google.maps.MapTypeId; // Use Google Maps type for MapTypeId
   styles: google.maps.MapTypeStyle[]; // Use Google Maps type for styles
+}
+
+export const enum MapType {
+  TERRAIN = 0,
+  HYBRID = 1,
+  SATELLITE = 2
 }
 
 // do not reference google maps api directly as it is not loaded, yet.

@@ -1,12 +1,13 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { GoogleMap, MapMarker } from '@angular/google-maps';
+import { MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { basemaps, MapType } from '@shared/models/basemaps.model';
 import { Individual } from '@shared/models/individual.model';
 import { Observable, ReplaySubject } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 import { GeoposService } from '../shared/geopos.service';
-import { MatFabButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-individual-edit-header',
@@ -28,12 +29,15 @@ export class IndividualEditHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.mapOptions = {
+      mapTypeId: basemaps[MapType.HYBRID].mapTypeID,
+      styles: basemaps[MapType.HYBRID].styles,
       mapTypeControl: false,
       fullscreenControl: false,
       streetViewControl: false,
+      rotateControl: false,
       minZoom: 8,
       zoom: 9,
-      mapTypeId: google.maps.MapTypeId.HYBRID,
+      tilt: 0,
       draggable: true
     };
     this.markerOptions = {

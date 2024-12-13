@@ -6,6 +6,7 @@ import { MasterdataService } from '@shared/services/masterdata.service';
 import { Observable, ReplaySubject } from 'rxjs';
 import { filter, map, mergeAll } from 'rxjs/operators';
 import { IndividualService } from '../../../shared/services/individual.service';
+import { basemaps, MapType } from '@shared/models/basemaps.model';
 
 @Component({
   selector: 'app-individual-header-map',
@@ -30,12 +31,13 @@ export class IndividualHeaderMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.mapOptions = {
+      mapTypeId: basemaps[MapType.TERRAIN].mapTypeID,
+      styles: basemaps[MapType.TERRAIN].styles,
       mapTypeControl: false,
       fullscreenControl: false,
       streetViewControl: false,
       minZoom: 8,
       zoom: 13,
-      mapTypeId: google.maps.MapTypeId.TERRAIN,
       draggable: false
     };
 
