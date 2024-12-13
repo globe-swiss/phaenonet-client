@@ -1,14 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { ObservationService } from '@app/domains/individual/shared/observation.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
@@ -32,7 +22,9 @@ import { IndividualService } from '../../../shared/services/individual.service';
 })
 export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Input() individual$: ReplaySubject<Individual>;
-  @ViewChild('mapContainer', { static: true }) mapContainer: ElementRef;
+  @Input() displayTemperature: boolean;
+  @Input() displayHumidity: boolean;
+
   subscriptions = new Subscription();
 
   // note: colors are also defined in _overwrite-mat.scss
@@ -45,8 +37,6 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
   sensorData$: Observable<DailySensorData[]>;
   observations$: Observable<Observation[]>;
   changeEvent$ = new BehaviorSubject(0);
-  @Input() displayTemperature: boolean;
-  @Input() displayHumidity: boolean;
 
   constructor(
     private individualService: IndividualService,
