@@ -41,6 +41,9 @@ module.exports = {
     await I.waitForFunction(
       markerImageUrlPattern => {
         const images = Array.from(document.querySelectorAll('img'));
+        if (images.length === 0) {
+          return false;
+        }
         return images
           .filter(img => img.src.includes(markerImageUrlPattern))
           .every(img => img.complete && img.naturalHeight !== 0);

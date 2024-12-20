@@ -101,6 +101,9 @@ module.exports = function () {
       await this.waitForFunction(
         cssSelector => {
           const images = document.querySelectorAll(cssSelector);
+          if (images.length === 0) {
+            return false;
+          }
           return Array.from(images).every(img => img.complete && img.naturalHeight !== 0);
         },
         [cssSelector.css],
