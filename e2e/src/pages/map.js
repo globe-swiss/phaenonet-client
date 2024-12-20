@@ -1,3 +1,5 @@
+const { I } = inject();
+
 module.exports = {
   url: '/map',
   components: {
@@ -34,5 +36,17 @@ module.exports = {
     individualPlaceholder: { css: '[data-test-id=individual-placeholder]' }
   },
   addObjectButton: { css: '.map__map-actions button' },
-  dismissButton: { css: 'button.dismissButton' }
+  dismissButton: { css: 'button.dismissButton' },
+  async waitForMarkers(timeout = 10) {
+    await I.waitForFunction(
+      markerImageUrlPattern => {
+        const images = Array.from(document.querySelectorAll('img'));
+        return images
+          .filter(img => img.src.includes(markerImageUrlPattern))
+          .every(img => img.complete && img.naturalHeight !== 0);
+      },
+      ['*/assets/img/map_pins/*'],
+      timeout
+    );
+  }
 };

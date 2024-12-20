@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
@@ -38,7 +38,7 @@ jobs:
           retention-days: 1
   channel:
     name: Deploy Preview
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: build
     environment: phaenonet-test
     if: github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
@@ -65,7 +65,7 @@ jobs:
   e2e-tests:
     concurrency: e2e-test
     name: E2E-tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: build
     environment: phaenonet-test
     permissions:
@@ -127,7 +127,7 @@ jobs:
         if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
   checks:
     name: Code Quality
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     steps:
       - name: Checkout Repository

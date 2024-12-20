@@ -96,6 +96,16 @@ module.exports = function () {
       await this.usePlaywrightTo(`click xy (${comment})`, async ({ page }) => {
         page.mouse.click(x, y);
       });
+    },
+    async waitForImage(cssSelector, timeout = 10) {
+      await this.waitForFunction(
+        cssSelector => {
+          const images = document.querySelectorAll(cssSelector);
+          return Array.from(images).every(img => img.complete && img.naturalHeight !== 0);
+        },
+        [cssSelector.css],
+        timeout
+      );
     }
   });
 };

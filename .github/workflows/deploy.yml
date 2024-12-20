@@ -30,7 +30,7 @@ permissions:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
@@ -59,7 +59,7 @@ jobs:
   sentry:
     name: Sentry
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
@@ -96,7 +96,7 @@ jobs:
     concurrency: deploy
     name: Deploy
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     environment: ${{ github.event.inputs.project || 'phaenonet-test' }}
     steps:
       - name: Checkout Repository
@@ -136,7 +136,7 @@ jobs:
   tag:
     name: Tag
     needs: deploy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
     steps:
@@ -148,7 +148,7 @@ jobs:
         if: ${{ env.TAG }}
   docs:
     name: Update Docs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.project == 'phaenonet' }}
     steps:
       - name: Checkout Repository
