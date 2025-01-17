@@ -5,11 +5,20 @@
         <form [formGroup]="filter" *ngIf="translationsLoaded">
           <mat-form-field>
             <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
-            <mat-select formControlName="year" data-test-id="select-year">
-              <mat-option *ngFor="let year of selectableYears$ | async" [value]="year">{{
-                year | translate
-              }}</mat-option>
-            </mat-select>
+            <div *ngIf="displayGraph === '1'">
+              <mat-select formControlName="year" data-test-id="select-year">
+                <mat-option *ngFor="let year of selectableYearsWithAll$ | async" [value]="year">{{
+                  year | translate
+                }}</mat-option>
+              </mat-select>
+            </div>
+            <div *ngIf="displayGraph === '2'">
+              <mat-select formControlName="year" data-test-id="select-year">
+                <mat-option *ngFor="let year of selectableYearsWithoutAll$ | async" [value]="year">{{
+                  year | translate
+                }}</mat-option>
+              </mat-select>
+            </div>
           </mat-form-field>
           <mat-form-field>
             <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
@@ -19,7 +28,7 @@
               }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field *ngIf="displayGraph === '1'">
             <mat-label>{{ 'Auswertung' | translate }}</mat-label>
             <mat-select formControlName="analyticsType" data-test-id="select-analyticsType">
               <mat-option *ngFor="let analyticsType of selectableAnalyticsTypes" [value]="analyticsType">{{
@@ -45,10 +54,22 @@
           >
             <mat-icon>info</mat-icon>
           </button>
+          <mat-form-field>
+            <mat-label>{{ 'Graph' | translate }}</mat-label>
+            <mat-select [(value)]="displayGraph">
+              <mat-option value="1">Ergebnisdiagramm</mat-option>
+              <mat-option value="2">Wöchentliche Beobachtungen</mat-option>
+            </mat-select>
+          </mat-form-field>
         </form>
       </div>
       <div #statisticsContainer>
-        <svg id="statistics-graph" width="100%" attr.height="{{ svgComponentHeight }}px"></svg>
+        <div *ngIf="displayGraph === '1'">
+          <svg id="statistics-graph" width="100%" attr.height="{{ svgComponentHeight }}px"></svg>
+        </div>
+        <div *ngIf="displayGraph === '2'">
+          <svg id="app-bar-chart" width="100%" attr.height="{{ svgComponentHeight }}px"></svg>
+        </div>
       </div>
       <div id="tooltip" class="statistics__tooltip hidden">
         <p><strong id="title">Phenophase</strong></p>

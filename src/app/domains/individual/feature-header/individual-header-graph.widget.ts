@@ -234,8 +234,8 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
       svg
         .append('line')
         .datum(observation)
-        .attr('x1', xScale(observation.date) + margin.left)
-        .attr('x2', xScale(observation.date) + margin.left)
+        .attr('x1', xScale(new Date(observation.date.seconds * 1000)) + margin.left)
+        .attr('x2', xScale(new Date(observation.date.seconds * 1000)) + margin.left)
         .attr('y1', margin.top)
         .attr('y2', axisHeight)
         .attr('fill', 'none')
@@ -243,7 +243,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
         .attr('stroke-width', 1.5);
       svg
         .append('circle')
-        .attr('cx', xScale(observation.date) + margin.left)
+        .attr('cx', xScale(new Date(observation.date.seconds * 1000)) + margin.left)
         .attr('cy', axisHeight)
         .attr('r', '5px')
         .attr('fill', color)

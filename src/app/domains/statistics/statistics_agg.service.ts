@@ -1,0 +1,58 @@
+import { Injectable } from '@angular/core';
+import { Firestore, where } from '@angular/fire/firestore';
+import { FormControl, FormGroup } from '@angular/forms';
+import { BaseResourceService } from '@core/services/base-resource.service';
+import { FirestoreDebugService } from '@core/services/firestore-debug.service';
+import { SourceFilterType } from '@shared/models/source-type.model';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { StatisticsAgg } from './../../shared/models/statistics-agg';
+import { AnalyticsType } from './statistics.model';
+
+@Injectable({ providedIn: 'root' })
+export class StatisticsAggService extends BaseResourceService<StatisticsAgg> {
+  // requires to be provided in root to save awhen leaving the component
+  public statisticFilterState: FormGroup<{
+    year: FormControl<string>;
+    datasource: FormControl<SourceFilterType>;
+    analyticsType: FormControl<AnalyticsType>;
+    species: FormControl<string>;
+  }>;
+
+  constructor(
+    protected afs: Firestore,
+    protected fds: FirestoreDebugService
+  ) {
+    super(afs, 'statistics_agg', fds);
+  }
+
+  getStatisticsAgg(
+    year: string,
+    analyticsType: AnalyticsType,
+    source: SourceFilterType,
+    species: string
+  ): Observable<StatisticsAgg[]> {
+    const queryConstraints = [where('end_year', '==', parseInt(year, 10))];
+    if (species !== 'all') {
+      queryConstraints.push(where('species', '==', species));
+    }
+
+    return this.queryCollection(...queryConstraints).pipe(
+      tap(x => this.fds.addRead(`${this.collectionName} (listByYear)`, x.length)),
+      map(statisticsAggs =>
+        statisticsAggs.map(sa => ({
+          agg_obs_sum: sa.agg_obs_sum,
+          agg_range: sa.agg_range,
+          latitude_grp: sa.latitude_grp,
+          end_year: sa.end_year,
+          obs_woy: sa.obs_woy,
+          phenophase: sa.phenophase,
+          species: sa.species,
+          start_year: sa.start_year,
+          year_obs_sum: sa.year_obs_sum,
+          years: sa.years
+        }))
+      )
+    );
+  }
+}
