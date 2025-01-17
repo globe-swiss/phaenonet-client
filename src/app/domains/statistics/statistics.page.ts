@@ -1,4 +1,5 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconButton } from '@angular/material/button';
@@ -9,20 +10,41 @@ import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Species } from '@shared/models/masterdata.model';
+import { Phenophase, Species } from '@shared/models/masterdata.model';
 import { SourceFilterType } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { formatShortDate } from '@shared/utils/formatDate';
+import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
-import * as d3 from 'd3-selection';
 import * as d3Time from 'd3-time';
 import moment from 'moment';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { allSpecies, allYear, AltitudeGroup, Analytics, AnalyticsType, AnalyticsValue } from './statistics.model';
+import { combineLatestWith, first, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { Statistics } from '../../shared/models/statistics';
+import { StatisticsAgg } from './../../shared/models/statistics';
+import { AnalyticsService } from './analytics.service';
+import {
+  aggregateObsWoy,
+  aggregateObsWoyStatistics,
+  createBarChart,
+  setObsWoy30Years,
+  setObsWoy5Years,
+  setObsWoyCurrentYear,
+  setXTickInterval
+} from './barchar';
+import {
+  allPhenophases,
+  allSpecies,
+  allYear,
+  AltitudeFilterGroup,
+  AltitudeGroup,
+  Analytics,
+  AnalyticsType,
+  AnalyticsValue
+} from './statistics.model';
 import { StatisticsService } from './statistics.service';
-
+import { StatisticsAggService } from './statistics_agg.service';
 @Component({
   encapsulation: ViewEncapsulation.None,
   templateUrl: './statistics.page.html',
@@ -41,54 +63,101 @@ import { StatisticsService } from './statistics.service';
     MatIcon,
     AsyncPipe,
     TranslateModule,
-    NgIf
+    NgIf,
+    NgSwitch,
+    NgSwitchCase
   ]
 })
 export class StatisticsComponent implements OnInit, OnDestroy {
   @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef<HTMLDivElement>;
 
   availableYears: number[];
-  selectableYears$: Observable<string[]>;
+  selectableYearsWithAll$: Observable<string[]>;
+  selectableYearsWithoutAll$: Observable<string[]>;
   selectableDatasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wld'];
   selectableAnalyticsTypes: AnalyticsType[] = ['species', 'altitude'];
   selectableSpecies$: Observable<Species[]>;
-
+  selectablePhenophases: Phenophase[];
+  selectableAltitudeGroup: AltitudeFilterGroup[] = ['all', 'alt1', 'alt2', 'alt3', 'alt4', 'alt5'];
+  graphDisplay: string[] = ['Ergebnisdiagramm', 'Wöchentliche Beobachtungen'];
+  private breakpointSubscription!: Subscription;
   filter: FormGroup<{
     year: FormControl<string>;
     datasource: FormControl<SourceFilterType>;
     analyticsType: FormControl<AnalyticsType>;
     species: FormControl<string>;
+    phenophase: FormControl<Phenophase>;
+    altitude: FormControl<AltitudeFilterGroup>;
   }>;
+  graphFilter: FormGroup<{
+    graph: FormControl<number>;
+  }>;
+
   private redraw$ = new Subject();
   private subscriptions = new Subscription();
 
   private year: number | null; // null if all year
-  private data: Analytics[];
+  private analytics: Analytics[] = [];
+  private _displayGraph: string = '1';
   translationsLoaded = false;
 
-  svgComponentHeight = 0;
+  //TODO: flag to enable and disable the observation graph
+  showSecondGraph = true;
 
+  svgComponentHeight = 0;
   constructor(
     private titleService: TitleService,
+    private analyticsService: AnalyticsService,
     private statisticsService: StatisticsService,
+    private statisticsAggService: StatisticsAggService,
     private masterdataService: MasterdataService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private breakpointObserver: BreakpointObserver
   ) {}
 
   @HostListener('window:resize', ['$event'])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onResize(event: UIEvent): void {
     // re-render the svg on window resize
-    this.drawChart();
+    if (this.displayGraph === '1') {
+      this.drawChart();
+    } else {
+      createBarChart(this.statisticsContainer);
+    }
   }
 
   getColor(phenophase: string): string {
     return this.masterdataService.getColor(phenophase);
   }
 
+  isAnalytics(obj: any): obj is Analytics {
+    return (
+      typeof obj === 'object' &&
+      obj !== null &&
+      'source' in obj &&
+      'species' in obj &&
+      'type' in obj &&
+      'altitude_grp' in obj &&
+      'year' in obj &&
+      'values' in obj
+    );
+  }
+
+  isArrayOfAnalytics(obj: any): boolean {
+    if (Array.isArray(obj)) {
+      return obj.every(item => this.isAnalytics(item));
+    } else return false;
+  }
+
   ngOnInit(): void {
     this.titleService.setLocation('Auswertungen');
-
+    this.breakpointSubscription = this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
+      if (result.matches) {
+        setXTickInterval(5); // Mobile view
+      } else {
+        setXTickInterval(2); // Mobile view
+      }
+    });
     // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
     this.subscriptions.add(
       this.translateService.get(this.selectableDatasources[0]).subscribe(() => {
@@ -101,14 +170,17 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         year: new FormControl(''),
         datasource: new FormControl(this.selectableDatasources[0]),
         analyticsType: new FormControl(this.selectableAnalyticsTypes[0]),
-        species: new FormControl(allSpecies.id)
+        species: new FormControl(allSpecies.id),
+        //phenophase: new FormControl(allPhenophases),
+        phenophase: new FormControl(allPhenophases),
+        altitude: new FormControl(this.selectableAltitudeGroup[0])
       });
       this.masterdataService.phenoYear$
         .pipe(first())
         .subscribe(year => this.filter.controls.year.patchValue(String(year)));
-      this.statisticsService.statisticFilterState = this.filter;
+      this.analyticsService.statisticFilterState = this.filter;
     } else {
-      this.filter = this.statisticsService.statisticFilterState;
+      this.filter = this.analyticsService.statisticFilterState;
     }
 
     this.selectableSpecies$ = this.filter.valueChanges.pipe(
@@ -152,9 +224,27 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       tap(() => this.redraw$.next(true))
     );
 
-    this.selectableYears$ = this.masterdataService.availableYears$.pipe(
+    this.filter.controls.species.valueChanges
+      .pipe(
+        switchMap(species =>
+          this.masterdataService.getPhenophases(species).pipe(
+            map(phenophases => [allPhenophases, ...phenophases]) // Add "All Phenophases"
+          )
+        )
+      )
+      .subscribe(species => {
+        this.selectablePhenophases = species;
+        this.filter.controls.phenophase.setValue(allPhenophases);
+      });
+
+    this.selectableYearsWithAll$ = this.masterdataService.availableYears$.pipe(
       tap(years => (this.availableYears = years)),
       map(years => [allYear, ...years.map(year => String(year))])
+    );
+
+    this.selectableYearsWithoutAll$ = this.masterdataService.availableYears$.pipe(
+      tap(years => (this.availableYears = years)),
+      map(years => years.map(year => String(year)))
     );
 
     this.subscriptions.add(
@@ -165,14 +255,31 @@ export class StatisticsComponent implements OnInit, OnDestroy {
             const datasource = this.filter.controls.datasource.value;
             const analyticsType = this.filter.controls.analyticsType.value;
             const species = this.filter.controls.species.value;
+            const phenophase = this.filter.controls.phenophase.value;
+            const altitude = this.filter.controls.altitude.value;
 
             this.year = year === allYear ? null : parseInt(year, 10);
 
-            return this.statisticsService.listByYear(year, analyticsType, datasource, species);
+            if (this.displayGraph === '1') {
+              return this.analyticsService.listByYear(year, analyticsType, datasource, species);
+            } else {
+              return this.statisticsAggService
+                .getStatisticsAgg(year, phenophase, altitude, species)
+                .pipe(combineLatestWith(this.statisticsService.getStatistics(year, phenophase, altitude, species)));
+            }
           }),
           map(results => {
-            this.data = results;
-            this.drawChart();
+            if (this.displayGraph === '1') {
+              if (this.isArrayOfAnalytics(results)) {
+                this.analytics = results as Analytics[];
+              }
+              this.drawChart();
+            } else {
+              setObsWoy30Years(aggregateObsWoy(results[0] as StatisticsAgg[], 30));
+              setObsWoy5Years(aggregateObsWoy(results[0] as StatisticsAgg[], 5));
+              setObsWoyCurrentYear(aggregateObsWoyStatistics(results[1] as Statistics[], 1));
+              createBarChart(this.statisticsContainer);
+            }
           })
         )
         .subscribe()
@@ -181,6 +288,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+    this.breakpointSubscription.unsubscribe();
   }
 
   private toKey(analytics: Analytics) {
@@ -207,10 +315,10 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     const xScale = d3Scale.scaleLinear().domain([-30, 365]).range([0, width]);
     const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const domain = Array.from(new Set(this.data.map(analytics => analytics.species)));
+    const domain = Array.from(new Set(this.analytics.map(analytics => analytics.species)));
     const subdomain = !this.year
       ? this.availableYears
-      : [...new Set(this.data.map(analytics => analytics.altitude_grp))].sort().reverse();
+      : [...new Set(this.analytics.map(analytics => analytics.altitude_grp))].sort().reverse();
 
     const resultingDomain = [];
     domain.forEach(species => {
@@ -223,7 +331,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       });
     });
 
-    // required height for the y-axis based on the abount of domains to display
+    // required height for the y-axis based on the amount of domains to display
     const requiredHeight = resultingDomain.length * 12 + margin.top + margin.bottom;
     // svg component height to fill screen without scrollbar or to the minimum required to display the y-axis
     const svgComponentHeight = Math.max(window.innerHeight - offsetTop - 5, requiredHeight);
@@ -282,7 +390,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       .attr('fill', 'none');
 
     // draw box-plot
-    this.data.forEach(analytics => {
+    this.analytics.forEach(analytics => {
       analytics.values.sort((a, b) => a.min.getTime() - b.min.getTime());
       g.selectAll('.horizontalLines')
         .data(analytics.values)
@@ -435,6 +543,18 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       return m.dayOfYear() + lastDateOfAnalytics.dayOfYear();
     } else {
       return m.dayOfYear();
+    }
+  }
+
+  // Getter and Setter for displayGraph
+  get displayGraph(): string {
+    return this._displayGraph;
+  }
+
+  set displayGraph(value: string) {
+    if (this._displayGraph !== value) {
+      this._displayGraph = value;
+      this.redraw$.next(true);
     }
   }
 }
