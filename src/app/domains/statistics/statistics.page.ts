@@ -10,9 +10,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Species } from '@shared/models/masterdata.model';
-import { Observation } from '@shared/models/observation.model';
 import { SourceFilterType } from '@shared/models/source-type.model';
-import { ObsWoy } from '@shared/models/statistics-agg';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { formatShortDate } from '@shared/utils/formatDate';
 import * as d3 from 'd3';
@@ -22,6 +20,7 @@ import * as d3Time from 'd3-time';
 import moment from 'moment';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { ObsWoy, StatisticsAgg } from './../../shared/models/statistics-agg';
 import { allSpecies, allYear, AltitudeGroup, Analytics, AnalyticsType, AnalyticsValue } from './statistics.model';
 import { StatisticsService } from './statistics.service';
 import { StatisticsAggService } from './statistics_agg.service';
@@ -71,8 +70,9 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   private year: number | null; // null if all year
   private analytics: Analytics[] = [];
-  private observations: Observation[] = [];
-  private obsWoy: ObsWoy[] = [];
+  private obsWoyCurrentYear: ObsWoy[] = [];
+  private obsWoy5Years: ObsWoy[] = [];
+  private obsWoy30Years: ObsWoy[] = [];
   private _displayGraph: string = '1';
   translationsLoaded = false;
 
@@ -229,7 +229,9 @@ export class StatisticsComponent implements OnInit, OnDestroy {
               }
               this.drawChart();
             } else {
-              console.log(results);
+              this.obsWoy30Years = this.aggregateObsWoy(results as StatisticsAgg[], 30);
+              this.obsWoy5Years = this.aggregateObsWoy(results as StatisticsAgg[], 5);
+              this.obsWoyCurrentYear = this.aggregateObsWoy(results as StatisticsAgg[], 1);
               this.createBarChart();
             }
           })
@@ -252,6 +254,32 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
+  private aggregateObsWoy(results: StatisticsAgg[], period: number) {
+    const aggregationObservations = results.filter(r => r.agg_range == period).flatMap(r => r.obs_woy);
+    const aggregated: Record<number, number> = {};
+
+    // Iterate over each object in the array
+    for (const record of aggregationObservations) {
+      // Iterate over the keys (week numbers) in the object
+      for (const weekStr in record) {
+        const week = Number(weekStr); // Convert the key to a number
+        const count = record[week];
+
+        if (!aggregated[week]) {
+          // Initialize if the week is not already in the result
+          aggregated[week] = 0;
+        }
+
+        // Add the count for the current week
+        aggregated[week] += count;
+      }
+    }
+    return Object.entries(aggregated).map(([week, count]) => ({
+      week: Number(week),
+      count: count / period
+    }));
+  }
+
   private initializeWeekArray() {
     const weekCounts: ObsWoy[] = [];
     for (let weekNumber = 1; weekNumber <= 52; weekNumber++) {
@@ -260,40 +288,17 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     return weekCounts;
   }
 
-  private sortDatasetPerWeek(): ObsWoy[] {
-    function getISOWeek(date: Date): number {
-      const tempDate = new Date(date.getTime());
-      tempDate.setUTCDate(tempDate.getUTCDate() + 4 - (tempDate.getUTCDay() || 7)); // Thursday of the current week
-      const yearStart = new Date(Date.UTC(tempDate.getUTCFullYear(), 0, 1));
-      return Math.ceil(((tempDate.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
-    }
-    const weekCounts: ObsWoy[] = this.initializeWeekArray();
-    if (this.observations && this.observations.length > 0) {
-      this.observations.forEach(observation => {
-        const observationDate = new Date(observation.date.seconds * 1000);
-        const weekNumber = getISOWeek(observationDate);
-        const rightWeek = weekCounts.find(entry => entry.week === weekNumber);
-        if (rightWeek) {
-          rightWeek.count += 1;
-        }
-      });
-    }
-    return weekCounts;
-  }
-
-  printDataset() {
-    return JSON.stringify(this.datasetCurrentYear.sort((a, b) => (a.week < b.week ? -1 : 1)));
-  }
   private createBarChart(): void {
     const svg = d3.select<SVGGraphicsElement, unknown>('#app-bar-chart');
 
     svg.selectAll('*').remove();
 
+    const boundingBox = svg.node()?.getBoundingClientRect();
     // Set dimensions and margins for the chart
 
-    const margin = { top: 70, right: 30, bottom: 40, left: 80 };
-    const width = 1200 - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
+    const margin = { top: 70, right: 30, bottom: 80, left: 30 };
+    const width = boundingBox.width - margin.left - margin.right;
+    const height = 700 - margin.top - margin.bottom;
 
     // Set up the x and y scales
 
@@ -312,133 +317,57 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    const dataset5Years: ObsWoy[] = [
-      { week: 1, count: 140 },
-      { week: 2, count: 280 },
-      { week: 3, count: 830 },
-      { week: 4, count: 200 },
-      { week: 5, count: 380 },
-      { week: 6, count: 280 },
-      { week: 7, count: 520 },
-      { week: 8, count: 530 },
-      { week: 9, count: 420 },
-      { week: 10, count: 320 },
-      { week: 11, count: 430 },
-      { week: 12, count: 580 },
-      { week: 13, count: 320 },
-      { week: 14, count: 930 },
-      { week: 15, count: 390 },
-      { week: 16, count: 770 },
-      { week: 17, count: 780 },
-      { week: 18, count: 820 },
-      { week: 19, count: 640 },
-      { week: 20, count: 510 },
-      { week: 21, count: 420 },
-      { week: 22, count: 520 },
-      { week: 23, count: 430 },
-      { week: 24, count: 580 },
-      { week: 25, count: 290 },
-      { week: 26, count: 90 },
-      { week: 27, count: 100 },
-      { week: 28, count: 470 },
-      { week: 29, count: 580 },
-      { week: 30, count: 280 },
-      { week: 31, count: 360 },
-      { week: 32, count: 220 },
-      { week: 33, count: 230 },
-      { week: 34, count: 240 },
-      { week: 35, count: 820 },
-      { week: 36, count: 910 },
-      { week: 37, count: 710 },
-      { week: 38, count: 820 },
-      { week: 39, count: 580 },
-      { week: 40, count: 530 },
-      { week: 41, count: 640 },
-      { week: 42, count: 720 },
-      { week: 43, count: 330 },
-      { week: 44, count: 340 },
-      { week: 45, count: 290 },
-      { week: 46, count: 530 },
-      { week: 47, count: 640 },
-      { week: 48, count: 330 },
-      { week: 49, count: 420 },
-      { week: 50, count: 510 },
-      { week: 51, count: 430 },
-      { week: 52, count: 440 }
-    ];
-    const dataset20Years: ObsWoy[] = [
-      { week: 1, count: 500 },
-      { week: 2, count: 750 },
-      { week: 3, count: 280 },
-      { week: 4, count: 100 },
-      { week: 5, count: 980 },
-      { week: 6, count: 420 },
-      { week: 7, count: 500 },
-      { week: 8, count: 250 },
-      { week: 9, count: 180 },
-      { week: 10, count: 500 },
-      { week: 11, count: 680 },
-      { week: 12, count: 500 },
-      { week: 13, count: 750 },
-      { week: 14, count: 280 },
-      { week: 15, count: 100 },
-      { week: 16, count: 980 },
-      { week: 17, count: 420 },
-      { week: 18, count: 500 },
-      { week: 19, count: 250 },
-      { week: 20, count: 180 },
-      { week: 21, count: 500 },
-      { week: 22, count: 680 },
-      { week: 23, count: 500 },
-      { week: 24, count: 750 },
-      { week: 25, count: 280 },
-      { week: 26, count: 100 },
-      { week: 27, count: 980 },
-      { week: 28, count: 420 },
-      { week: 29, count: 500 },
-      { week: 30, count: 250 },
-      { week: 31, count: 180 },
-      { week: 32, count: 500 },
-      { week: 33, count: 680 },
-      { week: 34, count: 500 },
-      { week: 35, count: 750 },
-      { week: 36, count: 280 },
-      { week: 37, count: 100 },
-      { week: 38, count: 980 },
-      { week: 39, count: 420 },
-      { week: 40, count: 500 },
-      { week: 41, count: 250 },
-      { week: 42, count: 180 },
-      { week: 43, count: 500 },
-      { week: 44, count: 680 },
-      { week: 45, count: 500 },
-      { week: 46, count: 750 },
-      { week: 47, count: 280 },
-      { week: 48, count: 100 },
-      { week: 49, count: 980 },
-      { week: 50, count: 420 },
-      { week: 51, count: 500 },
-      { week: 52, count: 250 }
-    ];
-    this.datasetCurrentYear = this.sortDatasetPerWeek();
-
     // Define the x and y domains
-    x.domain([1, 53]).range([0, width]);
+    x.domain([1, 53]).range([30, width + 30]);
     xBar.domain(
       this.datasetCurrentYear.map(function (d) {
         return d.week.toString();
       })
     );
-    y.domain([0, d3.max([...dataset5Years, ...dataset20Years, ...this.datasetCurrentYear], d => d.count)]);
+    y.domain([0, d3.max([...this.obsWoy5Years, ...this.obsWoy30Years, ...this.obsWoyCurrentYear], d => d.count)]);
 
-    const barWidth = width / this.datasetCurrentYear.length - 10;
+    const barWidth = width / this.obsWoyCurrentYear.length - 10;
+
+    const xTicks = Array.from({ length: Math.floor(53 / 2) + 1 }, (_, index) => index * 2 + 1);
+
+    const xAxisLabels = d3Axis
+      .axisBottom(x)
+      .tickValues(xTicks.map(tickValue => tickValue)) // put labels on the 15th of each month
+      .tickSize(0)
+      .tickPadding(5)
+      .tickFormat(t => 'kw' + t);
+
     // Add the x-axis
-
-    svg.append('g').attr('transform', `translate(0,${height})`).call(d3.axisBottom(x));
+    svg.append('g').attr('transform', `translate(0,${height})`).call(xAxisLabels);
 
     // Add the y-axis
+    svg.append('g').attr('transform', `translate(30)`).call(d3.axisLeft(y));
 
-    svg.append('g').call(d3.axisLeft(y));
+    // create a legend
+    svg.append('circle').attr('cx', 50).attr('cy', 600).attr('r', 6).style('fill', 'steelblue');
+    svg.append('circle').attr('cx', 450).attr('cy', 600).attr('r', 6).style('fill', 'pink');
+    svg.append('circle').attr('cx', 850).attr('cy', 600).attr('r', 6).style('fill', 'red');
+    svg
+      .append('text')
+      .attr('x', 60)
+      .attr('y', 605)
+      .text('durchschnittlich 5 Jahre vor dem ausgewählten Jahr')
+      .style('font-size', '15px')
+      .attr('alignment-baseline', 'middle');
+    svg
+      .append('text')
+      .attr('x', 460)
+      .attr('y', 605)
+      .text('durchschnittlich 30 Jahre vor dem ausgewählten Jahr')
+      .style('font-size', '15px')
+      .attr('alignment-baseline', 'middle');
+    svg
+      .append('text')
+      .attr('x', 860)
+      .attr('y', 605)
+      .text('ausgewähltes Jahr')
+      .style('font-size', '15px')
+      .attr('alignment-baseline', 'middle');
 
     // Create the area generator
     const area = d3
@@ -450,25 +379,25 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
     // Add the line path to the SVG element
 
-    //    svg
-    //      .append('path')
-    //      .datum(dataset5Years)
-    //      .attr('class', 'area')
-    //      .attr('fill', 'steelblue')
-    //      .attr('opacity', '0.5')
-    //      .attr('d', area);
-    //
-    //    svg
-    //      .append('path')
-    //      .datum(dataset20Years)
-    //      .attr('class', 'area')
-    //      .attr('fill', 'pink')
-    //      .attr('opacity', '0.5')
-    //      .attr('d', area);
-    //
+    svg
+      .append('path')
+      .datum(this.obsWoy5Years)
+      .attr('class', 'area')
+      .attr('fill', 'steelblue')
+      .attr('opacity', '0.5')
+      .attr('d', area);
+
+    svg
+      .append('path')
+      .datum(this.obsWoy30Years)
+      .attr('class', 'area')
+      .attr('fill', 'pink')
+      .attr('opacity', '0.5')
+      .attr('d', area);
+
     svg
       .selectAll('.bar')
-      .data(this.datasetCurrentYear)
+      .data(this.obsWoyCurrentYear)
       .enter()
       .append('rect')
       .attr('class', 'bar')
