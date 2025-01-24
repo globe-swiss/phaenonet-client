@@ -1,3 +1,4 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,9 +19,10 @@ import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import * as d3Time from 'd3-time';
 import moment from 'moment';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { ObsWoy, StatisticsAgg } from './../../shared/models/statistics-agg';
+import { ObsWoy, Statistics, StatisticsAgg } from '../../shared/models/statistics';
+import { AnalyticsService } from './analytics.service';
 import {
   allSpecies,
   allYear,
@@ -33,8 +35,6 @@ import {
 } from './statistics.model';
 import { StatisticsService } from './statistics.service';
 import { StatisticsAggService } from './statistics_agg.service';
-import { StatisticsObservationsService } from './statistics_observations.service';
-
 @Component({
   encapsulation: ViewEncapsulation.None,
   templateUrl: './statistics.page.html',
@@ -108,16 +108,19 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   private obsWoy5Years: ObsWoy[] = [];
   private obsWoy30Years: ObsWoy[] = [];
   private _displayGraph: string = '1';
+  private xTickInterval = 2;
+  private legendFontSize = '0.5vw';
   translationsLoaded = false;
 
   svgComponentHeight = 0;
   constructor(
     private titleService: TitleService,
+    private analyticsService: AnalyticsService,
     private statisticsService: StatisticsService,
     private statisticsAggService: StatisticsAggService,
-    private statisticsObservationsService: StatisticsObservationsService,
     private masterdataService: MasterdataService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private breakpointObserver: BreakpointObserver
   ) {}
 
   @HostListener('window:resize', ['$event'])
@@ -157,6 +160,15 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.titleService.setLocation('Auswertungen');
 
+    this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
+      if (result.matches) {
+        this.xTickInterval = 5; // Mobile view
+        this.legendFontSize = '3vw'; // Mobile view
+      } else {
+        this.xTickInterval = 2; // Desktop view
+        this.legendFontSize = '0.5vw';
+      }
+    });
     // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
     this.subscriptions.add(
       this.translateService.get(this.selectableDatasources[0]).subscribe(() => {
@@ -176,9 +188,9 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       this.masterdataService.phenoYear$
         .pipe(first())
         .subscribe(year => this.filter.controls.year.patchValue(String(year)));
-      this.statisticsService.statisticFilterState = this.filter;
+      this.analyticsService.statisticFilterState = this.filter;
     } else {
-      this.filter = this.statisticsService.statisticFilterState;
+      this.filter = this.analyticsService.statisticFilterState;
     }
 
     this.selectableSpecies$ = this.filter.valueChanges.pipe(
@@ -246,18 +258,12 @@ export class StatisticsComponent implements OnInit, OnDestroy {
             this.year = year === allYear ? null : parseInt(year, 10);
 
             if (this.displayGraph === '1') {
-              return this.statisticsService.listByYear(year, analyticsType, datasource, species);
+              return this.analyticsService.listByYear(year, analyticsType, datasource, species);
             } else {
-              //return ({
-              //  observations: this.statisticsObservationsService.getObservations(
-              //    year,
-              //    analyticsType,
-              //    datasource,
-              //    species
-              //  ),
-              //  obsWoy: this.statisticsAggService.getStatisticsAgg(year, analyticsType, datasource, species)
-              //});
-              return this.statisticsAggService.getStatisticsAgg(year, phenophase, altitude, species);
+              return combineLatest(
+                this.statisticsAggService.getStatisticsAgg(year, phenophase, altitude, species),
+                this.statisticsService.getStatistics(year, phenophase, altitude, species)
+              );
             }
           }),
           map(results => {
@@ -267,9 +273,9 @@ export class StatisticsComponent implements OnInit, OnDestroy {
               }
               this.drawChart();
             } else {
-              this.obsWoy30Years = this.aggregateObsWoy(results as StatisticsAgg[], 30);
-              this.obsWoy5Years = this.aggregateObsWoy(results as StatisticsAgg[], 5);
-              this.obsWoyCurrentYear = this.aggregateObsWoy(results as StatisticsAgg[], 1);
+              this.obsWoy30Years = this.aggregateObsWoy(results[0] as StatisticsAgg[], 30);
+              this.obsWoy5Years = this.aggregateObsWoy(results[0] as StatisticsAgg[], 5);
+              this.obsWoyCurrentYear = this.aggregateObsWoyStatistics(results[1] as Statistics[], 1);
               this.createBarChart();
             }
           })
@@ -303,6 +309,33 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
+  private aggregateObsWoyStatistics(results: Statistics[], period: number) {
+    const aggregationObservations = results.flatMap(r => r.obs_woy);
+    const aggregated: Record<number, number> = {};
+
+    // Iterate over each object in the array
+    for (const record of aggregationObservations) {
+      // Iterate over the keys (week numbers) in the object
+      for (const weekStr in record) {
+        const week = Number(weekStr); // Convert the key to a number
+        const count = record[week];
+
+        if (!aggregated[week]) {
+          // Initialize if the week is not already in the result
+          aggregated[week] = 0;
+        }
+
+        // Add the count for the current week
+        aggregated[week] += count;
+      }
+    }
+    const ret = Object.entries(aggregated).map(([week, count]) => ({
+      week: Number(week),
+      count: Math.round(count / period)
+    }));
+    return this.ensureAllWeeks(ret);
+  }
+
   private aggregateObsWoy(results: StatisticsAgg[], period: number) {
     const aggregationObservations = results.filter(r => r.agg_range == period).flatMap(r => r.obs_woy);
     const aggregated: Record<number, number> = {};
@@ -323,19 +356,34 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         aggregated[week] += count;
       }
     }
-    return Object.entries(aggregated).map(([week, count]) => ({
+    const ret = Object.entries(aggregated).map(([week, count]) => ({
       week: Number(week),
-      count: count / period
+      count: Math.round(count / period)
     }));
+    return this.ensureAllWeeks(ret);
   }
 
-  private initializeWeekArray() {
-    const weekCounts: ObsWoy[] = [];
-    for (let weekNumber = 1; weekNumber <= 52; weekNumber++) {
-      weekCounts.push({ week: weekNumber, count: 0 });
+  private ensureAllWeeks(array: ObsWoy[]): ObsWoy[] {
+    const allWeeks: ObsWoy[] = [];
+
+    for (let week = -3; week <= 53; week++) {
+      const existing = array.find(item => item.week === week);
+      if (existing) {
+        allWeeks.push(existing); // Use the existing week if found
+      } else {
+        allWeeks.push({ week, count: 0 }); // Add a new entry for missing weeks
+      }
     }
-    return weekCounts;
+    return allWeeks;
   }
+
+  private initializeArray = (start: number, end: number, step: number): number[] => {
+    const result: number[] = [];
+    for (let i = start; i <= end; i += step) {
+      result.push(i);
+    }
+    return result;
+  };
 
   private createBarChart(): void {
     const svg = d3.select<SVGGraphicsElement, unknown>('#app-bar-chart');
@@ -345,7 +393,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     const boundingBox = svg.node()?.getBoundingClientRect();
     // Set dimensions and margins for the chart
 
-    const margin = { top: 70, right: 30, bottom: 80, left: 30 };
+    const margin = { top: 150, right: 30, bottom: 40, left: 30 };
     const width = boundingBox.width - margin.left - margin.right;
     const height = 700 - margin.top - margin.bottom;
 
@@ -367,7 +415,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     // Define the x and y domains
-    x.domain([1, 53]).range([30, width + 30]);
+    x.domain([-3, 53]).range([30, width + 30]);
     xBar.domain(
       this.datasetCurrentYear.map(function (d) {
         return d.week.toString();
@@ -377,11 +425,11 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
     const barWidth = width / this.obsWoyCurrentYear.length - 10;
 
-    const xTicks = Array.from({ length: Math.floor(53 / 2) + 1 }, (_, index) => index * 2 + 1);
+    const xTicks = this.initializeArray(-3, 52, this.xTickInterval);
 
     const xAxisLabels = d3Axis
       .axisBottom(x)
-      .tickValues(xTicks.map(tickValue => tickValue)) // put labels on the 15th of each month
+      .tickValues(xTicks.map(tickValue => tickValue))
       .tickSize(0)
       .tickPadding(5)
       .tickFormat(t => 'kw' + t);
@@ -393,29 +441,44 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     svg.append('g').attr('transform', `translate(30)`).call(d3.axisLeft(y));
 
     // create a legend
-    svg.append('circle').attr('cx', 50).attr('cy', 600).attr('r', 6).style('fill', 'steelblue');
-    svg.append('circle').attr('cx', 450).attr('cy', 600).attr('r', 6).style('fill', 'pink');
-    svg.append('circle').attr('cx', 850).attr('cy', 600).attr('r', 6).style('fill', 'red');
+    svg
+      .append('circle')
+      .attr('cx', boundingBox.width - margin.right - 300)
+      .attr('cy', 20)
+      .attr('r', 6)
+      .style('fill', 'steelblue');
+    svg
+      .append('circle')
+      .attr('cx', boundingBox.width - margin.right - 300)
+      .attr('cy', 50)
+      .attr('r', 6)
+      .style('fill', 'pink');
+    svg
+      .append('circle')
+      .attr('cx', boundingBox.width - margin.right - 300)
+      .attr('cy', 80)
+      .attr('r', 6)
+      .style('fill', 'red');
     svg
       .append('text')
-      .attr('x', 60)
-      .attr('y', 605)
+      .attr('x', boundingBox.width - margin.right - 290)
+      .attr('y', 25)
       .text('durchschnittlich 5 Jahre vor dem ausgewählten Jahr')
-      .style('font-size', '15px')
+      .style('font-size', this.legendFontSize)
       .attr('alignment-baseline', 'middle');
     svg
       .append('text')
-      .attr('x', 460)
-      .attr('y', 605)
+      .attr('x', boundingBox.width - margin.right - 290)
+      .attr('y', 55)
       .text('durchschnittlich 30 Jahre vor dem ausgewählten Jahr')
-      .style('font-size', '15px')
+      .style('font-size', this.legendFontSize)
       .attr('alignment-baseline', 'middle');
     svg
       .append('text')
-      .attr('x', 860)
-      .attr('y', 605)
+      .attr('x', boundingBox.width - margin.right - 290)
+      .attr('y', 85)
       .text('ausgewähltes Jahr')
-      .style('font-size', '15px')
+      .style('font-size', this.legendFontSize)
       .attr('alignment-baseline', 'middle');
 
     // Create the area generator

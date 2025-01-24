@@ -6,7 +6,7 @@ import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { SourceFilterType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { StatisticsAgg } from './../../shared/models/statistics-agg';
+import { StatisticsAgg } from '../../shared/models/statistics';
 import { AltitudeFilterGroup, AnalyticsType, PhenophaseFilterType } from './statistics.model';
 
 @Injectable({ providedIn: 'root' })
