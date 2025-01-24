@@ -26,5 +26,5 @@ Scenario('test all year view', async ({ I, statisticsPage }) => {
   I.visit(statisticsPage);
   I.selectDropdownValue(statisticsPage.filter.phenoyear.dropdown, 'all', true);
   I.selectDropdownValue(statisticsPage.filter.species.dropdown, statisticsPage.filter.species.values.sycamore);
-  await I.checkVisual('statistics-2018_all_year_sycamore');
+  await I.checkVisual('statistics-all_years_sycamore');
 }).tag('visual');
