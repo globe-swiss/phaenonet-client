@@ -243,7 +243,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     g.append('g').call(yAxis);
 
     // Draw x-axis
-    const tickYear = this.masterdataService.getPhenoYear();
+    const tickYear = 1900; // any year
     const xTicks = d3Time
       .timeMonths(new Date(tickYear - 1, 11, 1), new Date(tickYear, 11, 31))
       .map(d => this.dateToDOY(tickYear, d));
@@ -423,18 +423,22 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private dateToDOY(year: number, value: Date) {
-    const m = moment(value);
-    const lastDateOfAnalytics = moment({ year: year }).endOf('year');
+  private dateToDOY(year: number, date: Date) {
+    const mdate = moment(date);
 
-    if (m.year() - lastDateOfAnalytics.year() < 0) {
+    if (mdate.year() < year) {
       // date lies in the past year or beyond
-      return m.dayOfYear() - lastDateOfAnalytics.dayOfYear() + 1;
-    } else if (m.year() - lastDateOfAnalytics.year() > 0) {
+      return (
+        mdate.dayOfYear() -
+        moment({ year: year - 1 })
+          .endOf('year')
+          .dayOfYear()
+      );
+    } else if (mdate.year() > year) {
       // date lies in the next year
-      return m.dayOfYear() + lastDateOfAnalytics.dayOfYear();
+      return mdate.dayOfYear() + moment({ year: year }).endOf('year').dayOfYear();
     } else {
-      return m.dayOfYear();
+      return mdate.dayOfYear();
     }
   }
 }
