@@ -53,7 +53,7 @@ Scenario('test marker with img', async ({ I, mapPage }) => {
 
   await I.clickXY(930, 690, 'individuals/2018_1531');
   await I.waitForImage(mapPage.infoWindow.individualImage);
-  await I.checkVisual('map-test_marker_img', 0.05, { retries: 3, wait: 1 });
+  await I.checkVisual('map-test_marker_img');
 }).tag('visual');
 
 Scenario('test marker no img', async ({ I, mapPage }) => {
@@ -65,7 +65,7 @@ Scenario('test marker no img', async ({ I, mapPage }) => {
   await mapPage.waitForMarkers();
 
   await I.clickXY(250, 400, 'individuals/2018_864');
-  await I.checkVisual('map-test_marker_no_img', 0.05, { retries: 3, wait: 1 });
+  await I.checkVisual('map-test_marker_no_img');
 }).tag('visual');
 
 Scenario.todo('test marker with sensor no img', () => {
