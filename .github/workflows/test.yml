@@ -66,6 +66,7 @@ jobs:
     concurrency: e2e-test
     name: E2E-tests
     runs-on: ubuntu-22.04
+    container: docker.io/node:18-bookworm
     needs: build
     environment: phaenonet-test
     permissions:
