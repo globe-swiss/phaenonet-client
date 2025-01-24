@@ -82,11 +82,13 @@
   },
   "name": "phaenonet",
   "pnpm": {
-    "overrides": {
-      "canvas": "^2.11.2"
-    },
     "overrideComments": {
-      "canvas": "override from 2.8 -> 2.11 to be able to use binary dependency for resemblejs"
+      "canvas": "override from 2.8 -> 2.11 to be able to use binary dependency for resemblejs",
+      "playwright": "1.50.x changes font rendering, needs refresh of all base images"
+    },
+    "overrides": {
+      "canvas": "^2.11.2",
+      "playwright": "~1.49.1"
     }
   },
   "private": true,
