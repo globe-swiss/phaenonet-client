@@ -21,7 +21,16 @@ import moment from 'moment';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { ObsWoy, StatisticsAgg } from './../../shared/models/statistics-agg';
-import { allSpecies, allYear, AltitudeGroup, Analytics, AnalyticsType, AnalyticsValue } from './statistics.model';
+import {
+  allSpecies,
+  allYear,
+  AltitudeFilterGroup,
+  AltitudeGroup,
+  Analytics,
+  AnalyticsType,
+  AnalyticsValue,
+  PhenophaseFilterType
+} from './statistics.model';
 import { StatisticsService } from './statistics.service';
 import { StatisticsAggService } from './statistics_agg.service';
 import { StatisticsObservationsService } from './statistics_observations.service';
@@ -56,6 +65,29 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   selectableDatasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wld'];
   selectableAnalyticsTypes: AnalyticsType[] = ['species', 'altitude'];
   selectableSpecies$: Observable<Species[]>;
+  selectablePhenophases: PhenophaseFilterType[] = [
+    'all',
+    'AAP',
+    'AWP',
+    'BEA',
+    'BES',
+    'BFA',
+    'BLA',
+    'BLB',
+    'BLE',
+    'BTF',
+    'BVA',
+    'BVS',
+    'FRA',
+    'FRB',
+    'JUF',
+    'KNS',
+    'KNV',
+    'MST',
+    'STR',
+    'SZP'
+  ];
+  selectableAltitudeGroup: AltitudeFilterGroup[] = ['all', 'alt1', 'alt2', 'alt3', 'alt4', 'alt5'];
   graphDisplay: string[] = ['Ergebnisdiagramm', 'Wöchentliche Beobachtungen'];
   datasetCurrentYear: ObsWoy[] = [];
 
@@ -64,6 +96,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     datasource: FormControl<SourceFilterType>;
     analyticsType: FormControl<AnalyticsType>;
     species: FormControl<string>;
+    phenophase: FormControl<PhenophaseFilterType>;
+    altitude: FormControl<AltitudeFilterGroup>;
   }>;
   private redraw$ = new Subject();
   private subscriptions = new Subscription();
@@ -135,7 +169,9 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         year: new FormControl(''),
         datasource: new FormControl(this.selectableDatasources[0]),
         analyticsType: new FormControl(this.selectableAnalyticsTypes[0]),
-        species: new FormControl(allSpecies.id)
+        species: new FormControl(allSpecies.id),
+        phenophase: new FormControl(this.selectablePhenophases[0]),
+        altitude: new FormControl(this.selectableAltitudeGroup[0])
       });
       this.masterdataService.phenoYear$
         .pipe(first())
@@ -204,6 +240,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
             const datasource = this.filter.controls.datasource.value;
             const analyticsType = this.filter.controls.analyticsType.value;
             const species = this.filter.controls.species.value;
+            const phenophase = this.filter.controls.phenophase.value;
+            const altitude = this.filter.controls.altitude.value;
 
             this.year = year === allYear ? null : parseInt(year, 10);
 
@@ -219,7 +257,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
               //  ),
               //  obsWoy: this.statisticsAggService.getStatisticsAgg(year, analyticsType, datasource, species)
               //});
-              return this.statisticsAggService.getStatisticsAgg(year, analyticsType, datasource, species);
+              return this.statisticsAggService.getStatisticsAgg(year, phenophase, altitude, species);
             }
           }),
           map(results => {
@@ -237,6 +275,17 @@ export class StatisticsComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe()
+    );
+  }
+
+  printResult() {
+    return (
+      '------------------> 30 years    \n' +
+      JSON.stringify(this.obsWoy30Years) +
+      '------------------> 5 years    \n' +
+      JSON.stringify(this.obsWoy5Years) +
+      '------------------> current years    \n' +
+      JSON.stringify(this.obsWoyCurrentYear)
     );
   }
 

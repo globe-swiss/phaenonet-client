@@ -6,7 +6,7 @@ import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { SourceFilterType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Analytics, AnalyticsType } from './statistics.model';
+import { AltitudeFilterGroup, Analytics, AnalyticsType, PhenophaseFilterType } from './statistics.model';
 
 @Injectable({ providedIn: 'root' })
 export class StatisticsService extends BaseResourceService<Analytics> {
@@ -16,6 +16,8 @@ export class StatisticsService extends BaseResourceService<Analytics> {
     datasource: FormControl<SourceFilterType>;
     analyticsType: FormControl<AnalyticsType>;
     species: FormControl<string>;
+    phenophase: FormControl<PhenophaseFilterType>;
+    altitude: FormControl<AltitudeFilterGroup>;
   }>;
 
   constructor(

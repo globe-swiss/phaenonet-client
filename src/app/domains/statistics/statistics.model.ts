@@ -1,9 +1,32 @@
-import { Species } from '@shared/models/masterdata.model';
+import { Phenophase, Species } from '@shared/models/masterdata.model';
 import { Observation } from '@shared/models/observation.model';
 
 export type AltitudeGroup = 'alt1' | 'alt2' | 'alt3' | 'alt4' | 'alt5';
+export type AltitudeFilterGroup = 'all' | AltitudeGroup;
 export type AnalyticsType = 'species' | 'altitude';
+export type PhenophaseType =
+  | 'AAP'
+  | 'AWP'
+  | 'BEA'
+  | 'BES'
+  | 'BFA'
+  | 'BLA'
+  | 'BLB'
+  | 'BLE'
+  | 'BTF'
+  | 'BVA'
+  | 'BVS'
+  | 'FRA'
+  | 'FRB'
+  | 'JUF'
+  | 'KNS'
+  | 'KNV'
+  | 'MST'
+  | 'STR'
+  | 'SZP';
 
+export type PhenophaseFilterType = 'all' | PhenophaseType;
+export const allPhenophases = { id: 'all', de: 'Alle' } as Phenophase;
 export const allSpecies = { id: 'all', de: 'Alle' } as Species;
 export const allYear = 'all';
 

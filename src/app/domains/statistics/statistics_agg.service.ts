@@ -7,7 +7,7 @@ import { SourceFilterType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { StatisticsAgg } from './../../shared/models/statistics-agg';
-import { AnalyticsType } from './statistics.model';
+import { AltitudeFilterGroup, AnalyticsType, PhenophaseFilterType } from './statistics.model';
 
 @Injectable({ providedIn: 'root' })
 export class StatisticsAggService extends BaseResourceService<StatisticsAgg> {
@@ -28,13 +28,19 @@ export class StatisticsAggService extends BaseResourceService<StatisticsAgg> {
 
   getStatisticsAgg(
     year: string,
-    analyticsType: AnalyticsType,
-    source: SourceFilterType,
+    phenophase: PhenophaseFilterType,
+    altitude: AltitudeFilterGroup,
     species: string
   ): Observable<StatisticsAgg[]> {
     const queryConstraints = [where('end_year', '==', parseInt(year, 10))];
     if (species !== 'all') {
       queryConstraints.push(where('species', '==', species));
+    }
+    if (phenophase !== 'all') {
+      queryConstraints.push(where('phenophase', '==', phenophase));
+    }
+    if (altitude !== 'all') {
+      queryConstraints.push(where('altitude_grp', '==', altitude));
     }
 
     return this.queryCollection(...queryConstraints).pipe(

@@ -1,3 +1,4 @@
+{{ printResult() }}
 <div class="statistics" data-test-id="statistics-component">
   <div class="statistics__chart-view">
     <div class="statistics__statistics-filter">
@@ -20,7 +21,7 @@
               </mat-select>
             </div>
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field *ngIf="displayGraph === '1'">
             <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
             <mat-select formControlName="datasource" data-test-id="select-source">
               <mat-option *ngFor="let datasource of selectableDatasources" [value]="datasource">{{
@@ -44,6 +45,23 @@
               }}</mat-option>
             </mat-select>
           </mat-form-field>
+          <mat-form-field *ngIf="displayGraph === '2'">
+            <mat-label>{{ 'Phaenophase' | translate }}</mat-label>
+            <mat-select formControlName="phenophase" data-test-id="select-phenophase">
+              <mat-option *ngFor="let phenophase of selectablePhenophases" [value]="phenophase">{{
+                phenophase | translate
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field *ngIf="displayGraph === '2'">
+            <mat-label>{{ 'Höhe' | translate }}</mat-label>
+            <mat-select formControlName="altitude" data-test-id="select-altitude">
+              <mat-option *ngFor="let altitude of selectableAltitudeGroup" [value]="altitude">{{
+                altitude | translate
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
           <button
             mat-icon-button
             class="statistics-info-button"

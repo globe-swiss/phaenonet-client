@@ -64,5 +64,26 @@
 
   "activity.action.create": "hinzugefügt",
   "activity.action.modify": "bearbeitet",
-  "activity.action.delete": "gelöscht"
+  "activity.action.delete": "gelöscht",
+
+  "AAP":"Ausaperung",
+  "AWP":"Aufwärmphase",
+  "BEA":"Allgemeine Blattentfaltung",
+  "BES":"Beginn der Blattentfaltung",
+  "BFA":"Allgemeiner Blattfall",
+  "BLA":"Allgemeine Blüte",
+  "BLB":"Beginn der Blüte",
+  "BLE":"Ende der Blüte",
+  "BTF":"Beutefang",
+  "BVA":"Allgemeine Blattverfärbung",
+  "BVS":"Beginn der Blattverfärbung",
+  "FRA":"Beginn Fruchtfall",
+  "FRB":"Beginn der Fruchtreife",
+  "JUF":"Jungfernflug",
+  "KNS":"Beginn der Knospung",
+  "KNV":"Vor der Knospung",
+  "MST":"Mastausprägung",
+  "STR":"Sonnungstraube",
+  "SZP":"Schlüpfzeitpunkt"
+
 }
