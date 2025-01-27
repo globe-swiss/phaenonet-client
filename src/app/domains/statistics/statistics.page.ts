@@ -99,6 +99,10 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     phenophase: FormControl<PhenophaseFilterType>;
     altitude: FormControl<AltitudeFilterGroup>;
   }>;
+  graphFilter: FormGroup<{
+    graph: FormControl<number>;
+  }>;
+
   private redraw$ = new Subject();
   private subscriptions = new Subscription();
 
@@ -284,17 +288,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     );
   }
 
-  printResult() {
-    return (
-      '------------------> 30 years    \n' +
-      JSON.stringify(this.obsWoy30Years) +
-      '------------------> 5 years    \n' +
-      JSON.stringify(this.obsWoy5Years) +
-      '------------------> current years    \n' +
-      JSON.stringify(this.obsWoyCurrentYear)
-    );
-  }
-
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -313,19 +306,13 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     const aggregationObservations = results.flatMap(r => r.obs_woy);
     const aggregated: Record<number, number> = {};
 
-    // Iterate over each object in the array
     for (const record of aggregationObservations) {
-      // Iterate over the keys (week numbers) in the object
       for (const weekStr in record) {
-        const week = Number(weekStr); // Convert the key to a number
+        const week = Number(weekStr);
         const count = record[week];
-
         if (!aggregated[week]) {
-          // Initialize if the week is not already in the result
           aggregated[week] = 0;
         }
-
-        // Add the count for the current week
         aggregated[week] += count;
       }
     }
@@ -340,19 +327,15 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     const aggregationObservations = results.filter(r => r.agg_range == period).flatMap(r => r.obs_woy);
     const aggregated: Record<number, number> = {};
 
-    // Iterate over each object in the array
     for (const record of aggregationObservations) {
-      // Iterate over the keys (week numbers) in the object
       for (const weekStr in record) {
-        const week = Number(weekStr); // Convert the key to a number
+        const week = Number(weekStr);
         const count = record[week];
 
         if (!aggregated[week]) {
-          // Initialize if the week is not already in the result
           aggregated[week] = 0;
         }
 
-        // Add the count for the current week
         aggregated[week] += count;
       }
     }
@@ -369,9 +352,9 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     for (let week = -3; week <= 53; week++) {
       const existing = array.find(item => item.week === week);
       if (existing) {
-        allWeeks.push(existing); // Use the existing week if found
+        allWeeks.push(existing);
       } else {
-        allWeeks.push({ week, count: 0 }); // Add a new entry for missing weeks
+        allWeeks.push({ week, count: 0 });
       }
     }
     return allWeeks;
@@ -393,15 +376,15 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     const boundingBox = svg.node()?.getBoundingClientRect();
     // Set dimensions and margins for the chart
 
-    const margin = { top: 150, right: 30, bottom: 40, left: 30 };
+    const margin = { top: 100, right: 30, bottom: 40, left: 30 };
     const width = boundingBox.width - margin.left - margin.right;
-    const height = 700 - margin.top - margin.bottom;
+    const height = 700 - margin.bottom;
 
     // Set up the x and y scales
 
     const x = d3.scaleLinear().range([0, width]);
 
-    const y = d3.scaleLinear().range([height, 0]);
+    const y = d3.scaleLinear().range([height, 0 + margin.top]);
 
     const xBar = d3.scaleBand().range([0, width]).padding(0.4);
 
@@ -421,7 +404,13 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         return d.week.toString();
       })
     );
-    y.domain([0, d3.max([...this.obsWoy5Years, ...this.obsWoy30Years, ...this.obsWoyCurrentYear], d => d.count)]);
+
+    const dom = d3.max([...this.obsWoy5Years, ...this.obsWoy30Years, ...this.obsWoyCurrentYear], d => d.count);
+    if (dom === 0) {
+      y.domain([0, 5]);
+    } else {
+      y.domain([0, dom]);
+    }
 
     const barWidth = width / this.obsWoyCurrentYear.length - 10;
 
