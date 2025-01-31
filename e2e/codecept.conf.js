@@ -1,5 +1,7 @@
 // const { setHeadlessWhen } = require('@codeceptjs/configure');
 
+const { profile } = require('console');
+
 // // turn on headless mode when running with HEADLESS=true environment variable
 // // export HEADLESS=true && pnpm exec codeceptjs run
 // setHeadlessWhen(process.env.HEADLESS);
@@ -38,6 +40,7 @@ exports.config = {
     registerPage: './src/pages/register.js',
     resetPasswordPage: './src/pages/reset_password.js',
     mapPage: './src/pages/map.js',
+    profileObservationsComponent: './src/components/profile_observations.js',
     privateProfilePage: './src/pages/private_profile.js',
     profileEditPage: './src/pages/profile_edit.js',
     publicProfilePage: './src/pages/public_profile.js',

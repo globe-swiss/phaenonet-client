@@ -5,6 +5,7 @@ type logoutPage = typeof import('./pages/logout.js');
 type registerPage = typeof import('./pages/register.js');
 type resetPasswordPage = typeof import('./pages/reset_password.js');
 type mapPage = typeof import('./pages/map.js');
+type profileObservationsComponent = typeof import('./components/profile_observations.js');
 type privateProfilePage = typeof import('./pages/private_profile.js');
 type profileEditPage = typeof import('./pages/profile_edit.js');
 type publicProfilePage = typeof import('./pages/public_profile.js');
@@ -29,6 +30,7 @@ declare namespace CodeceptJS {
     registerPage: registerPage;
     resetPasswordPage: resetPasswordPage;
     mapPage: mapPage;
+    profileObservationsComponent: profileObservationsComponent;
     privateProfilePage: privateProfilePage;
     profileEditPage: profileEditPage;
     publicProfilePage: publicProfilePage;
@@ -44,7 +46,7 @@ declare namespace CodeceptJS {
     publicUser: publicUser;
   }
   interface Methods extends Playwright, ResembleHelper, Mochawesome {}
-  interface I extends ReturnType<steps_file>, WithTranslation<ResembleHelper>, WithTranslation<Mochawesome> {}
+  interface I extends ReturnType<steps_file>, WithTranslation<Methods> {}
   namespace Translation {
     interface Actions {}
   }
