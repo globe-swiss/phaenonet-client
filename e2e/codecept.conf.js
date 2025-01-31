@@ -1,7 +1,4 @@
 // const { setHeadlessWhen } = require('@codeceptjs/configure');
-
-const { profile } = require('console');
-
 // // turn on headless mode when running with HEADLESS=true environment variable
 // // export HEADLESS=true && pnpm exec codeceptjs run
 // setHeadlessWhen(process.env.HEADLESS);

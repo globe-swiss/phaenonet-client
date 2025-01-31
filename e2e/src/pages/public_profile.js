@@ -1,3 +1,5 @@
+const profileObservationsComponent = require('../components/profile_observations.js');
+
 module.exports = {
   /**
    * @param {string} userId
@@ -8,9 +10,9 @@ module.exports = {
   components: {
     navigation: { css: 'app-nav' },
     profile: { css: 'app-profile-public' },
-    observations: { css: 'app-observation-list' }
+    observations: profileObservationsComponent.component
   },
-  yearDropdown: { css: 'app-observation-list [data-test-id=selectYear]' },
   followButton: { css: '[data-test-id=followButton]' },
-  unfollowButton: { css: '[data-test-id=unfollowButton]' }
+  unfollowButton: { css: '[data-test-id=unfollowButton]' },
+  observations: profileObservationsComponent
 };

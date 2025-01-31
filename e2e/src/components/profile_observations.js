@@ -1,6 +1,7 @@
 module.exports = {
   component: { css: 'app-observation-list' },
   listItems: { css: '[data-test-id=observation-item]' },
+  yearDropdown: { css: 'app-observation-list [data-test-id=selectYear]' },
   /**
    * @param {number} num
    */
