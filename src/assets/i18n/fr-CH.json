@@ -440,5 +440,25 @@
   "Temperatur (Tagesdurchschnitt)": "Température (moyenne quotidienne)",
   "Feuchtigkeit (Tagesdurchschnitt)": "Humidité (moyenne quotidienne)",
   "Messwerte vom": "Valeurs mesurées le",
-  "Werte werden stündlich von Sensoren direkt am Baum gemessen und mit LoRaWAN-Technologie übertragen. PhaenoNet-User können Messgeräte unter info@phaenonet.ch ausleihen.": "Les valeurs sont mesurées toutes les heures par des capteurs placés directement sur l'arbre et transmis par la technologie LoRaWAN. Les utilisateurs de PhaenoNet peuvent emprunter des appareils de mesure en contactant info@phaenonet.ch."
+  "Werte werden stündlich von Sensoren direkt am Baum gemessen und mit LoRaWAN-Technologie übertragen. PhaenoNet-User können Messgeräte unter info@phaenonet.ch ausleihen.": "Les valeurs sont mesurées toutes les heures par des capteurs placés directement sur l'arbre et transmis par la technologie LoRaWAN. Les utilisateurs de PhaenoNet peuvent emprunter des appareils de mesure en contactant info@phaenonet.ch.",
+
+  "AAP": "Fonte des neiges",
+  "AWP": "Phase de réchauffement",
+  "BEA": "Déploiement général des feuilles",
+  "BES": "Début du déploiement des feuilles",
+  "BFA": "Chute générale des feuilles",
+  "BLA": "Floraison générale",
+  "BLB": "Début de la floraison",
+  "BLE": "Fin de la floraison",
+  "BTF": "Capture de proies",
+  "BVA": "Coloration générale des feuilles",
+  "BVS": "Début de la coloration des feuilles",
+  "FRA": "Chute des fruits",
+  "FRB": "Début de la maturation des fruits",
+  "JUF": "Vol nupital",
+  "KNS": "Début du débourrement",
+  "KNV": "Avant débourrement",
+  "MST": "Intensité de la fructification",
+  "STR": "Réveil printanier",
+  "SZP": "Temps d'éclosion"
 }

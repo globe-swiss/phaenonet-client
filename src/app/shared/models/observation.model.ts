@@ -1,8 +1,8 @@
-import { FieldValue } from '@angular/fire/firestore';
+import { FieldValue, Timestamp } from '@angular/fire/firestore';
 import { SourceType } from './source-type.model';
 
 export class Observation {
-  date: Date;
+  date: Timestamp;
   individual: string;
   individual_id: string;
   phenophase: string;
@@ -10,8 +10,8 @@ export class Observation {
   year: number;
   user: string;
   comment: string | FieldValue;
-  created: Date;
-  modified: Date;
+  created: Timestamp;
+  modified: Timestamp;
   source: SourceType;
   tree_id?: string;
 }

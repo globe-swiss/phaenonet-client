@@ -440,5 +440,25 @@
   "Temperatur (Tagesdurchschnitt)": "Temperatura (media giornaliera)",
   "Feuchtigkeit (Tagesdurchschnitt)": "Umidità (media giornaliera)",
   "Messwerte vom": "Valori misurati il",
-  "Werte werden stündlich von Sensoren direkt am Baum gemessen und mit LoRaWAN-Technologie übertragen. PhaenoNet-User können Messgeräte unter info@phaenonet.ch ausleihen.": "I valori vengono misurati ogni ora da sensori posti direttamente sull'albero e trasmessi tramite la tecnologia LoRaWAN. Gli utenti di PhaenoNet possono prendere in prestito i dispositivi di misurazione contattando info@phaenonet.ch."
+  "Werte werden stündlich von Sensoren direkt am Baum gemessen und mit LoRaWAN-Technologie übertragen. PhaenoNet-User können Messgeräte unter info@phaenonet.ch ausleihen.": "I valori vengono misurati ogni ora da sensori posti direttamente sull'albero e trasmessi tramite la tecnologia LoRaWAN. Gli utenti di PhaenoNet possono prendere in prestito i dispositivi di misurazione contattando info@phaenonet.ch.",
+
+  "AAP": "Scioglimento della neve",
+  "AWP": "Fase di riscaldamento",
+  "BEA": "Sviluppo generale delle foglie",
+  "BES": "Inizio dello sviluppo fogliare",
+  "BFA": "Caduta generale delle foglie",
+  "BLA": "Fioritura generale",
+  "BLB": "Inizio della fioritura",
+  "BLE": "Termine della fioritura",
+  "BTF": "Cattura della preda",
+  "BVA": "Colorazione generale delle foglie",
+  "BVS": "Inizio della colorazione delle foglie",
+  "FRA": "Inizio della caduta dei frutti",
+  "FRB": "Inizio della maturazione dei frutti",
+  "JUF": "Volo nuziale",
+  "KNS": "Inizio della germogliazione",
+  "KNV": "Prima della germogliazione",
+  "MST": "Intensità della pasciona",
+  "STR": "Risveglio primaverile",
+  "SZP": "Tempo di schiusa"
 }
