@@ -12,10 +12,16 @@
 
   display: flex;
   flex-direction: row;
+  @include for-tablet-and-smaller {
+    --legend-font-size: var(--t1-font-size);
+  }
+
+  @include for-phone {
+    --legend-font-size: var(--t4-font-size);
+  }
 
   &__statistics-filter {
     form {
-      display: flex;
       flex-direction: row;
       align-items: baseline;
 
@@ -26,12 +32,24 @@
       mat-form-field {
         margin: 1rem;
       }
+
+      mat-form-field.short-width {
+        max-width: 6rem;
+      }
     }
 
     @include for-tablet-and-smaller {
       .mat-mdc-form-field {
         width: 6rem;
         margin-bottom: 0;
+      }
+
+      mat-form-field {
+        margin: 1rem;
+
+        .short-width {
+          width: 6rem;
+        }
       }
 
       // adjust select text sizes for phone
