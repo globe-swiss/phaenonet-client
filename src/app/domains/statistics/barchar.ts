@@ -6,7 +6,7 @@ import * as d3Axis from 'd3-axis';
 let obsWoyCurrentYear: ObsWoy[] = [];
 let obsWoy5Years: ObsWoy[] = [];
 let obsWoy30Years: ObsWoy[] = [];
-let xTickInterval = 2;
+let xTickInterval = 1;
 const legendFontSize = getComputedStyle(document.documentElement).getPropertyValue('--legend-font-size');
 const datasetCurrentYear: ObsWoy[] = [];
 
@@ -134,7 +134,7 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
     .attr('transform', `translate(${margin.left},${margin.top})`);
 
   // Define the x and y domains
-  x.domain([-3, 53]).range([30, width + 30]);
+  x.domain([-3, 53]).range([30, width]);
   xBar.domain(
     datasetCurrentYear.map(function (d) {
       return d.week.toString();
@@ -148,19 +148,22 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
     y.domain([0, dom]);
   }
 
-  const barWidth = width / obsWoyCurrentYear.length - width / obsWoyCurrentYear.length / 3;
+  const weekWidth = width / obsWoyCurrentYear.length;
+  const barWidth = weekWidth - weekWidth / 3;
 
-  const xTicks = initializeArray(-3, 52, xTickInterval);
+  const xTicks = initializeArray(-3, 53, xTickInterval);
 
   const xAxisLabels = d3Axis
     .axisBottom(x)
     .tickValues(xTicks.map(tickValue => tickValue))
-    .tickSize(0)
-    .tickPadding(5)
-    .tickFormat(t => 'kw' + t);
+    .tickSize(5)
+    .tickPadding(5);
 
   // Add the x-axis
-  svg.append('g').attr('transform', `translate(0,${height})`).call(xAxisLabels);
+  svg
+    .append('g')
+    .attr('transform', `translate(${barWidth / 2},${height})`)
+    .call(xAxisLabels);
 
   // Add the y-axis
   svg.append('g').attr('transform', `translate(30)`).call(d3.axisLeft(y));

@@ -152,13 +152,15 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.titleService.setLocation('Auswertungen');
-    this.breakpointSubscription = this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
-      if (result.matches) {
-        setXTickInterval(5); // Mobile view
-      } else {
-        setXTickInterval(2); // Mobile view
-      }
-    });
+    this.breakpointSubscription = this.breakpointObserver
+      .observe([Breakpoints.TabletPortrait, Breakpoints.Handset])
+      .subscribe(result => {
+        if (result.matches) {
+          setXTickInterval(5); // Mobile view
+        } else {
+          setXTickInterval(1); // Desktop view
+        }
+      });
     // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
     this.subscriptions.add(
       this.translateService.get(this.selectableDatasources[0]).subscribe(() => {
