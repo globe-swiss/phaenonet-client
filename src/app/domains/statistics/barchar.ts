@@ -76,7 +76,7 @@ export function aggregateObsWoy(results: StatisticsAgg[], period: number) {
   }
   const ret = Object.entries(aggregated).map(([week, count]) => ({
     week: Number(week),
-    count: Math.round(count / period)
+    count: count / period // tocheck: round results? -> Math.round(count / period)
   }));
   return ensureAllWeeks(ret);
 }
