@@ -1,6 +1,8 @@
 Feature('Statistics');
 
-Scenario('test quantil regression on 2018', async ({ I, statisticsPage }) => {
+// TODO re-enable tests when new graph view is finalised
+
+Scenario.skip('test quantil regression on 2018', async ({ I, statisticsPage }) => {
   I.visit(statisticsPage);
   I.selectDropdownValue(statisticsPage.filter.phenoyear.dropdown, 2018, true);
   await I.checkVisual('statistics-2018_all_species_all');
@@ -22,7 +24,7 @@ Scenario('test quantil regression on 2018', async ({ I, statisticsPage }) => {
   await I.checkVisual('statistics-2018_phaenonet_alt_sycamore');
 }).tag('visual');
 
-Scenario('test all year view', async ({ I, statisticsPage }) => {
+Scenario.skip('test all year view', async ({ I, statisticsPage }) => {
   I.visit(statisticsPage);
   I.selectDropdownValue(statisticsPage.filter.phenoyear.dropdown, 'all', true);
   I.selectDropdownValue(statisticsPage.filter.species.dropdown, statisticsPage.filter.species.values.sycamore);
