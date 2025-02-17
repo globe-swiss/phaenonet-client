@@ -22,6 +22,7 @@
 
   &__statistics-filter {
     form {
+      display: flex;
       flex-direction: row;
       align-items: baseline;
 
@@ -35,6 +36,10 @@
 
       mat-form-field.short-width {
         max-width: 6rem;
+      }
+
+      mat-form-field:last-child {
+        margin-left: auto;
       }
     }
 

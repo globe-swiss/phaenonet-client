@@ -23,7 +23,7 @@
                   }}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field class="short-width">
                 <mat-label>{{ 'Auswertung' | translate }}</mat-label>
                 <mat-select formControlName="analyticsType" data-test-id="select-analyticsType">
                   <mat-option *ngFor="let analyticsType of selectableAnalyticsTypes" [value]="analyticsType">{{
