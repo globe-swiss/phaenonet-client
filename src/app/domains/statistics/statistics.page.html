@@ -7,7 +7,7 @@
             <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
             <div>
               <mat-select formControlName="year" data-test-id="select-year">
-                <mat-option *ngFor="let year of selectableYearsWithoutAll$ | async" [value]="year">{{
+                <mat-option *ngFor="let year of selectableYears$ | async" [value]="year">{{
                   year | translate
                 }}</mat-option>
               </mat-select>

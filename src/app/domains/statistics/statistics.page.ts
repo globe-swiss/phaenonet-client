@@ -72,6 +72,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef<HTMLDivElement>;
 
   availableYears: number[];
+  selectableYears$: Observable<string[]>;
   selectableYearsWithAll$: Observable<string[]>;
   selectableYearsWithoutAll$: Observable<string[]>;
   selectableDatasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wld'];
@@ -246,6 +247,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       tap(years => (this.availableYears = years)),
       map(years => years.map(year => String(year)))
     );
+
+    this.selectableYears$ = this.selectableYearsWithAll$;
 
     this.subscriptions.add(
       this.redraw$
@@ -559,6 +562,15 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     if (this._displayGraph !== value) {
       this._displayGraph = value;
       this.redraw$.next(true);
+      if (this._displayGraph === '1') {
+        // TODO: fixme, just a quickfix to keep original behaviour
+        this.selectableYears$ = this.selectableYearsWithAll$;
+      } else {
+        this.selectableYears$ = this.selectableYearsWithoutAll$;
+        if (this.filter.controls.year.value === allYear) {
+          this.filter.controls.year.setValue(this.availableYears[0].toString());
+        }
+      }
     }
   }
 }
