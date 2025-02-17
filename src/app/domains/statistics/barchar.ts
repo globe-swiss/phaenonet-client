@@ -166,28 +166,36 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
   svg.append('g').attr('transform', `translate(30)`).call(d3.axisLeft(y));
 
   // create a legend
-  svg.append('circle').attr('cx', 40).attr('cy', 20).attr('r', 6).style('fill', 'steelblue');
-  svg.append('circle').attr('cx', 40).attr('cy', 50).attr('r', 6).style('fill', 'pink');
+  svg
+    .append('text')
+    .attr('x', 36)
+    .attr('y', 20)
+    .text('Gemittelte Beobachtungen pro Woche')
+    .style('font-size', legendFontSize)
+    .style('font-weight', '500')
+    .attr('alignment-baseline', 'middle');
+  svg.append('circle').attr('cx', 40).attr('cy', 40).attr('r', 6).style('fill', 'steelblue');
+  svg.append('circle').attr('cx', 40).attr('cy', 60).attr('r', 6).style('fill', 'pink');
   svg.append('circle').attr('cx', 40).attr('cy', 80).attr('r', 6).style('fill', 'red');
   svg
     .append('text')
     .attr('x', 50)
-    .attr('y', 25)
-    .text('durchschnittlich 5 Jahre vor dem ausgewählten Jahr')
+    .attr('y', 40)
+    .text('Durchschnitt der 5 Jahre vor dem ausgewählten Jahr')
     .style('font-size', legendFontSize)
     .attr('alignment-baseline', 'middle');
   svg
     .append('text')
     .attr('x', 50)
-    .attr('y', 55)
-    .text('durchschnittlich 30 Jahre vor dem ausgewählten Jahr')
+    .attr('y', 60)
+    .text('Durchschnitt der 30 Jahre vor dem ausgewählten Jahr')
     .style('font-size', legendFontSize)
     .attr('alignment-baseline', 'middle');
   svg
     .append('text')
     .attr('x', 50)
-    .attr('y', 85)
-    .text('ausgewähltes Jahr')
+    .attr('y', 80)
+    .text('Ausgewähltes Jahr')
     .style('font-size', legendFontSize)
     .attr('alignment-baseline', 'middle');
 
