@@ -102,7 +102,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   translationsLoaded = false;
 
   //TODO: flag to enable and disable the observation graph
-  showSecondGraph = true;
+  showSecondGraph = false;
 
   svgComponentHeight = 0;
   constructor(
