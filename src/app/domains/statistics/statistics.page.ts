@@ -81,7 +81,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   selectablePhenophases: Phenophase[];
   selectableAltitudeGroup: AltitudeFilterGroup[] = ['all', 'alt1', 'alt2', 'alt3', 'alt4', 'alt5'];
   graphDisplay: string[] = ['Ergebnisdiagramm', 'Wöchentliche Beobachtungen'];
-  private breakpointSubscription!: Subscription;
   filter: FormGroup<{
     year: FormControl<string>;
     datasource: FormControl<SourceFilterType>;
@@ -123,7 +122,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     if (this.displayGraph === '1') {
       this.drawChart();
     } else {
-      createBarChart(this.statisticsContainer);
+      this.svgComponentHeight = createBarChart(this.statisticsContainer);
     }
   }
 
@@ -152,15 +151,17 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.titleService.setLocation('Auswertungen');
-    this.breakpointSubscription = this.breakpointObserver
-      .observe([Breakpoints.TabletPortrait, Breakpoints.Handset])
-      .subscribe(result => {
+    this.subscriptions.add(
+      this.breakpointObserver.observe([Breakpoints.TabletPortrait, Breakpoints.Handset]).subscribe(result => {
+        console.log(result);
+
         if (result.matches) {
           setXTickInterval(5); // Mobile view
         } else {
           setXTickInterval(1); // Desktop view
         }
-      });
+      })
+    );
     // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
     this.subscriptions.add(
       this.translateService.get(this.selectableDatasources[0]).subscribe(() => {
@@ -174,7 +175,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         datasource: new FormControl(this.selectableDatasources[0]),
         analyticsType: new FormControl(this.selectableAnalyticsTypes[0]),
         species: new FormControl(allSpecies.id),
-        //phenophase: new FormControl(allPhenophases),
         phenophase: new FormControl(allPhenophases),
         altitude: new FormControl(this.selectableAltitudeGroup[0])
       });
@@ -283,7 +283,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
               setObsWoy30Years(aggregateObsWoy(results[0] as StatisticsAgg[], 30));
               setObsWoy5Years(aggregateObsWoy(results[0] as StatisticsAgg[], 5));
               setObsWoyCurrentYear(aggregateObsWoyStatistics(results[1] as Statistics[], 1));
-              createBarChart(this.statisticsContainer);
+              this.svgComponentHeight = createBarChart(this.statisticsContainer);
             }
           })
         )
@@ -293,7 +293,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
-    this.breakpointSubscription.unsubscribe();
   }
 
   private toKey(analytics: Analytics) {
