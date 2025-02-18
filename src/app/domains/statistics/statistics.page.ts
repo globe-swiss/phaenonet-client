@@ -213,8 +213,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         const formYear = this.filter.controls.year.value;
         // set to valid single species if analytics type is 'altitude' and 'all' species is selected
         if (
-          (formAnalyticsType === 'altitude' && formSpecies === allSpecies.id) ||
-          (formYear === allYear && formSpecies === allSpecies.id)
+          formSpecies === allSpecies.id &&
+          (formAnalyticsType === 'altitude' || formYear === allYear || this.displayGraph === '2')
         ) {
           this.filter.controls.species.setValue(species[1].id);
         }

@@ -64,7 +64,7 @@ export abstract class BaseResourceService<T> {
    */
   protected queryCollection(...queryConstraints: QueryConstraint[]) {
     return collectionData(query(this.collectionRef, ...queryConstraints), { idField: 'id' }).pipe(
-      tap(() => this.fds.addRead(`${this.collectionName} (base-resource.queryCollection)`))
+      tap(x => this.fds.addRead(`${this.collectionName} (base-resource.queryCollection)`, x.length))
     );
   }
 
