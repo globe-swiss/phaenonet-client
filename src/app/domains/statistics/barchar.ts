@@ -176,14 +176,14 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
     .append('text')
     .attr('x', 50)
     .attr('y', 35)
-    .text('Durchschnitt der 5 Jahre vor dem ausgewählten Jahr')
+    .text('Ø der 5 Jahre vor dem ausgewählten Jahr')
     .style('font-size', legendFontSize)
     .attr('alignment-baseline', 'middle');
   svg
     .append('text')
     .attr('x', 50)
     .attr('y', 55)
-    .text('Durchschnitt der 30 Jahre vor dem ausgewählten Jahr')
+    .text('Ø der 30 Jahre vor dem ausgewählten Jahr')
     .style('font-size', legendFontSize)
     .attr('alignment-baseline', 'middle');
   svg

@@ -80,7 +80,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   selectableSpecies$: Observable<Species[]>;
   selectablePhenophases: Phenophase[];
   selectableAltitudeGroup: AltitudeFilterGroup[] = ['all', 'alt1', 'alt2', 'alt3', 'alt4', 'alt5'];
-  graphDisplay: string[] = ['Ergebnisdiagramm', 'Wöchentliche Beobachtungen'];
   filter: FormGroup<{
     year: FormControl<string>;
     datasource: FormControl<SourceFilterType>;
