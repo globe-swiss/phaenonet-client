@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { ObsWoy, Statistics, StatisticsAgg } from '@shared/models/statistics';
+import { ObsWoy, Statistics } from '@shared/models/statistics';
 import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';
 
@@ -37,28 +37,7 @@ export function setObsWoy30Years(data: ObsWoy[]): void {
   obsWoy30Years = [...data];
 }
 
-export function aggregateObsWoyStatistics(results: Statistics[], period: number) {
-  const aggregationObservations = results.flatMap(r => r.obs_woy);
-  const aggregated: Record<number, number> = {};
-
-  for (const record of aggregationObservations) {
-    for (const weekStr in record) {
-      const week = Number(weekStr);
-      const count = record[week];
-      if (!aggregated[week]) {
-        aggregated[week] = 0;
-      }
-      aggregated[week] += count;
-    }
-  }
-  const ret = Object.entries(aggregated).map(([week, count]) => ({
-    week: Number(week),
-    count: Math.round(count / period)
-  }));
-  return ensureAllWeeks(ret);
-}
-
-export function aggregateObsWoy(results: StatisticsAgg[], period: number) {
+export function aggregateObsWoy(results: Statistics[], period: number) {
   const aggregationObservations = results.filter(r => r.agg_range == period).flatMap(r => r.obs_woy);
   const aggregated: Record<number, number> = {};
 
@@ -214,7 +193,7 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
 
   svg
     .append('path')
-    .datum(getObsWoy30Years)
+    .datum(getObsWoy30Years())
     .attr('class', 'area')
     .attr('fill', 'pink')
     .attr('opacity', '0.5')
@@ -222,7 +201,7 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
 
   svg
     .selectAll('.bar')
-    .data(getObsWoyCurrentYear)
+    .data(getObsWoyCurrentYear())
     .enter()
     .append('rect')
     .attr('class', 'bar')

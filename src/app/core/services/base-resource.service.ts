@@ -62,7 +62,7 @@ export abstract class BaseResourceService<T> {
    * @param queryConstraints
    * @returns
    */
-  protected queryCollection(...queryConstraints: QueryConstraint[]) {
+  protected queryCollection(...queryConstraints: QueryConstraint[]): Observable<(T & IdLike)[]> {
     return collectionData(query(this.collectionRef, ...queryConstraints), { idField: 'id' }).pipe(
       tap(x => this.fds.addRead(`${this.collectionName} (base-resource.queryCollection)`, x.length))
     );
