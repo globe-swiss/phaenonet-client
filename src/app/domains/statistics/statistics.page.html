@@ -79,7 +79,7 @@
           </ng-container>
           <mat-form-field *ngIf="showSecondGraph === true">
             <mat-label>{{ 'Grafik' | translate }}</mat-label>
-            <mat-select [(value)]="displayGraph">
+            <mat-select panelClass="align-select-box-right" [(value)]="displayGraph">
               <mat-option value="1">{{ 'Jahresvergleich' | translate }}</mat-option>
               <mat-option value="2">{{ 'Wochenvergleich' | translate }}</mat-option>
             </mat-select>
