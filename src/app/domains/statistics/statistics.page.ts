@@ -152,8 +152,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     this.titleService.setLocation('Auswertungen');
     this.subscriptions.add(
       this.breakpointObserver.observe([Breakpoints.TabletPortrait, Breakpoints.Handset]).subscribe(result => {
-        console.log(result);
-
         if (result.matches) {
           setXTickInterval(5); // Mobile view
         } else {

@@ -80,8 +80,8 @@
           <mat-form-field *ngIf="showSecondGraph === true">
             <mat-label>{{ 'Grafik' | translate }}</mat-label>
             <mat-select [(value)]="displayGraph">
-              <mat-option value="1">Jahresvergleich</mat-option>
-              <mat-option value="2">Wochenvergleich</mat-option>
+              <mat-option value="1">{{ 'Jahresvergleich' | translate }}</mat-option>
+              <mat-option value="2">{{ 'Wochenvergleich' | translate }}</mat-option>
             </mat-select>
           </mat-form-field>
         </form>
@@ -95,7 +95,7 @@
         </div>
       </div>
       <div id="tooltip" class="statistics__tooltip hidden">
-        <p><strong id="title">Phenophase</strong></p>
+        <p><strong id="title"></strong></p>
         <p><span id="value"></span></p>
         <p><span id="median"></span></p>
       </div>
