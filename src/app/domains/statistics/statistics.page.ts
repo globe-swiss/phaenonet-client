@@ -80,8 +80,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   selectableSpecies$: Observable<Species[]>;
   selectablePhenophases: Phenophase[];
   selectableAltitudeGroup: AltitudeFilterGroup[] = ['all', 'alt1', 'alt2', 'alt3', 'alt4', 'alt5'];
-  graphDisplay: string[] = ['Ergebnisdiagramm', 'Wöchentliche Beobachtungen'];
-  private breakpointSubscription!: Subscription;
   filter: FormGroup<{
     year: FormControl<string>;
     datasource: FormControl<SourceFilterType>;
@@ -103,7 +101,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   translationsLoaded = false;
 
   //TODO: flag to enable and disable the observation graph
-  showSecondGraph = false;
+  showSecondGraph = true;
 
   svgComponentHeight = 0;
   constructor(
@@ -123,7 +121,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     if (this.displayGraph === '1') {
       this.drawChart();
     } else {
-      createBarChart(this.statisticsContainer);
+      this.svgComponentHeight = createBarChart(this.statisticsContainer);
     }
   }
 
@@ -152,13 +150,15 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.titleService.setLocation('Auswertungen');
-    this.breakpointSubscription = this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
-      if (result.matches) {
-        setXTickInterval(5); // Mobile view
-      } else {
-        setXTickInterval(2); // Mobile view
-      }
-    });
+    this.subscriptions.add(
+      this.breakpointObserver.observe([Breakpoints.TabletPortrait, Breakpoints.Handset]).subscribe(result => {
+        if (result.matches) {
+          setXTickInterval(5); // Mobile view
+        } else {
+          setXTickInterval(1); // Desktop view
+        }
+      })
+    );
     // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
     this.subscriptions.add(
       this.translateService.get(this.selectableDatasources[0]).subscribe(() => {
@@ -172,7 +172,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         datasource: new FormControl(this.selectableDatasources[0]),
         analyticsType: new FormControl(this.selectableAnalyticsTypes[0]),
         species: new FormControl(allSpecies.id),
-        //phenophase: new FormControl(allPhenophases),
         phenophase: new FormControl(allPhenophases),
         altitude: new FormControl(this.selectableAltitudeGroup[0])
       });
@@ -211,8 +210,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         const formYear = this.filter.controls.year.value;
         // set to valid single species if analytics type is 'altitude' and 'all' species is selected
         if (
-          (formAnalyticsType === 'altitude' && formSpecies === allSpecies.id) ||
-          (formYear === allYear && formSpecies === allSpecies.id)
+          formSpecies === allSpecies.id &&
+          (formAnalyticsType === 'altitude' || formYear === allYear || this.displayGraph === '2')
         ) {
           this.filter.controls.species.setValue(species[1].id);
         }
@@ -281,7 +280,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
               setObsWoy30Years(aggregateObsWoy(results[0] as StatisticsAgg[], 30));
               setObsWoy5Years(aggregateObsWoy(results[0] as StatisticsAgg[], 5));
               setObsWoyCurrentYear(aggregateObsWoyStatistics(results[1] as Statistics[], 1));
-              createBarChart(this.statisticsContainer);
+              this.svgComponentHeight = createBarChart(this.statisticsContainer);
             }
           })
         )
@@ -291,7 +290,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
-    this.breakpointSubscription.unsubscribe();
   }
 
   private toKey(analytics: Analytics) {

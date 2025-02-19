@@ -6,7 +6,7 @@ import * as d3Axis from 'd3-axis';
 let obsWoyCurrentYear: ObsWoy[] = [];
 let obsWoy5Years: ObsWoy[] = [];
 let obsWoy30Years: ObsWoy[] = [];
-let xTickInterval = 2;
+let xTickInterval = 1;
 const legendFontSize = getComputedStyle(document.documentElement).getPropertyValue('--legend-font-size');
 const datasetCurrentYear: ObsWoy[] = [];
 
@@ -76,7 +76,7 @@ export function aggregateObsWoy(results: StatisticsAgg[], period: number) {
   }
   const ret = Object.entries(aggregated).map(([week, count]) => ({
     week: Number(week),
-    count: Math.round(count / period)
+    count: count / period // tocheck: round results? -> Math.round(count / period)
   }));
   return ensureAllWeeks(ret);
 }
@@ -103,7 +103,7 @@ export function initializeArray(start: number, end: number, step: number): numbe
   return result;
 }
 
-export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>): void {
+export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>): number {
   const svg = d3.select<SVGGraphicsElement, unknown>('#app-bar-chart');
 
   svg.selectAll('*').remove();
@@ -111,30 +111,22 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
   const boundingBox = svg.node()?.getBoundingClientRect();
   // Set dimensions and margins for the chart
 
-  const offsetTop = statisticsContainer.nativeElement.offsetTop;
-  const margin = { top: 100, right: 30, bottom: 40, left: 30 };
-  const width = boundingBox.width - margin.left - margin.right;
-  const height = window.innerHeight - margin.bottom - margin.top - offsetTop - 5;
+  const legendSize = 100;
 
+  const offsetTop = statisticsContainer.nativeElement.offsetTop;
+  const margin = { top: legendSize, right: 20, bottom: 30 };
+  const width = boundingBox.width - margin.right;
+  const height = Math.max(window.innerHeight - offsetTop - 5, legendSize + 100);
   // Set up the x and y scales
 
   const x = d3.scaleLinear().range([0, width]);
 
-  const y = d3.scaleLinear().range([height, 0 + margin.top]);
+  const y = d3.scaleLinear().range([height - margin.bottom, 0 + margin.top]);
 
   const xBar = d3.scaleBand().range([0, width]).padding(0.4);
 
-  // Create the SVG element and append it to the chart container
-
-  svg
-    .append('svg')
-    .attr('width', width + margin.left + margin.right)
-    .attr('height', height + margin.top + margin.bottom)
-    .append('g')
-    .attr('transform', `translate(${margin.left},${margin.top})`);
-
   // Define the x and y domains
-  x.domain([-3, 53]).range([30, width + 30]);
+  x.domain([-3, 53]).range([30, width]);
   xBar.domain(
     datasetCurrentYear.map(function (d) {
       return d.week.toString();
@@ -148,46 +140,57 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
     y.domain([0, dom]);
   }
 
-  const barWidth = width / obsWoyCurrentYear.length - width / obsWoyCurrentYear.length / 3;
+  const weekWidth = width / obsWoyCurrentYear.length;
+  const barWidth = weekWidth - weekWidth / 3;
 
-  const xTicks = initializeArray(-3, 52, xTickInterval);
+  const xTicks = initializeArray(-3, 53, xTickInterval);
 
   const xAxisLabels = d3Axis
     .axisBottom(x)
     .tickValues(xTicks.map(tickValue => tickValue))
-    .tickSize(0)
-    .tickPadding(5)
-    .tickFormat(t => 'kw' + t);
+    .tickSize(5)
+    .tickPadding(5);
 
   // Add the x-axis
-  svg.append('g').attr('transform', `translate(0,${height})`).call(xAxisLabels);
+  svg
+    .append('g')
+    .attr('transform', `translate(${barWidth / 2},${height - margin.bottom})`)
+    .call(xAxisLabels);
 
   // Add the y-axis
   svg.append('g').attr('transform', `translate(30)`).call(d3.axisLeft(y));
 
   // create a legend
-  svg.append('circle').attr('cx', 40).attr('cy', 20).attr('r', 6).style('fill', 'steelblue');
-  svg.append('circle').attr('cx', 40).attr('cy', 50).attr('r', 6).style('fill', 'pink');
-  svg.append('circle').attr('cx', 40).attr('cy', 80).attr('r', 6).style('fill', 'red');
+  svg
+    .append('text')
+    .attr('x', 36)
+    .attr('y', 10)
+    .text('Gemittelte Beobachtungen pro Woche')
+    .style('font-size', legendFontSize)
+    .style('font-weight', '500')
+    .attr('alignment-baseline', 'middle');
+  svg.append('circle').attr('cx', 40).attr('cy', 35).attr('r', 6).style('fill', 'steelblue');
+  svg.append('circle').attr('cx', 40).attr('cy', 55).attr('r', 6).style('fill', 'pink');
+  svg.append('circle').attr('cx', 40).attr('cy', 75).attr('r', 6).style('fill', 'red');
   svg
     .append('text')
     .attr('x', 50)
-    .attr('y', 25)
-    .text('durchschnittlich 5 Jahre vor dem ausgewählten Jahr')
+    .attr('y', 35)
+    .text('Ø der 5 Jahre vor dem ausgewählten Jahr')
     .style('font-size', legendFontSize)
     .attr('alignment-baseline', 'middle');
   svg
     .append('text')
     .attr('x', 50)
     .attr('y', 55)
-    .text('durchschnittlich 30 Jahre vor dem ausgewählten Jahr')
+    .text('Ø der 30 Jahre vor dem ausgewählten Jahr')
     .style('font-size', legendFontSize)
     .attr('alignment-baseline', 'middle');
   svg
     .append('text')
     .attr('x', 50)
-    .attr('y', 85)
-    .text('ausgewähltes Jahr')
+    .attr('y', 75)
+    .text('Ausgewähltes Jahr')
     .style('font-size', legendFontSize)
     .attr('alignment-baseline', 'middle');
 
@@ -196,7 +199,7 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
     .area<ObsWoy>()
     .curve(d3.curveMonotoneX)
     .x(d => x(d.week))
-    .y0(height)
+    .y0(height - margin.bottom)
     .y1(d => y(d.count));
 
   // Add the line path to the SVG element
@@ -231,8 +234,10 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
     })
     .attr('width', barWidth)
     .attr('height', function (d) {
-      return height - y(d.count);
+      return height - margin.bottom - y(d.count);
     })
     .attr('fill', 'red')
     .attr('opacity', '0.6');
+
+  return height;
 }

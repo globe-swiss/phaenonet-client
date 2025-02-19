@@ -33,7 +33,7 @@ export class StatisticsAggService extends BaseResourceService<StatisticsAgg> {
     altitude: AltitudeFilterGroup,
     species: string
   ): Observable<StatisticsAgg[]> {
-    const queryConstraints = [where('end_year', '==', parseInt(year, 10))];
+    const queryConstraints = [where('end_year', '==', parseInt(year, 10) - 1)]; // quickfix: the current year must not be included in the aggregation
     if (species !== 'all') {
       queryConstraints.push(where('species', '==', species));
     }

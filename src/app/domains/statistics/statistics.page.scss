@@ -22,6 +22,7 @@
 
   &__statistics-filter {
     form {
+      display: flex;
       flex-direction: row;
       align-items: baseline;
 
@@ -35,6 +36,10 @@
 
       mat-form-field.short-width {
         max-width: 6rem;
+      }
+
+      mat-form-field:last-child {
+        margin-left: auto;
       }
     }
 
@@ -95,4 +100,12 @@
   &__tooltip.hidden {
     display: none;
   }
+}
+
+// Align select box to the right to prevent overflow
+.align-select-box-right.mat-mdc-select-panel {
+  right: 0 !important;
+  left: auto !important;
+  transform-origin: right top !important;
+  position: absolute;
 }
