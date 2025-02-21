@@ -33,7 +33,8 @@ export class StatisticsService extends BaseResourceService<Statistics> {
     altitude: AltitudeFilterGroup,
     species: string
   ): Observable<Statistics[]> {
-    const queryConstraints = [where('year', '==', parseInt(year, 10))];
+    const queryConstraints = [where('display_year', '==', parseInt(year, 10))];
+
     if (species !== 'all') {
       queryConstraints.push(where('species', '==', species));
     }
@@ -45,15 +46,19 @@ export class StatisticsService extends BaseResourceService<Statistics> {
     }
 
     return this.queryCollection(...queryConstraints).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (listByYear)`, x.length)),
-      map(statistics =>
-        statistics.map(s => ({
-          altitude_grp: s.altitude_grp,
-          obs_number: s.obs_number,
-          phenophase: s.phenophase,
-          obs_woy: s.obs_woy,
-          species: s.species,
-          year: s.year
+      tap(x => this.fds.addRead(`${this.collectionName} (getStatistics)`, x.length)),
+      map(statisticsAggs =>
+        statisticsAggs.map(sa => ({
+          agg_obs_sum: sa.agg_obs_sum,
+          agg_range: sa.agg_range,
+          latitude_grp: sa.latitude_grp,
+          end_year: sa.end_year,
+          obs_woy: sa.obs_woy,
+          phenophase: sa.phenophase,
+          species: sa.species,
+          start_year: sa.start_year,
+          year_obs_sum: sa.year_obs_sum,
+          years: sa.years
         }))
       )
     );

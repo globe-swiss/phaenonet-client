@@ -7,16 +7,8 @@ export interface YearObsSum {
   year: number;
   value: number;
 }
-export interface Statistics {
-  altitude_grp: string;
-  obs_number: number;
-  phenophase: string;
-  obs_woy: ObsWoy[];
-  species: string;
-  year: number;
-}
 
-export interface StatisticsAgg {
+export interface Statistics {
   agg_obs_sum: number;
   agg_range: number;
   latitude_grp: string;

@@ -12,6 +12,7 @@ import { TitleService } from '@core/services/title.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Phenophase, Species } from '@shared/models/masterdata.model';
 import { SourceFilterType } from '@shared/models/source-type.model';
+import { Statistics } from '@shared/models/statistics';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { formatShortDate } from '@shared/utils/formatDate';
 import * as d3 from 'd3';
@@ -20,13 +21,10 @@ import * as d3Scale from 'd3-scale';
 import * as d3Time from 'd3-time';
 import moment from 'moment';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { combineLatestWith, first, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { Statistics } from '../../shared/models/statistics';
-import { StatisticsAgg } from './../../shared/models/statistics';
+import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { AnalyticsService } from './analytics.service';
 import {
   aggregateObsWoy,
-  aggregateObsWoyStatistics,
   createBarChart,
   setObsWoy30Years,
   setObsWoy5Years,
@@ -44,7 +42,6 @@ import {
   AnalyticsValue
 } from './statistics.model';
 import { StatisticsService } from './statistics.service';
-import { StatisticsAggService } from './statistics_agg.service';
 @Component({
   encapsulation: ViewEncapsulation.None,
   templateUrl: './statistics.page.html',
@@ -108,7 +105,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     private titleService: TitleService,
     private analyticsService: AnalyticsService,
     private statisticsService: StatisticsService,
-    private statisticsAggService: StatisticsAggService,
     private masterdataService: MasterdataService,
     private translateService: TranslateService,
     private breakpointObserver: BreakpointObserver
@@ -265,9 +261,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
             if (this.displayGraph === '1') {
               return this.analyticsService.listByYear(year, analyticsType, datasource, species);
             } else {
-              return this.statisticsAggService
-                .getStatisticsAgg(year, phenophase, altitude, species)
-                .pipe(combineLatestWith(this.statisticsService.getStatistics(year, phenophase, altitude, species)));
+              return this.statisticsService.getStatistics(year, phenophase, altitude, species);
             }
           }),
           map(results => {
@@ -277,9 +271,9 @@ export class StatisticsComponent implements OnInit, OnDestroy {
               }
               this.drawChart();
             } else {
-              setObsWoy30Years(aggregateObsWoy(results[0] as StatisticsAgg[], 30));
-              setObsWoy5Years(aggregateObsWoy(results[0] as StatisticsAgg[], 5));
-              setObsWoyCurrentYear(aggregateObsWoyStatistics(results[1] as Statistics[], 1));
+              setObsWoy30Years(aggregateObsWoy(results as Statistics[], 30));
+              setObsWoy5Years(aggregateObsWoy(results as Statistics[], 5));
+              setObsWoyCurrentYear(aggregateObsWoy(results as Statistics[], 1));
               this.svgComponentHeight = createBarChart(this.statisticsContainer);
             }
           })
