@@ -38,7 +38,7 @@ jobs:
       #     retention-days: 1
   channel:
     needs: [build, commit-info]
-    if: ${{ !contains(needs.commit-info.outputs.msg, '#no-deploy') && github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]' }}
+    if: !contains(needs.commit-info.outputs.msg , '#no-deploy') && github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     name: Deploy Preview
     runs-on: ubuntu-22.04
     environment: phaenonet-test
