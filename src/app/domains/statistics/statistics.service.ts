@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Injectable } from '@angular/core';
 import { Firestore, where } from '@angular/fire/firestore';
 import { FormControl, FormGroup } from '@angular/forms';
