@@ -187,7 +187,7 @@ jobs:
       #     REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   if: always()
   commit-info:
-    name: Commit info
+    name: Commit Info
     runs-on: ubuntu-latest
     outputs:
       msg: ${{ steps.get-commit-msg.outputs.msg }}
@@ -197,7 +197,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Head git commit message
-        run: echo "msg=$(git show -s --format=%s)""
+        run: echo "msg=$(git show -s --format=%s)"
       - name: commit message
         id: get-commit-msg
         run: echo "msg=$(git show -s --format=%s)" >> $GITHUB_OUTPUT
