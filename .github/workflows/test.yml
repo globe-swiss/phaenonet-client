@@ -37,10 +37,10 @@ jobs:
       #     path: dist
       #     retention-days: 1
   channel:
-    if: ${{ !contains(github.event.head_commit.message, '[no-deploy]') }} && github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
+    needs: [build, commit-info]
+    if: ${{ !contains(needs.commit-info.outputs.msg, '#no-deploy') }} && github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     name: Deploy Preview
     runs-on: ubuntu-22.04
-    needs: build
     environment: phaenonet-test
     permissions:
       contents: read
@@ -63,11 +63,11 @@ jobs:
       #     project_Id: phaenonet-test
       #     expires: 30d
   e2e-tests:
-    if: ${{ !contains(github.event.head_commit.message, '#no-e2e') }}
+    needs: [build, commit-info]
+    if: ${{ !contains(needs.commit-info.outputs.msg, '#no-e2e') }}
     concurrency: e2e-test
     name: E2E-tests
     runs-on: ubuntu-22.04
-    needs: build
     environment: phaenonet-test
     permissions:
       contents: read
@@ -77,11 +77,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
-      - run: echo ${{ toJSON(github.event) }}
-      - run: echo ${{ github.event }}
-      - run: echo ${{ github.event.head_commit.message }}
-      - run: echo ${{ contains(github.event.head_commit.message, '#no-e2e') }}
-      - run: echo ${{ !contains(github.event.head_commit.message, '#no-e2e') }}
       # - name: Set environment variables
       #   run: cat .env >> $GITHUB_ENV
       # - uses: pnpm/action-setup@v4.1.0
@@ -191,3 +186,18 @@ jobs:
       #   env:
       #     REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   if: always()
+  commit-info:
+    name: Commit info
+    runs-on: ubuntu-latest
+    outputs:
+      msg: ${{ steps.get-commit-msg.outputs.msg }}
+    steps:
+      - name: Get PR head commit
+        uses: actions/checkout@v4.2.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Head git commit message
+        run: echo "msg=$(git show -s --format=%s)
+      - name: commit message
+        id: get-commit-msg
+        run: echo "msg=$(git show -s --format=%s)" >> $GITHUB_OUTPUT
