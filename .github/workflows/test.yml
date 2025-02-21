@@ -37,11 +37,11 @@ jobs:
           path: dist
           retention-days: 1
   channel:
+    if: ${{ !contains(github.event.head_commit.message, '[no-deploy]') }} && github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     name: Deploy Preview
     runs-on: ubuntu-22.04
     needs: build
     environment: phaenonet-test
-    if: github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     permissions:
       contents: read
       id-token: write
@@ -63,6 +63,7 @@ jobs:
           project_Id: phaenonet-test
           expires: 30d
   e2e-tests:
+    if: ${{ !contains(github.event.head_commit.message, '[no-e2e]') }}
     concurrency: e2e-test
     name: E2E-tests
     runs-on: ubuntu-22.04
