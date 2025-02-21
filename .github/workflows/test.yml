@@ -197,7 +197,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Head git commit message
-        run: echo "msg=$(git show -s --format=%s)
+        run: echo "msg=$(git show -s --format=%s)""
       - name: commit message
         id: get-commit-msg
         run: echo "msg=$(git show -s --format=%s)" >> $GITHUB_OUTPUT
