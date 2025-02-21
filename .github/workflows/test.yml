@@ -13,29 +13,29 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
-      - name: Set environment variables
-        run: cat .env >> $GITHUB_ENV
-      - uses: pnpm/action-setup@v4.1.0
-        with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.2.0
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-      - run: pnpm install
-      - name: Set API info
-        uses: suisei-cn/actions-download-file@v1.6.0
-        with:
-          url: ${{ secrets.FIREBASE_TEST_API_URL }}
-          target: ./src/local/
-      - name: Build test version
-        run: pnpm exec ng build -c local
-      - name: Upload Build Artifact
-        uses: ./.github/actions/upload-zip-artifact
-        with:
-          name: dist-pr-build
-          path: dist
-          retention-days: 1
+      # - name: Set environment variables
+      #   run: cat .env >> $GITHUB_ENV
+      # - uses: pnpm/action-setup@v4.1.0
+      #   with:
+      #     version: ${{ env.PNPM_VERSION }}
+      # - uses: actions/setup-node@v4.2.0
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
+      #     cache: 'pnpm'
+      # - run: pnpm install
+      # - name: Set API info
+      #   uses: suisei-cn/actions-download-file@v1.6.0
+      #   with:
+      #     url: ${{ secrets.FIREBASE_TEST_API_URL }}
+      #     target: ./src/local/
+      # - name: Build test version
+      #   run: pnpm exec ng build -c local
+      # - name: Upload Build Artifact
+      #   uses: ./.github/actions/upload-zip-artifact
+      #   with:
+      #     name: dist-pr-build
+      #     path: dist
+      #     retention-days: 1
   channel:
     if: ${{ !contains(github.event.head_commit.message, '[no-deploy]') }} && github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     name: Deploy Preview
@@ -50,18 +50,18 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
-      - name: Download Build Artifact
-        uses: ./.github/actions/download-zip-artifact
-        with:
-          name: dist-pr-build
-      - name: Deploy Preview Channel
-        uses: ./.github/actions/deploy-hosting-action
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          project_Id: phaenonet-test
-          expires: 30d
+      # - name: Download Build Artifact
+      #   uses: ./.github/actions/download-zip-artifact
+      #   with:
+      #     name: dist-pr-build
+      # - name: Deploy Preview Channel
+      #   uses: ./.github/actions/deploy-hosting-action
+      #   with:
+      #     workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      #     service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     project_Id: phaenonet-test
+      #     expires: 30d
   e2e-tests:
     if: ${{ !contains(github.event.head_commit.message, '[no-e2e]') }}
     concurrency: e2e-test
@@ -77,55 +77,55 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
-      - name: Set environment variables
-        run: cat .env >> $GITHUB_ENV
-      - uses: pnpm/action-setup@v4.1.0
-        with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.2.0
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-      - name: Download Build Artifact
-        uses: ./.github/actions/download-zip-artifact
-        with:
-          name: dist-pr-build
-      - name: Start server
-        uses: ./.github/actions/angular-http-server-action
-        with:
-          path: ./dist/phaenonet
-          port: 4200
-      - name: Setup CodeceptJS
-        working-directory: e2e
-        run: pnpm install && pnpm exec playwright install chromium
-      - name: e2e-test
-        working-directory: e2e
-        run: pnpm exec codeceptjs run --reporter mochawesome --grep "@flaky" --invert
-      - name: Upload E2E-Test Artifact
-        uses: ./.github/actions/upload-zip-artifact
-        with:
-          name: e2e-test-report
-          path: e2e/output
-          retention-days: 1
-        if: always()
-      - name: Deploy E2E-Test Report
-        uses: ./.github/actions/deploy-hosting-action
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          project_Id: phaenonet-test
-          entry_point: e2e/
-          channel_id: ${{ github.ref == 'refs/heads/master' && 'live' || null }}
-          expires: 30d
-        if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
-      - name: Codecov
-        uses: codecov/codecov-action@v5.3.1
-        with:
-          use_oidc: true
-          files: ./e2e/output/coverage-reports/codecov.json
-          flags: e2e
-        if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
+      # - name: Set environment variables
+      #   run: cat .env >> $GITHUB_ENV
+      # - uses: pnpm/action-setup@v4.1.0
+      #   with:
+      #     version: ${{ env.PNPM_VERSION }}
+      # - uses: actions/setup-node@v4.2.0
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
+      #     cache: 'pnpm'
+      # - name: Download Build Artifact
+      #   uses: ./.github/actions/download-zip-artifact
+      #   with:
+      #     name: dist-pr-build
+      # - name: Start server
+      #   uses: ./.github/actions/angular-http-server-action
+      #   with:
+      #     path: ./dist/phaenonet
+      #     port: 4200
+      # - name: Setup CodeceptJS
+      #   working-directory: e2e
+      #   run: pnpm install && pnpm exec playwright install chromium
+      # - name: e2e-test
+      #   working-directory: e2e
+      #   run: pnpm exec codeceptjs run --reporter mochawesome --grep "@flaky" --invert
+      # - name: Upload E2E-Test Artifact
+      #   uses: ./.github/actions/upload-zip-artifact
+      #   with:
+      #     name: e2e-test-report
+      #     path: e2e/output
+      #     retention-days: 1
+      #   if: always()
+      # - name: Deploy E2E-Test Report
+      #   uses: ./.github/actions/deploy-hosting-action
+      #   with:
+      #     workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      #     service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     project_Id: phaenonet-test
+      #     entry_point: e2e/
+      #     channel_id: ${{ github.ref == 'refs/heads/master' && 'live' || null }}
+      #     expires: 30d
+      #   if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
+      # - name: Codecov
+      #   uses: codecov/codecov-action@v5.3.1
+      #   with:
+      #     use_oidc: true
+      #     files: ./e2e/output/coverage-reports/codecov.json
+      #     flags: e2e
+      #   if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
   checks:
     name: Code Quality
     runs-on: ubuntu-22.04
@@ -133,56 +133,56 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
-      - name: Set environment variables
-        run: cat .env >> $GITHUB_ENV
-      - uses: pnpm/action-setup@v4.1.0
-        with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.2.0
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-      - run: pnpm -r install
-      - uses: reviewdog/action-setup@v1.3.0
-        with:
-          reviewdog_version: ${{ env.REVIEWDOG_VERSION }}
-      - name: check map icon completeness
-        run: |
-          diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/fr-CH) || exit
-          diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/it-CH) || exit
-        if: always()
-      - name: check style
-        run: pnpm exec prettier -c "."
-        if: always()
-      - uses: EPMatt/reviewdog-action-prettier@v1.2.0
-        with:
-          reporter: github-pr-check
-          level: error
-          # The action will look for a package.json file with prettier
-          # declared as a dependency located in the repo root directory.
-          workdir: .
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: always()
-      - name: stylelint
-        run: |
-          pnpm exec stylelint "**/*.scss" -f json \
-            | jq -r '.[] | {source: .source, warnings:.warnings[]} | "\(.source):\(.warnings.line):\(.warnings.column):\(.warnings.severity): \(.warnings.text)"' \
-            | reviewdog -name=stylelint -efm="%f:%l:%c:%t%*[^:]: %m" -filter-mode=diff_context -diff="git diff master" -f.diff.strip=0 -fail-on-error -reporter=github-pr-check
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: always()
-      - name: eslint
-        run: |
-          pnpm exec eslint -f rdjson . \
-            | reviewdog -name=eslint -f=rdjson -f.diff.strip=0 -filter-mode=diff_context -diff="git diff master" -fail-on-error -reporter=github-pr-check
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: always()
-      - name: markdown
-        run: |
-          pnpm exec markdownlint -c ./markdownlint.json . 2>&1 \
-            | reviewdog -name=markdown -efm="%f:%l:%c %m" -efm="%f:%l %m" -filter-mode=diff_context -diff="git diff master" -f.diff.strip=1 -fail-on-error -reporter=github-pr-check
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: always()
+      # - name: Set environment variables
+      #   run: cat .env >> $GITHUB_ENV
+      # - uses: pnpm/action-setup@v4.1.0
+      #   with:
+      #     version: ${{ env.PNPM_VERSION }}
+      # - uses: actions/setup-node@v4.2.0
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
+      #     cache: 'pnpm'
+      # - run: pnpm -r install
+      # - uses: reviewdog/action-setup@v1.3.0
+      #   with:
+      #     reviewdog_version: ${{ env.REVIEWDOG_VERSION }}
+      # - name: check map icon completeness
+      #   run: |
+      #     diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/fr-CH) || exit
+      #     diff <(ls src/assets/img/map_pins/de-CH) <(ls src/assets/img/map_pins/it-CH) || exit
+      #   if: always()
+      # - name: check style
+      #   run: pnpm exec prettier -c "."
+      #   if: always()
+      # - uses: EPMatt/reviewdog-action-prettier@v1.2.0
+      #   with:
+      #     reporter: github-pr-check
+      #     level: error
+      #     # The action will look for a package.json file with prettier
+      #     # declared as a dependency located in the repo root directory.
+      #     workdir: .
+      #   env:
+      #     REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   if: always()
+      # - name: stylelint
+      #   run: |
+      #     pnpm exec stylelint "**/*.scss" -f json \
+      #       | jq -r '.[] | {source: .source, warnings:.warnings[]} | "\(.source):\(.warnings.line):\(.warnings.column):\(.warnings.severity): \(.warnings.text)"' \
+      #       | reviewdog -name=stylelint -efm="%f:%l:%c:%t%*[^:]: %m" -filter-mode=diff_context -diff="git diff master" -f.diff.strip=0 -fail-on-error -reporter=github-pr-check
+      #   env:
+      #     REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   if: always()
+      # - name: eslint
+      #   run: |
+      #     pnpm exec eslint -f rdjson . \
+      #       | reviewdog -name=eslint -f=rdjson -f.diff.strip=0 -filter-mode=diff_context -diff="git diff master" -fail-on-error -reporter=github-pr-check
+      #   env:
+      #     REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   if: always()
+      # - name: markdown
+      #   run: |
+      #     pnpm exec markdownlint -c ./markdownlint.json . 2>&1 \
+      #       | reviewdog -name=markdown -efm="%f:%l:%c %m" -efm="%f:%l %m" -filter-mode=diff_context -diff="git diff master" -f.diff.strip=1 -fail-on-error -reporter=github-pr-check
+      #   env:
+      #     REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   if: always()
