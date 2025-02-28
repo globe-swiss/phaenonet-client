@@ -81,6 +81,9 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     graph: FormControl<number>;
   }>;
 
+  private readonly allowedPhenophases = new Set(['BEA', 'BLA', 'BFA', 'BVA', 'FRA']);
+  private readonly forbiddenSpecies = new Set(['IBM', 'ISS', 'IWA']);
+
   private redraw$ = new Subject();
   private subscriptions = new Subscription();
 
@@ -166,6 +169,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       startWith(''),
       switchMap(() => this.masterdataService.getSpecies()),
       map(species => {
+        species = species.filter(s => !this.forbiddenSpecies.has(s.id));
         const datasource = this.filter.controls.datasource.value;
         if (datasource == 'all') {
           return species;
@@ -204,15 +208,13 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     );
 
     this.filter.controls.species.valueChanges
-      .pipe(
-        switchMap(species =>
-          this.masterdataService.getPhenophases(species).pipe(
-            map(phenophases => [allPhenophases, ...phenophases]) // Add "All Phenophases"
-          )
-        )
-      )
-      .subscribe(species => {
-        this.selectablePhenophases = species;
+      .pipe(switchMap(species => this.masterdataService.getPhenophases(species)))
+      .subscribe(speciesPhenophases => {
+        console.log(speciesPhenophases);
+        this.selectablePhenophases = [
+          allPhenophases,
+          ...speciesPhenophases.filter(p => this.allowedPhenophases.has(p.id))
+        ];
         this.filter.controls.phenophase.setValue(allPhenophases);
       });
 
