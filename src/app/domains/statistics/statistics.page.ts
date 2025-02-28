@@ -1,4 +1,4 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,22 +15,14 @@ import { SourceFilterType } from '@shared/models/source-type.model';
 import { Statistics } from '@shared/models/statistics';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { formatShortDate } from '@shared/utils/formatDate';
-import * as d3 from 'd3';
-import * as d3Axis from 'd3-axis';
-import * as d3Scale from 'd3-scale';
-import * as d3Time from 'd3-time';
-import moment from 'moment';
+import { axisLeft } from 'd3-axis';
+import { ScaleBand, scaleBand, scaleLinear } from 'd3-scale';
+import { select } from 'd3-selection';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { AnalyticsService } from './analytics.service';
-import {
-  aggregateObsWoy,
-  createBarChart,
-  setObsWoy30Years,
-  setObsWoy5Years,
-  setObsWoyCurrentYear,
-  setXTickInterval
-} from './barchar';
+import { aggregateObsWoy, createBarChart, setObsWoy30Years, setObsWoy5Years, setObsWoyCurrentYear } from './barchar';
+import { dateToDOY, drawXAxis } from './draw';
 import {
   allPhenophases,
   allSpecies,
@@ -146,15 +138,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.titleService.setLocation('Auswertungen');
-    this.subscriptions.add(
-      this.breakpointObserver.observe([Breakpoints.TabletPortrait, Breakpoints.Handset]).subscribe(result => {
-        if (result.matches) {
-          setXTickInterval(5); // Mobile view
-        } else {
-          setXTickInterval(1); // Desktop view
-        }
-      })
-    );
     // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
     this.subscriptions.add(
       this.translateService.get(this.selectableDatasources[0]).subscribe(() => {
@@ -297,7 +280,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   private drawChart() {
-    const svg = d3.select<SVGGraphicsElement, unknown>('#statistics-graph');
+    const svg = select<SVGGraphicsElement, unknown>('#statistics-graph');
 
     const boundingBox = svg.node()?.getBoundingClientRect();
 
@@ -307,7 +290,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     const offsetLeft = this.statisticsContainer.nativeElement.offsetLeft;
     const offsetTop = this.statisticsContainer.nativeElement.offsetTop;
     const width = boundingBox.width - margin.left - margin.right;
-    const xScale = d3Scale.scaleLinear().domain([-30, 365]).range([0, width]);
+    const xScale = scaleLinear().domain([-30, 365]).range([0, width]);
     const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     const domain = Array.from(new Set(this.analytics.map(analytics => analytics.species)));
@@ -333,7 +316,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     this.svgComponentHeight = svgComponentHeight;
 
     const yAxisHeight = svgComponentHeight - (margin.top + margin.bottom);
-    let y = d3Scale.scaleBand().domain(resultingDomain).padding(0.4);
+    let y = scaleBand().domain(resultingDomain).padding(0.4);
     // do not round on large domains to prevent large gaps on top/bottom of the y-axis
     if (resultingDomain.length > 30) {
       y = y.range([0, yAxisHeight]);
@@ -342,47 +325,10 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     }
 
     // Draw y-axis
-    const yAxis = d3Axis.axisLeft(y).tickFormat(t => this.translateYAxisTick(t.toString()));
+    const yAxis = axisLeft(y).tickFormat(t => this.translateYAxisTick(t.toString()));
     g.append('g').call(yAxis);
 
-    // Draw x-axis
-    const tickYear = 1900; // any year
-    const xTicks = d3Time
-      .timeMonths(new Date(tickYear - 1, 11, 1), new Date(tickYear, 11, 31))
-      .map(d => this.dateToDOY(tickYear, d));
-
-    const xAxisTicks = d3Axis
-      .axisBottom(xScale)
-      .tickValues(xTicks)
-      .tickFormat(_ => '');
-
-    const xAxisLabels = d3Axis
-      .axisBottom(xScale)
-      .tickValues(xTicks.map(tickValue => tickValue + 15)) // put labels on the 15th of each month
-      .tickSize(0)
-      .tickPadding(5)
-      .tickFormat(t =>
-        moment()
-          .dayOfYear(+t)
-          .format(width >= 740 ? 'MMMM' : 'MM')
-      );
-    g.append('g').attr('transform', `translate(0, ${yAxisHeight})`).call(xAxisTicks);
-    g.append('g').attr('transform', `translate(0, ${yAxisHeight})`).call(xAxisLabels);
-
-    // draw x-axis helper lines
-    g.selectAll('.tickGrid')
-      .data(xTicks.slice(1))
-      .enter()
-      .append('line')
-      .attr('x1', d => xScale(d.valueOf()))
-      .attr('x2', d => xScale(d.valueOf()))
-      .attr('y1', _ => 0)
-      .attr('y2', _ => yAxisHeight)
-      .attr('stroke', _ => 'grey')
-      .attr('stroke-width', 0.2)
-      .attr('stroke-dasharray', '5,5')
-      .style('opacity', 1)
-      .attr('fill', 'none');
+    drawXAxis(g, xScale, width, yAxisHeight);
 
     // draw box-plot
     this.analytics.forEach(analytics => {
@@ -391,8 +337,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         .data(analytics.values)
         .enter()
         .append('line')
-        .attr('x1', d => xScale(this.dateToDOY(analytics.year, d.min)))
-        .attr('x2', d => xScale(this.dateToDOY(analytics.year, d.max)))
+        .attr('x1', d => xScale(dateToDOY(analytics.year, d.min)))
+        .attr('x2', d => xScale(dateToDOY(analytics.year, d.max)))
         .attr('y1', _ => y(this.toKey(analytics)) + y.bandwidth() / 2)
         .attr('y2', _ => y(this.toKey(analytics)) + y.bandwidth() / 2)
         .attr('stroke', d => this.getColor(d.phenophase))
@@ -405,8 +351,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         y,
         '.median',
         analytics,
-        d => xScale(this.dateToDOY(analytics.year, d.median)),
-        d => xScale(this.dateToDOY(analytics.year, d.median)),
+        d => xScale(dateToDOY(analytics.year, d.median)),
+        d => xScale(dateToDOY(analytics.year, d.median)),
         d => this.getColor(d.phenophase)
       );
 
@@ -415,8 +361,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         y,
         '.whiskersMin',
         analytics,
-        d => xScale(this.dateToDOY(analytics.year, d.min)),
-        d => xScale(this.dateToDOY(analytics.year, d.min)),
+        d => xScale(dateToDOY(analytics.year, d.min)),
+        d => xScale(dateToDOY(analytics.year, d.min)),
         d => this.getColor(d.phenophase)
       );
 
@@ -425,8 +371,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         y,
         '.whiskersMax',
         analytics,
-        d => xScale(this.dateToDOY(analytics.year, d.max)),
-        d => xScale(this.dateToDOY(analytics.year, d.max)),
+        d => xScale(dateToDOY(analytics.year, d.max)),
+        d => xScale(dateToDOY(analytics.year, d.max)),
         d => this.getColor(d.phenophase)
       );
 
@@ -439,29 +385,24 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         .attr('height', y.bandwidth())
         .attr(
           'width',
-          d =>
-            xScale(this.dateToDOY(analytics.year, d.quantile_75)) -
-            xScale(this.dateToDOY(analytics.year, d.quantile_25))
+          d => xScale(dateToDOY(analytics.year, d.quantile_75)) - xScale(dateToDOY(analytics.year, d.quantile_25))
         )
-        .attr('x', d => xScale(this.dateToDOY(analytics.year, d.quantile_25)))
+        .attr('x', d => xScale(dateToDOY(analytics.year, d.quantile_25)))
         .attr('y', _ => y(this.toKey(analytics)))
         .attr('fill', d => this.getColor(d.phenophase))
         .style('opacity', 0.7)
         .attr('stroke', '#262626')
         .attr('stroke-width', 0.5)
         .on('mouseover', function (_event: MouseEvent, d: AnalyticsValue) {
-          const tooltip = d3.select('#tooltip');
+          const tooltip = select('#tooltip');
           tooltip.classed('hidden', false);
           const tooltipHeight = (tooltip.node() as HTMLElement).getBoundingClientRect().height;
           const xPosition =
-            parseFloat(d3.select(this).attr('x')) +
-            margin.left +
-            offsetLeft -
-            parseFloat(d3.select(this).attr('width')) / 2;
+            parseFloat(select(this).attr('x')) + margin.left + offsetLeft - parseFloat(select(this).attr('width')) / 2;
 
           // Ensures the tooltip is positioned within the SVG bounds to prevent off-screen rendering and scrollbar issues, particularly in Edge.
           const yPosition = Math.min(
-            parseFloat(d3.select(this).attr('y')) + margin.top + offsetTop,
+            parseFloat(select(this).attr('y')) + margin.top + offsetTop,
             svgComponentHeight - tooltipHeight + offsetTop
           );
 
@@ -488,7 +429,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
             .subscribe();
         })
         .on('mouseout', () => {
-          d3.select('#tooltip').classed('hidden', true);
+          select('#tooltip').classed('hidden', true);
         });
     });
 
@@ -498,7 +439,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   private drawVerticalLines(
     g: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>,
-    y: d3Scale.ScaleBand<string>,
+    y: ScaleBand<string>,
     selection: string,
     analytics: Analytics,
     x1: (d: AnalyticsValue) => number,
@@ -523,25 +464,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       return this.translateService.instant(input.split('-')[1]) as string;
     } else {
       return this.translateService.instant(input) as string;
-    }
-  }
-
-  private dateToDOY(year: number, date: Date) {
-    const mdate = moment(date);
-
-    if (mdate.year() < year) {
-      // date lies in the past year or beyond
-      return (
-        mdate.dayOfYear() -
-        moment({ year: year - 1 })
-          .endOf('year')
-          .dayOfYear()
-      );
-    } else if (mdate.year() > year) {
-      // date lies in the next year
-      return mdate.dayOfYear() + moment({ year: year }).endOf('year').dayOfYear();
-    } else {
-      return mdate.dayOfYear();
     }
   }
 

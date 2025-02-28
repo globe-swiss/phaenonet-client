@@ -1,18 +1,18 @@
 import { ElementRef } from '@angular/core';
 import { ObsWoy, Statistics } from '@shared/models/statistics';
-import * as d3 from 'd3';
-import * as d3Axis from 'd3-axis';
+import { max } from 'd3-array';
+import { axisLeft } from 'd3-axis';
+import { scaleLinear } from 'd3-scale';
+import { select } from 'd3-selection';
+import { area, curveMonotoneX } from 'd3-shape';
+import { drawXAxis } from './draw';
 
 let obsWoyCurrentYear: ObsWoy[] = [];
 let obsWoy5Years: ObsWoy[] = [];
 let obsWoy30Years: ObsWoy[] = [];
-let xTickInterval = 1;
-const legendFontSize = getComputedStyle(document.documentElement).getPropertyValue('--legend-font-size');
-const datasetCurrentYear: ObsWoy[] = [];
 
-export function setXTickInterval(value: number): void {
-  xTickInterval = value;
-}
+const legendFontSize = getComputedStyle(document.documentElement).getPropertyValue('--legend-font-size');
+
 export function getObsWoyCurrentYear(): ObsWoy[] {
   return [...obsWoyCurrentYear];
 }
@@ -83,7 +83,7 @@ export function initializeArray(start: number, end: number, step: number): numbe
 }
 
 export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>): number {
-  const svg = d3.select<SVGGraphicsElement, unknown>('#app-bar-chart');
+  const svg = select<SVGGraphicsElement, unknown>('#app-bar-chart');
 
   svg.selectAll('*').remove();
 
@@ -92,52 +92,38 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
 
   const legendSize = 100;
 
-  const offsetTop = statisticsContainer.nativeElement.offsetTop;
   const margin = { top: legendSize, right: 20, bottom: 30 };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const offsetLeft = statisticsContainer.nativeElement.offsetLeft; // aligned with year chart
+  const offsetTop = statisticsContainer.nativeElement.offsetTop;
   const width = boundingBox.width - margin.right;
   const height = Math.max(window.innerHeight - offsetTop - 5, legendSize + 100);
-  // Set up the x and y scales
 
-  const x = d3.scaleLinear().range([0, width]);
+  // Set up the scales
+  const xScale = scaleLinear().domain([-30, 365]).range([30, width]);
 
-  const y = d3.scaleLinear().range([height - margin.bottom, 0 + margin.top]);
-
-  const xBar = d3.scaleBand().range([0, width]).padding(0.4);
-
-  // Define the x and y domains
-  x.domain([-3, 53]).range([30, width]);
-  xBar.domain(
-    datasetCurrentYear.map(function (d) {
-      return d.week.toString();
-    })
-  );
-
-  const dom = d3.max([...obsWoy5Years, ...obsWoy30Years, ...obsWoyCurrentYear], d => d.count);
+  const yScale = scaleLinear().range([height - margin.bottom, 0 + margin.top]);
+  const dom = max([...obsWoy5Years, ...obsWoy30Years, ...obsWoyCurrentYear], d => d.count);
   if (dom === 0) {
-    y.domain([0, 5]);
+    yScale.domain([0, 5]);
   } else {
-    y.domain([0, dom]);
+    yScale.domain([0, dom]);
   }
+
+  // const xBar = d3.scaleBand().range([0, width]).padding(0.4);
+  // xBar.domain(
+  //   datasetCurrentYear.map(function (d) {
+  //     return d.week.toString();
+  //   })
+  // );
 
   const weekWidth = width / obsWoyCurrentYear.length;
   const barWidth = weekWidth - weekWidth / 3;
 
-  const xTicks = initializeArray(-3, 53, xTickInterval);
-
-  const xAxisLabels = d3Axis
-    .axisBottom(x)
-    .tickValues(xTicks.map(tickValue => tickValue))
-    .tickSize(5)
-    .tickPadding(5);
-
-  // Add the x-axis
-  svg
-    .append('g')
-    .attr('transform', `translate(${barWidth / 2},${height - margin.bottom})`)
-    .call(xAxisLabels);
+  drawXAxis(svg, xScale, width, height - margin.bottom);
 
   // Add the y-axis
-  svg.append('g').attr('transform', `translate(30)`).call(d3.axisLeft(y));
+  svg.append('g').attr('transform', `translate(30)`).call(axisLeft(yScale));
 
   // create a legend
   svg
@@ -174,12 +160,11 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
     .attr('alignment-baseline', 'middle');
 
   // Create the area generator
-  const area = d3
-    .area<ObsWoy>()
-    .curve(d3.curveMonotoneX)
-    .x(d => x(d.week))
+  const chartArea = area<ObsWoy>()
+    .curve(curveMonotoneX)
+    .x(d => xScale(woy2doy(d.week)))
     .y0(height - margin.bottom)
-    .y1(d => y(d.count));
+    .y1(d => yScale(d.count));
 
   // Add the line path to the SVG element
 
@@ -189,7 +174,7 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
     .attr('class', 'area')
     .attr('fill', 'steelblue')
     .attr('opacity', '0.5')
-    .attr('d', area);
+    .attr('d', chartArea);
 
   svg
     .append('path')
@@ -197,7 +182,7 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
     .attr('class', 'area')
     .attr('fill', 'pink')
     .attr('opacity', '0.5')
-    .attr('d', area);
+    .attr('d', chartArea);
 
   svg
     .selectAll('.bar')
@@ -206,17 +191,21 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
     .append('rect')
     .attr('class', 'bar')
     .attr('x', function (d) {
-      return x(d.week);
+      return xScale(woy2doy(d.week));
     })
     .attr('y', function (d) {
-      return y(d.count);
+      return yScale(d.count);
     })
     .attr('width', barWidth)
     .attr('height', function (d) {
-      return height - margin.bottom - y(d.count);
+      return height - margin.bottom - yScale(d.count);
     })
     .attr('fill', 'red')
     .attr('opacity', '0.6');
 
   return height;
+}
+
+function woy2doy(woy: number): number {
+  return woy * 7;
 }
