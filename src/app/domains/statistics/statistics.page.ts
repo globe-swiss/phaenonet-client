@@ -330,7 +330,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     const yAxis = axisLeft(y).tickFormat(t => this.translateYAxisTick(t.toString()));
     g.append('g').call(yAxis);
 
-    drawXAxis(g, xScale, width, yAxisHeight);
+    drawXAxis(g, xScale, width, margin.top, yAxisHeight);
 
     // draw box-plot
     this.analytics.forEach(analytics => {

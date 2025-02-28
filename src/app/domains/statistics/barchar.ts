@@ -122,7 +122,7 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
   const weekWidth = width / obsWoyCurrentYear.length;
   const barWidth = weekWidth - weekWidth / 3;
 
-  drawXAxis(svg, xScale, width, height - margin.bottom);
+  drawXAxis(svg, xScale, width, margin.top, height - margin.bottom);
 
   // Add the y-axis
   svg.append('g').attr('transform', `translate(30)`).call(axisLeft(yScale));
