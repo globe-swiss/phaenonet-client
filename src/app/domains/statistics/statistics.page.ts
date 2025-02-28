@@ -90,6 +90,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }>;
 
   private readonly allowedPhenophases = new Set(['BEA', 'BLA', 'BFA', 'BVA', 'FRA']);
+  private readonly forbiddenSpecies = new Set(['IBM', 'ISS', 'IWA']);
 
   private redraw$ = new Subject();
   private subscriptions = new Subscription();
@@ -185,6 +186,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       startWith(''),
       switchMap(() => this.masterdataService.getSpecies()),
       map(species => {
+        species = species.filter(s => !this.forbiddenSpecies.has(s.id));
         const datasource = this.filter.controls.datasource.value;
         if (datasource == 'all') {
           return species;
