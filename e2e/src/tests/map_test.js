@@ -30,11 +30,11 @@ Scenario('test initial filter', ({ I, mapPage }) => {
 Scenario('test regression on map markers for 2018', ({ I, mapPage }) => {
   I.visit(mapPage);
   I.selectDropdownValue(mapPage.filter.phenoyear.dropdown, 2018, true);
-  I.waitNumberOfVisibleElements(mapPage.mapMarker, 387); // 2018, all, all
+  I.waitNumberOfVisibleElements(mapPage.mapMarker, 388); // 2018, all, all
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.values.phenonet);
   I.waitNumberOfVisibleElements(mapPage.mapMarker, 231); // 2018, phenonet, all
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.values.meteoswiss);
-  I.waitNumberOfVisibleElements(mapPage.mapMarker, 147); // 2018, meteoswiss, all
+  I.waitNumberOfVisibleElements(mapPage.mapMarker, 148); // 2018, meteoswiss, all
   I.selectDropdownValue(mapPage.filter.species.dropdown, mapPage.filter.species.values.sycamore);
   I.waitNumberOfVisibleElements(mapPage.mapMarker, 122); // 2018, meteoswiss, sycamore
   I.selectDropdownValue(mapPage.filter.source.dropdown, mapPage.filter.source.values.phenonet);
