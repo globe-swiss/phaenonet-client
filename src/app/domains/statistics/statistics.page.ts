@@ -81,7 +81,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     graph: FormControl<number>;
   }>;
 
-  private readonly allowedPhenophases = new Set(['BEA', 'BLA', 'BFA', 'BVA', 'FRA']);
+  private readonly allowedPhenophases = new Set(['BEA', 'BES', 'BFA', 'BLA', 'BLB', 'BVA', 'BVS', 'FRA']);
   private readonly forbiddenSpecies = new Set(['IBM', 'ISS', 'IWA']);
 
   private redraw$ = new Subject();
