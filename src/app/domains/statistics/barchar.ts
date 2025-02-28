@@ -93,7 +93,8 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
   const legendSize = 100;
 
   const margin = { top: legendSize, right: 20, bottom: 30 };
-  const offsetLeft = statisticsContainer.nativeElement.offsetLeft;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const offsetLeft = statisticsContainer.nativeElement.offsetLeft; // aligned with year chart
   const offsetTop = statisticsContainer.nativeElement.offsetTop;
   const width = boundingBox.width - margin.right;
   const height = Math.max(window.innerHeight - offsetTop - 5, legendSize + 100);
