@@ -38,7 +38,9 @@ export function setObsWoy30Years(data: ObsWoy[]): void {
 }
 
 export function aggregateObsWoy(results: Statistics[], period: number) {
-  const aggregationObservations = results.filter(r => r.agg_range == period).flatMap(r => r.obs_woy);
+  const aggregationObservations = results
+    .filter(r => r.agg_range == period && r.years == period)
+    .flatMap(r => r.obs_woy);
   const aggregated: Record<number, number> = {};
 
   for (const record of aggregationObservations) {
