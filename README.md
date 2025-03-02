@@ -172,4 +172,3 @@ rm -r node_modules && CI=true pnpm install && pnpm exec ng build --c=production 
 ## Related resources
 
 - [phaenonet-functions](https://github.com/globe-swiss/phaenonet-functions)
-- [data model documentation](https://dbdocs.io/pgoellnitz/phaenonet) ([dbdiagrams.io](http://dbdiagrams.io))
