@@ -146,24 +146,3 @@ jobs:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
           tag: ${{ env.TAG }}
         if: ${{ env.TAG }}
-  docs:
-    name: Update Docs
-    runs-on: ubuntu-22.04
-    if: ${{ github.event.inputs.project == 'phaenonet' }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4.2.2
-      - name: Set environment variables
-        run: cat .env >> $GITHUB_ENV
-      - uses: pnpm/action-setup@v4.1.0
-        with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.2.0
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-      - run: pnpm install
-      - name: build & upload docs
-        run: pnpm exec dbdocs build docs/phaenonet.dbml
-        env:
-          DBDOCS_TOKEN: ${{ secrets.DBDOCS_TOKEN }}
