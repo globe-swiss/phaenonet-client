@@ -132,7 +132,7 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
     .append('text')
     .attr('x', 36)
     .attr('y', 10)
-    .text('Gemittelte Beobachtungen pro Woche')
+    .text('Summe der Beobachtungen pro Woche')
     .style('font-size', legendFontSize)
     .style('font-weight', '500')
     .attr('alignment-baseline', 'middle');
