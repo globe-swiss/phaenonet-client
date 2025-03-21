@@ -25,7 +25,7 @@
               </mat-form-field>
               <mat-form-field class="short-width">
                 <mat-label>{{ 'Auswertung' | translate }}</mat-label>
-                <mat-select formControlName="analyticsType" data-test-id="select-analyticsType">
+                <mat-select formControlName="analyticsType" data-test-id="select-analyticstype">
                   <mat-option *ngFor="let analyticsType of selectableAnalyticsTypes" [value]="analyticsType">{{
                     analyticsType | translate
                   }}</mat-option>
@@ -62,14 +62,14 @@
               <mat-form-field *ngIf="filter.controls.species.value !== 'all' && selectablePhenophases.length !== 0">
                 <mat-label>{{ 'Phaenophase' | translate }}</mat-label>
                 <mat-select formControlName="phenophase" data-test-id="select-phenophase">
-                  <mat-option *ngFor="let phenophase of selectablePhenophases" [value]="phenophase">{{
+                  <mat-option *ngFor="let phenophase of selectablePhenophases" [value]="phenophase.id">{{
                     phenophase.de | translate
                   }}</mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>{{ 'Höhe' | translate }}</mat-label>
-                <mat-select formControlName="altitude" data-test-id="select-altitude">
+                <mat-select formControlName="altitude" data-test-id="select-altgrp">
                   <mat-option *ngFor="let altitude of selectableAltitudeGroup" [value]="altitude">{{
                     altitude | translate
                   }}</mat-option>
@@ -77,9 +77,9 @@
               </mat-form-field>
             </ng-container>
           </ng-container>
-          <mat-form-field *ngIf="showSecondGraph === true">
+          <mat-form-field>
             <mat-label>{{ 'Grafik' | translate }}</mat-label>
-            <mat-select panelClass="align-select-box-right" [(value)]="displayGraph">
+            <mat-select panelClass="align-select-box-right" [(value)]="displayGraph" data-test-id="select-graphtype">
               <mat-option value="1">{{ 'Jahresvergleich' | translate }}</mat-option>
               <mat-option value="2">{{ 'Wochenvergleich' | translate }}</mat-option>
             </mat-select>

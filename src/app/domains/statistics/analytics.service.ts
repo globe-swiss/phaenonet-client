@@ -17,7 +17,7 @@ export class AnalyticsService extends BaseResourceService<Analytics> {
     datasource: FormControl<SourceFilterType>;
     analyticsType: FormControl<AnalyticsType>;
     species: FormControl<string>;
-    phenophase: FormControl<Phenophase>;
+    phenophase: FormControl<string>;
     altitude: FormControl<AltitudeFilterGroup>;
   }>;
 

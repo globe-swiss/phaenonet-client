@@ -29,7 +29,7 @@ export class StatisticsService extends BaseResourceService<Statistics> {
 
   getStatistics(
     year: string,
-    phenophase: Phenophase,
+    phenophase_id: string,
     altitude: AltitudeFilterGroup,
     species: string
   ): Observable<Statistics[]> {
@@ -38,8 +38,8 @@ export class StatisticsService extends BaseResourceService<Statistics> {
     if (species !== 'all') {
       queryConstraints.push(where('species', '==', species));
     }
-    if (phenophase.id !== 'all') {
-      queryConstraints.push(where('phenophase', '==', phenophase.id));
+    if (phenophase_id !== 'all') {
+      queryConstraints.push(where('phenophase', '==', phenophase_id));
     }
     if (altitude !== 'all') {
       queryConstraints.push(where('altitude_grp', '==', altitude));
