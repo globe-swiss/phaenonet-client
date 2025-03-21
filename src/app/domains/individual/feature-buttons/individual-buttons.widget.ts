@@ -10,6 +10,7 @@ import { Individual } from '@shared/models/individual.model';
 import { combineLatest, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { IndividualService } from '../../../shared/services/individual.service';
+import { ObservationService } from '../shared/observation.service';
 
 @Component({
   selector: 'app-individual-buttons',
@@ -27,11 +28,12 @@ export class IndividualDescriptionButtonsComponent {
     private router: Router,
     private dialog: MatDialog,
     private individualService: IndividualService,
+    private observationService: ObservationService,
     private alertService: AlertService
   ) {}
 
   deleteIndividual(): void {
-    this.individualService
+    this.observationService
       .hasObservations(this.individualId)
       .pipe(first())
       .subscribe(hasObservations => {
