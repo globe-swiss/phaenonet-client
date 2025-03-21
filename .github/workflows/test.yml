@@ -18,7 +18,7 @@ jobs:
       - uses: pnpm/action-setup@v4.1.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.2.0
+      - uses: actions/setup-node@v4.3.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -82,7 +82,7 @@ jobs:
       - uses: pnpm/action-setup@v4.1.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.2.0
+      - uses: actions/setup-node@v4.3.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -138,12 +138,12 @@ jobs:
       - uses: pnpm/action-setup@v4.1.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.2.0
+      - uses: actions/setup-node@v4.3.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm -r install
-      - uses: reviewdog/action-setup@v1.3.0
+      - uses: reviewdog/action-setup@v1.3.2
         with:
           reviewdog_version: ${{ env.REVIEWDOG_VERSION }}
       - name: check map icon completeness
