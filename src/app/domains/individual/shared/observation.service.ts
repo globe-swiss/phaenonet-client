@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, where } from '@angular/fire/firestore';
+import { Firestore, limit, where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { Observation } from '@shared/models/observation.model';
@@ -27,6 +27,15 @@ export class ObservationService extends BaseResourceService<Observation> {
           return o;
         })
       )
+    );
+  }
+
+  hasObservations(individualId: string): Observable<boolean> {
+    return this.queryCollection(where('individual_id', '==', individualId), limit(1)).pipe(
+      tap(x => this.fds.addRead('observations (hasObservations)', x.length)),
+      map(observations => {
+        return observations.length > 0;
+      })
     );
   }
 }

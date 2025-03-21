@@ -181,15 +181,6 @@ export class IndividualService extends BaseResourceService<Individual> {
     return from(getDownloadURL(ref(this.afStorage, path)).catch(() => null)) as Observable<string | null>;
   }
 
-  hasObservations(individualId: string): Observable<boolean> {
-    return this.queryCollection(where('individual_id', '==', individualId), limit(1)).pipe(
-      tap(x => this.fds.addRead('observations (hasObservations)', x.length)),
-      map(observations => {
-        return observations.length > 0;
-      })
-    );
-  }
-
   deleteImages(individual: Individual): void {
     deleteObject(ref(this.afStorage, this.getImagePath(individual, true))).catch(() => null); // ignore if image does not exist
     deleteObject(ref(this.afStorage, this.getImagePath(individual, false))).catch(() => null); // ignore if image does not exist
