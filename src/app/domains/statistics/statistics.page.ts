@@ -1,4 +1,3 @@
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -74,7 +73,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     datasource: FormControl<SourceFilterType>;
     analyticsType: FormControl<AnalyticsType>;
     species: FormControl<string>;
-    phenophase: FormControl<Phenophase>;
+    phenophase: FormControl<string>;
     altitude: FormControl<AltitudeFilterGroup>;
   }>;
   graphFilter: FormGroup<{
@@ -92,17 +91,13 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   private _displayGraph: string = '1';
   translationsLoaded = false;
 
-  //TODO: flag to enable and disable the observation graph
-  showSecondGraph = true;
-
   svgComponentHeight = 0;
   constructor(
     private titleService: TitleService,
     private analyticsService: AnalyticsService,
     private statisticsService: StatisticsService,
     private masterdataService: MasterdataService,
-    private translateService: TranslateService,
-    private breakpointObserver: BreakpointObserver
+    private translateService: TranslateService
   ) {}
 
   @HostListener('window:resize', ['$event'])
@@ -154,7 +149,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         datasource: new FormControl(this.selectableDatasources[0]),
         analyticsType: new FormControl(this.selectableAnalyticsTypes[0]),
         species: new FormControl(allSpecies.id),
-        phenophase: new FormControl(allPhenophases),
+        phenophase: new FormControl(allPhenophases.id),
         altitude: new FormControl(this.selectableAltitudeGroup[0])
       });
       this.masterdataService.phenoYear$
@@ -210,12 +205,11 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     this.filter.controls.species.valueChanges
       .pipe(switchMap(species => this.masterdataService.getPhenophases(species)))
       .subscribe(speciesPhenophases => {
-        console.log(speciesPhenophases);
         this.selectablePhenophases = [
           allPhenophases,
           ...speciesPhenophases.filter(p => this.allowedPhenophases.has(p.id))
         ];
-        this.filter.controls.phenophase.setValue(allPhenophases);
+        this.filter.controls.phenophase.setValue(allPhenophases.id);
       });
 
     this.selectableYearsWithAll$ = this.masterdataService.availableYears$.pipe(
