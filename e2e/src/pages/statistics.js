@@ -16,8 +16,8 @@ module.exports = {
         meteoswiss: 'meteoswiss'
       }
     },
-    type: {
-      dropdown: { css: '[data-test-id=select-analyticsType]' },
+    analyticstype: {
+      dropdown: { css: '[data-test-id=select-analyticstype]' },
       values: {
         species: 'species',
         altitude: 'altitude'
@@ -29,6 +29,31 @@ module.exports = {
         hazel: 'HS',
         sycamore: 'BA'
         // add more if needed
+      }
+    },
+    phenophase: {
+      dropdown: { css: '[data-test-id=select-phenophase]' },
+      values: {
+        BLA: 'BLA'
+        // add more if needed
+      }
+    },
+    altgrp: {
+      dropdown: { css: '[data-test-id=select-altgrp]' },
+      values: {
+        all: 'all',
+        alt1: 'alt1',
+        alt2: 'alt2',
+        alt3: 'alt3',
+        alt4: 'alt4',
+        alt5: 'alt5'
+      }
+    },
+    graphtype: {
+      dropdown: { css: '[data-test-id=select-graphtype]' },
+      values: {
+        yearly: '1',
+        weekly: '2'
       }
     }
   },

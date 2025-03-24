@@ -205,6 +205,9 @@ export function createBarChart(statisticsContainer: ElementRef<HTMLDivElement>):
     .attr('fill', 'red')
     .attr('opacity', '0.6');
 
+  // adjust fonts
+  svg.selectAll('.tick text').style('font-family', "'Open Sans', sans-serif");
+
   return height;
 }
 
