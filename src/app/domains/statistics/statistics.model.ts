@@ -1,38 +1,22 @@
-import { Phenophase, Species } from '@shared/models/masterdata.model';
-import { Observation } from '@shared/models/observation.model';
-
-export type AltitudeGroup = 'alt1' | 'alt2' | 'alt3' | 'alt4' | 'alt5';
-export type AltitudeFilterGroup = 'all' | AltitudeGroup;
-export type AnalyticsType = 'species' | 'altitude';
-
-export const allPhenophases = { id: 'all', de: 'Alle' } as Phenophase;
-export const allSpecies = { id: 'all', de: 'Alle' } as Species;
-export const allYear = 'all';
-
-export class AnalyticsValue {
-  phenophase: string;
-  max: Date;
-  median: Date;
-  min: Date;
-  quantile_25: Date;
-  quantile_75: Date;
+export interface ObsWoy {
+  week: number;
+  count: number;
 }
 
-export class Analytics {
-  source: string;
-  species: string;
-  type: AnalyticsType;
-  altitude_grp: AltitudeGroup | null;
+export interface YearObsSum {
   year: number;
-  values: AnalyticsValue[];
+  value: number;
 }
 
-export interface ObservationData {
+export interface Statistics {
+  agg_obs_sum: number;
+  agg_range: number;
+  latitude_grp: string;
+  end_year: number;
+  obs_woy: ObsWoy[];
+  phenophase: string;
   species: string;
-  groupedByPhenophase: GroupedByPhenophaseGroup[];
-}
-
-export interface GroupedByPhenophaseGroup {
-  phenophaseGroup: string;
-  observations: Observation[];
+  start_year: number;
+  year_obs_sum: YearObsSum[];
+  years: number;
 }

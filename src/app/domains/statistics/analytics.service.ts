@@ -7,7 +7,7 @@ import { Phenophase } from '@shared/models/masterdata.model';
 import { SourceFilterType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { AltitudeFilterGroup, Analytics, AnalyticsType } from './statistics.model';
+import { AltitudeFilterGroup, Analytics, AnalyticsType } from './analytics.model';
 
 @Injectable({ providedIn: 'root' })
 export class AnalyticsService extends BaseResourceService<Analytics> {

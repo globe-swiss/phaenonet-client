@@ -7,11 +7,11 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
+import { Statistics } from '@app/domains/statistics/statistics.model';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Phenophase, Species } from '@shared/models/masterdata.model';
 import { SourceFilterType } from '@shared/models/source-type.model';
-import { Statistics } from '@shared/models/statistics';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { formatShortDate } from '@shared/utils/formatDate';
 import { axisLeft } from 'd3-axis';
@@ -19,9 +19,6 @@ import { ScaleBand, scaleBand, scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { AnalyticsService } from './analytics.service';
-import { aggregateObsWoy, createBarChart, setObsWoy30Years, setObsWoy5Years, setObsWoyCurrentYear } from './barchar';
-import { dateToDOY, drawXAxis } from './draw';
 import {
   allPhenophases,
   allSpecies,
@@ -31,7 +28,10 @@ import {
   Analytics,
   AnalyticsType,
   AnalyticsValue
-} from './statistics.model';
+} from './analytics.model';
+import { AnalyticsService } from './analytics.service';
+import { aggregateObsWoy, createBarChart, setObsWoy30Years, setObsWoy5Years, setObsWoyCurrentYear } from './barchar';
+import { dateToDOY, drawXAxis } from './draw';
 import { StatisticsService } from './statistics.service';
 @Component({
   encapsulation: ViewEncapsulation.None,

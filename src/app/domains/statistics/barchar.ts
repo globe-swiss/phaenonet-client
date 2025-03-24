@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { ObsWoy, Statistics } from '@shared/models/statistics';
+import { ObsWoy, Statistics } from '@app/domains/statistics/statistics.model';
 import { max } from 'd3-array';
 import { axisLeft } from 'd3-axis';
 import { scaleLinear } from 'd3-scale';
