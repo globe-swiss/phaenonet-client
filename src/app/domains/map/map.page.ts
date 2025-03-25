@@ -14,12 +14,13 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { basemaps, MapType } from '@shared/models/basemaps.model';
 import { MapIndividual } from '@shared/models/individual.model';
 import { Species } from '@shared/models/masterdata.model';
-import { SourceFilterType } from '@shared/models/source-type.model';
+import { sourceFilterValues, SourceType } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
 import { TypeGuard, TypeGuardPipe } from '@shared/utils/type-guard.pipe';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { allType } from './../../shared/models/source-type.model';
 import { IndividualInfoWindowData, MapInfoService, StationInfoWindowData } from './map-info.service';
 import { IndividualWithMarkerOpt, MapService } from './map.service';
 import { SensorsBadgeComponent } from './sensors-badge.component';
@@ -83,12 +84,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   // filter from and value lists
   filter: FormGroup<{
     year: FormControl<number>;
-    datasource: FormControl<SourceFilterType>;
+    datasource: FormControl<allType | SourceType>;
     species: FormControl<string>;
   }>;
   yearFilterValues$: Observable<number[]>;
   speciesFilterValues$: Observable<Species[]>;
-  readonly datasourceFilterValues: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wld'];
+  readonly datasourceFilterValues = sourceFilterValues;
 
   // type guards to enable strict type checking in HTML on infoWindowData$
   isIndividualInfoWindowData: TypeGuard<InfoWindowData, IndividualInfoWindowData> = (
@@ -115,7 +116,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
     this.subscriptions.add(
-      this.translateService.get(this.datasourceFilterValues[0]).subscribe(() => {
+      this.translateService.get(sourceFilterValues[0]).subscribe(() => {
         this.translationsLoaded = true;
       })
     );
@@ -195,7 +196,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       const selectedYear = new FormControl<number>(Number.NaN);
       this.filter = new FormGroup({
         year: selectedYear,
-        datasource: new FormControl<SourceFilterType>(this.datasourceFilterValues[0]),
+        datasource: new FormControl<allType | SourceType>(sourceFilterValues[0]),
         species: new FormControl<string>(allSpecies.id)
       });
       this.masterdataService.phenoYear$.pipe(first()).subscribe(year => selectedYear.patchValue(year));
@@ -207,7 +208,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private filterMapIndividuals(
     individuals: MapIndividual[],
-    datasource: SourceFilterType,
+    datasource: allType | SourceType,
     species: string
   ): MapIndividual[] {
     individuals = datasource !== 'all' ? this.mapService.filterByDatasource(individuals, datasource) : individuals;
@@ -215,7 +216,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     return individuals;
   }
 
-  private getSelectableSpecies(datasource: SourceFilterType): Observable<Species[]> {
+  private getSelectableSpecies(datasource: allType | SourceType): Observable<Species[]> {
     return this.masterdataService.getSpecies().pipe(
       map(species => {
         if (datasource == 'all') {

@@ -1,13 +1,5 @@
-import { Phenophase, Species } from '@shared/models/masterdata.model';
 import { Observation } from '@shared/models/observation.model';
-
-export type AltitudeGroup = 'alt1' | 'alt2' | 'alt3' | 'alt4' | 'alt5';
-export type AltitudeFilterGroup = 'all' | AltitudeGroup;
-export type AnalyticsType = 'species' | 'altitude';
-
-export const allPhenophases = { id: 'all', de: 'Alle' } as Phenophase;
-export const allSpecies = { id: 'all', de: 'Alle' } as Species;
-export const allYear = 'all';
+import { AltitudeGroup, AnalyticsType } from './common.model';
 
 export class AnalyticsValue {
   phenophase: string;

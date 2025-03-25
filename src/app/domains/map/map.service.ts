@@ -4,10 +4,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { IdLike } from '@core/core.model';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { IndividualType, MapIndividual } from '@shared/models/individual.model';
-import { SourceFilterType, SourceType } from '@shared/models/source-type.model';
+import { SourceType } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { Observable } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
+import { allType } from './../../shared/models/source-type.model';
 
 interface MapData {
   data: {
@@ -35,7 +36,7 @@ export interface IndividualWithMarkerOpt {
 export class MapService {
   public mapFilterState: FormGroup<{
     year: FormControl<number>;
-    datasource: FormControl<SourceFilterType>;
+    datasource: FormControl<allType | SourceType>;
     species: FormControl<string>;
   }>;
 
@@ -75,7 +76,7 @@ export class MapService {
     return result;
   }
 
-  public filterByDatasource(individuals: MapIndividual[], datasource: SourceFilterType): MapIndividual[] {
+  public filterByDatasource(individuals: MapIndividual[], datasource: allType | SourceType): MapIndividual[] {
     return individuals.filter(i => i.source === datasource);
   }
 

@@ -3,18 +3,18 @@ import { Firestore, where } from '@angular/fire/firestore';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
-import { SourceFilterType } from '@shared/models/source-type.model';
+import { allType, SourceType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { AltitudeFilterGroup, AnalyticsType } from './analytics.model';
 import { Statistics } from './statistics.model';
+import { AnalyticsType, AltitudeGroup } from './common.model';
 
 @Injectable({ providedIn: 'root' })
 export class StatisticsService extends BaseResourceService<Statistics> {
   // requires to be provided in root to save awhen leaving the component
   public statisticFilterState: FormGroup<{
     year: FormControl<string>;
-    datasource: FormControl<SourceFilterType>;
+    datasource: FormControl<allType | SourceType>;
     analyticsType: FormControl<AnalyticsType>;
     species: FormControl<string>;
   }>;
@@ -29,7 +29,7 @@ export class StatisticsService extends BaseResourceService<Statistics> {
   getStatistics(
     year: string,
     phenophase_id: string,
-    altitude: AltitudeFilterGroup,
+    altitude: allType | AltitudeGroup,
     species: string
   ): Observable<Statistics[]> {
     const queryConstraints = [where('display_year', '==', parseInt(year, 10))];

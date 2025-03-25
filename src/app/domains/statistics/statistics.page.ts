@@ -1,37 +1,29 @@
 import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
-import { Statistics } from '@app/domains/statistics/statistics.model';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Phenophase, Species } from '@shared/models/masterdata.model';
-import { SourceFilterType } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { formatShortDate } from '@shared/utils/formatDate';
 import { axisLeft } from 'd3-axis';
 import { ScaleBand, scaleBand, scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
-import {
-  allPhenophases,
-  allSpecies,
-  allYear,
-  AltitudeFilterGroup,
-  AltitudeGroup,
-  Analytics,
-  AnalyticsType,
-  AnalyticsValue
-} from './analytics.model';
+import { Observable, Subscription } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
+import { Analytics, AnalyticsValue } from './analytics.model';
 import { AnalyticsService } from './analytics.service';
 import { aggregateObsWoy, createBarChart, setObsWoy30Years, setObsWoy5Years, setObsWoyCurrentYear } from './barchar';
+import { allYear, AltitudeGroup } from './common.model';
 import { dateToDOY, drawXAxis } from './draw';
+import { StatisticFilterComponent } from './statistics-filter.component';
+import { StatisticsFilterService } from './statistics-filter.service';
+import { Statistics } from './statistics.model';
 import { StatisticsService } from './statistics.service';
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -53,62 +45,38 @@ import { StatisticsService } from './statistics.service';
     TranslateModule,
     NgIf,
     NgSwitch,
-    NgSwitchCase
+    NgSwitchCase,
+    StatisticFilterComponent
   ]
 })
 export class StatisticsComponent implements OnInit, OnDestroy {
   @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef<HTMLDivElement>;
 
   availableYears: number[];
-  selectableYears$: Observable<string[]>;
-  selectableYearsWithAll$: Observable<string[]>;
-  selectableYearsWithoutAll$: Observable<string[]>;
-  selectableDatasources: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wld'];
-  selectableAnalyticsTypes: AnalyticsType[] = ['species', 'altitude'];
-  selectableSpecies$: Observable<Species[]>;
-  selectablePhenophases: Phenophase[];
-  selectableAltitudeGroup: AltitudeFilterGroup[] = ['all', 'alt1', 'alt2', 'alt3', 'alt4', 'alt5'];
-  filter: FormGroup<{
-    year: FormControl<string>;
-    datasource: FormControl<SourceFilterType>;
-    analyticsType: FormControl<AnalyticsType>;
-    species: FormControl<string>;
-    phenophase: FormControl<string>;
-    altitude: FormControl<AltitudeFilterGroup>;
-  }>;
-  graphFilter: FormGroup<{
-    graph: FormControl<number>;
-  }>;
 
-  private readonly allowedPhenophases = new Set(['BEA', 'BES', 'BFA', 'BLA', 'BLB', 'BVA', 'BVS', 'FRA']);
-  private readonly forbiddenSpecies = new Set(['IBM', 'ISS', 'IWA']);
-
-  private redraw$ = new Subject();
   private subscriptions = new Subscription();
 
   private year: number | null; // null if all year
   private analytics: Analytics[] = [];
-  private _displayGraph: string = '1';
   translationsLoaded = false;
 
   svgComponentHeight = 0;
+  displayGraph$: Observable<any>;
+
   constructor(
     private titleService: TitleService,
     private analyticsService: AnalyticsService,
     private statisticsService: StatisticsService,
     private masterdataService: MasterdataService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private statisticsFilterService: StatisticsFilterService
   ) {}
 
   @HostListener('window:resize', ['$event'])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onResize(event: UIEvent): void {
     // re-render the svg on window resize
-    if (this.displayGraph === '1') {
-      this.drawChart();
-    } else {
-      this.svgComponentHeight = createBarChart(this.statisticsContainer);
-    }
+    this.statisticsFilterService.forceRedraw();
   }
 
   getColor(phenophase: string): string {
@@ -136,129 +104,54 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.titleService.setLocation('Auswertungen');
-    // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
-    this.subscriptions.add(
-      this.translateService.get(this.selectableDatasources[0]).subscribe(() => {
-        this.translationsLoaded = true;
-      })
-    );
 
-    if (!this.statisticsService.statisticFilterState) {
-      this.filter = new FormGroup({
-        year: new FormControl(''),
-        datasource: new FormControl(this.selectableDatasources[0]),
-        analyticsType: new FormControl(this.selectableAnalyticsTypes[0]),
-        species: new FormControl(allSpecies.id),
-        phenophase: new FormControl(allPhenophases.id),
-        altitude: new FormControl(this.selectableAltitudeGroup[0])
-      });
-      this.masterdataService.phenoYear$
-        .pipe(first())
-        .subscribe(year => this.filter.controls.year.patchValue(String(year)));
-      this.analyticsService.statisticFilterState = this.filter;
-    } else {
-      this.filter = this.analyticsService.statisticFilterState;
-    }
+    const displayGraphSubscription = this.statisticsFilterService.currentFilters$
+      .pipe(
+        // todo fix this mess
+        switchMap(filterValues => {
+          const { year, datasource, analyticsType, species, phenophase, altitude, graph } = filterValues;
 
-    this.selectableSpecies$ = this.filter.valueChanges.pipe(
-      startWith(''),
-      switchMap(() => this.masterdataService.getSpecies()),
-      map(species => {
-        species = species.filter(s => !this.forbiddenSpecies.has(s.id));
-        const datasource = this.filter.controls.datasource.value;
-        if (datasource == 'all') {
-          return species;
-        } else {
-          // set all species if current species filter if invalid
-          if (
-            this.filter.controls.species.value != allSpecies.id &&
-            species.filter(s => s.id == this.filter.controls.species.value && s.sources.includes(datasource)).length ==
-              0
-          ) {
-            this.filter.controls.species.setValue(allSpecies.id);
+          // fixme wth?
+          this.year = year === allYear ? null : parseInt(year, 10);
+
+          const results =
+            graph === 'yearly'
+              ? this.analyticsService
+                  .listByYear(year, analyticsType, datasource, species)
+                  .pipe(map(result => ({ results: result, graph })))
+              : this.statisticsService
+                  .getStatistics(year, phenophase, altitude, species)
+                  .pipe(map(result => ({ results: result, graph })));
+
+          return results;
+        }),
+        // todo fix this mess
+        map(({ results, graph }) => {
+          if (graph === 'yearly') {
+            if (this.isArrayOfAnalytics(results)) {
+              this.analytics = results as Analytics[];
+            }
+          } else {
+            setObsWoy30Years(aggregateObsWoy(results as Statistics[], 30));
+            setObsWoy5Years(aggregateObsWoy(results as Statistics[], 5));
+            setObsWoyCurrentYear(aggregateObsWoy(results as Statistics[], 1));
+            this.svgComponentHeight = createBarChart(this.statisticsContainer);
           }
-          return species.filter(s => s.sources.includes(datasource));
-        }
-      }),
-      map(species => this.masterdataService.sortTranslatedMasterData(species)),
-      map(species => [allSpecies].concat(species)),
-      tap(species => {
-        const formAnalyticsType = this.filter.controls.analyticsType.value;
-        const formSpecies = this.filter.controls.species.value;
-        const formYear = this.filter.controls.year.value;
-        // set to valid single species if analytics type is 'altitude' and 'all' species is selected
-        if (
-          formSpecies === allSpecies.id &&
-          (formAnalyticsType === 'altitude' || formYear === allYear || this.displayGraph === '2')
-        ) {
-          this.filter.controls.species.setValue(species[1].id);
-        }
-
-        // anaytics type altitude is not allowed for all year view
-        if (formYear === allYear && formAnalyticsType === 'altitude') {
-          this.filter.controls.analyticsType.setValue('species');
-        }
-      }),
-      tap(() => this.redraw$.next(true))
-    );
-
-    this.filter.controls.species.valueChanges
-      .pipe(switchMap(species => this.masterdataService.getPhenophases(species)))
-      .subscribe(speciesPhenophases => {
-        this.selectablePhenophases = [
-          allPhenophases,
-          ...speciesPhenophases.filter(p => this.allowedPhenophases.has(p.id))
-        ];
-        this.filter.controls.phenophase.setValue(allPhenophases.id);
-      });
-
-    this.selectableYearsWithAll$ = this.masterdataService.availableYears$.pipe(
-      tap(years => (this.availableYears = years)),
-      map(years => [allYear, ...years.map(year => String(year))])
-    );
-
-    this.selectableYearsWithoutAll$ = this.masterdataService.availableYears$.pipe(
-      tap(years => (this.availableYears = years)),
-      map(years => years.map(year => String(year)))
-    );
-
-    this.selectableYears$ = this.selectableYearsWithAll$;
-
-    this.subscriptions.add(
-      this.redraw$
-        .pipe(
-          switchMap(() => {
-            const year = this.filter.controls.year.value;
-            const datasource = this.filter.controls.datasource.value;
-            const analyticsType = this.filter.controls.analyticsType.value;
-            const species = this.filter.controls.species.value;
-            const phenophase = this.filter.controls.phenophase.value;
-            const altitude = this.filter.controls.altitude.value;
-
-            this.year = year === allYear ? null : parseInt(year, 10);
-
-            if (this.displayGraph === '1') {
-              return this.analyticsService.listByYear(year, analyticsType, datasource, species);
-            } else {
-              return this.statisticsService.getStatistics(year, phenophase, altitude, species);
-            }
-          }),
-          map(results => {
-            if (this.displayGraph === '1') {
-              if (this.isArrayOfAnalytics(results)) {
-                this.analytics = results as Analytics[];
-              }
-              this.drawChart();
-            } else {
-              setObsWoy30Years(aggregateObsWoy(results as Statistics[], 30));
-              setObsWoy5Years(aggregateObsWoy(results as Statistics[], 5));
-              setObsWoyCurrentYear(aggregateObsWoy(results as Statistics[], 1));
-              this.svgComponentHeight = createBarChart(this.statisticsContainer);
-            }
-          })
-        )
-        .subscribe()
-    );
+          return graph;
+        }),
+        // todo fix this mess
+        map(graph => {
+          console.log(graph);
+          if (graph === 'yearly') {
+            this.drawChart();
+          } else {
+            this.svgComponentHeight = createBarChart(this.statisticsContainer);
+          }
+          return graph;
+        })
+      )
+      .subscribe();
+    this.subscriptions.add(displayGraphSubscription);
   }
 
   ngOnDestroy(): void {
@@ -463,24 +356,24 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Getter and Setter for displayGraph
-  get displayGraph(): string {
-    return this._displayGraph;
-  }
+  // // Getter and Setter for displayGraph
+  // get displayGraph(): string {
+  //   return this._displayGraph;
+  // }
 
-  set displayGraph(value: string) {
-    if (this._displayGraph !== value) {
-      this._displayGraph = value;
-      this.redraw$.next(true);
-      if (this._displayGraph === '1') {
-        // TODO: fixme, just a quickfix to keep original behaviour
-        this.selectableYears$ = this.selectableYearsWithAll$;
-      } else {
-        this.selectableYears$ = this.selectableYearsWithoutAll$;
-        if (this.filter.controls.year.value === allYear) {
-          this.filter.controls.year.setValue(this.availableYears[0].toString());
-        }
-      }
-    }
-  }
+  // set displayGraph(value: string) {
+  //   if (this._displayGraph !== value) {
+  //     this._displayGraph = value;
+  //     this.redraw$.next(true);
+  //     if (this._displayGraph === '1') {
+  //       // TODO: fixme, just a quickfix to keep original behaviour
+  //       this.selectableYears$ = this.selectableYearsWithAll$;
+  //     } else {
+  //       this.selectableYears$ = this.selectableYearsWithoutAll$;
+  //       if (this.filter.controls.year.value === allYear) {
+  //         this.filter.controls.year.setValue(this.availableYears[0].toString());
+  //       }
+  //     }
+  //   }
+  // }
 }
