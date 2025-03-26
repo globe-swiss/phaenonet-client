@@ -9,9 +9,12 @@ import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subscription } from 'rxjs';
 import { Analytics } from './analytics.model';
+import { FilterGraphType } from './statistic-filter.model';
 import { StatisticFilterComponent } from './statistics-filter.component';
+import { StatisticsFilterService } from './statistics-filter.service';
+import { WeeklyStatisticsComponent } from './weekly-statistics.component';
 import { YearlyStatisticsComponent } from './yearly-statistics.component';
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -35,15 +38,20 @@ import { YearlyStatisticsComponent } from './yearly-statistics.component';
     NgSwitch,
     NgSwitchCase,
     StatisticFilterComponent,
-    YearlyStatisticsComponent
+    YearlyStatisticsComponent,
+    WeeklyStatisticsComponent
   ]
 })
 export class StatisticsComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   redraw$ = new BehaviorSubject(0);
+  currentGraph$: Observable<FilterGraphType>;
 
-  constructor(private titleService: TitleService) {}
+  constructor(
+    private titleService: TitleService,
+    private statisticsFilterService: StatisticsFilterService
+  ) {}
 
   @HostListener('window:resize', ['$event'])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -74,75 +82,10 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.titleService.setLocation('Auswertungen');
 
-    // const displayGraphSubscription = this.statisticsFilterService.currentFilters$
-    //   .pipe(
-    //     // todo fix this mess
-    //     switchMap(({ year, datasource, analyticsType, species, phenophase, altitude, graph }) => {
-    //       // fixme wth?
-    //       this.year = year === allYear ? null : +year;
-
-    //       const results =
-    //         graph === 'yearly'
-    //           ? this.analyticsService
-    //               .listByYear(year, analyticsType, datasource, species)
-    //               .pipe(map(result => ({ results: result, graph })))
-    //           : this.statisticsService
-    //               .getStatistics(year, phenophase, altitude, species)
-    //               .pipe(map(result => ({ results: result, graph })));
-
-    //       return results;
-    //     }),
-    //     // todo fix this mess
-    //     map(({ results, graph }) => {
-    //       if (graph === 'yearly') {
-    //         if (this.isArrayOfAnalytics(results)) {
-    //           this.analytics = results as Analytics[];
-    //         }
-    //       } else {
-    //         setObsWoy30Years(aggregateObsWoy(results as Statistics[], 30));
-    //         setObsWoy5Years(aggregateObsWoy(results as Statistics[], 5));
-    //         setObsWoyCurrentYear(aggregateObsWoy(results as Statistics[], 1));
-    //         this.svgComponentHeight = createBarChart(this.statisticsContainer);
-    //       }
-    //       return graph;
-    //     }),
-    //     // todo fix this mess
-    //     map(graph => {
-    //       console.log(graph);
-    //       if (graph === 'yearly') {
-    //         this.drawChart();
-    //       } else {
-    //         this.svgComponentHeight = createBarChart(this.statisticsContainer);
-    //       }
-    //       return graph;
-    //     })
-    //   )
-    //   .subscribe();
-    //this.subscriptions.add(displayGraphSubscription);
+    this.currentGraph$ = this.statisticsFilterService.currentFilters$.pipe(map(({ graph }) => graph));
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-
-  // // Getter and Setter for displayGraph
-  // get displayGraph(): string {
-  //   return this._displayGraph;
-  // }
-
-  // set displayGraph(value: string) {
-  //   if (this._displayGraph !== value) {
-  //     this._displayGraph = value;
-  //     this.redraw$.next(true);
-  //     if (this._displayGraph === '1') {
-  //       // TODO: fixme, just a quickfix to keep original behaviour
-  //       this.selectableYears$ = this.selectableYearsWithAll$;
-  //     } else {
-  //       this.selectableYears$ = this.selectableYearsWithoutAll$;
-  //       if (this.filter.controls.year.value === allYear) {
-  //         this.filter.controls.year.setValue(this.availableYears[0].toString());
-  //       }
-  //     }
-  //   }
-  // }
 }

@@ -1,6 +1,10 @@
 <div class="statistics" data-test-id="statistics-component">
   <div class="statistics__chart-view">
     <app-statistics-filter></app-statistics-filter>
-    <app-yearly-statistics [triggerRedraw]="redraw$ | async"></app-yearly-statistics>
+    @if ((currentGraph$ | async) === 'yearly') {
+      <app-yearly-statistics [triggerRedraw]="redraw$ | async"></app-yearly-statistics>
+    } @else {
+      <app-weekly-statistics [triggerRedraw]="redraw$ | async"></app-weekly-statistics>
+    }
   </div>
 </div>

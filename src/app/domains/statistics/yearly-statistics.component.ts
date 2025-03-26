@@ -51,14 +51,12 @@ export class YearlyStatisticsComponent implements OnInit, OnDestroy {
     const filterSubscription = this.statisticsFilterService.currentFilters$
       .pipe(
         switchMap(({ year, datasource, analyticsType, species }) =>
-          this.analyticsService
-            .listByYear(year, analyticsType, datasource, species)
-            .pipe(map(analytics => ({ year, analytics })))
+          this.analyticsService.listByYear(year, analyticsType, datasource, species).pipe(map(data => ({ year, data })))
         )
       )
-      .subscribe(({ year, analytics }) => {
+      .subscribe(({ year, data }) => {
         this.year = year === allYear ? null : +year;
-        this.data = analytics;
+        this.data = data;
         this._redraw$.next();
       });
 
