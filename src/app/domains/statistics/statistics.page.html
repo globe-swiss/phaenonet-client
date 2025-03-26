@@ -1,8 +1,6 @@
 <div class="statistics" data-test-id="statistics-component">
   <div class="statistics__chart-view">
     <app-statistics-filter></app-statistics-filter>
-    <div #statisticsContainer>
-      <svg id="statistics-graph" width="100%" attr.height="{{ svgComponentHeight }}px"></svg>
-    </div>
+    <app-yearly-statistics [triggerRedraw]="redraw$ | async"></app-yearly-statistics>
   </div>
 </div>

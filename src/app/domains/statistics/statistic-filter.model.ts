@@ -1,4 +1,4 @@
-import { allType, SourceType, sourceFilterValues } from '@shared/models/source-type.model';
+import { SourceType, allType, sourceFilterValues } from '@shared/models/source-type.model';
 import {
   AltitudeGroup,
   AnalyticsType,

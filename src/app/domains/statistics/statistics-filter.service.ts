@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import { MasterdataService } from '@shared/services/masterdata.service';
-import { BehaviorSubject, debounceTime, first, map, startWith, switchMap, tap } from 'rxjs';
-import { allowedPhenophases, allPhenophases, allSpecies, allYear, forbiddenSpecies } from './common.model';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, first, map, startWith, switchMap, tap } from 'rxjs';
+import {
+  allowedPhenophases,
+  allPhenophases,
+  allSpecies,
+  allYear,
+  forbiddenSpecies,
+  selectableAnalyticsTypes
+} from './common.model';
 import { DEFAULT_FILTERS, StatisticFilters } from './statistic-filter.model';
 
 @Injectable({
@@ -10,7 +17,10 @@ import { DEFAULT_FILTERS, StatisticFilters } from './statistic-filter.model';
 export class StatisticsFilterService {
   // fixme/todo refactor to use Singnal
   private filtersSubject = new BehaviorSubject<StatisticFilters>(DEFAULT_FILTERS);
-  currentFilters$ = this.filtersSubject.asObservable().pipe(debounceTime(300));
+  currentFilters$ = this.filtersSubject.asObservable().pipe(
+    debounceTime(100),
+    distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr))
+  );
 
   constructor(private masterdataService: MasterdataService) {
     this.initPhenoyear();
@@ -20,16 +30,17 @@ export class StatisticsFilterService {
     this.masterdataService.phenoYear$.pipe(first()).subscribe(year => this.updateFilters({ year: String(year) }));
   }
 
-  private updateFilters(update: Partial<StatisticFilters>): void {
+  public updateFilters(update: Partial<StatisticFilters>): void {
+    console.log('update filter service values', update);
     this.filtersSubject.next({
       ...this.filtersSubject.getValue(),
       ...update
     });
   }
 
-  forceRedraw(): void {
-    this.filtersSubject.next(this.filtersSubject.getValue());
-  }
+  // forceRedraw(): void {
+  //   this.filtersSubject.next(this.filtersSubject.getValue());
+  // }
 
   /**
    * Return observable selectable species based on the selected filters.
@@ -60,19 +71,25 @@ export class StatisticsFilterService {
         }
       }),
       map(species => this.masterdataService.sortTranslatedMasterData(species)), // sort by translation
-      map(species => [allSpecies].concat(species)), // add all species to selection
+      map(species => {
+        const filterAnalyticsType = this.filtersSubject.getValue().analyticsType;
+        const filterYear = this.filtersSubject.getValue().year;
+        const filterGraph = this.filtersSubject.getValue().graph;
+        if (filterAnalyticsType !== 'altitude' && filterYear !== allYear && filterGraph !== 'weekly') {
+          return [allSpecies].concat(species);
+        } else {
+          return species;
+        }
+      }), // add all species to selection
       // set to valid species if analytics type is 'altitude' and 'all' species is selected
       tap(species => {
         const filterAnalyticsType = this.filtersSubject.getValue().analyticsType;
         const filterSpecies = this.filtersSubject.getValue().species;
         const filterYear = this.filtersSubject.getValue().year;
-        const filterGraph = this.filtersSubject.getValue().graph;
         // set species to first valid species if 'all' species is selected with incompatible other filters
-        if (
-          filterSpecies === allSpecies.id &&
-          (filterAnalyticsType === 'altitude' || filterYear === allYear || filterGraph === 'yearly')
-        ) {
-          this.updateFilters({ species: species[1].id });
+        // do not allow all on weekly graph -- fixme check removing the values from selection
+        if (species[0].id !== 'all' && filterSpecies === 'all') {
+          this.updateFilters({ species: species[0].id });
         }
 
         // set analytics type to 'species' if 'all' years and 'altitude' is selected. Altitude is not allowed for all years.
@@ -80,8 +97,6 @@ export class StatisticsFilterService {
           this.updateFilters({ analyticsType: 'species' });
         }
       })
-      // todo check if this is still needed - changes should already be triggered on updateFilters
-      //tap(() => this.drawingService.triggerRedraw())
     );
   }
 
@@ -107,6 +122,16 @@ export class StatisticsFilterService {
       //tap(years => (this.availableYears = years)),
       // add all years if yearly graph is selected and convert years to string
       map(years => [...(filterGraph === 'yearly' ? [allYear] : []), ...years.map(String)])
+    );
+  }
+
+  getSelectableAnalyticsTypes() {
+    return this.filtersSubject.pipe(
+      map(filterValues =>
+        filterValues.year === allYear
+          ? selectableAnalyticsTypes.filter(v => v !== 'altitude')
+          : selectableAnalyticsTypes
+      )
     );
   }
 }
