@@ -14,7 +14,13 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { basemaps, MapType } from '@shared/models/basemaps.model';
 import { MapIndividual } from '@shared/models/individual.model';
 import { Species } from '@shared/models/masterdata.model';
-import { sourceFilterValues, SourceType } from '@shared/models/source-type.model';
+import {
+  allTranslatableFilterValue,
+  allValue,
+  sourceFilterValues,
+  SourceType,
+  TranslatableFilterType
+} from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
 import { TypeGuard, TypeGuardPipe } from '@shared/utils/type-guard.pipe';
@@ -26,8 +32,6 @@ import { IndividualWithMarkerOpt, MapService } from './map.service';
 import { SensorsBadgeComponent } from './sensors-badge.component';
 
 type InfoWindowData = IndividualInfoWindowData | StationInfoWindowData;
-
-const allSpecies = { id: 'ALL', de: 'Alle' } as Species;
 
 @Component({
   templateUrl: './map.page.html',
@@ -88,7 +92,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     species: FormControl<string>;
   }>;
   yearFilterValues$: Observable<number[]>;
-  speciesFilterValues$: Observable<Species[]>;
+  speciesFilterValues$: Observable<TranslatableFilterType[]>;
   readonly datasourceFilterValues = sourceFilterValues;
 
   // type guards to enable strict type checking in HTML on infoWindowData$
@@ -133,7 +137,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       startWith(''),
       switchMap(() => this.getSelectableSpecies(this.filter.controls.datasource.value)),
       map(species => this.masterdataService.sortTranslatedMasterData(species)),
-      map(species => [allSpecies].concat(species))
+      map(species => [allTranslatableFilterValue].concat(species))
     );
 
     // load map values once per year and filter on the result
@@ -197,7 +201,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       this.filter = new FormGroup({
         year: selectedYear,
         datasource: new FormControl<allType | SourceType>(sourceFilterValues[0]),
-        species: new FormControl<string>(allSpecies.id)
+        species: new FormControl<string>(allValue)
       });
       this.masterdataService.phenoYear$.pipe(first()).subscribe(year => selectedYear.patchValue(year));
       this.mapService.mapFilterState = this.filter;
@@ -211,24 +215,24 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     datasource: allType | SourceType,
     species: string
   ): MapIndividual[] {
-    individuals = datasource !== 'all' ? this.mapService.filterByDatasource(individuals, datasource) : individuals;
-    individuals = species !== allSpecies.id ? this.mapService.filterBySpecies(individuals, species) : individuals;
+    individuals = datasource !== allValue ? this.mapService.filterByDatasource(individuals, datasource) : individuals;
+    individuals = species !== allValue ? this.mapService.filterBySpecies(individuals, species) : individuals;
     return individuals;
   }
 
   private getSelectableSpecies(datasource: allType | SourceType): Observable<Species[]> {
     return this.masterdataService.getSpecies().pipe(
       map(species => {
-        if (datasource == 'all') {
+        if (datasource == allValue) {
           return species;
         } else {
           // set all species if current species filter if invalid
           if (
-            this.filter.controls.species.value != allSpecies.id &&
+            this.filter.controls.species.value != allValue &&
             species.filter(s => s.id == this.filter.controls.species.value && s.sources.includes(datasource)).length ==
               0
           ) {
-            this.filter.controls.species.setValue(allSpecies.id);
+            this.filter.controls.species.setValue(allValue);
           }
           return species.filter(s => s.sources.includes(datasource));
         }

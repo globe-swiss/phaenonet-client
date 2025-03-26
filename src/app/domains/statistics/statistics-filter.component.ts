@@ -9,11 +9,16 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
-import { Phenophase, Species } from '@shared/models/masterdata.model';
-import { allType, sourceFilterValues, SourceType } from '@shared/models/source-type.model';
+import {
+  allType,
+  allValue,
+  sourceFilterValues,
+  SourceType,
+  TranslatableFilterType
+} from '@shared/models/source-type.model';
 import { Observable, of, Subscription } from 'rxjs';
-import { AltitudeGroup, AnalyticsType, selectableAltitudeGroup, selectableAnalyticsTypes } from './common.model';
-import { FilterGraphType } from './statistic-filter.model';
+import { AltitudeGroup, AnalyticsType } from './common.model';
+import { altitudeGroupValues, FilterGraphType } from './statistics-filter.model';
 
 @Component({
   selector: 'app-statistics-filter',
@@ -54,8 +59,8 @@ export class StatisticFilterComponent implements OnInit {
   selectableYears$: Observable<string[]>;
   selectableSources$: Observable<(allType | SourceType)[]>;
   selectableAnalyticsTypes$: Observable<AnalyticsType[]>;
-  selectableSpecies$: Observable<Species[]>;
-  selectablePhenophases$: Observable<Phenophase[]>;
+  selectableSpecies$: Observable<TranslatableFilterType[]>;
+  selectablePhenophases$: Observable<TranslatableFilterType[]>;
   selectableAltitudeGroups$: Observable<(allType | AltitudeGroup)[]>;
 
   constructor(
@@ -113,6 +118,6 @@ export class StatisticFilterComponent implements OnInit {
     this.selectableAnalyticsTypes$ = this.statisticsFilterService.getSelectableAnalyticsTypes();
     this.selectableSpecies$ = this.statisticsFilterService.getSelectableSpecies();
     this.selectablePhenophases$ = this.statisticsFilterService.getSelectablePhenophases();
-    this.selectableAltitudeGroups$ = of(selectableAltitudeGroup);
+    this.selectableAltitudeGroups$ = of([allValue, ...altitudeGroupValues]);
   }
 }

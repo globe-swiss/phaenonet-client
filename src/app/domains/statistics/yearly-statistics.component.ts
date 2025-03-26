@@ -9,9 +9,10 @@ import { Subject, Subscription } from 'rxjs';
 import { debounceTime, first, map, switchMap } from 'rxjs/operators';
 import { Analytics, AnalyticsValue } from './analytics.model';
 import { AnalyticsService } from './analytics.service';
-import { allYear, AltitudeGroup } from './common.model';
+import { AltitudeGroup } from './common.model';
 import { dateToDOY, drawXAxis } from './draw';
 import { StatisticsFilterService } from './statistics-filter.service';
+import { allValue } from '@shared/models/source-type.model';
 
 @Component({
   selector: 'app-yearly-statistics',
@@ -55,7 +56,7 @@ export class YearlyStatisticsComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe(({ year, data }) => {
-        this.year = year === allYear ? null : +year;
+        this.year = year === allValue ? null : +year;
         this.data = data;
         this._redraw$.next();
       });

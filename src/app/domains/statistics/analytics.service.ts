@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Firestore, where } from '@angular/fire/firestore';
-import { FormControl, FormGroup } from '@angular/forms';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { Phenophase } from '@shared/models/masterdata.model';
-import { allType, SourceType } from '@shared/models/source-type.model';
+import { allType, allValue, SourceType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Analytics } from './analytics.model';
@@ -12,16 +11,6 @@ import { AltitudeGroup, AnalyticsType } from './common.model';
 
 @Injectable({ providedIn: 'root' })
 export class AnalyticsService extends BaseResourceService<Analytics> {
-  // requires to be provided in root to save awhen leaving the component
-  public statisticFilterState: FormGroup<{
-    year: FormControl<string>;
-    datasource: FormControl<allType | SourceType>;
-    analyticsType: FormControl<AnalyticsType>;
-    species: FormControl<string>;
-    phenophase: FormControl<string>;
-    altitude: FormControl<allType | AltitudeGroup>;
-  }>;
-
   constructor(
     protected afs: Firestore,
     protected fds: FirestoreDebugService
@@ -36,10 +25,10 @@ export class AnalyticsService extends BaseResourceService<Analytics> {
     species: string
   ): Observable<Analytics[]> {
     const queryConstraints = [where('type', '==', analyticsType), where('source', '==', source)];
-    if (species !== 'all') {
+    if (species !== allValue) {
       queryConstraints.push(where('species', '==', species));
     }
-    if (year !== 'all') {
+    if (year !== allValue) {
       queryConstraints.push(where('year', '==', parseInt(year, 10)));
     }
 
@@ -72,13 +61,13 @@ export class AnalyticsService extends BaseResourceService<Analytics> {
     species: string
   ): Observable<Analytics[]> {
     const queryConstraints = [where('year', '==', parseInt(year, 10))];
-    if (species !== 'all') {
+    if (species !== allValue) {
       queryConstraints.push(where('species', '==', species));
     }
-    if (phenophase.id !== 'all') {
+    if (phenophase.id !== allValue) {
       queryConstraints.push(where('phenophase', '==', phenophase));
     }
-    if (altitude !== 'all') {
+    if (altitude !== allValue) {
       queryConstraints.push(where('altitude_grp', '==', altitude));
     }
 

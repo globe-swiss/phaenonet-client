@@ -10,7 +10,7 @@
         </div>
       </mat-form-field>
       <ng-container [ngSwitch]="filter.controls.graph.value">
-        <!-- duplicate code, how to eliminate?-->
+        <!-- todo fixme duplicate code, how to eliminate?-->
         <ng-container *ngSwitchCase="'yearly'">
           <mat-form-field>
             <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
@@ -56,8 +56,7 @@
               }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field *ngIf="filter.controls.species.value !== 'all'">
-            <!-- && selectablePhenophases.length !== 0-->
+          <mat-form-field>
             <mat-label>{{ 'Phaenophase' | translate }}</mat-label>
             <mat-select formControlName="phenophase" data-test-id="select-phenophase">
               <mat-option *ngFor="let phenophase of selectablePhenophases$ | async" [value]="phenophase.id">{{
@@ -78,7 +77,6 @@
       <mat-form-field>
         <mat-label>{{ 'Grafik' | translate }}</mat-label>
         <mat-select formControlName="graph" panelClass="align-select-box-right" data-test-id="select-graphtype">
-          <!-- changed to form control -->
           <mat-option value="yearly">{{ 'Jahresvergleich' | translate }}</mat-option>
           <mat-option value="weekly">{{ 'Wochenvergleich' | translate }}</mat-option>
         </mat-select>
