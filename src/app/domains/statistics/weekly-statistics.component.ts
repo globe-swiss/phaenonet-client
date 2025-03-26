@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ObsWoy, Statistics } from '@app/domains/statistics/statistics.model';
+import { ObsDoy, ObsWoy, Statistics } from '@app/domains/statistics/statistics.model';
 import { max } from 'd3-array';
 import { axisLeft } from 'd3-axis';
 import { scaleLinear } from 'd3-scale';
@@ -30,9 +30,9 @@ export class WeeklyStatisticsComponent implements OnInit, OnDestroy {
   subscriptions = new Subscription();
   svgComponentHeight = 0; // height used to scale the svg component
 
-  private obsWoyCurrentYear: ObsWoy[] = [];
-  private obsWoy5Years: ObsWoy[] = [];
-  private obsWoy30Years: ObsWoy[] = [];
+  private obsWoyCurrentYear: ObsDoy[] = [];
+  private obsWoy5Years: ObsDoy[] = [];
+  private obsWoy30Years: ObsDoy[] = [];
 
   constructor(
     private statisticsService: StatisticsService,
@@ -87,6 +87,8 @@ export class WeeklyStatisticsComponent implements OnInit, OnDestroy {
     const xScale = scaleLinear().domain([-30, 365]).range([30, width]);
 
     const yScale = scaleLinear().range([height - margin.bottom, 0 + margin.top]);
+
+    // set y-axis domain dynamically or to 5 if no data is available
     const dom = max([...this.obsWoy5Years, ...this.obsWoy30Years, ...this.obsWoyCurrentYear], d => d.count);
     if (dom === 0) {
       yScale.domain([0, 5]);
@@ -137,9 +139,9 @@ export class WeeklyStatisticsComponent implements OnInit, OnDestroy {
       .attr('alignment-baseline', 'middle');
 
     // Create the area generator
-    const chartArea = area<ObsWoy>()
+    const chartArea = area<ObsDoy>()
       .curve(curveMonotoneX)
-      .x(d => xScale(this.woy2doy(d.week)))
+      .x(d => xScale(d.doy))
       .y0(height - margin.bottom)
       .y1(d => yScale(d.count));
 
@@ -161,7 +163,6 @@ export class WeeklyStatisticsComponent implements OnInit, OnDestroy {
       .attr('opacity', '0.5')
       .attr('d', chartArea);
 
-    const self = this;
     svg
       .selectAll('.bar')
       .data(this.obsWoyCurrentYear)
@@ -169,7 +170,7 @@ export class WeeklyStatisticsComponent implements OnInit, OnDestroy {
       .append('rect')
       .attr('class', 'bar')
       .attr('x', function (d) {
-        return xScale(self.woy2doy(d.week));
+        return xScale(d.doy);
       })
       .attr('y', function (d) {
         return yScale(d.count);
@@ -191,37 +192,32 @@ export class WeeklyStatisticsComponent implements OnInit, OnDestroy {
       .flatMap(r => r.obs_woy);
     const aggregated: Record<number, number> = {};
 
-    for (const record of aggregationObservations) {
-      for (const weekStr in record) {
+    aggregationObservations.forEach(record => {
+      Object.entries(record).forEach(([weekStr, count]) => {
         const week = Number(weekStr);
-        const count = record[week];
+        aggregated[week] = (aggregated[week] || 0) + count;
+      });
+    });
 
-        if (!aggregated[week]) {
-          aggregated[week] = 0;
-        }
-
-        aggregated[week] += count;
-      }
-    }
     const ret = Object.entries(aggregated).map(([week, count]) => ({
       week: Number(week),
-      count: count / period // tocheck: round results? -> Math.round(count / period)
+      count: count / period
     }));
     return this.ensureAllWeeks(ret); // todo: not needed as time chart
   }
 
-  private ensureAllWeeks(array: ObsWoy[]): ObsWoy[] {
-    const allWeeks: ObsWoy[] = [];
+  private ensureAllWeeks(array: ObsWoy[]): ObsDoy[] {
+    const allDoys: ObsDoy[] = [];
 
     for (let week = -3; week <= 53; week++) {
       const existing = array.find(item => item.week === week);
       if (existing) {
-        allWeeks.push(existing);
+        allDoys.push({ doy: this.woy2doy(week), count: existing.count });
       } else {
-        allWeeks.push({ week, count: 0 });
+        allDoys.push({ doy: this.woy2doy(week), count: 0 });
       }
     }
-    return allWeeks;
+    return allDoys;
   }
 
   private initializeArray(start: number, end: number, step: number): number[] {

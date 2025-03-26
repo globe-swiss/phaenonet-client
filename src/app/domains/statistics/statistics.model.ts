@@ -1,3 +1,8 @@
+export interface ObsDoy {
+  doy: number;
+  count: number;
+}
+
 export interface ObsWoy {
   week: number;
   count: number;
