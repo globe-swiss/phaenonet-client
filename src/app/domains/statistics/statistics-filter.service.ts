@@ -1,6 +1,16 @@
 import { Injectable } from '@angular/core';
 import { MasterdataService } from '@shared/services/masterdata.service';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, first, map, startWith, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  first,
+  map,
+  startWith,
+  switchMap,
+  tap
+} from 'rxjs';
 import {
   allowedPhenophases,
   allPhenophases,
@@ -15,7 +25,6 @@ import { DEFAULT_FILTERS, StatisticFilters } from './statistic-filter.model';
   providedIn: 'root'
 })
 export class StatisticsFilterService {
-  // fixme/todo refactor to use Singnal
   private filtersSubject = new BehaviorSubject<StatisticFilters>(DEFAULT_FILTERS);
   currentFilters$ = this.filtersSubject.asObservable().pipe(
     debounceTime(100),
@@ -30,6 +39,10 @@ export class StatisticsFilterService {
     this.masterdataService.phenoYear$.pipe(first()).subscribe(year => this.updateFilters({ year: String(year) }));
   }
 
+  /**
+   * Updates filters in the service.
+   * @param update
+   */
   public updateFilters(update: Partial<StatisticFilters>): void {
     console.log('update filter service values', update);
     this.filtersSubject.next({
@@ -38,63 +51,33 @@ export class StatisticsFilterService {
     });
   }
 
-  // forceRedraw(): void {
-  //   this.filtersSubject.next(this.filtersSubject.getValue());
-  // }
-
   /**
    * Return observable selectable species based on the selected filters.
-   * All adjustments to invalid filter combinations need to be done here.
-   * TODO split logic in get species and adjust filters
    */
   getSelectableSpecies() {
     return this.filtersSubject.pipe(
-      startWith(''),
-      switchMap(() => this.masterdataService.getSpecies()), // get all species from masterdata
-      map(species => species.filter(s => !forbiddenSpecies.has(s.id))), // filter out forbidden species
+      // get all species from masterdata
+      switchMap(() => this.masterdataService.getSpecies()),
+      // filter out forbidden species
+      map(species => species.filter(s => !forbiddenSpecies.has(s.id))),
+      // filter species by datasource
       map(species => {
-        // filter species by datasource
         const filterDatasource = this.filtersSubject.getValue().datasource;
-        const filterSpecies = this.filtersSubject.getValue().species;
-        if (filterDatasource == 'all') {
-          return species;
-        } else {
-          // set all species if current species filter if invalid
-          if (
-            filterSpecies != allSpecies.id &&
-            species.filter(s => s.id == filterSpecies && s.sources.includes(filterDatasource)).length == 0
-          ) {
-            this.updateFilters({ species: allSpecies.id });
-          }
-          // return species that are available for the selected datasource
-          return species.filter(s => s.sources.includes(filterDatasource));
-        }
+        return filterDatasource === 'all' ? species : species.filter(s => s.sources.includes(filterDatasource));
       }),
-      map(species => this.masterdataService.sortTranslatedMasterData(species)), // sort by translation
+      // sort by translation
+      map(species => this.masterdataService.sortTranslatedMasterData(species)),
+      // add all species to the selection when needed
       map(species => {
-        const filterAnalyticsType = this.filtersSubject.getValue().analyticsType;
-        const filterYear = this.filtersSubject.getValue().year;
-        const filterGraph = this.filtersSubject.getValue().graph;
-        if (filterAnalyticsType !== 'altitude' && filterYear !== allYear && filterGraph !== 'weekly') {
-          return [allSpecies].concat(species);
-        } else {
-          return species;
-        }
-      }), // add all species to selection
-      // set to valid species if analytics type is 'altitude' and 'all' species is selected
+        const { analyticsType, year, graph } = this.filtersSubject.getValue();
+        return analyticsType !== 'altitude' && year !== allYear && graph !== 'weekly'
+          ? [allSpecies, ...species]
+          : species;
+      }),
+      // set species to first valid species current selection is not selectable
       tap(species => {
-        const filterAnalyticsType = this.filtersSubject.getValue().analyticsType;
-        const filterSpecies = this.filtersSubject.getValue().species;
-        const filterYear = this.filtersSubject.getValue().year;
-        // set species to first valid species if 'all' species is selected with incompatible other filters
-        // do not allow all on weekly graph -- fixme check removing the values from selection
-        if (species[0].id !== 'all' && filterSpecies === 'all') {
+        if (!species.some(s => s.id === this.filtersSubject.getValue().species)) {
           this.updateFilters({ species: species[0].id });
-        }
-
-        // set analytics type to 'species' if 'all' years and 'altitude' is selected. Altitude is not allowed for all years.
-        if (filterYear === allYear && filterAnalyticsType === 'altitude') {
-          this.updateFilters({ analyticsType: 'species' });
         }
       })
     );
@@ -105,23 +88,32 @@ export class StatisticsFilterService {
    */
   getSelectablePhenophases() {
     return this.filtersSubject.pipe(
-      // todo check logic change. this is now triggered on every change! not only on species changes
-      switchMap(filterValues => this.masterdataService.getPhenophases(filterValues.species)),
-      map(phenophases => phenophases.filter(p => allowedPhenophases.has(p.id))), // remove invalid phenophases
-      map(phenophases => [allPhenophases].concat(phenophases)) // add all phenophases to selection
+      map(filterValues => filterValues.species),
+      // only update if species changes
+      distinctUntilChanged(),
+      // get phenophases for selected species
+      switchMap(species => this.masterdataService.getPhenophases(species)),
+      // remove invalid phenophases
+      map(phenophases => phenophases.filter(p => allowedPhenophases.has(p.id))),
+      // add all phenophases to selection
+      map(phenophases => [allPhenophases].concat(phenophases)),
+      tap(phenophases => {
+        // set phenophase to first valid phenophase if current selection is not selectable
+        if (!phenophases.some(p => p.id === this.filtersSubject.getValue().phenophase)) {
+          this.updateFilters({ phenophase: phenophases[0].id });
+        }
+      })
     );
   }
 
   /**
-   *
    * returns observable selectable years based on masterdata and the selected graph type.
    */
   getSelectableYears() {
-    const filterGraph = this.filtersSubject.getValue().graph;
-    return this.masterdataService.availableYears$.pipe(
-      //tap(years => (this.availableYears = years)),
+    return combineLatest([this.filtersSubject, this.masterdataService.availableYears$]).pipe(
       // add all years if yearly graph is selected and convert years to string
-      map(years => [...(filterGraph === 'yearly' ? [allYear] : []), ...years.map(String)])
+      map(([filters, years]) => [...(filters.graph === 'yearly' ? [allYear] : []), ...years.map(String)]),
+      tap(years => this.updateInvalidFilter('year', years))
     );
   }
 
@@ -131,7 +123,19 @@ export class StatisticsFilterService {
         filterValues.year === allYear
           ? selectableAnalyticsTypes.filter(v => v !== 'altitude')
           : selectableAnalyticsTypes
-      )
+      ),
+      tap(analyticsTypes => this.updateInvalidFilter('analyticsType', analyticsTypes))
     );
+  }
+
+  /**
+   * Update invalid filter values to the first valid value.
+   * @param filter current filter value
+   * @param validValues valid values for the filter
+   */
+  private updateInvalidFilter(filter: keyof StatisticFilters, validValues: string[]): void {
+    if (!validValues.includes(this.filtersSubject.getValue()[filter])) {
+      this.updateFilters({ [filter]: validValues[0] });
+    }
   }
 }
