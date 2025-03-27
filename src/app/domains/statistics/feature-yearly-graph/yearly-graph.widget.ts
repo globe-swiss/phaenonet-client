@@ -61,7 +61,7 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
       });
 
     //redraw chart when triggered
-    const redrawSubscription = this._redraw$.pipe(debounceTime(100)).subscribe(() => this.drawChart());
+    const redrawSubscription = this._redraw$.pipe(debounceTime(10)).subscribe(() => this.drawChart());
 
     this.subscriptions.add(filterSubscription);
     this.subscriptions.add(redrawSubscription);
@@ -72,7 +72,6 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
   }
 
   private drawChart() {
-    console.log('draw!');
     const svg = select<SVGGraphicsElement, unknown>('#statistics-graph');
 
     const boundingBox = svg.node()?.getBoundingClientRect();

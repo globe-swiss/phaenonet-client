@@ -33,7 +33,6 @@ export class StatisticsFilterService {
    * @param update
    */
   public updateFilters(update: Partial<StatisticFilters>): void {
-    console.log('update filter service values', update);
     this.filtersSubject.next({
       ...this.filtersSubject.getValue(),
       ...update

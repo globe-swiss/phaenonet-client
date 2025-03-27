@@ -89,8 +89,6 @@ export class StatisticFilterComponent implements OnInit {
     // bind filter values to form
     this.subscriptions.add(
       this.statisticsFilterService.currentFilters$.subscribe(cf => {
-        console.log('update filter values', cf);
-
         this.filter.setValue({
           year: cf.year,
           datasource: cf.datasource,

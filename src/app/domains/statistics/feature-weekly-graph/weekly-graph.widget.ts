@@ -13,7 +13,6 @@ import { StatisticsService } from './statistics.service';
 @Component({
   selector: 'app-weekly-graph',
   templateUrl: './weekly-graph.widget.html',
-  styleUrls: ['./weekly-graph.widget.scss'],
   standalone: true
 })
 export class WeeklyGraphComponent implements OnInit, OnDestroy {
@@ -23,7 +22,6 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
   private _redraw$ = new Subject<void>();
   @Input()
   set triggerRedraw(value: unknown) {
-    console.log('redraw received', value);
     this._redraw$.next();
   }
 
@@ -54,7 +52,7 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
       });
 
     //redraw chart when triggered
-    const redrawSubscription = this._redraw$.pipe(debounceTime(100)).subscribe(() => this.drawChart());
+    const redrawSubscription = this._redraw$.pipe(debounceTime(10)).subscribe(() => this.drawChart());
 
     this.subscriptions.add(filterSubscription);
     this.subscriptions.add(redrawSubscription);
@@ -65,7 +63,6 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
   }
 
   private drawChart() {
-    console.log('draw!');
     const svg = select<SVGGraphicsElement, unknown>('#statistics-graph');
 
     svg.selectAll('*').remove();

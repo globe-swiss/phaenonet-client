@@ -81,12 +81,6 @@ export const appConfig: ApplicationConfig = {
       deps: [GoogleMapsLoaderService],
       multi: true
     },
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: app,
-    //   deps: [GoogleMapsLoaderService],
-    //   multi: true
-    // },
     provideRouter(routes),
     importProvidersFrom(
       BrowserModule,
