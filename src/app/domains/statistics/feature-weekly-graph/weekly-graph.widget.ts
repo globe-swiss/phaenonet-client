@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ObsDoy, ObsWoy, Statistics } from '@app/domains/statistics/shared/statistics.model';
+import { ObsDoy, ObsWoy, Statistics } from '@app/domains/statistics/feature-weekly-graph/statistics.model';
 import { max } from 'd3-array';
 import { axisLeft } from 'd3-axis';
 import { scaleLinear } from 'd3-scale';
@@ -8,7 +8,7 @@ import { area, curveMonotoneX } from 'd3-shape';
 import { debounceTime, Subject, Subscription, switchMap } from 'rxjs';
 import { drawXAxis } from '../shared/graph-helper';
 import { StatisticsFilterService } from '../shared/statistics-filter.service';
-import { StatisticsService } from '../shared/statistics.service';
+import { StatisticsService } from './statistics.service';
 
 @Component({
   selector: 'app-weekly-graph',
@@ -193,7 +193,7 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
     const aggregated: Record<number, number> = {};
 
     aggregationObservations.forEach(record => {
-      Object.entries(record).forEach(([weekStr, count]) => {
+      Object.entries(record).forEach(([weekStr, count]: [string, number]) => {
         const week = Number(weekStr);
         aggregated[week] = (aggregated[week] || 0) + count;
       });

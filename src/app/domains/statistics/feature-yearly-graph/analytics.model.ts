@@ -1,5 +1,5 @@
 import { Observation } from '@shared/models/observation.model';
-import { AltitudeGroup, AnalyticsType } from './common.model';
+import { AltitudeGroup, AnalyticsType } from '../shared/common.model';
 
 export class AnalyticsValue {
   phenophase: string;

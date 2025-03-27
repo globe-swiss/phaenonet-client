@@ -8,11 +8,11 @@ import { ScaleBand, scaleBand, scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, first, map, switchMap } from 'rxjs/operators';
-import { Analytics, AnalyticsValue } from '../shared/analytics.model';
-import { AnalyticsService } from '../shared/analytics.service';
 import { AltitudeGroup } from '../shared/common.model';
 import { dateToDOY, drawXAxis } from '../shared/graph-helper';
 import { StatisticsFilterService } from '../shared/statistics-filter.service';
+import { Analytics, AnalyticsValue } from './analytics.model';
+import { AnalyticsService } from './analytics.service';
 
 @Component({
   selector: 'app-yearly-graph',
