@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { allValue } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { formatShortDate } from '@shared/utils/formatDate';
 import { axisLeft } from 'd3-axis';
@@ -7,26 +8,24 @@ import { ScaleBand, scaleBand, scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, first, map, switchMap } from 'rxjs/operators';
-import { Analytics, AnalyticsValue } from './analytics.model';
-import { AnalyticsService } from './analytics.service';
-import { AltitudeGroup } from './common.model';
-import { dateToDOY, drawXAxis } from './draw';
-import { StatisticsFilterService } from './statistics-filter.service';
-import { allValue } from '@shared/models/source-type.model';
+import { Analytics, AnalyticsValue } from '../shared/analytics.model';
+import { AnalyticsService } from '../shared/analytics.service';
+import { AltitudeGroup } from '../shared/common.model';
+import { dateToDOY, drawXAxis } from '../shared/graph-helper';
+import { StatisticsFilterService } from '../shared/statistics-filter.service';
 
 @Component({
-  selector: 'app-yearly-statistics',
-  templateUrl: './yearly-statistics.component.html',
-  styleUrls: ['./yearly-statistics.component.css'],
+  selector: 'app-yearly-graph',
+  templateUrl: './yearly-graph.widget.html',
+  styleUrls: ['./yearly-graph.widget.scss'],
   standalone: true
 })
-export class YearlyStatisticsComponent implements OnInit, OnDestroy {
+export class YearlyGraphComponent implements OnInit, OnDestroy {
   @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef<HTMLDivElement>;
 
   private _redraw$ = new Subject<void>();
   @Input()
   set triggerRedraw(value: unknown) {
-    console.log('redraw received', value);
     this._redraw$.next();
   }
 

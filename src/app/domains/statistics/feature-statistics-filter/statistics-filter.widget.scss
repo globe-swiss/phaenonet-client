@@ -1,0 +1,70 @@
+@import 'src/theming/mixins';
+
+.statistics-filter {
+  form {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+
+    ::ng-deep .mdc-line-ripple {
+      display: none;
+    }
+
+    mat-form-field {
+      margin: 1rem;
+    }
+
+    mat-form-field.short-width {
+      max-width: 6rem;
+    }
+
+    mat-form-field:last-child {
+      margin-left: auto;
+    }
+  }
+
+  @include for-tablet-and-smaller {
+    .mat-mdc-form-field {
+      width: 6rem;
+      margin-bottom: 0 !important;
+    }
+
+    mat-form-field {
+      margin: 1rem;
+
+      .short-width {
+        width: 6rem;
+      }
+    }
+
+    // adjust select text sizes for phone
+    ::ng-deep .mat-mdc-select-value-text,
+    ::ng-deep .mat-mdc-option,
+    ::ng-deep .mdc-text-field--filled .mdc-floating-label {
+      font-size: var(--t2-font-size);
+    }
+  }
+
+  @include for-phone {
+    .mat-mdc-form-field {
+      width: 3.5rem;
+      margin: 0.5rem !important;
+      margin-bottom: 0 !important;
+    }
+
+    // adjust select text sizes for phone
+    ::ng-deep .mat-mdc-select-value-text,
+    ::ng-deep .mat-mdc-option,
+    ::ng-deep .mdc-text-field--filled .mdc-floating-label {
+      font-size: var(--t4-font-size);
+    }
+  }
+}
+
+// Align select box to the right to prevent overflow
+::ng-deep .align-select-box-right.mat-mdc-select-panel {
+  right: 0 !important;
+  left: auto !important;
+  transform-origin: right top !important;
+  position: absolute;
+}

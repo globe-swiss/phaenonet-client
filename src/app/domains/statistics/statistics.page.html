@@ -2,9 +2,9 @@
   <div class="statistics__chart-view">
     <app-statistics-filter></app-statistics-filter>
     @if ((currentGraph$ | async) === 'yearly') {
-      <app-yearly-statistics [triggerRedraw]="redraw$ | async"></app-yearly-statistics>
+      <app-yearly-graph [triggerRedraw]="redraw$ | async"></app-yearly-graph>
     } @else {
-      <app-weekly-statistics [triggerRedraw]="redraw$ | async"></app-weekly-statistics>
+      <app-weekly-graph [triggerRedraw]="redraw$ | async"></app-weekly-graph>
     }
   </div>
 </div>

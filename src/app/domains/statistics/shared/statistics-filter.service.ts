@@ -8,7 +8,7 @@ import {
   DEFAULT_FILTERS,
   forbiddenSpecies,
   StatisticFilters
-} from './statistics-filter.model';
+} from '../feature-statistics-filter/statistics-filter.model';
 
 @Injectable({
   providedIn: 'root'

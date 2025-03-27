@@ -10,12 +10,11 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, map, Observable, Subscription } from 'rxjs';
-import { Analytics } from './analytics.model';
-import { StatisticFilterComponent } from './statistics-filter.component';
-import { FilterGraphType } from './statistics-filter.model';
-import { StatisticsFilterService } from './statistics-filter.service';
-import { WeeklyStatisticsComponent } from './weekly-statistics.component';
-import { YearlyStatisticsComponent } from './yearly-statistics.component';
+import { FilterGraphType } from './feature-statistics-filter/statistics-filter.model';
+import { StatisticFilterComponent } from './feature-statistics-filter/statistics-filter.widget';
+import { WeeklyGraphComponent } from './feature-weekly-graph/weekly-graph.widget';
+import { YearlyGraphComponent } from './feature-yearly-graph/yearly-graph.widget';
+import { StatisticsFilterService } from './shared/statistics-filter.service';
 @Component({
   encapsulation: ViewEncapsulation.None,
   templateUrl: './statistics.page.html',
@@ -38,8 +37,8 @@ import { YearlyStatisticsComponent } from './yearly-statistics.component';
     NgSwitch,
     NgSwitchCase,
     StatisticFilterComponent,
-    YearlyStatisticsComponent,
-    WeeklyStatisticsComponent
+    YearlyGraphComponent,
+    WeeklyGraphComponent
   ]
 })
 export class StatisticsComponent implements OnInit, OnDestroy {
@@ -60,28 +59,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     this.redraw$.next(this.redraw$.value + 1);
   }
 
-  isAnalytics(obj: any): obj is Analytics {
-    return (
-      typeof obj === 'object' &&
-      obj !== null &&
-      'source' in obj &&
-      'species' in obj &&
-      'type' in obj &&
-      'altitude_grp' in obj &&
-      'year' in obj &&
-      'values' in obj
-    );
-  }
-
-  isArrayOfAnalytics(obj: any): boolean {
-    if (Array.isArray(obj)) {
-      return obj.every(item => this.isAnalytics(item));
-    } else return false;
-  }
-
   ngOnInit(): void {
     this.titleService.setLocation('Auswertungen');
-
     this.currentGraph$ = this.statisticsFilterService.currentFilters$.pipe(map(({ graph }) => graph));
   }
 

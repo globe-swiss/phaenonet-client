@@ -1,5 +1,5 @@
 import { SourceType, allType, allValue, sourceFilterValues } from '@shared/models/source-type.model';
-import { AltitudeGroup, AnalyticsType } from './common.model';
+import { AltitudeGroup, AnalyticsType } from '../shared/common.model';
 
 export type FilterGraphType = 'weekly' | 'yearly';
 

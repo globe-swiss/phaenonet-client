@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { StatisticsFilterService } from './statistics-filter.service';
+import { StatisticsFilterService } from '../shared/statistics-filter.service';
 
-import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
+import { AsyncPipe, NgFor } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -17,13 +17,14 @@ import {
   TranslatableFilterType
 } from '@shared/models/source-type.model';
 import { Observable, of, Subscription } from 'rxjs';
-import { AltitudeGroup, AnalyticsType } from './common.model';
+import { AltitudeGroup, AnalyticsType } from '../shared/common.model';
 import { altitudeGroupValues, FilterGraphType } from './statistics-filter.model';
+import { MatIconButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-statistics-filter',
-  templateUrl: './statistics-filter.component.html',
-  //styleUrls: ['./statistics-filter.component.css'],
+  templateUrl: './statistics-filter.widget.html',
+  styleUrls: ['./statistics-filter.widget.scss'],
   standalone: true,
   imports: [
     FormsModule,
@@ -34,10 +35,8 @@ import { altitudeGroupValues, FilterGraphType } from './statistics-filter.model'
     MatLabel,
     MatFormField,
     MatIcon,
+    MatIconButton,
     MatTooltip,
-    NgSwitch,
-    NgSwitchCase,
-    NgIf,
     NgFor,
     AsyncPipe
   ]
@@ -80,8 +79,6 @@ export class StatisticFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    // fixme todo check if needed
-    // move: takeuntildestroyed?
     // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
     this.subscriptions.add(
       this.translateService.get('Alle').subscribe(() => {

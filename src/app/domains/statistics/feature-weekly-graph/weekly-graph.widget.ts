@@ -1,22 +1,22 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ObsDoy, ObsWoy, Statistics } from '@app/domains/statistics/statistics.model';
+import { ObsDoy, ObsWoy, Statistics } from '@app/domains/statistics/shared/statistics.model';
 import { max } from 'd3-array';
 import { axisLeft } from 'd3-axis';
 import { scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
 import { area, curveMonotoneX } from 'd3-shape';
 import { debounceTime, Subject, Subscription, switchMap } from 'rxjs';
-import { drawXAxis } from './draw';
-import { StatisticsFilterService } from './statistics-filter.service';
-import { StatisticsService } from './statistics.service';
+import { drawXAxis } from '../shared/graph-helper';
+import { StatisticsFilterService } from '../shared/statistics-filter.service';
+import { StatisticsService } from '../shared/statistics.service';
 
 @Component({
-  selector: 'app-weekly-statistics',
-  templateUrl: './weekly-statistics.component.html',
-  styleUrls: ['./weekly-statistics.component.css'],
+  selector: 'app-weekly-graph',
+  templateUrl: './weekly-graph.widget.html',
+  styleUrls: ['./weekly-graph.widget.scss'],
   standalone: true
 })
-export class WeeklyStatisticsComponent implements OnInit, OnDestroy {
+export class WeeklyGraphComponent implements OnInit, OnDestroy {
   @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef<HTMLDivElement>;
   private readonly legendFontSize = getComputedStyle(document.documentElement).getPropertyValue('--legend-font-size');
 
