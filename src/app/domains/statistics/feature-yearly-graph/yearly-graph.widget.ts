@@ -8,8 +8,8 @@ import { ScaleBand, scaleBand, scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, first, map, switchMap } from 'rxjs/operators';
-import { AltitudeGroup } from '../shared/common.model';
 import { dateToDOY, drawXAxis } from '../shared/graph-helper';
+import { AltitudeGroup } from '../shared/statistics-common.model';
 import { StatisticsFilterService } from '../shared/statistics-filter.service';
 import { Analytics, AnalyticsValue } from './analytics.model';
 import { AnalyticsService } from './analytics.service';
@@ -29,12 +29,12 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
     this._redraw$.next();
   }
 
-  subscriptions = new Subscription();
+  private subscriptions = new Subscription();
   svgComponentHeight = 0; // height used to scale the svg component
 
-  data: Analytics[];
-  year: null | number; // null if all year
-  availableYears: number[] = [];
+  private data: Analytics[];
+  private year: null | number; // null if all year
+  private availableYears: number[] = [];
 
   constructor(
     private analyticsService: AnalyticsService,

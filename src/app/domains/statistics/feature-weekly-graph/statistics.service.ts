@@ -5,7 +5,7 @@ import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { allType, allValue } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { AltitudeGroup } from '../shared/common.model';
+import { AltitudeGroup } from '../shared/statistics-common.model';
 import { Statistics } from './statistics.model';
 
 @Injectable({ providedIn: 'root' })

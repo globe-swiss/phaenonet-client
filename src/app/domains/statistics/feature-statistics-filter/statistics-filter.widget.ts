@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { StatisticsFilterService } from '../shared/statistics-filter.service';
 
-import { AsyncPipe, NgFor } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
@@ -13,7 +13,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { LanguageService } from '@core/services/language.service';
 import { allType, allValue, SourceType, sourceValues, TranslatableFilterType } from '@shared/models/source-type.model';
 import { Observable, of, Subscription } from 'rxjs';
-import { AltitudeGroup, AnalyticsType } from '../shared/common.model';
+import { AltitudeGroup, AnalyticsType } from '../shared/statistics-common.model';
 import { altitudeGroupValues, FilterGraphType } from '../shared/statistics-filter.model';
 
 @Component({
@@ -32,7 +32,6 @@ import { altitudeGroupValues, FilterGraphType } from '../shared/statistics-filte
     MatIcon,
     MatIconButton,
     MatTooltip,
-    NgFor,
     AsyncPipe
   ]
 })

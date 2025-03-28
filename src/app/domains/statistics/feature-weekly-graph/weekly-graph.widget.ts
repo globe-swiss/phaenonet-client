@@ -25,7 +25,7 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
     this._redraw$.next();
   }
 
-  subscriptions = new Subscription();
+  private subscriptions = new Subscription();
   svgComponentHeight = 0; // height used to scale the svg component
 
   private obsWoyCurrentYear: ObsDoy[] = [];
@@ -215,14 +215,6 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
       }
     }
     return allDoys;
-  }
-
-  private initializeArray(start: number, end: number, step: number): number[] {
-    const result: number[] = [];
-    for (let i = start; i <= end; i += step) {
-      result.push(i);
-    }
-    return result;
   }
 
   private woy2doy(woy: number): number {

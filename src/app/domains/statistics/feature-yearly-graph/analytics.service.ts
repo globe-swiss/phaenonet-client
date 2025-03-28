@@ -6,7 +6,7 @@ import { Phenophase } from '@shared/models/masterdata.model';
 import { allType, allValue, SourceType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { AltitudeGroup, AnalyticsType } from '../shared/common.model';
+import { AltitudeGroup, AnalyticsType } from '../shared/statistics-common.model';
 import { Analytics } from './analytics.model';
 
 @Injectable({ providedIn: 'root' })

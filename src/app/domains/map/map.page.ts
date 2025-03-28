@@ -10,7 +10,7 @@ import { MatSelect } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
 import { LocalService } from '@core/services/local.service';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { basemaps, MapType } from '@shared/models/basemaps.model';
 import { MapIndividual } from '@shared/models/individual.model';
 import { Species } from '@shared/models/masterdata.model';
@@ -110,8 +110,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     private mapService: MapService,
     private masterdataService: MasterdataService,
     private localService: LocalService,
-    private mapInfoService: MapInfoService,
-    private translateService: TranslateService
+    private mapInfoService: MapInfoService
   ) {}
 
   ngOnInit(): void {
@@ -129,7 +128,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       startWith(''),
       switchMap(() => this.getSelectableSpecies(this.filter.controls.datasource.value)),
       map(species => this.masterdataService.sortTranslatedMasterData(species)),
-      map(species => [allTranslatableFilterValue].concat(species))
+      map(species => [allTranslatableFilterValue, ...species])
     );
 
     // load map values once per year and filter on the result
