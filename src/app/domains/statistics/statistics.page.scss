@@ -1,4 +1,3 @@
-/* stylelint-disable max-nesting-depth */
 @import 'src/theming/mixins';
 
 .statistics {
@@ -10,102 +9,8 @@
   margin-right: auto;
   width: auto;
 
-  display: flex;
-  flex-direction: row;
-  @include for-tablet-and-smaller {
-    --legend-font-size: var(--t1-font-size);
-  }
-
-  @include for-phone {
-    --legend-font-size: var(--t4-font-size);
-  }
-
-  &__statistics-filter {
-    form {
-      display: flex;
-      flex-direction: row;
-      align-items: baseline;
-
-      .mdc-line-ripple {
-        display: none;
-      }
-
-      mat-form-field {
-        margin: 1rem;
-      }
-
-      mat-form-field.short-width {
-        max-width: 6rem;
-      }
-
-      mat-form-field:last-child {
-        margin-left: auto;
-      }
-    }
-
-    @include for-tablet-and-smaller {
-      .mat-mdc-form-field {
-        width: 6rem;
-        margin-bottom: 0;
-      }
-
-      mat-form-field {
-        margin: 1rem;
-
-        .short-width {
-          width: 6rem;
-        }
-      }
-
-      // adjust select text sizes for phone
-      .mat-mdc-select-value-text,
-      .mat-mdc-option,
-      .mdc-text-field--filled .mdc-floating-label {
-        font-size: var(--t2-font-size);
-      }
-    }
-
-    @include for-phone {
-      .mat-mdc-form-field {
-        width: 3.5rem;
-        margin: 0.5rem;
-        margin-bottom: 0;
-      }
-
-      // adjust select text sizes for phone
-      .mat-mdc-select-value-text,
-      .mat-mdc-option,
-      .mdc-text-field--filled .mdc-floating-label {
-        font-size: var(--t4-font-size);
-      }
-    }
-  }
-
   &__chart-view {
     width: 100%;
     height: 100%;
   }
-
-  &__tooltip {
-    position: absolute;
-    width: auto;
-    height: auto;
-    padding: 10px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-    pointer-events: none;
-  }
-
-  &__tooltip.hidden {
-    display: none;
-  }
-}
-
-// Align select box to the right to prevent overflow
-.align-select-box-right.mat-mdc-select-panel {
-  right: 0 !important;
-  left: auto !important;
-  transform-origin: right top !important;
-  position: absolute;
 }

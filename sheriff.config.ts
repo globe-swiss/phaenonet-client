@@ -2,6 +2,7 @@ import { sameTag, SheriffConfig } from '@softarc/sheriff-core';
 
 export const sheriffConfig: SheriffConfig = {
   enableBarrelLess: true,
+  showWarningOnBarrelCollision: false,
   modules: {
     'src/app': 'root',
     'src/app/domains/<domain>': 'domain:<domain>',

@@ -1,25 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Firestore, where } from '@angular/fire/firestore';
-import { FormControl, FormGroup } from '@angular/forms';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
-import { Phenophase } from '@shared/models/masterdata.model';
-import { SourceFilterType } from '@shared/models/source-type.model';
+import { allType, allValue } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Statistics } from '../../shared/models/statistics';
-import { AltitudeFilterGroup, AnalyticsType } from './statistics.model';
+import { AltitudeGroup } from '../shared/statistics-common.model';
+import { Statistics } from './statistics.model';
 
 @Injectable({ providedIn: 'root' })
 export class StatisticsService extends BaseResourceService<Statistics> {
-  // requires to be provided in root to save awhen leaving the component
-  public statisticFilterState: FormGroup<{
-    year: FormControl<string>;
-    datasource: FormControl<SourceFilterType>;
-    analyticsType: FormControl<AnalyticsType>;
-    species: FormControl<string>;
-  }>;
-
   constructor(
     protected afs: Firestore,
     protected fds: FirestoreDebugService
@@ -30,18 +20,18 @@ export class StatisticsService extends BaseResourceService<Statistics> {
   getStatistics(
     year: string,
     phenophase_id: string,
-    altitude: AltitudeFilterGroup,
+    altitude: allType | AltitudeGroup,
     species: string
   ): Observable<Statistics[]> {
     const queryConstraints = [where('display_year', '==', parseInt(year, 10))];
 
-    if (species !== 'all') {
+    if (species !== allValue) {
       queryConstraints.push(where('species', '==', species));
     }
-    if (phenophase_id !== 'all') {
+    if (phenophase_id !== allValue) {
       queryConstraints.push(where('phenophase', '==', phenophase_id));
     }
-    if (altitude !== 'all') {
+    if (altitude !== allValue) {
       queryConstraints.push(where('altitude_grp', '==', altitude));
     }
 

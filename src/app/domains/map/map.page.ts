@@ -10,23 +10,28 @@ import { MatSelect } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
 import { LocalService } from '@core/services/local.service';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { basemaps, MapType } from '@shared/models/basemaps.model';
 import { MapIndividual } from '@shared/models/individual.model';
 import { Species } from '@shared/models/masterdata.model';
-import { SourceFilterType } from '@shared/models/source-type.model';
+import {
+  allTranslatableFilterValue,
+  allValue,
+  SourceType,
+  sourceValues,
+  TranslatableFilterType
+} from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
 import { TypeGuard, TypeGuardPipe } from '@shared/utils/type-guard.pipe';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { allType } from './../../shared/models/source-type.model';
 import { IndividualInfoWindowData, MapInfoService, StationInfoWindowData } from './map-info.service';
 import { IndividualWithMarkerOpt, MapService } from './map.service';
 import { SensorsBadgeComponent } from './sensors-badge.component';
 
 type InfoWindowData = IndividualInfoWindowData | StationInfoWindowData;
-
-const allSpecies = { id: 'ALL', de: 'Alle' } as Species;
 
 @Component({
   templateUrl: './map.page.html',
@@ -83,12 +88,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   // filter from and value lists
   filter: FormGroup<{
     year: FormControl<number>;
-    datasource: FormControl<SourceFilterType>;
+    datasource: FormControl<allType | SourceType>;
     species: FormControl<string>;
   }>;
   yearFilterValues$: Observable<number[]>;
-  speciesFilterValues$: Observable<Species[]>;
-  readonly datasourceFilterValues: SourceFilterType[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wld'];
+  speciesFilterValues$: Observable<TranslatableFilterType[]>;
+  readonly datasourceFilterValues = [allValue, ...sourceValues];
 
   // type guards to enable strict type checking in HTML on infoWindowData$
   isIndividualInfoWindowData: TypeGuard<InfoWindowData, IndividualInfoWindowData> = (
@@ -99,26 +104,17 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ): data is StationInfoWindowData => data?.type === 'station';
 
   private subscriptions = new Subscription();
-  translationsLoaded = false;
 
   constructor(
     private titleService: TitleService,
     private mapService: MapService,
     private masterdataService: MasterdataService,
     private localService: LocalService,
-    private mapInfoService: MapInfoService,
-    private translateService: TranslateService
+    private mapInfoService: MapInfoService
   ) {}
 
   ngOnInit(): void {
     this.titleService.setLocation('Karte');
-
-    // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
-    this.subscriptions.add(
-      this.translateService.get(this.datasourceFilterValues[0]).subscribe(() => {
-        this.translationsLoaded = true;
-      })
-    );
 
     // open info window on the last marker that was clicked when new data is available
     this.infoWindowData$ = this.mapInfoService.infoWindowData$.pipe(
@@ -132,7 +128,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       startWith(''),
       switchMap(() => this.getSelectableSpecies(this.filter.controls.datasource.value)),
       map(species => this.masterdataService.sortTranslatedMasterData(species)),
-      map(species => [allSpecies].concat(species))
+      map(species => [allTranslatableFilterValue, ...species])
     );
 
     // load map values once per year and filter on the result
@@ -195,8 +191,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       const selectedYear = new FormControl<number>(Number.NaN);
       this.filter = new FormGroup({
         year: selectedYear,
-        datasource: new FormControl<SourceFilterType>(this.datasourceFilterValues[0]),
-        species: new FormControl<string>(allSpecies.id)
+        datasource: new FormControl<allType | SourceType>(allValue),
+        species: new FormControl<string>(allValue)
       });
       this.masterdataService.phenoYear$.pipe(first()).subscribe(year => selectedYear.patchValue(year));
       this.mapService.mapFilterState = this.filter;
@@ -207,27 +203,27 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private filterMapIndividuals(
     individuals: MapIndividual[],
-    datasource: SourceFilterType,
+    datasource: allType | SourceType,
     species: string
   ): MapIndividual[] {
-    individuals = datasource !== 'all' ? this.mapService.filterByDatasource(individuals, datasource) : individuals;
-    individuals = species !== allSpecies.id ? this.mapService.filterBySpecies(individuals, species) : individuals;
+    individuals = datasource !== allValue ? this.mapService.filterByDatasource(individuals, datasource) : individuals;
+    individuals = species !== allValue ? this.mapService.filterBySpecies(individuals, species) : individuals;
     return individuals;
   }
 
-  private getSelectableSpecies(datasource: SourceFilterType): Observable<Species[]> {
+  private getSelectableSpecies(datasource: allType | SourceType): Observable<Species[]> {
     return this.masterdataService.getSpecies().pipe(
       map(species => {
-        if (datasource == 'all') {
+        if (datasource == allValue) {
           return species;
         } else {
           // set all species if current species filter if invalid
           if (
-            this.filter.controls.species.value != allSpecies.id &&
+            this.filter.controls.species.value != allValue &&
             species.filter(s => s.id == this.filter.controls.species.value && s.sources.includes(datasource)).length ==
               0
           ) {
-            this.filter.controls.species.setValue(allSpecies.id);
+            this.filter.controls.species.setValue(allValue);
           }
           return species.filter(s => s.sources.includes(datasource));
         }

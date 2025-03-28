@@ -28,7 +28,7 @@ runs:
   steps:
     - uses: actions/setup-node@v4.0.3
       with:
-        node-version: ${{ env.NODE_VERSION }}
+        node-version: 20 # match requirements of FirebaseExtended/action-hosting-deploy
     - id: auth
       name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v2.1.4
