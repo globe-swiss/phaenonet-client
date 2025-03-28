@@ -10,17 +10,11 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
-import {
-  allType,
-  allValue,
-  sourceFilterValues,
-  SourceType,
-  TranslatableFilterType
-} from '@shared/models/source-type.model';
+import { LanguageService } from '@core/services/language.service';
+import { allType, allValue, SourceType, sourceValues, TranslatableFilterType } from '@shared/models/source-type.model';
 import { Observable, of, Subscription } from 'rxjs';
 import { AltitudeGroup, AnalyticsType } from '../shared/common.model';
 import { altitudeGroupValues, FilterGraphType } from '../shared/statistics-filter.model';
-import { LanguageService } from '@core/services/language.service';
 
 @Component({
   selector: 'app-statistics-filter',
@@ -103,7 +97,7 @@ export class StatisticFilterComponent implements OnInit {
 
     // dynamic filters
     this.selectableYears$ = this.statisticsFilterService.getSelectableYears();
-    this.selectableSources$ = of(sourceFilterValues);
+    this.selectableSources$ = of([allValue, ...sourceValues]);
     this.selectableAnalyticsTypes$ = this.statisticsFilterService.getSelectableAnalyticsTypes();
     this.selectableSpecies$ = this.statisticsFilterService.getSelectableSpecies();
     this.selectablePhenophases$ = this.statisticsFilterService.getSelectablePhenophases();

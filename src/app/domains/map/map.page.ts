@@ -17,8 +17,8 @@ import { Species } from '@shared/models/masterdata.model';
 import {
   allTranslatableFilterValue,
   allValue,
-  sourceFilterValues,
   SourceType,
+  sourceValues,
   TranslatableFilterType
 } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
@@ -93,7 +93,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }>;
   yearFilterValues$: Observable<number[]>;
   speciesFilterValues$: Observable<TranslatableFilterType[]>;
-  readonly datasourceFilterValues = sourceFilterValues;
+  readonly datasourceFilterValues = [allValue, ...sourceValues];
 
   // type guards to enable strict type checking in HTML on infoWindowData$
   isIndividualInfoWindowData: TypeGuard<InfoWindowData, IndividualInfoWindowData> = (
@@ -192,7 +192,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       const selectedYear = new FormControl<number>(Number.NaN);
       this.filter = new FormGroup({
         year: selectedYear,
-        datasource: new FormControl<allType | SourceType>(sourceFilterValues[0]),
+        datasource: new FormControl<allType | SourceType>(allValue),
         species: new FormControl<string>(allValue)
       });
       this.masterdataService.phenoYear$.pipe(first()).subscribe(year => selectedYear.patchValue(year));

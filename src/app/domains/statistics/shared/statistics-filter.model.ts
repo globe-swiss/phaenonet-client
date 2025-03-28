@@ -1,4 +1,4 @@
-import { SourceType, allType, allValue, sourceFilterValues } from '@shared/models/source-type.model';
+import { SourceType, allType, allValue } from '@shared/models/source-type.model';
 import { AltitudeGroup, AnalyticsType } from './common.model';
 
 export type FilterGraphType = 'weekly' | 'yearly';
@@ -21,10 +21,10 @@ export const altitudeGroupValues: AltitudeGroup[] = ['alt1', 'alt2', 'alt3', 'al
 
 export const DEFAULT_FILTERS: StatisticFilters = {
   year: '',
-  datasource: sourceFilterValues[0],
+  datasource: allValue,
   analyticsType: analyticsTypesValues[0],
   species: allValue,
   phenophase: allValue,
-  altitude: altitudeGroupValues[0],
+  altitude: allValue,
   graph: 'yearly'
 };

@@ -8,4 +8,4 @@ export interface TranslatableFilterType {
 export const allTranslatableFilterValue: TranslatableFilterType = { id: allValue, de: 'Alle' };
 
 export type SourceType = 'globe' | 'meteoswiss' | 'ranger' | 'wld';
-export const sourceFilterValues: (allType | SourceType)[] = ['all', 'globe', 'meteoswiss', 'ranger', 'wld'];
+export const sourceValues: SourceType[] = ['globe', 'meteoswiss', 'ranger', 'wld'];
