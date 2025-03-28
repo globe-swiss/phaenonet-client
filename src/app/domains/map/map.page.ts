@@ -104,7 +104,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ): data is StationInfoWindowData => data?.type === 'station';
 
   private subscriptions = new Subscription();
-  translationsLoaded = false;
 
   constructor(
     private titleService: TitleService,
@@ -117,13 +116,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.titleService.setLocation('Karte');
-
-    // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
-    this.subscriptions.add(
-      this.translateService.get(sourceFilterValues[0]).subscribe(() => {
-        this.translationsLoaded = true;
-      })
-    );
 
     // open info window on the last marker that was clicked when new data is available
     this.infoWindowData$ = this.mapInfoService.infoWindowData$.pipe(

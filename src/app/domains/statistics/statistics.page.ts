@@ -10,10 +10,10 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, map, Observable, Subscription } from 'rxjs';
-import { FilterGraphType } from './feature-statistics-filter/statistics-filter.model';
 import { StatisticFilterComponent } from './feature-statistics-filter/statistics-filter.widget';
 import { WeeklyGraphComponent } from './feature-weekly-graph/weekly-graph.widget';
 import { YearlyGraphComponent } from './feature-yearly-graph/yearly-graph.widget';
+import { FilterGraphType } from './shared/statistics-filter.model';
 import { StatisticsFilterService } from './shared/statistics-filter.service';
 @Component({
   encapsulation: ViewEncapsulation.None,

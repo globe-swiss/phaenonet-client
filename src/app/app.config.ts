@@ -16,10 +16,10 @@ import { Router, provideRouter } from '@angular/router';
 import { HeaderInterceptor } from '@core/providers/header.interceptor';
 import { LocaleInterceptor } from '@core/providers/locale.interceptor';
 import { DatetimeAdapter } from '@mat-datetimepicker/core';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as Sentry from '@sentry/angular-ivy';
 import { Integrations } from '@sentry/tracing';
-import { Observable, from } from 'rxjs';
+import { Observable, from, lastValueFrom } from 'rxjs';
 import { environment } from '~/environments/environment';
 import { routes } from './app.routes';
 import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/providers/app-moment-date-adapter';
@@ -75,6 +75,12 @@ registerLocaleData(localeIt, 'it');
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (translate: TranslateService) => () => lastValueFrom(translate.use('de-CH')),
+      deps: [TranslateService],
+      multi: true
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: (googleMapsLoader: GoogleMapsLoaderService) => () => googleMapsLoader.load(),

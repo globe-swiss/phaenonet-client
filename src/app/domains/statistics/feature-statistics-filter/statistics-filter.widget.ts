@@ -4,6 +4,7 @@ import { StatisticsFilterService } from '../shared/statistics-filter.service';
 
 import { AsyncPipe, NgFor } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -18,8 +19,8 @@ import {
 } from '@shared/models/source-type.model';
 import { Observable, of, Subscription } from 'rxjs';
 import { AltitudeGroup, AnalyticsType } from '../shared/common.model';
-import { altitudeGroupValues, FilterGraphType } from './statistics-filter.model';
-import { MatIconButton } from '@angular/material/button';
+import { altitudeGroupValues, FilterGraphType } from '../shared/statistics-filter.model';
+import { LanguageService } from '@core/services/language.service';
 
 @Component({
   selector: 'app-statistics-filter',
@@ -43,7 +44,6 @@ import { MatIconButton } from '@angular/material/button';
 })
 export class StatisticFilterComponent implements OnInit {
   private subscriptions = new Subscription();
-  public translationsLoaded = false;
 
   filter: FormGroup<{
     year: FormControl<string>;
@@ -64,6 +64,7 @@ export class StatisticFilterComponent implements OnInit {
 
   constructor(
     private translateService: TranslateService,
+    private languageService: LanguageService,
     private statisticsFilterService: StatisticsFilterService,
     private fb: FormBuilder
   ) {
@@ -79,13 +80,6 @@ export class StatisticFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    // workaround hitting issue with standalone components: https://github.com/angular/components/issues/17839
-    this.subscriptions.add(
-      this.translateService.get('Alle').subscribe(() => {
-        this.translationsLoaded = true;
-      })
-    );
-
     // bind filter values to form
     this.subscriptions.add(
       this.statisticsFilterService.currentFilters$.subscribe(cf => {

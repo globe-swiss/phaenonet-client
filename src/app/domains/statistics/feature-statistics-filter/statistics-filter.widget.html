@@ -1,78 +1,76 @@
-@if (translationsLoaded) {
-  <div class="statistics-filter">
-    <form [formGroup]="filter">
-      <mat-form-field class="short-width">
-        <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
-        <div>
-          <mat-select formControlName="year" data-test-id="select-year">
-            <mat-option *ngFor="let year of selectableYears$ | async" [value]="year">{{ year | translate }}</mat-option>
-          </mat-select>
-        </div>
-      </mat-form-field>
-      @if (filter.controls.graph.value === 'yearly') {
-        <mat-form-field>
-          <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
-          <mat-select formControlName="datasource" data-test-id="select-source">
-            <mat-option *ngFor="let datasource of selectableSources$ | async" [value]="datasource">{{
-              datasource | translate
-            }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="short-width">
-          <mat-label>{{ 'Auswertung' | translate }}</mat-label>
-          <mat-select formControlName="analyticsType" data-test-id="select-analyticstype">
-            <mat-option *ngFor="let analyticsType of selectableAnalyticsTypes$ | async" [value]="analyticsType">{{
-              analyticsType | translate
-            }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'Art' | translate }}</mat-label>
-          <mat-select formControlName="species" data-test-id="select-species">
-            <mat-option *ngFor="let s of selectableSpecies$ | async" [value]="s.id">{{ s.de | translate }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <button
-          mat-icon-button
-          class="statistics-info-button"
-          matTooltip="{{
-            'Dargestellt sind der Median (mittleres Eintrittsdatum der Phase; Strich in der Box) und das 25% sowie das 75% Quantil, was bedeutet, dass 50% der beobachteten Werte innerhalb der farbigen Box liegen.'
-              | translate
-          }}"
-        >
-          <mat-icon>info</mat-icon>
-        </button>
-      } @else {
-        <mat-form-field>
-          <mat-label>{{ 'Art' | translate }}</mat-label>
-          <mat-select formControlName="species" data-test-id="select-species">
-            <mat-option *ngFor="let s of selectableSpecies$ | async" [value]="s.id">{{ s.de | translate }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'Phaenophase' | translate }}</mat-label>
-          <mat-select formControlName="phenophase" data-test-id="select-phenophase">
-            <mat-option *ngFor="let phenophase of selectablePhenophases$ | async" [value]="phenophase.id">{{
-              phenophase.de | translate
-            }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'Höhe' | translate }}</mat-label>
-          <mat-select formControlName="altitude" data-test-id="select-altgrp">
-            <mat-option *ngFor="let altitude of selectableAltitudeGroups$ | async" [value]="altitude">{{
-              altitude | translate
-            }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      }
+<div class="statistics-filter">
+  <form [formGroup]="filter">
+    <mat-form-field class="short-width">
+      <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
+      <div>
+        <mat-select formControlName="year" data-test-id="select-year">
+          <mat-option *ngFor="let year of selectableYears$ | async" [value]="year">{{ year | translate }}</mat-option>
+        </mat-select>
+      </div>
+    </mat-form-field>
+    @if (filter.controls.graph.value === 'yearly') {
       <mat-form-field>
-        <mat-label>{{ 'Grafik' | translate }}</mat-label>
-        <mat-select formControlName="graph" panelClass="align-select-box-right" data-test-id="select-graphtype">
-          <mat-option value="yearly">{{ 'Jahresvergleich' | translate }}</mat-option>
-          <mat-option value="weekly">{{ 'Wochenvergleich' | translate }}</mat-option>
+        <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
+        <mat-select formControlName="datasource" data-test-id="select-source">
+          <mat-option *ngFor="let datasource of selectableSources$ | async" [value]="datasource">{{
+            datasource | translate
+          }}</mat-option>
         </mat-select>
       </mat-form-field>
-    </form>
-  </div>
-}
+      <mat-form-field class="short-width">
+        <mat-label>{{ 'Auswertung' | translate }}</mat-label>
+        <mat-select formControlName="analyticsType" data-test-id="select-analyticstype">
+          <mat-option *ngFor="let analyticsType of selectableAnalyticsTypes$ | async" [value]="analyticsType">{{
+            analyticsType | translate
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'Art' | translate }}</mat-label>
+        <mat-select formControlName="species" data-test-id="select-species">
+          <mat-option *ngFor="let s of selectableSpecies$ | async" [value]="s.id">{{ s.de | translate }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button
+        mat-icon-button
+        class="statistics-info-button"
+        matTooltip="{{
+          'Dargestellt sind der Median (mittleres Eintrittsdatum der Phase; Strich in der Box) und das 25% sowie das 75% Quantil, was bedeutet, dass 50% der beobachteten Werte innerhalb der farbigen Box liegen.'
+            | translate
+        }}"
+      >
+        <mat-icon>info</mat-icon>
+      </button>
+    } @else {
+      <mat-form-field>
+        <mat-label>{{ 'Art' | translate }}</mat-label>
+        <mat-select formControlName="species" data-test-id="select-species">
+          <mat-option *ngFor="let s of selectableSpecies$ | async" [value]="s.id">{{ s.de | translate }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'Phaenophase' | translate }}</mat-label>
+        <mat-select formControlName="phenophase" data-test-id="select-phenophase">
+          <mat-option *ngFor="let phenophase of selectablePhenophases$ | async" [value]="phenophase.id">{{
+            phenophase.de | translate
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'Höhe' | translate }}</mat-label>
+        <mat-select formControlName="altitude" data-test-id="select-altgrp">
+          <mat-option *ngFor="let altitude of selectableAltitudeGroups$ | async" [value]="altitude">{{
+            altitude | translate
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    }
+    <mat-form-field>
+      <mat-label>{{ 'Grafik' | translate }}</mat-label>
+      <mat-select formControlName="graph" panelClass="align-select-box-right" data-test-id="select-graphtype">
+        <mat-option value="yearly">{{ 'Jahresvergleich' | translate }}</mat-option>
+        <mat-option value="weekly">{{ 'Wochenvergleich' | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
