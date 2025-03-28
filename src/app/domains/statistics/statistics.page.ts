@@ -1,9 +1,9 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, HostListener, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { BehaviorSubject, map, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { StatisticFilterComponent } from './feature-statistics-filter/statistics-filter.widget';
 import { WeeklyGraphComponent } from './feature-weekly-graph/weekly-graph.widget';
 import { YearlyGraphComponent } from './feature-yearly-graph/yearly-graph.widget';
