@@ -1,7 +1,17 @@
 import { Injectable } from '@angular/core';
 import { allTranslatableFilterValue, allValue } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
-import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, first, map, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  first,
+  map,
+  switchMap,
+  tap
+} from 'rxjs';
 import {
   allowedPhenophases,
   analyticsTypesValues,
@@ -77,6 +87,8 @@ export class StatisticsFilterService {
   getSelectablePhenophases() {
     return this.filtersSubject.pipe(
       map(filterValues => filterValues.species),
+      // do not load phenophases for 'all' species
+      filter(species => species != allValue),
       // only update if species changes
       distinctUntilChanged(),
       // get phenophases for selected species
