@@ -1,10 +1,8 @@
-import { startWith } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { LocalService } from '@app/core/services/local.service';
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
-import { map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
