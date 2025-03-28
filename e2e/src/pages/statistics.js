@@ -52,8 +52,8 @@ module.exports = {
     graphtype: {
       dropdown: { css: '[data-test-id=select-graphtype]' },
       values: {
-        yearly: '1',
-        weekly: '2'
+        yearly: 'yearly',
+        weekly: 'weekly'
       }
     }
   },
