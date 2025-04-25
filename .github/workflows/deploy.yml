@@ -39,7 +39,7 @@ jobs:
       - uses: pnpm/action-setup@v4.1.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.3.0
+      - uses: actions/setup-node@v4.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -72,7 +72,7 @@ jobs:
       - uses: pnpm/action-setup@v4.1.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.3.0
+      - uses: actions/setup-node@v4.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -119,14 +119,14 @@ jobs:
       - uses: pnpm/action-setup@v4.1.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v4.3.0
+      - uses: actions/setup-node@v4.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm install
       - id: auth
         name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2.1.8
+        uses: google-github-actions/auth@v2.1.9
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
