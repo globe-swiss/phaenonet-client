@@ -42,10 +42,9 @@
         type="submit"
         id="edit-button"
         [routerLink]="['/profile', userId, 'edit']"
-        translate
         data-test-id="profile-details-edit-button"
       >
-        Profil bearbeiten
+        {{ 'Profil bearbeiten' | translate }}
       </button>
       <button
         class="profile-details__button profile-details__button--logout"
