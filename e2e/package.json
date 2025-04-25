@@ -1,7 +1,7 @@
 {
   "author": "",
   "dependencies": {
-    "@codeceptjs/ui": "^1.2.3",
+    "@codeceptjs/ui": "^1.2.4",
     "codeceptjs": "^3.7.3",
     "codeceptjs-resemblehelper": "^1.9.7",
     "mocha": "^10.8.2",
