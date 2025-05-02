@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ObsDoy, ObsWoy, Statistics } from '@app/domains/statistics/feature-weekly-graph/statistics.model';
+import { TranslateService } from '@ngx-translate/core';
 import { max } from 'd3-array';
 import { axisLeft } from 'd3-axis';
 import { scaleLinear } from 'd3-scale';
@@ -34,7 +35,8 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
 
   constructor(
     private statisticsService: StatisticsService,
-    private statisticsFilterService: StatisticsFilterService
+    private statisticsFilterService: StatisticsFilterService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -106,7 +108,7 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
       .append('text')
       .attr('x', 36)
       .attr('y', 10)
-      .text('Summe der Beobachtungen pro Woche')
+      .text(`${this.translateService.instant('Summe der Beobachtungen pro Woche')}`)
       .style('font-size', this.legendFontSize)
       .style('font-weight', '500')
       .attr('alignment-baseline', 'middle');
@@ -117,21 +119,21 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
       .append('text')
       .attr('x', 50)
       .attr('y', 35)
-      .text('Ø der 5 Jahre vor dem ausgewählten Jahr')
+      .text(`${this.translateService.instant('Ø der 5 Jahre vor dem ausgewählten Jahr')}`)
       .style('font-size', this.legendFontSize)
       .attr('alignment-baseline', 'middle');
     svg
       .append('text')
       .attr('x', 50)
       .attr('y', 55)
-      .text('Ø der 30 Jahre vor dem ausgewählten Jahr')
+      .text(`${this.translateService.instant('Ø der 30 Jahre vor dem ausgewählten Jahr')}`)
       .style('font-size', this.legendFontSize)
       .attr('alignment-baseline', 'middle');
     svg
       .append('text')
       .attr('x', 50)
       .attr('y', 75)
-      .text('Ausgewähltes Jahr')
+      .text(`${this.translateService.instant('Ausgewähltes Jahr')}`)
       .style('font-size', this.legendFontSize)
       .attr('alignment-baseline', 'middle');
 

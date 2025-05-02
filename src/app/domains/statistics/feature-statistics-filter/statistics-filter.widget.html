@@ -55,7 +55,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>{{ 'Phaenophase' | translate }}</mat-label>
+        <mat-label>{{ 'Phänophase' | translate }}</mat-label>
         <mat-select formControlName="phenophase" data-test-id="select-phenophase">
           @for (phenophase of selectablePhenophases$ | async; track phenophase.id) {
             <mat-option [value]="phenophase.id">{{ phenophase.de | translate }}</mat-option>
