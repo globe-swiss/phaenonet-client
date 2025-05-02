@@ -24,7 +24,7 @@ export class FirestoreDebugService {
         console.log(`${type}: ${key} -> ${oldcnt + amt} (+${amt})`);
       }
 
-      if (environment.sentryEnabled && oldcnt / 1000 > this.lastSentrySend) {
+      if (environment.sentryEnabled && oldcnt / 10000 > this.lastSentrySend) {
         Sentry.captureMessage('High Firestore access', {
           level: 'debug',
           extra: { counters: this.map2obj(map) }
