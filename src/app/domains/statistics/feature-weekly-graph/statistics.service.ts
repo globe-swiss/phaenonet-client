@@ -6,7 +6,7 @@ import { AllType, allValue } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AltitudeGroup } from '../shared/statistics-common.model';
-import { Statistics } from './statistics.model';
+import { Statistics } from './statistics-weekly.model';
 
 @Injectable({ providedIn: 'root' })
 export class StatisticsService extends BaseResourceService<Statistics> {

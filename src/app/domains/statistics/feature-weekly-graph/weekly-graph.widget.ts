@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ObsDoy, ObsWoy, Statistics } from '@app/domains/statistics/feature-weekly-graph/statistics.model';
+import { ObsDoy, ObsWoy, Statistics } from '@app/domains/statistics/feature-weekly-graph/statistics-weekly.model';
 import { TranslateService } from '@ngx-translate/core';
 import { max } from 'd3-array';
 import { axisLeft } from 'd3-axis';

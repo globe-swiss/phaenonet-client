@@ -1,4 +1,3 @@
-import { Timestamp } from '@angular/fire/firestore';
 import { axisBottom } from 'd3-axis';
 import { timeMonths } from 'd3-time';
 import moment from 'moment';
