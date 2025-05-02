@@ -6,13 +6,14 @@ import { formatShortDate } from '@shared/utils/formatDate';
 import { axisLeft } from 'd3-axis';
 import { ScaleBand, scaleBand, scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
-import { Subject, Subscription } from 'rxjs';
+import { iif, Subject, Subscription } from 'rxjs';
 import { debounceTime, first, map, switchMap } from 'rxjs/operators';
 import { dateToDOY, drawXAxis } from '../shared/graph-helper';
 import { AltitudeGroup } from '../shared/statistics-common.model';
 import { StatisticsFilterService } from '../shared/statistics-filter.service';
-import { Analytics, AnalyticsValue } from './analytics.model';
-import { AnalyticsService } from './analytics.service';
+import { StatisticsAltitudeService } from './statistics-altitude.service';
+import { StatisticsSpeciesService } from './statistics-species.service';
+import { Analytics, AnalyticsValue } from './statistics-yearly.model';
 
 @Component({
   selector: 'app-yearly-graph',
@@ -37,7 +38,8 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
   private availableYears: number[] = [];
 
   constructor(
-    private analyticsService: AnalyticsService,
+    private statisticsSpeciesService: StatisticsSpeciesService,
+    private statisticsAltitudeService: StatisticsAltitudeService,
     private masterdataService: MasterdataService,
     private translateService: TranslateService,
     private statisticsFilterService: StatisticsFilterService
@@ -51,7 +53,11 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
     const filterSubscription = this.statisticsFilterService.currentFilters$
       .pipe(
         switchMap(({ year, datasource, analyticsType, species }) =>
-          this.analyticsService.listByYear(year, analyticsType, datasource, species).pipe(map(data => ({ year, data })))
+          iif(
+            () => analyticsType === 'altitude',
+            this.statisticsAltitudeService.listByYear(year, datasource, species),
+            this.statisticsSpeciesService.listByYear(year, datasource, species)
+          ).pipe(map(data => ({ year, data })))
         )
       )
       .subscribe(({ year, data }) => {
@@ -94,8 +100,10 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
     domain.forEach(species => {
       subdomain.forEach((subdomainKey: number | AltitudeGroup) => {
         if (subdomainKey) {
+          // a all year is set or analytics type is altitude
           resultingDomain.push(`${species}-${subdomainKey}`);
         } else {
+          // a specific year is set and analytics type is species
           resultingDomain.push(species);
         }
       });
