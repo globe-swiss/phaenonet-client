@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Firestore, where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
-import { allType, allValue } from '@shared/models/source-type.model';
+import { AllType, allValue } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AltitudeGroup } from '../shared/statistics-common.model';
@@ -20,7 +20,7 @@ export class StatisticsService extends BaseResourceService<Statistics> {
   getStatistics(
     year: string,
     phenophase_id: string,
-    altitude: allType | AltitudeGroup,
+    altitude: AllType | AltitudeGroup,
     species: string
   ): Observable<Statistics[]> {
     const queryConstraints = [where('display_year', '==', parseInt(year, 10))];

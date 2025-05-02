@@ -3,10 +3,12 @@ import { Firestore, where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { Phenophase } from '@shared/models/masterdata.model';
-import { allType, allValue, SourceType } from '@shared/models/source-type.model';
+import { allValue, SourceType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AltitudeGroup, AnalyticsType } from '../shared/statistics-common.model';
+import { YearFilterType } from '../shared/statistics-filter.model';
+import { AllType } from './../../../shared/models/source-type.model';
 import { Analytics } from './analytics.model';
 
 @Injectable({ providedIn: 'root' })
@@ -19,9 +21,9 @@ export class AnalyticsService extends BaseResourceService<Analytics> {
   }
 
   listByYear(
-    year: string,
+    year: YearFilterType,
     analyticsType: AnalyticsType,
-    source: allType | SourceType,
+    source: AllType | SourceType,
     species: string
   ): Observable<Analytics[]> {
     const queryConstraints = [where('type', '==', analyticsType), where('source', '==', source)];
@@ -57,7 +59,7 @@ export class AnalyticsService extends BaseResourceService<Analytics> {
   getAggregationObservations(
     year: string,
     phenophase: Phenophase,
-    altitude: allType | AltitudeGroup,
+    altitude: AllType | AltitudeGroup,
     species: string
   ): Observable<Analytics[]> {
     const queryConstraints = [where('year', '==', parseInt(year, 10))];

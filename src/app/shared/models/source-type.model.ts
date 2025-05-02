@@ -1,4 +1,4 @@
-export type allType = 'all';
+export type AllType = 'all';
 export const allValue = 'all';
 
 export interface TranslatableFilterType {
