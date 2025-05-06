@@ -6,6 +6,11 @@ on:
   push:
     branches: [master, test-pr]
 
+env:
+  NODE_VERSION: '<loaded from .env>'
+  PNPM_VERSION: '<loaded from .env>'
+  REVIEWDOG_VERSION: '<loaded from .env>'
+
 jobs:
   build:
     name: Build

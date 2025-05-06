@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: '30 5 * * 5'
 
+env:
+  NODE_VERSION: '<loaded from .env>'
+  PNPM_VERSION: '<loaded from .env>'
+
 jobs:
   actions-update:
     runs-on: ubuntu-22.04
