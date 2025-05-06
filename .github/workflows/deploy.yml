@@ -181,7 +181,7 @@ jobs:
     runs-on: ubuntu-22.04
     permissions:
       contents: write
-    if: ${{ github.event.inputs.tag != 'none' }}
+    if: ${{ github.event.inputs.tag != null && github.event.inputs.tag != 'none' }}
     steps:
       - name: Tag version ${{ needs.next-versions.outputs.tag }}
         uses: tvdias/github-tagger@v0.0.2
