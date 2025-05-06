@@ -13,24 +13,62 @@ on:
           - phaenonet-test
       tag:
         description: Tag
-        required: false
-        type: string
+        required: true
+        type: choice
+        default: none
+        options:
+          - none
+          - patch
+          - minor
+          - major
   push:
     branches: [master, test-master]
 
 env:
   PROJECT: ${{ github.event.inputs.project || 'phaenonet-test' }}
-  TAG: ${{ github.event.inputs.tag }}
-  VERSION: 'phaenonet-client@${{ github.event.inputs.tag && github.event.inputs.tag || github.sha }}'
+  NODE_VERSION: '<loaded from .env>'
+  PNPM_VERSION: '<loaded from .env>'
+  REVIEWDOG_VERSION: '<loaded from .env>'
 
 permissions:
   contents: read
   id-token: write
 
 jobs:
+  next-versions:
+    runs-on: ubuntu-22.04
+    outputs:
+      tag: ${{ steps.new-tag.outputs.tag }}
+      version: ${{ steps.new-tag.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: 'Get previous tag'
+        id: previoustag
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      - name: 'Get next versions'
+        id: semvers
+        uses: 'WyriHaximus/github-action-next-semvers@v1'
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+      - name: New tag
+        id: new-tag
+        env:
+          TAG: ${{ github.event.inputs.tag == 'major' && steps.semvers.outputs.v_major || github.event.inputs.tag == 'minor' && steps.semvers.outputs.v_minor || github.event.inputs.tag == 'patch' && steps.semvers.outputs.v_patch || '' }}
+          VERSION: "phaenonet-client@${{ github.event.inputs.tag != 'none' && env.TAG || github.sha }}"
+        run: |
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
   build:
     name: Build
     runs-on: ubuntu-22.04
+    needs: next-versions
+    if: always()
+    env:
+      VERSION: ${{ needs.next-versions.outputs.version }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
@@ -45,10 +83,8 @@ jobs:
           cache: 'pnpm'
       - name: Install Dependencies
         run: pnpm install
-      - name: set release version
-        run: |
-          echo "set release version: ${{ env.VERSION }}"
-          sed -ri "s|'#VERSION#'|'${{ env.VERSION }}'|" src/environments/environment*.ts
+      - name: 'set release version: ${{ env.VERSION }}'
+        run: sed -ri "s|'#VERSION#'|'${{ env.VERSION }}'|" src/environments/environment*.ts
       - name: Build
         run: pnpm exec ng build ${{ env.PROJECT == 'phaenonet' && '--c=production' || '' }}
       - name: Upload Artifact
@@ -58,8 +94,12 @@ jobs:
           path: dist
   sentry:
     name: Sentry
-    needs: build
+    needs:
+      - build
+      - next-versions
     runs-on: ubuntu-22.04
+    env:
+      VERSION: ${{ needs.next-versions.outputs.version }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
@@ -135,14 +175,16 @@ jobs:
         run: pnpm exec firebase deploy --project ${{ env.PROJECT }}
   tag:
     name: Tag
-    needs: deploy
+    needs:
+      - deploy
+      - next-versions
     runs-on: ubuntu-22.04
     permissions:
       contents: write
+    if: ${{ github.event.inputs.tag != 'none' }}
     steps:
-      - name: Tag commit
+      - name: Tag version ${{ needs.next-versions.outputs.tag }}
         uses: tvdias/github-tagger@v0.0.2
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
-          tag: ${{ env.TAG }}
-        if: ${{ env.TAG }}
+          tag: ${{ needs.next-versions.outputs.tag }}
