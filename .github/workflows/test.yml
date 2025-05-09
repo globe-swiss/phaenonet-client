@@ -41,6 +41,7 @@ jobs:
           name: dist-pr-build
           path: dist
           retention-days: 1
+          node_version: ${{ env.NODE_VERSION }}
   channel:
     needs: [build, commit-info]
     if: ${{ !contains(needs.commit-info.outputs.msg, '#no-deploy') && github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]' }}
@@ -55,10 +56,13 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
+      - name: Set environment variables
+        run: cat .env >> $GITHUB_ENV
       - name: Download Build Artifact
         uses: ./.github/actions/download-zip-artifact
         with:
           name: dist-pr-build
+          node_version: ${{ env.NODE_VERSION }}
       - name: Deploy Preview Channel
         uses: ./.github/actions/deploy-hosting-action
         with:
@@ -95,6 +99,7 @@ jobs:
         uses: ./.github/actions/download-zip-artifact
         with:
           name: dist-pr-build
+          node_version: ${{ env.NODE_VERSION }}
       - name: Start server
         uses: ./.github/actions/angular-http-server-action
         with:
@@ -112,6 +117,7 @@ jobs:
           name: e2e-test-report
           path: e2e/output
           retention-days: 1
+          node_version: ${{ env.NODE_VERSION }}
         if: always()
       - name: Deploy E2E-Test Report
         uses: ./.github/actions/deploy-hosting-action
