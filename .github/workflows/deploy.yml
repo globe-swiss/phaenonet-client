@@ -41,7 +41,7 @@ jobs:
       tag: ${{ steps.new-tag.outputs.tag }}
       version: ${{ steps.new-tag.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 0
       - name: 'Get previous tag'
