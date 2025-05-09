@@ -92,6 +92,7 @@ jobs:
         with:
           name: ${{ env.PROJECT }}
           path: dist
+          node_version: ${{ env.NODE_VERSION }}
   sentry:
     name: Sentry
     needs:
@@ -109,6 +110,7 @@ jobs:
         uses: ./.github/actions/download-zip-artifact
         with:
           name: ${{ env.PROJECT }}
+          node_version: ${{ env.NODE_VERSION }}
       - uses: pnpm/action-setup@v4.1.0
         with:
           version: ${{ env.PNPM_VERSION }}
@@ -153,6 +155,7 @@ jobs:
         uses: ./.github/actions/download-zip-artifact
         with:
           name: ${{ env.PROJECT }}
+          node_version: ${{ env.NODE_VERSION }}
       - name: Remove source maps (prod)
         run: rm ./dist/**/*.map
         if: ${{ env.PROJECT == 'phaenonet' }}

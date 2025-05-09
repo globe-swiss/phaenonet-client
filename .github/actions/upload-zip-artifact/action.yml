@@ -20,12 +20,15 @@ inputs:
       Duration after which artifact will expire in days. 0 means using default retention.
       Minimum 1 day.
       Maximum 90 days unless changed from the repository settings page.
+  node_version:
+    description: 'Node.js version to use'
+    required: true
 runs:
   using: 'composite'
   steps:
     - uses: actions/setup-node@v4.0.3
       with:
-        node-version: ${{ env.NODE_VERSION }}
+        node-version: ${{ inputs.node_version }}
     - name: zip contents
       uses: DuckSoft/create-7z-action@v1.0
       with:
