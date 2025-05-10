@@ -2,7 +2,7 @@ const { navbarComponent, individualsEditPage, individualsPage, privateProfilePag
 const fetch = require('node-fetch');
 const { retrySteps } = require('./helpers/retrySteps');
 
-const prepareBaseImage = false;
+const prepareBaseImage = false; // set to true if you want to prepare a base image for visual regression tests
 
 // in this file you can append custom step methods to 'I' object
 

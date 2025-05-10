@@ -4,7 +4,7 @@ import { BaseDetailComponent } from '@core/components/base-detail.component';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
-import { IndividualService } from '../../../shared/services/individual.service';
+import { IndividualService } from '@shared/services/individual.service';
 import { IndividualEditViewComponent } from './individual-edit-form.widget';
 import { IndividualEditHeaderComponent } from './individual-edit-header.widget';
 

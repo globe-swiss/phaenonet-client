@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { StatisticsFilterService } from '../shared/statistics-filter.service';
 
 import { AsyncPipe } from '@angular/common';
@@ -10,11 +10,10 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
-import { LanguageService } from '@core/services/language.service';
-import { allType, allValue, SourceType, sourceValues, TranslatableFilterType } from '@shared/models/source-type.model';
+import { AllType, allValue, SourceType, sourceValues, TranslatableFilterType } from '@shared/models/source-type.model';
 import { Observable, of, Subscription } from 'rxjs';
 import { AltitudeGroup, AnalyticsType } from '../shared/statistics-common.model';
-import { altitudeGroupValues, FilterGraphType } from '../shared/statistics-filter.model';
+import { altitudeGroupValues, FilterGraphType, YearFilterType } from '../shared/statistics-filter.model';
 
 @Component({
   selector: 'app-statistics-filter',
@@ -39,25 +38,23 @@ export class StatisticFilterComponent implements OnInit {
   private subscriptions = new Subscription();
 
   filter: FormGroup<{
-    year: FormControl<string>;
-    datasource: FormControl<allType | SourceType>;
+    year: FormControl<YearFilterType>;
+    datasource: FormControl<AllType | SourceType>;
     analyticsType: FormControl<AnalyticsType>;
     species: FormControl<string>;
     phenophase: FormControl<string>;
-    altitude: FormControl<allType | AltitudeGroup>;
+    altitude: FormControl<AllType | AltitudeGroup>;
     graph: FormControl<FilterGraphType>;
   }>;
 
   selectableYears$: Observable<string[]>;
-  selectableSources$: Observable<(allType | SourceType)[]>;
+  selectableSources$: Observable<(AllType | SourceType)[]>;
   selectableAnalyticsTypes$: Observable<AnalyticsType[]>;
   selectableSpecies$: Observable<TranslatableFilterType[]>;
   selectablePhenophases$: Observable<TranslatableFilterType[]>;
-  selectableAltitudeGroups$: Observable<(allType | AltitudeGroup)[]>;
+  selectableAltitudeGroups$: Observable<(AllType | AltitudeGroup)[]>;
 
   constructor(
-    private translateService: TranslateService,
-    private languageService: LanguageService,
     private statisticsFilterService: StatisticsFilterService,
     private fb: FormBuilder
   ) {

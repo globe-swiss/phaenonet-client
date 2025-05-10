@@ -1,12 +1,12 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { GoogleMap, MapMarker } from '@angular/google-maps';
+import { basemaps, MapType } from '@shared/models/basemaps.model';
 import { Individual } from '@shared/models/individual.model';
+import { IndividualService } from '@shared/services/individual.service';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { Observable, ReplaySubject } from 'rxjs';
 import { filter, map, mergeAll } from 'rxjs/operators';
-import { IndividualService } from '../../../shared/services/individual.service';
-import { basemaps, MapType } from '@shared/models/basemaps.model';
 
 @Component({
   selector: 'app-individual-header-map',

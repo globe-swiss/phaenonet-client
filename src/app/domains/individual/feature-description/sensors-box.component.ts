@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { SensorLiveData } from '@shared/models/individual.model';
-import { IndividualService } from '../../../shared/services/individual.service';
+import { IndividualService } from '@shared/services/individual.service';
 
 @Component({
   selector: 'app-sensors-box',
