@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { Firestore, where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
-import { allValue, SourceType } from '@shared/models/source-type.model';
+import { AllType, allValue, SourceType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { AllType } from '../../../shared/models/source-type.model';
 import { YearFilterType } from '../shared/statistics-filter.model';
 import { Analytics, StatisticsYearlySpecies } from './statistics-yearly.model';
 

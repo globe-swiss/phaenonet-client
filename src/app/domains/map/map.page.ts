@@ -16,6 +16,7 @@ import { MapIndividual } from '@shared/models/individual.model';
 import { Species } from '@shared/models/masterdata.model';
 import {
   allTranslatableFilterValue,
+  AllType,
   allValue,
   SourceType,
   sourceValues,
@@ -26,7 +27,6 @@ import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
 import { TypeGuard, TypeGuardPipe } from '@shared/utils/type-guard.pipe';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { AllType } from './../../shared/models/source-type.model';
 import { IndividualInfoWindowData, MapInfoService, StationInfoWindowData } from './map-info.service';
 import { IndividualWithMarkerOpt, MapService } from './map.service';
 import { SensorsBadgeComponent } from './sensors-badge.component';

@@ -7,9 +7,9 @@ import { AlertService } from '@core/services/alert.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog.component';
 import { Individual } from '@shared/models/individual.model';
+import { IndividualService } from '@shared/services/individual.service';
 import { combineLatest, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { IndividualService } from '../../../shared/services/individual.service';
 import { ObservationService } from '../shared/observation.service';
 
 @Component({
