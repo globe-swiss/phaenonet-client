@@ -29,29 +29,57 @@ export class StatisticsAltitudeService extends BaseResourceService<StatisticsYea
 
     return this.queryCollection(...queryConstraints).pipe(
       tap(x => this.fds.addRead(`${this.collectionName} (listByYear)`, x.length)),
-      map(statisticsYearlyAltitudeArray =>
-        statisticsYearlyAltitudeArray.flatMap(a =>
-          Object.entries(a.data).flatMap(([phenophase, altitudeMap]) =>
-            Object.entries(altitudeMap).map(([altitude, stats]) => ({
-              source: a.source,
-              species: a.species,
-              type: 'altitude' as AnalyticsType,
-              altitude_grp: altitude as AltitudeGroup,
-              year: a.year,
-              values: [
-                {
-                  phenophase,
-                  max: stats.max.toDate(),
-                  median: stats.median.toDate(),
-                  min: stats.min.toDate(),
-                  quantile_25: stats.quantile_25.toDate(),
-                  quantile_75: stats.quantile_75.toDate()
-                }
-              ]
-            }))
-          )
-        )
+      map(statisticsYearlyAltitudeArray => this.statisticToAnalytics(statisticsYearlyAltitudeArray)),
+      map(analytics => this.groupAltitudes(analytics))
+    );
+  }
+
+  /**
+   * Coverts database input to analytics-output format.
+   * @param statistics Statistic input from the database
+   * @returns Analytics output
+   */
+  private statisticToAnalytics(statistics: StatisticsYearlyAltitude[]): Analytics[] {
+    return statistics.flatMap(a =>
+      Object.entries(a.data).flatMap(([phenophase, altitudeMap]) =>
+        Object.entries(altitudeMap).map(([altitude, stats]) => ({
+          source: a.source,
+          species: a.species,
+          type: 'altitude' as AnalyticsType,
+          altitude_grp: altitude as AltitudeGroup,
+          year: a.year,
+          values: [
+            {
+              phenophase,
+              max: stats.max.toDate(),
+              median: stats.median.toDate(),
+              min: stats.min.toDate(),
+              quantile_25: stats.quantile_25.toDate(),
+              quantile_75: stats.quantile_75.toDate()
+            }
+          ]
+        }))
       )
     );
+  }
+
+  /**
+   * Groups analytics values by altitude.
+   * @param analytics ungrouped input
+   * @returns Analytics array grouped by altitude
+   */
+  private groupAltitudes(analytics: Analytics[]) {
+    const grouped = analytics.reduce(
+      (acc, curr) => {
+        const key = `${curr.source}_${curr.species}_${curr.altitude_grp}_${curr.year}`;
+        if (!acc[key]) {
+          acc[key] = { ...curr, values: [] };
+        }
+        acc[key].values.push(...curr.values);
+        return acc;
+      },
+      {} as Record<string, Analytics>
+    );
+    return Object.values(grouped);
   }
 }
