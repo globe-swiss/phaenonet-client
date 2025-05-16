@@ -18,6 +18,7 @@
     "@angular/platform-browser": "^18.2.13",
     "@angular/platform-browser-dynamic": "^18.2.13",
     "@angular/router": "^18.2.13",
+    "@googlemaps/js-api-loader": "^1.16.8",
     "@mat-datetimepicker/core": "^14.0.0",
     "@mat-datetimepicker/moment": "^14.0.0",
     "@ngx-translate/core": "^15.0.0",

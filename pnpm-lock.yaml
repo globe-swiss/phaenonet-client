@@ -54,6 +54,9 @@ importers:
       '@angular/router':
         specifier: ^18.2.13
         version: 18.2.13(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(@angular/platform-browser@18.2.13(@angular/animations@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10)))(rxjs@7.8.1)
+      '@googlemaps/js-api-loader':
+        specifier: ^1.16.8
+        version: 1.16.8
       '@mat-datetimepicker/core':
         specifier: ^14.0.0
         version: 14.0.0(@angular/cdk@18.2.14(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(@angular/material@18.2.14(5mdcer2beaumo5tbfok523nkw4))
@@ -1875,6 +1878,9 @@ packages:
   '@googleapis/sqladmin@28.0.0':
     resolution: {integrity: sha512-yT+XdzcH70uqWGtwiqABMQ1y4DD315vuSTv7aT812Y3DIqueK2TGpCyaqgqzscjRu94V5JnSNdrE3flZ656PKg==}
     engines: {node: '>=12.0.0'}
+
+  '@googlemaps/js-api-loader@1.16.8':
+    resolution: {integrity: sha512-CROqqwfKotdO6EBjZO/gQGVTbeDps5V7Mt9+8+5Q+jTg5CRMi3Ii/L9PmV3USROrt2uWxtGzJHORmByxyo9pSQ==}
 
   '@grpc/grpc-js@1.13.3':
     resolution: {integrity: sha512-FTXHdOoPbZrBjlVLHuKbDZnsTxXv2BlHF57xw6LuThXacXvtkahEPED0CKMk6obZDf65Hv4k3z62eyPNpvinIg==}
@@ -11599,6 +11605,8 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
+
+  '@googlemaps/js-api-loader@1.16.8': {}
 
   '@grpc/grpc-js@1.13.3':
     dependencies:
