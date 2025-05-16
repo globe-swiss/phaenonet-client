@@ -131,7 +131,7 @@ jobs:
           expires: 30d
         if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
       - name: Codecov
-        uses: codecov/codecov-action@v5.4.2
+        uses: codecov/codecov-action@v5.4.3
         with:
           use_oidc: true
           files: ./e2e/output/coverage-reports/codecov.json
