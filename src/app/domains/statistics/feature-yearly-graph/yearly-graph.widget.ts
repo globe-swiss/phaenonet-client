@@ -134,8 +134,6 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
     this.data.forEach(analytics => {
       analytics.values.sort((a, b) => a.min.getTime() - b.min.getTime());
 
-      console.log(analytics.altitude_grp, analytics.values.length, analytics.values);
-
       g.selectAll('.horizontalLines')
         .data(analytics.values)
         .enter()
