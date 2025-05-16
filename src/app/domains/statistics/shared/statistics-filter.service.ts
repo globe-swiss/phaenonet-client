@@ -17,7 +17,8 @@ import {
   analyticsTypesValues,
   DEFAULT_FILTERS,
   forbiddenSpecies,
-  StatisticFilters
+  StatisticFilters,
+  YearFilterType
 } from './statistics-filter.model';
 
 @Injectable({
@@ -35,7 +36,9 @@ export class StatisticsFilterService {
   }
 
   private initPhenoyear() {
-    this.masterdataService.phenoYear$.pipe(first()).subscribe(year => this.updateFilters({ year: String(year) }));
+    this.masterdataService.phenoYear$
+      .pipe(first())
+      .subscribe(year => this.updateFilters({ year: year.toString() as YearFilterType }));
   }
 
   /**

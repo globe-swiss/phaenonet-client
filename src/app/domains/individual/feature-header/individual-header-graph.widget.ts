@@ -4,6 +4,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import { Observation } from '@shared/models/observation.model';
 import { DailySensorData } from '@shared/models/sensors';
+import { IndividualService } from '@shared/services/individual.service';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { SensorsService } from '@shared/services/sensors.service';
 import * as d3 from 'd3';
@@ -11,7 +12,6 @@ import * as d3Axis from 'd3-axis';
 import * as d3Scale from 'd3-scale';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest, zip } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { IndividualService } from '../../../shared/services/individual.service';
 
 @Component({
   selector: 'app-individual-header-graph',

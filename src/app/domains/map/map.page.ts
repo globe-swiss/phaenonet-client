@@ -16,6 +16,7 @@ import { MapIndividual } from '@shared/models/individual.model';
 import { Species } from '@shared/models/masterdata.model';
 import {
   allTranslatableFilterValue,
+  AllType,
   allValue,
   SourceType,
   sourceValues,
@@ -26,7 +27,6 @@ import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
 import { TypeGuard, TypeGuardPipe } from '@shared/utils/type-guard.pipe';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { first, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { allType } from './../../shared/models/source-type.model';
 import { IndividualInfoWindowData, MapInfoService, StationInfoWindowData } from './map-info.service';
 import { IndividualWithMarkerOpt, MapService } from './map.service';
 import { SensorsBadgeComponent } from './sensors-badge.component';
@@ -88,7 +88,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   // filter from and value lists
   filter: FormGroup<{
     year: FormControl<number>;
-    datasource: FormControl<allType | SourceType>;
+    datasource: FormControl<AllType | SourceType>;
     species: FormControl<string>;
   }>;
   yearFilterValues$: Observable<number[]>;
@@ -191,7 +191,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       const selectedYear = new FormControl<number>(Number.NaN);
       this.filter = new FormGroup({
         year: selectedYear,
-        datasource: new FormControl<allType | SourceType>(allValue),
+        datasource: new FormControl<AllType | SourceType>(allValue),
         species: new FormControl<string>(allValue)
       });
       this.masterdataService.phenoYear$.pipe(first()).subscribe(year => selectedYear.patchValue(year));
@@ -203,7 +203,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private filterMapIndividuals(
     individuals: MapIndividual[],
-    datasource: allType | SourceType,
+    datasource: AllType | SourceType,
     species: string
   ): MapIndividual[] {
     individuals = datasource !== allValue ? this.mapService.filterByDatasource(individuals, datasource) : individuals;
@@ -211,7 +211,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     return individuals;
   }
 
-  private getSelectableSpecies(datasource: allType | SourceType): Observable<Species[]> {
+  private getSelectableSpecies(datasource: AllType | SourceType): Observable<Species[]> {
     return this.masterdataService.getSpecies().pipe(
       map(species => {
         if (datasource == allValue) {
