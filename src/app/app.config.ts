@@ -15,16 +15,16 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { Router, provideRouter } from '@angular/router';
 import { HeaderInterceptor } from '@core/providers/header.interceptor';
 import { LocaleInterceptor } from '@core/providers/locale.interceptor';
+import { GoogleMapsLoaderService } from '@core/services/google-maps-loader.service';
 import { DatetimeAdapter } from '@mat-datetimepicker/core';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import * as Sentry from '@sentry/angular-ivy';
+import * as Sentry from '@sentry/angular';
 import { Observable, from, lastValueFrom } from 'rxjs';
 import { environment } from '~/environments/environment';
 import { routes } from './app.routes';
 import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/providers/app-moment-date-adapter';
 import { GlobalErrorHandler } from './core/providers/global-error-handler';
 import { SentryMissingTranslationHandler } from './core/providers/sentry-missing-translation-handler';
-import { GoogleMapsLoaderService } from '@core/services/google-maps-loader.service';
 
 Sentry.init({
   enabled: environment.sentryEnabled,
@@ -32,11 +32,8 @@ Sentry.init({
   environment: environment.name,
   dsn: 'https://b0f9e54dab264d1881553cbfbcc1641a@o510696.ingest.sentry.io/5606738',
   autoSessionTracking: true,
-  integrations: [
-    Sentry.browserTracingIntegration({
-      tracePropagationTargets: ['localhost', /^\//]
-    })
-  ],
+  integrations: [Sentry.browserTracingIntegration()],
+  tracePropagationTargets: ['localhost', /^\//],
   tracesSampleRate: environment.sentrySamplerate
 });
 

@@ -1,6 +1,6 @@
 import { ErrorHandler, Injectable } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
-import * as Sentry from '@sentry/angular-ivy';
+import * as Sentry from '@sentry/angular';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
