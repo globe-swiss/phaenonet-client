@@ -7,16 +7,31 @@
     <form [formGroup]="changeEmailForm">
       <mat-form-field class="full-width">
         <mat-label>{{ 'Neue E-Mail' | translate }} </mat-label>
-        <input matInput type="text" formControlName="email" id="newemail" email required />
+        <input matInput type="email" formControlName="email" id="newemail" required autocomplete="username" />
         <mat-error>{{ 'auth/invalid-email.message' | translate }}</mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>{{ 'Neue E-Mail bestätigen' | translate }} </mat-label>
-        <input matInput type="text" formControlName="emailConfirm" id="emailConfirm" email required />
+        <input
+          matInput
+          type="email"
+          formControlName="emailConfirm"
+          id="emailConfirm"
+          email
+          required
+          autocomplete="username"
+        />
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>{{ 'Aktuelles Passwort' | translate }} </mat-label>
-        <input matInput type="password" formControlName="password" id="password" required />
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          id="password"
+          required
+          autocomplete="current-password"
+        />
       </mat-form-field>
       <mat-error *ngIf="changeEmailForm.hasError('emailMissmatch')">
         {{ 'Die E-Mails stimmen nicht überein.' | translate }}
