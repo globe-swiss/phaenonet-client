@@ -31,7 +31,6 @@ Sentry.init({
   release: environment.version,
   environment: environment.name,
   dsn: 'https://b0f9e54dab264d1881553cbfbcc1641a@o510696.ingest.sentry.io/5606738',
-  autoSessionTracking: true,
   integrations: [Sentry.browserTracingIntegration()],
   tracePropagationTargets: ['localhost', /^\//],
   tracesSampleRate: environment.sentrySamplerate
