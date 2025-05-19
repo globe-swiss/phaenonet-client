@@ -9,17 +9,25 @@
           <mat-label>{{ 'E-Mail' | translate }} </mat-label>
           <input
             matInput
-            type="text"
+            type="email"
             formControlName="email"
             autofocus
             id="email"
             placeholder="{{ 'E-Mail' | translate }}"
             required
+            autocomplete="username"
           />
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ 'Passwort' | translate }} </mat-label>
-          <input matInput type="password" formControlName="password" id="password" required />
+          <input
+            matInput
+            type="password"
+            formControlName="password"
+            id="password"
+            required
+            autocomplete="current-password"
+          />
         </mat-form-field>
         <button
           mat-flat-button
