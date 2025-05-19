@@ -25,6 +25,7 @@
             minlength="3"
             required
             autofocus
+            autocomplete="nickname"
           />
           <mat-error *ngIf="registerForm.get('nickname').hasError('existingNickname')">
             {{ 'Dieser Nickname ist bereits vergeben.' | translate }}
@@ -44,6 +45,7 @@
             formControlName="firstname"
             id="firstname"
             placeholder="{{ 'Vorname' | translate }}"
+            autocomplete="given-name"
           />
         </mat-form-field>
         <mat-form-field>
@@ -54,18 +56,20 @@
             formControlName="lastname"
             id="lastname"
             placeholder="{{ 'Nachname' | translate }}"
+            autocomplete="family-name"
           />
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ 'E-Mail' | translate }} </mat-label>
           <input
             matInput
-            type="text"
+            type="email"
             formControlName="email"
             id="email"
             placeholder="{{ 'E-Mail' | translate }}"
             required
             email
+            autocomplete="username"
           />
           <mat-error *ngIf="registerForm.get('email').hasError">
             {{ 'auth/invalid-email.message' | translate }}
@@ -73,12 +77,27 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ 'Passwort' | translate }} </mat-label>
-          <input matInput type="password" formControlName="password" id="password" required minlength="6" />
+          <input
+            matInput
+            type="password"
+            formControlName="password"
+            id="password"
+            required
+            minlength="6"
+            autocomplete="new-password"
+          />
           <mat-error>{{ 'Das Passwort muss mindestens 6 Zeichen lang sein.' | translate }}</mat-error>
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ 'Passwort Bestätigung' | translate }} </mat-label>
-          <input matInput type="password" formControlName="passwordConfirm" id="passwordConfirm" required />
+          <input
+            matInput
+            type="password"
+            formControlName="passwordConfirm"
+            id="passwordConfirm"
+            required
+            autocomplete="new-password"
+          />
         </mat-form-field>
         <div>
           <mat-form-field>
