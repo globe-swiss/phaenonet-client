@@ -18,7 +18,6 @@ import { LocaleInterceptor } from '@core/providers/locale.interceptor';
 import { DatetimeAdapter } from '@mat-datetimepicker/core';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as Sentry from '@sentry/angular-ivy';
-import { Integrations } from '@sentry/tracing';
 import { Observable, from, lastValueFrom } from 'rxjs';
 import { environment } from '~/environments/environment';
 import { routes } from './app.routes';
@@ -34,15 +33,14 @@ Sentry.init({
   dsn: 'https://b0f9e54dab264d1881553cbfbcc1641a@o510696.ingest.sentry.io/5606738',
   autoSessionTracking: true,
   integrations: [
-    new Integrations.BrowserTracing({
-      tracingOrigins: ['localhost', /^\//],
-      routingInstrumentation: Sentry.routingInstrumentation
+    Sentry.browserTracingIntegration({
+      tracePropagationTargets: ['localhost', /^\//]
     })
   ],
   tracesSampleRate: environment.sentrySamplerate
 });
 
-Sentry.addGlobalEventProcessor(event => {
+Sentry.addEventProcessor(event => {
   if (event.type === 'transaction') {
     //remove specific ids to enable performance tracking in sentry
     event.transaction = sanitizeTransactionName(event.transaction);
