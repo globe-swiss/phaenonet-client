@@ -16,8 +16,8 @@ import {
 } from '@angular/fire/firestore';
 import { IdLike } from '@core/core.model';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
-import { from, identity, Observable, of } from 'rxjs';
-import { first, mergeMap, tap } from 'rxjs/operators';
+import { from, identity, Observable } from 'rxjs';
+import { filter, first, mergeMap, tap } from 'rxjs/operators';
 
 export abstract class BaseResourceService<T> {
   protected converter: FirestoreDataConverter<T & IdLike> = {
@@ -87,24 +87,28 @@ export abstract class BaseResourceService<T> {
   }
 
   get(id: string): Observable<T> {
-    if (id == null) {
-      console.error(`get document with null value on ${this.collectionName}`);
-      return of(null);
-    }
-
-    return docData<T>(this.getDocRef(id)).pipe(
-      tap(() => this.fds.addRead(`${this.collectionName} (base-resource.get)`))
+    return docData<T>(this.getDocRef(String(id))).pipe(
+      tap(data => {
+        if (!data) {
+          console.warn(`Document with ID ${id} not found in collection ${this.collectionName} (base-resource.get)`);
+        }
+        this.fds.addRead(`${this.collectionName} (base-resource.get)`);
+      }),
+      filter(data => !!data) // Skip undefined/null values
     );
   }
 
   getWithId(id: string): Observable<T & IdLike> {
-    if (id == null) {
-      console.error(`get document with id with null value on ${this.collectionName}`);
-      return of(null);
-    }
-
-    return docData<T & IdLike>(this.getDocRef(id), { idField: 'id' }).pipe(
-      tap(() => this.fds.addRead(`${this.collectionName} (base-resource.getWithId)`))
+    return docData<T & IdLike>(this.getDocRef(String(id)), { idField: 'id' }).pipe(
+      tap(data => {
+        if (!data) {
+          console.warn(
+            `Document with ID ${id} not found in collection ${this.collectionName} (base-resource.getWithId)`
+          );
+        }
+        this.fds.addRead(`${this.collectionName} (base-resource.getWithId)`);
+      }),
+      filter(data => !!data) // Skip undefined/null values
     );
   }
 
