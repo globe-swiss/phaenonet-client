@@ -26,7 +26,7 @@ export class BaseDetailComponent<T> implements OnInit, OnDestroy {
               void this.router.navigate(['/404'], { skipLocationChange: true });
             }
           }),
-          filter(subject => subject !== undefined) // do not publish undefined values (after subject deletion)
+          filter(subject => !!subject) // do not publish undefined values (after subject deletion)
         )
         .subscribe(this.detailSubject$)
     );
@@ -53,7 +53,7 @@ export class BaseDetailComponent<T> implements OnInit, OnDestroy {
       return of<T>({} as T);
     } else {
       this.detailId = id;
-      return this.resourceService.get(this.detailId);
+      return this.resourceService.get(this.detailId, true); // get detail subject or null values to enable navigation to 404 page
     }
   }
 

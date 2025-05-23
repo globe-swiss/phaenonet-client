@@ -86,29 +86,43 @@ export abstract class BaseResourceService<T> {
     return from(docPromise).pipe(mergeMap(identity));
   }
 
-  get(id: string): Observable<T> {
+  /**
+   * Gets a document from this collection.
+   * Note: By default, if the document is not found, no document is returned.
+   * @param id the id of the document to be retrieved
+   * @param returnUndefined if true, returns undefined if the document is not found, otherwise no document is returned
+   * @returns an observable of the document
+   */
+  get(id: string, returnUndefined = false): Observable<T> {
     return docData<T>(this.getDocRef(String(id))).pipe(
       tap(data => {
-        if (!data) {
+        if (!data && !returnUndefined) {
           console.warn(`Document with ID ${id} not found in collection ${this.collectionName} (base-resource.get)`);
         }
         this.fds.addRead(`${this.collectionName} (base-resource.get)`);
       }),
-      filter(data => !!data) // Skip undefined/null values
+      filter(data => !!data || returnUndefined) // Skip undefined/null values
     );
   }
 
-  getWithId(id: string): Observable<T & IdLike> {
+  /**
+   * Gets a document from this collection and includes its docuement id in the 'id' field.
+   * Note: By default, if the document is not found, no document is returned.
+   * @param id the id of the document to be retrieved
+   * @param returnUndefined if true, returns undefined if the document is not found, otherwise no document is returned
+   * @returns an observable of the document
+   */
+  getWithId(id: string, returnUndefined = false): Observable<T & IdLike> {
     return docData<T & IdLike>(this.getDocRef(String(id)), { idField: 'id' }).pipe(
       tap(data => {
-        if (!data) {
+        if (!data && !returnUndefined) {
           console.warn(
             `Document with ID ${id} not found in collection ${this.collectionName} (base-resource.getWithId)`
           );
         }
         this.fds.addRead(`${this.collectionName} (base-resource.getWithId)`);
       }),
-      filter(data => !!data) // Skip undefined/null values
+      filter(data => !!data || returnUndefined) // Skip undefined/null values
     );
   }
 
