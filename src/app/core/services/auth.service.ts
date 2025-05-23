@@ -17,23 +17,26 @@ import {
   updatePassword,
   updateProfile
 } from '@angular/fire/auth';
-import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 import { LocalService } from '@app/core/services/local.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '@core/services/alert.service';
 import { none } from 'fp-ts/lib/Option';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { PhenonetUser } from '../core.model';
+import { BaseResourceService } from './base-resource.service';
+import { FirestoreDebugService } from './firestore-debug.service';
 
 const LOCALSTORAGE_LOGGEDIN_KEY = 'loggedin';
 
 @Injectable({ providedIn: 'root' })
-export class AuthService {
+export class AuthService extends BaseResourceService<PhenonetUser> {
   browserIdHeaders: HttpHeaders;
 
   /**
    * @deprecated use signals instead
    */
-  public firebaseUser$: Observable<User>;
+  public firebaseUser$: Observable<User | null>;
 
   public authenticated: Signal<boolean>;
   public uid: Signal<string | null>;
@@ -43,10 +46,12 @@ export class AuthService {
 
   constructor(
     private alertService: AlertService,
-    private afs: Firestore,
+    protected afs: Firestore,
+    protected fds: FirestoreDebugService,
     private afAuth: Auth,
     private localService: LocalService
   ) {
+    super(afs, 'users', fds);
     this.firebaseUser$ = authState(this.afAuth);
     const firebaseUser = toSignal(this.firebaseUser$);
 
@@ -133,12 +138,15 @@ export class AuthService {
     try {
       await createUserWithEmailAndPassword(this.afAuth, email, password);
       void updateProfile(this.afAuth.currentUser, { displayName: nickname });
-      void setDoc(doc(this.afs, 'users', this.afAuth.currentUser.uid), {
-        nickname: nickname,
-        firstname: firstname,
-        lastname: lastname,
-        locale: locale
-      });
+      this.upsert(
+        {
+          nickname: nickname,
+          firstname: firstname,
+          lastname: lastname,
+          locale: locale
+        },
+        this.afAuth.currentUser.uid
+      );
     } catch (error) {
       return this.errorHandling(error as FirebaseError);
     }

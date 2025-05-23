@@ -1,7 +1,7 @@
 import { effect, Injectable, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { arrayRemove, arrayUnion, Firestore } from '@angular/fire/firestore';
-import { IdLike } from '@core/core.model';
+import { IdLike, PhenonetUser } from '@core/core.model';
 import { AuthService } from '@core/services/auth.service';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
@@ -10,7 +10,6 @@ import { Individual } from '@shared/models/individual.model';
 import { PublicUser } from '@shared/models/public-user.model';
 import { SourceType } from '@shared/models/source-type.model';
 import { Roles } from '@shared/models/user-roles.enum';
-import { PhenonetUser } from '@shared/models/user.model';
 import { IndividualService } from '@shared/services/individual.service'; // fixme
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { combineLatest, Observable, of } from 'rxjs';
@@ -39,9 +38,11 @@ export class UserService extends BaseResourceService<PhenonetUser> {
 
     const sharedFirebaseUser$ = this.authService.firebaseUser$.pipe(shareReplay({ bufferSize: 1, refCount: true }));
     this.publicUser$ = sharedFirebaseUser$.pipe(
-      switchMap(firebaseUser => this.publicUserService.get(firebaseUser?.uid))
+      switchMap(firebaseUser => (firebaseUser?.uid ? this.publicUserService.get(firebaseUser.uid) : of(null)))
     );
-    this.user$ = sharedFirebaseUser$.pipe(switchMap(firebaseUser => this.get(firebaseUser?.uid)));
+    this.user$ = sharedFirebaseUser$.pipe(
+      switchMap(firebaseUser => (firebaseUser?.uid ? this.get(firebaseUser.uid) : of(null)))
+    );
 
     // load roles or initialize roles array if public user document does not exist or roles array is not defined
     this.roles$ = this.publicUser$.pipe(map(publicUser => (publicUser && publicUser.roles ? publicUser.roles : [])));
@@ -90,7 +91,7 @@ export class UserService extends BaseResourceService<PhenonetUser> {
   isFollowingIndividual(target: string | Observable<Individual>): Observable<boolean> {
     return combineLatest([this.individualObservable(target), this.user$]).pipe(
       map(([individual, user]) =>
-        user.following_individuals ? user.following_individuals.includes(individual) : false
+        user?.following_individuals ? user.following_individuals.includes(individual) : false
       )
     );
   }
@@ -109,7 +110,7 @@ export class UserService extends BaseResourceService<PhenonetUser> {
     return combineLatest([this.user$, limit$, this.masterdataService.phenoYear$]).pipe(
       filter(
         ([user, , year]) =>
-          user.following_individuals !== undefined && user.following_individuals.length !== 0 && year !== undefined
+          user?.following_individuals !== undefined && user.following_individuals.length !== 0 && year !== undefined
       ),
       switchMap(([user, limit, year]) => this.individualService.listByIds(user.following_individuals, year, limit))
     );

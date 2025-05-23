@@ -44,6 +44,15 @@ Sentry.addEventProcessor(event => {
   return event;
 });
 
+registerLocaleData(localeDe, 'de');
+registerLocaleData(localeFr, 'fr');
+registerLocaleData(localeIt, 'it');
+
+if (environment.production) {
+  enableProdMode();
+  setSentryConsoleHandlers();
+}
+
 function sanitizeTransactionName(transaction: string) {
   const regexp = new RegExp('/(individuals|stations|profile)/(?!new)([^/]*)');
   if (regexp.test(transaction)) {
@@ -51,10 +60,42 @@ function sanitizeTransactionName(transaction: string) {
   } else return transaction;
 }
 
-if (environment.production) {
-  enableProdMode();
+export function setSentryConsoleHandlers() {
+  // Store original console methods
+  const { error: originalError, warn: originalWarn } = console;
 
-  window.console.log = () => {};
+  // Override console.error
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  console.error = (...args: any[]) => {
+    const error = args[0] instanceof Error ? args[0] : new Error(args.join(' '));
+    Sentry.captureException(error, {
+      contexts: {
+        console: {
+          arguments: args.length > 1 ? args : undefined,
+          origin: 'console.error'
+        }
+      }
+    });
+    originalError.apply(console, args);
+  };
+
+  // Override console.warn
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  console.warn = (...args: any[]) => {
+    Sentry.captureMessage(args.join(' '), {
+      level: 'warning',
+      contexts: {
+        console: {
+          arguments: args.length > 1 ? args : undefined,
+          origin: 'console.warn'
+        }
+      }
+    });
+    originalWarn.apply(console, args);
+  };
+
+  // Silence console.log in production
+  console.log = () => {};
 }
 
 export class CustomTranslateLoader implements TranslateLoader {
@@ -62,10 +103,6 @@ export class CustomTranslateLoader implements TranslateLoader {
     return from(import(`../assets/i18n/${lang}.json`));
   }
 }
-
-registerLocaleData(localeDe, 'de');
-registerLocaleData(localeFr, 'fr');
-registerLocaleData(localeIt, 'it');
 
 export const appConfig: ApplicationConfig = {
   providers: [
