@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { doc, docData, Firestore } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup } from '@angular/forms';
 import { IdLike } from '@core/core.model';
+import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { IndividualType, MapIndividual } from '@shared/models/individual.model';
 import { AllType, SourceType } from '@shared/models/source-type.model';
@@ -32,7 +33,7 @@ export interface IndividualWithMarkerOpt {
 @Injectable({ providedIn: 'root' })
 
 // requires to be provided in root to save awhen leaving the component
-export class MapService {
+export class MapService extends BaseResourceService<MapData> {
   public mapFilterState: FormGroup<{
     year: FormControl<number>;
     datasource: FormControl<AllType | SourceType>;
@@ -43,12 +44,14 @@ export class MapService {
     protected afs: Firestore,
     protected fds: FirestoreDebugService,
     private masterdataService: MasterdataService
-  ) {}
+  ) {
+    super(afs, 'maps', fds);
+  }
 
   getMapIndividuals(year: number): Observable<MapIndividual[]> {
-    return docData(doc(this.afs, 'maps', year.toString())).pipe(
+    return this.get(year.toString()).pipe(
       first(), // do not subscribe to changes
-      map((mapData: MapData) => this.convertIndividuals(mapData)),
+      map(mapData => this.convertIndividuals(mapData)),
       map(mapIndividuals => this.filterMapIndividuals(mapIndividuals)),
       tap(() => this.fds.addRead('maps'))
     );

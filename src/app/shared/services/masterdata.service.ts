@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { doc, docData, Firestore } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { LanguageService } from '@core/services/language.service';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
@@ -25,6 +25,7 @@ import {
   Species
 } from '../models/masterdata.model';
 import { Roles } from '../models/user-roles.enum';
+import { BaseResourceService } from '@core/services/base-resource.service';
 
 export interface MasterdataCollection {
   [index: string]: Record<string, unknown>;
@@ -68,7 +69,7 @@ interface ConfigStatic {
 }
 
 @Injectable({ providedIn: 'root' })
-export class MasterdataService implements OnDestroy {
+export class MasterdataService extends BaseResourceService<unknown> implements OnDestroy {
   private subscriptions = new Subscription();
   public availableYears$: Observable<number[]>;
   public phenoYear$: Observable<number>;
@@ -78,11 +79,12 @@ export class MasterdataService implements OnDestroy {
   private configStatic = <ConfigStatic>configStatic_import;
 
   constructor(
-    private afs: Firestore,
+    protected afs: Firestore,
     private languageService: LanguageService,
-    private fds: FirestoreDebugService
+    protected fds: FirestoreDebugService
   ) {
-    this.configDynamic$ = docData(doc(this.afs, 'definitions', 'config_dynamic')).pipe(
+    super(afs, 'definitions', fds);
+    this.configDynamic$ = this.get('config_dynamic').pipe(
       tap(() => this.fds.addRead('config_dynamic')),
       shareReplay(1)
     ) as Observable<ConfigDynamic>;
