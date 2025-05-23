@@ -2,7 +2,7 @@ import { Directive, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
-import { filter, flatMap, switchMap, tap } from 'rxjs/operators';
+import { filter, mergeMap, switchMap, tap } from 'rxjs/operators';
 
 @Directive()
 export class BaseDetailComponent<T> implements OnInit, OnDestroy {
@@ -44,7 +44,7 @@ export class BaseDetailComponent<T> implements OnInit, OnDestroy {
     if (this.route.parent) {
       return this.getParam(this.route.parent, param);
     } else {
-      return throwError('parent route param does not exist');
+      return throwError(() => new Error('parent route param does not exist'));
     }
   }
 
@@ -67,12 +67,12 @@ export class BaseDetailComponent<T> implements OnInit, OnDestroy {
 
   private getParam(route: ActivatedRoute, param: string): Observable<string> {
     return route.paramMap.pipe(
-      flatMap((params: ParamMap) => {
+      mergeMap((params: ParamMap) => {
         const p = params.get(param);
         if (p) {
           return of(p);
         } else {
-          return throwError('param does not exist');
+          return throwError(() => new Error('param does not exist'));
         }
       })
     );
