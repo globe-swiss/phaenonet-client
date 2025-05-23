@@ -38,8 +38,8 @@ jobs:
   next-versions:
     runs-on: ubuntu-22.04
     outputs:
-      tag: ${{ steps.new-tag.outputs.tag }}
-      version: ${{ steps.new-tag.outputs.version }}
+      tag: ${{ steps.set-tag.outputs.tag }}
+      version: ${{ steps.set-version.outputs.version }}
     steps:
       - uses: actions/checkout@v4.2.2
         with:
@@ -54,14 +54,20 @@ jobs:
         uses: 'WyriHaximus/github-action-next-semvers@v1'
         with:
           version: ${{ steps.previoustag.outputs.tag }}
-      - name: New tag
-        id: new-tag
-        env:
-          TAG: ${{ github.event.inputs.tag == 'major' && steps.semvers.outputs.v_major || github.event.inputs.tag == 'minor' && steps.semvers.outputs.v_minor || github.event.inputs.tag == 'patch' && steps.semvers.outputs.v_patch || '' }}
-          VERSION: "phaenonet-client@${{ github.event.inputs.tag != 'none' && env.TAG || github.sha }}"
+      - name: Set tag
+        id: set-tag
         run: |
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=${{
+            github.event.inputs.tag == 'major' && steps.semvers.outputs.v_major ||
+            github.event.inputs.tag == 'minor' && steps.semvers.outputs.v_minor ||
+            github.event.inputs.tag == 'patch' && steps.semvers.outputs.v_patch || ''
+          }}" >> $GITHUB_OUTPUT
+      - name: Set version
+        id: set-version
+        run: |
+          echo "version=phaenonet-client@${{
+            github.event.inputs.tag != 'none' && steps.set-tag.outputs.tag || github.sha
+          }}" >> $GITHUB_OUTPUT
   build:
     name: Build
     runs-on: ubuntu-22.04
@@ -119,7 +125,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm install
-      - name: Perform release
+      - name: Release ${{ env.VERSION }}
         run: |
           echo "Create new release ${{ env.VERSION }}"
           pnpm exec sentry-cli releases new ${{ env.VERSION }}
