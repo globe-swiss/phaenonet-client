@@ -36,7 +36,6 @@ type InfoWindowData = IndividualInfoWindowData | StationInfoWindowData;
 @Component({
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.scss'],
-  standalone: true,
   imports: [
     GoogleMap,
     NgFor,

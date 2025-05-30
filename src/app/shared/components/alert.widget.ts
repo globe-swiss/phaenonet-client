@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-alert',
   templateUrl: 'alert.widget.html',
-  standalone: true,
   imports: [NgFor]
 })
 export class AppSnackBarComponent implements OnInit, OnDestroy {

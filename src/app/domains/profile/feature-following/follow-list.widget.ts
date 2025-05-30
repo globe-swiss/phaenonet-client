@@ -15,7 +15,6 @@ import { UserItemComponent } from './user-item.component';
   selector: 'app-follow-list',
   templateUrl: './follow-list.widget.html',
   styleUrls: ['./follow-list.widget.scss'],
-  standalone: true,
   imports: [TranslateModule, NgFor, UserItemComponent, ObservationItemComponent, MatButton, RouterLink, AsyncPipe]
 })
 export class FollowListComponent implements OnInit {

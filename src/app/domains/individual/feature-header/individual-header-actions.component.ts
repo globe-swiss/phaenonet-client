@@ -7,8 +7,7 @@ import { HeaderViews } from './individual-header.model';
   selector: 'app-individual-header-actions',
   templateUrl: './individual-header-actions.component.html',
   styleUrls: ['./individual-header-actions.component.scss'],
-  imports: [MatIcon, MatFabButton],
-  standalone: true
+  imports: [MatIcon, MatFabButton]
 })
 export class IndividualHeaderActionsComponent {
   HeaderViews = HeaderViews;

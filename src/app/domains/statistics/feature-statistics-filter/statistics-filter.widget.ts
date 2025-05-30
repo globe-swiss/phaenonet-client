@@ -19,7 +19,6 @@ import { altitudeGroupValues, FilterGraphType, YearFilterType } from '../shared/
   selector: 'app-statistics-filter',
   templateUrl: './statistics-filter.widget.html',
   styleUrls: ['./statistics-filter.widget.scss'],
-  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,

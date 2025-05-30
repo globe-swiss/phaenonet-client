@@ -13,7 +13,6 @@ import { GeoposService } from '../shared/geopos.service';
   selector: 'app-individual-edit-header',
   templateUrl: './individual-edit-header.widget.html',
   styleUrls: ['./individual-edit-header.widget.scss'],
-  standalone: true,
   imports: [GoogleMap, MapMarker, MatIcon, MatFabButton, AsyncPipe]
 })
 export class IndividualEditHeaderComponent implements OnInit {

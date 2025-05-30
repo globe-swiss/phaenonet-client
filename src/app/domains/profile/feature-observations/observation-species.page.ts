@@ -25,7 +25,6 @@ class Data {
 @Component({
   templateUrl: './observation-species.page.html',
   styleUrls: ['./observation-species.page.scss'],
-  standalone: true,
   imports: [
     NgIf,
     RouterLink,

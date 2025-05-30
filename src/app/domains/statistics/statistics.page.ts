@@ -13,7 +13,6 @@ import { StatisticsFilterService } from './shared/statistics-filter.service';
   encapsulation: ViewEncapsulation.None,
   templateUrl: './statistics.page.html',
   styleUrls: ['./statistics.page.scss'],
-  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,

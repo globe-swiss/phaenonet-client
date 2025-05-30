@@ -3,7 +3,14 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import localeIt from '@angular/common/locales/it';
-import { APP_INITIALIZER, ApplicationConfig, ErrorHandler, enableProdMode, importProvidersFrom } from '@angular/core';
+import {
+  ApplicationConfig,
+  ErrorHandler,
+  enableProdMode,
+  importProvidersFrom,
+  inject,
+  provideAppInitializer
+} from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -106,18 +113,20 @@ export class CustomTranslateLoader implements TranslateLoader {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (translate: TranslateService) => () => lastValueFrom(translate.use('de-CH')),
-      deps: [TranslateService],
-      multi: true
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (googleMapsLoader: GoogleMapsLoaderService) => () => googleMapsLoader.load(),
-      deps: [GoogleMapsLoaderService],
-      multi: true
-    },
+    provideAppInitializer(() => {
+      const initializerFn = (
+        (translate: TranslateService) => () =>
+          lastValueFrom(translate.use('de-CH'))
+      )(inject(TranslateService));
+      return initializerFn();
+    }),
+    provideAppInitializer(() => {
+      const initializerFn = (
+        (googleMapsLoader: GoogleMapsLoaderService) => () =>
+          googleMapsLoader.load()
+      )(inject(GoogleMapsLoaderService));
+      return initializerFn();
+    }),
     provideRouter(routes),
     importProvidersFrom(
       BrowserModule,
@@ -138,12 +147,10 @@ export const appConfig: ApplicationConfig = {
       provide: Sentry.TraceService,
       deps: [Router]
     },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: () => () => {},
-      deps: [Sentry.TraceService],
-      multi: true
-    },
+    provideAppInitializer(() => {
+      const initializerFn = ((_: Sentry.TraceService) => () => {})(inject(Sentry.TraceService));
+      return initializerFn();
+    }),
     [
       { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
       { provide: HTTP_INTERCEPTORS, useClass: LocaleInterceptor, multi: true }

@@ -12,7 +12,6 @@ import { filter, map, mergeAll } from 'rxjs/operators';
   selector: 'app-individual-header-map',
   templateUrl: './individual-header-map.widget.html',
   styleUrls: ['./individual-header-map.widget.scss'],
-  standalone: true,
   imports: [GoogleMap, MapMarker, NgIf, AsyncPipe]
 })
 export class IndividualHeaderMapComponent implements OnInit {

@@ -21,7 +21,6 @@ import { ObservationSpeciesItemComponent } from './observation-species-item.comp
   selector: 'app-observation-list',
   templateUrl: './observation-list.widget.html',
   styleUrls: ['./observation-list.widget.scss'],
-  standalone: true,
   imports: [
     NgIf,
     TranslateModule,

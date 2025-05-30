@@ -12,7 +12,6 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   templateUrl: './reset-password.page.html',
   styleUrls: ['./reset-password.page.scss'],
-  standalone: true,
   imports: [
     MatCard,
     MatCardHeader,

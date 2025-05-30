@@ -13,7 +13,6 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  standalone: true,
   imports: [
     MatCard,
     MatCardHeader,

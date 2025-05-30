@@ -21,7 +21,6 @@ import { ChangeEmailData } from './change-email.model';
   selector: 'app-change-email-dialog',
   styleUrls: ['./change-email-dialog.component.scss'],
   templateUrl: './change-email-dialog.component.html',
-  standalone: true,
   imports: [
     MatButton,
     MatIcon,

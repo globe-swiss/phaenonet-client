@@ -20,7 +20,6 @@ import { IndividualSubscriptionButtonComponent } from './feature-subscription/in
 @Component({
   templateUrl: './individual.page.html',
   styleUrls: ['./individual.page.scss'],
-  standalone: true,
   imports: [
     NgIf,
     IndividualHeaderComponent,

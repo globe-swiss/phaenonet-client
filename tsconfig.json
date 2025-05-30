@@ -2,7 +2,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "downlevelIteration": true,
     "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -16,7 +15,6 @@
     "target": "ES2022",
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2019", "dom"],
-    "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": true,
     "paths": {
       "@shared/*": ["src/app/shared/*"],

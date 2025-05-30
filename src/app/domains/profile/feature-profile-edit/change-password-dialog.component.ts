@@ -21,7 +21,6 @@ import { ChangePasswordData } from './change-password.model';
   selector: 'app-change-password-dialog',
   templateUrl: './change-password-dialog.component.html',
   styleUrls: ['./change-password-dialog.component.scss'],
-  standalone: true,
   imports: [
     MatButton,
     MatIcon,

@@ -15,7 +15,6 @@ import { InviteService } from './invite.service';
   selector: 'app-invite-list',
   templateUrl: './invite-list.widget.html',
   styleUrls: ['./invite-list.widget.scss'],
-  standalone: true,
   imports: [TranslateModule, NgIf, NgFor, InviteItemComponent, MatButton, AsyncPipe]
 })
 export class InviteListComponent implements OnInit {

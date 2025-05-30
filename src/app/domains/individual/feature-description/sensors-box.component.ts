@@ -9,7 +9,6 @@ import { IndividualService } from '@shared/services/individual.service';
   selector: 'app-sensors-box',
   templateUrl: './sensors-box.component.html',
   styleUrls: ['./sensors-box.component.scss'],
-  standalone: true,
   imports: [NgIf, MatTooltip, DecimalPipe, TranslateModule]
 })
 export class SensorsBoxComponent implements OnInit {

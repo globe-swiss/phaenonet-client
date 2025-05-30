@@ -9,7 +9,6 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   templateUrl: './logged-out.page.html',
   styleUrls: ['./logged-out.page.scss'],
-  standalone: true,
   imports: [
     MatCard,
     MatCardHeader,

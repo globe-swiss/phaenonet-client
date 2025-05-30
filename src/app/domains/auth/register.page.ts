@@ -22,7 +22,6 @@ import { Subscription } from 'rxjs';
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatCard,

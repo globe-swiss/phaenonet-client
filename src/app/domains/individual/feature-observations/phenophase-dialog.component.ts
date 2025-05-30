@@ -28,7 +28,6 @@ import { PhenophaseObservation } from '../shared/individual.model';
   selector: 'app-phenohase-dialog',
   styleUrls: ['./phenophase-dialog.component.scss'],
   templateUrl: 'phenophase-dialog.component.html',
-  standalone: true,
   imports: [
     MatButton,
     MatIcon,

@@ -21,7 +21,8 @@ $phaenonet-theme: mat.m2-define-light-theme(
 //update: https://angular-material.dev/courses/m2-ng-components/m2-ng-components/overview
 @include mat.typography-hierarchy($phaenonet-typography);
 
-@include mat.core-theme($phaenonet-theme);
+@include mat.elevation-classes();
+@include mat.app-background();
 @include mat.autocomplete-theme($phaenonet-theme);
 @include mat.button-theme($phaenonet-theme);
 @include mat.fab-theme($phaenonet-theme);

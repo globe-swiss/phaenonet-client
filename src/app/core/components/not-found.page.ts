@@ -9,7 +9,6 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-not-found',
   templateUrl: './not-found.page.html',
   styleUrls: ['./not-found.page.scss'],
-  standalone: true,
   imports: [
     MatCard,
     MatCardHeader,

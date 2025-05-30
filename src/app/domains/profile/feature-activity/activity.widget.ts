@@ -12,7 +12,6 @@ import { ActivityService } from './activity.service';
   selector: 'app-activity',
   templateUrl: './activity.widget.html',
   styleUrls: ['./activity.widget.scss'],
-  standalone: true,
   imports: [TranslateModule, NgFor, ActivityItemComponent, MatButton, AsyncPipe]
 })
 export class ActivityComponent implements OnInit {

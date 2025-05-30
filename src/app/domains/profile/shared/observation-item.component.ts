@@ -11,7 +11,6 @@ import { formatShortDate } from '@shared/utils/formatDate';
   selector: 'app-observation-item',
   templateUrl: './observation-item.component.html',
   styleUrls: ['./observation-item.component.scss'],
-  standalone: true,
   imports: [RouterLink, NgIf, NgStyle, MatIcon, AsyncPipe, TranslateModule]
 })
 export class ObservationItemComponent {

@@ -11,7 +11,6 @@ import browserUpdate from 'browser-update';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: true,
   imports: [AppSnackBarComponent, RouterOutlet, NavComponent]
 })
 export class AppComponent {

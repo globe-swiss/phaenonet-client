@@ -11,7 +11,6 @@ import { Observable } from 'rxjs';
   selector: 'app-individual-subscription-button',
   templateUrl: './individual-subscription.widget.html',
   styleUrls: ['./individual-subscription.widget.scss'],
-  standalone: true,
   imports: [NgIf, MatFabButton, MatIcon, AsyncPipe]
 })
 export class IndividualSubscriptionButtonComponent implements OnInit {

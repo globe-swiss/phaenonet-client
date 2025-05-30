@@ -19,7 +19,6 @@ import { SensorsBoxComponent } from './sensors-box.component';
   selector: 'app-individual-info',
   templateUrl: './individual-info.widget.html',
   styleUrls: ['./individual-info.widget.scss'],
-  standalone: true,
   imports: [
     NgIf,
     TranslateModule,
