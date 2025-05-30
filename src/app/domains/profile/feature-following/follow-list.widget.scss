@@ -1,30 +1,30 @@
 @use '@angular/material' as mat;
 
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
-@import 'src/theming/typography';
+@use 'src/theming/typography';
 
 .follow-list {
-  @include detail-view-content;
-  @include profile-detail-bottom-padding;
+  @include mixins.detail-view-content;
+  @include mixins.profile-detail-bottom-padding;
 
   &__title {
-    @include left-column;
+    @include mixins.left-column;
   }
 
   &__content {
-    @include profile-detail-right-column;
+    @include mixins.profile-detail-right-column;
   }
 
   &__button {
-    @include button;
+    @include mixins.button;
 
     &--more {
-      @include button-first-on-mobile;
+      @include mixins.button-first-on-mobile;
     }
   }
 
   &__buttons {
-    @include buttons;
+    @include mixins.buttons;
   }
 }

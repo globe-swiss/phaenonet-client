@@ -1,13 +1,12 @@
 @use '@angular/material' as mat;
+@use './theming/phaenonet-theme' as phaenonet;
+@use './theming/constants' as constants;
+@use './theming/mixins' as mixins;
+@use 'src/theming/typography';
 
 @include mat.elevation-classes();
 @include mat.app-background();
 
-@import './theming/phaenonet-theme';
-@import './theming/constants';
-@import './theming/mixins';
-
-// ***** GLOBAL *****
 :root {
   --h2-color: #868072;
 }
@@ -86,7 +85,7 @@ mat-dialog-container .phenonet-dialog-component-close-button.mat-mdc-button {
   margin-top: 7rem;
 }
 
-@include for-phone {
+@include mixins.for-phone {
   .detail-left {
     grid-column: 1 / span 6;
   }
@@ -123,21 +122,21 @@ snack-bar-container.error {
 }
 
 .detail-info-value {
-  @include typo-t4;
+  @include typography.typo-t4;
 
   color: #5d5d5d;
   font-weight: var(--t4-bold-font-weight);
 }
 
 .detail-info-value-addition {
-  @include typo-t4;
+  @include typography.typo-t4;
 
   color: #5d5d5d;
   font-weight: var(--t4-font-weight);
 }
 
 .phenophase-title {
-  @include typo-t1;
+  @include typography.typo-t1;
 
   padding-top: 0.125rem;
   padding-bottom: 1.25rem;

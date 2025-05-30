@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
-
-@import 'src/theming/typography';
+@use 'src/theming/mixins';
+@use 'src/theming/typography';
 
 .map {
   height: 100%;
@@ -37,7 +37,7 @@
   }
 
   &__info-window-label {
-    @include typo-t4;
+    @include typography.typo-t4;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -48,7 +48,7 @@
   }
 
   &__info-window-value {
-    @include typo-t2;
+    @include typography.typo-t2;
 
     &:nth-child(2) {
       padding-bottom: 5px;
@@ -56,7 +56,7 @@
   }
 
   &__info-window-caption {
-    @include typo-t3;
+    @include typography.typo-t3;
   }
 
   &__map-actions {
@@ -66,7 +66,7 @@
     left: 13.5%;
     bottom: 5%;
 
-    @include for-tablet-and-smaller {
+    @include mixins.for-tablet-and-smaller {
       left: 5%;
     }
   }
@@ -87,7 +87,7 @@
   // button visible on tablet and desktop resolutions
   &__desktop-button {
     display: inline;
-    @include for-phone {
+    @include mixins.for-phone {
       display: none;
     }
   }
@@ -95,7 +95,7 @@
   // button visible on phone resolutions
   &__mobile-button {
     display: none;
-    @include for-phone {
+    @include mixins.for-phone {
       display: inline;
     }
   }
@@ -107,7 +107,7 @@
     background-color: white;
     border-radius: 20px;
 
-    @include for-tablet-and-smaller {
+    @include mixins.for-tablet-and-smaller {
       top: 6.5rem;
       left: 50%;
       transform: translateX(-50%);
@@ -137,21 +137,21 @@
 
     &__year {
       width: 7rem;
-      @include for-tablet-and-smaller {
+      @include mixins.for-tablet-and-smaller {
         width: 6rem;
       }
     }
 
     &__datasource {
       width: 7rem;
-      @include for-tablet-and-smaller {
+      @include mixins.for-tablet-and-smaller {
         width: 7rem;
       }
     }
 
     &__species {
       width: 15rem;
-      @include for-tablet-and-smaller {
+      @include mixins.for-tablet-and-smaller {
         width: 6rem;
       }
     }

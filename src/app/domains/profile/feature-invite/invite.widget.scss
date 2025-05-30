@@ -1,13 +1,11 @@
 @use '@angular/material' as mat;
-
-@import 'src/theming/mixins';
-
-@import 'src/theming/typography';
+@use 'src/theming/mixins';
+@use 'src/theming/typography';
 
 .invite-component {
-  @include detail-view;
+  @include mixins.detail-view;
 
-  @include for-tablet-and-smaller {
+  @include mixins.for-tablet-and-smaller {
     max-width: 550px;
   }
 }

@@ -1,11 +1,11 @@
 @use '@angular/material' as mat;
 
-@import 'src/theming/typography';
+@use 'src/theming/typography';
 
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
 .observation-item {
-  @include teaser-card;
+  @include mixins.teaser-card;
 
   mat-icon {
     margin-left: auto;
@@ -14,32 +14,32 @@
   }
 
   &__image {
-    @include teaser-image;
+    @include mixins.teaser-image;
   }
 
   &__image_container {
-    @include teaser-image;
+    @include mixins.teaser-image;
     width: 180px;
     height: 180px;
   }
 
   &__description {
-    @include teaser-description;
+    @include mixins.teaser-description;
   }
 
   &__label {
-    @include detail-label;
+    @include mixins.detail-label;
   }
 
   &__value {
-    @include typo-t1;
+    @include typography.typo-t1;
   }
 
   &__phenophase-circle {
-    @include phenophase-circle;
+    @include mixins.phenophase-circle;
   }
 
   &__name {
-    @include teaser-name;
+    @include mixins.teaser-name;
   }
 }

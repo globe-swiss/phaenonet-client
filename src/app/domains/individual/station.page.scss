@@ -1,54 +1,52 @@
 @use '@angular/material' as mat;
-
-@import 'src/theming/mixins';
-
-@import 'src/theming/typography';
+@use 'src/theming/mixins';
+@use 'src/theming/typography';
 
 .station-detail {
-  @include detail-view;
+  @include mixins.detail-view;
 
   &__card {
-    @include detail-card;
+    @include mixins.detail-card;
   }
 
   &__description-header {
-    @include default-left-right-padding;
-    @include left-column;
-    @include detail-bottom-padding;
+    @include mixins.default-left-right-padding;
+    @include mixins.left-column;
+    @include mixins.detail-bottom-padding;
   }
 
   &__content {
-    @include detail-view-content;
+    @include mixins.detail-view-content;
     grid-template-rows: repeat(4, min-content);
     margin-top: 40px;
   }
 
   &__label {
-    @include detail-label;
+    @include mixins.detail-label;
   }
 
   &__name {
-    @include typo-t1;
+    @include typography.typo-t1;
     margin-bottom: 20px;
   }
 
   &__value {
-    @include detail-value;
+    @include mixins.detail-value;
     padding-bottom: 10px;
   }
 
   &__value-addition {
-    @include detail-value-regular;
+    @include mixins.detail-value-regular;
   }
 
   &__observation-view {
-    @include default-left-right-padding;
-    @include complete-right-column;
+    @include mixins.default-left-right-padding;
+    @include mixins.complete-right-column;
   }
 
   &__observation-content {
-    @include default-left-right-padding;
-    @include complete-right-column;
+    @include mixins.default-left-right-padding;
+    @include mixins.complete-right-column;
 
     h2 {
       padding-bottom: 2rem;
@@ -56,7 +54,7 @@
   }
 
   &__observation-species {
-    @include typo-t2;
+    @include typography.typo-t2;
     padding-top: 2rem;
   }
 
@@ -65,14 +63,14 @@
   }
 
   &__detail-sub {
-    @include detail-value-t2;
+    @include mixins.detail-value-t2;
     font-style: italic;
     margin-top: -1.25rem;
     padding-bottom: 1.25rem;
   }
 
   &__year {
-    @include year-select;
+    @include mixins.year-select;
     margin-left: 40px;
     margin-bottom: 0;
     margin-top: -6px;

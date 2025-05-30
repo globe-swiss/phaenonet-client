@@ -1,8 +1,8 @@
 @use '@angular/material' as mat;
 
-@import 'src/theming/typography';
+@use 'src/theming/typography';
 
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
 mat-toolbar.mat-toolbar {
   background-color: white;
@@ -22,8 +22,8 @@ mat-toolbar.mat-toolbar {
   height: 100%;
 
   &__row {
-    @include mobile-max-width;
-    @include default-left-right-padding;
+    @include mixins.mobile-max-width;
+    @include mixins.default-left-right-padding;
 
     max-width: 1120px;
     margin-left: auto;
@@ -51,7 +51,7 @@ mat-toolbar.mat-toolbar {
   }
 
   &__button {
-    @include typo-t4;
+    @include typography.typo-t4;
     color: #5d5d5d;
   }
 }

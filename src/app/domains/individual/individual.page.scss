@@ -1,10 +1,10 @@
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
 .individual-detail {
-  @include detail-view;
+  @include mixins.detail-view;
 
   &__card {
-    @include detail-card;
+    @include mixins.detail-card;
   }
 
   &__subscription-button {
@@ -17,32 +17,32 @@
   }
 
   &__content {
-    @include detail-view-content;
+    @include mixins.detail-view-content;
     grid-template-rows: repeat(4, min-content);
     margin-top: 40px;
   }
 
   &__description-header {
-    @include default-left-right-padding;
-    @include left-column;
-    @include detail-bottom-padding;
+    @include mixins.default-left-right-padding;
+    @include mixins.left-column;
+    @include mixins.detail-bottom-padding;
   }
 
   &__basic-info {
-    @include default-left-right-padding;
-    @include left-column;
-    @include detail-bottom-padding;
-    @include hide-on-mobile;
+    @include mixins.default-left-right-padding;
+    @include mixins.left-column;
+    @include mixins.detail-bottom-padding;
+    @include mixins.hide-on-mobile;
   }
 
   &__buttons {
-    @include default-left-right-padding;
-    @include left-column;
-    @include flex-last-on-mobile;
+    @include mixins.default-left-right-padding;
+    @include mixins.left-column;
+    @include mixins.flex-last-on-mobile;
   }
 
   &__right_pane {
-    @include default-left-right-padding;
-    @include complete-right-column;
+    @include mixins.default-left-right-padding;
+    @include mixins.complete-right-column;
   }
 }

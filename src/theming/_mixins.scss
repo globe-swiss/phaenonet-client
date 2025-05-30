@@ -1,15 +1,14 @@
-@import './constants';
-
-@import './mixins-typography';
+@use './constants';
+@use './mixins-typography';
 
 @mixin for-tablet-and-smaller {
-  @media screen and (max-width: $min-desktop-width) {
+  @media screen and (max-width: constants.$min-desktop-width) {
     @content;
   }
 }
 
 @mixin for-phone {
-  @media screen and (max-width: $min-laptop-width) {
+  @media screen and (max-width: constants.$min-laptop-width) {
     @content;
   }
 }
@@ -79,24 +78,24 @@
 }
 
 @mixin detail-label {
-  @include typo-t4;
+  @include mixins-typography.typo-t4;
 
   font-weight: 500; // todo: why 500?
   color: #868072;
 }
 
 @mixin detail-value {
-  @include typo-t4-bold;
+  @include mixins-typography.typo-t4-bold;
 
   color: #5d5d5d;
 }
 
 @mixin detail-value-t2 {
-  @include typo-t2;
+  @include mixins-typography.typo-t2;
 }
 
 @mixin detail-value-t1 {
-  @include typo-t1;
+  @include mixins-typography.typo-t1;
 }
 
 @mixin detail-value-regular {

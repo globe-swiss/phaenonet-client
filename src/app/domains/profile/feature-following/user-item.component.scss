@@ -1,29 +1,29 @@
 @use '@angular/material' as mat;
 
-@import 'src/theming/typography';
+@use 'src/theming/typography';
 
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
 .user-item {
-  @include teaser-card;
+  @include mixins.teaser-card;
 
   &__image {
-    @include teaser-image;
+    @include mixins.teaser-image;
   }
 
   &__description {
-    @include teaser-description;
+    @include mixins.teaser-description;
   }
 
   &__label {
-    @include detail-label;
+    @include mixins.detail-label;
   }
 
   &__value {
-    @include typo-t1;
+    @include typography.typo-t1;
   }
 
   &__name {
-    @include teaser-name;
+    @include mixins.teaser-name;
   }
 }

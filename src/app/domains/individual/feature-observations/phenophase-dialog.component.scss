@@ -1,12 +1,12 @@
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
-@import 'src/theming/typography';
+@use 'src/theming/typography';
 
 .phenophase-dialog {
-  @include dialog;
+  @include mixins.dialog;
 
   &__label {
-    @include detail-label;
+    @include mixins.detail-label;
   }
 
   &__form-field {
@@ -14,10 +14,10 @@
   }
 
   &__buttons {
-    @include buttons;
+    @include mixins.buttons;
   }
 
   &__button {
-    @include button;
+    @include mixins.button;
   }
 }

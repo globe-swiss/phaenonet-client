@@ -1,10 +1,9 @@
 @use '@angular/material' as mat;
+@use './constants';
+@use './mixins';
+@forward 'mixins-typography';
 
-@import './constants';
-
-@import './mixins';
-
-@include for-tablet-and-smaller {
+@include mixins.for-tablet-and-smaller {
   body {
     --h1-font-size: 1.75rem;
     --h2-font-size: 1rem;

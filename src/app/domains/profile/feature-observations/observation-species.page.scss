@@ -1,19 +1,19 @@
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
-@import 'src/theming/typography';
+@use 'src/theming/typography';
 
 .observation-species {
-  @include detail-view;
+  @include mixins.detail-view;
 
-  @include for-tablet-and-smaller {
+  @include mixins.for-tablet-and-smaller {
     max-width: 550px;
   }
 
   &-component {
-    @include detail-view-content;
+    @include mixins.detail-view-content;
 
     &__title {
-      @include left-column;
+      @include mixins.left-column;
       text-decoration: none;
       display: flex;
       align-items: flex-start;
@@ -37,12 +37,12 @@
     }
 
     &__year {
-      @include profile-detail-right-column;
-      @include year-select;
+      @include mixins.profile-detail-right-column;
+      @include mixins.year-select;
     }
 
     &__content {
-      @include profile-detail-right-column;
+      @include mixins.profile-detail-right-column;
     }
 
     &__species-year {
@@ -51,7 +51,7 @@
     }
 
     &__no-entries {
-      @include profile-detail-right-column;
+      @include mixins.profile-detail-right-column;
     }
   }
 }

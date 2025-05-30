@@ -1,16 +1,15 @@
-@import 'src/theming/mixins';
-
-@import 'src/theming/typography';
+@use 'src/theming/mixins';
+@use 'src/theming/typography';
 
 .individual-observation-view {
   margin-top: 2.5625rem;
 
   &__phenophase-group {
-    @include detail-label;
+    @include mixins.detail-label;
   }
 
   &__phenophase {
-    @include detail-value-t1;
+    @include mixins.detail-value-t1;
   }
 
   &__form-field {
@@ -22,7 +21,7 @@
   }
 
   &__year {
-    @include year-select;
+    @include mixins.year-select;
     margin-left: 40px;
     margin-bottom: 0;
   }
@@ -43,7 +42,7 @@
   }
 
   &__detail-sub {
-    @include detail-value-t2;
+    @include mixins.detail-value-t2;
     font-style: italic;
     margin-top: -1.25rem;
     padding-bottom: 1.25rem;

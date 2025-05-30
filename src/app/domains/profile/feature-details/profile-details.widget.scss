@@ -1,41 +1,39 @@
 @use '@angular/material' as mat;
-
-@import 'src/theming/mixins';
-
-@import 'src/theming/typography';
+@use 'src/theming/mixins';
+@use 'src/theming/typography';
 
 .profile-details {
-  @include detail-view-content;
-  @include profile-detail-bottom-padding;
+  @include mixins.detail-view-content;
+  @include mixins.profile-detail-bottom-padding;
 
   &__title {
-    @include left-column;
+    @include mixins.left-column;
   }
 
   &__content {
-    @include profile-detail-right-column;
+    @include mixins.profile-detail-right-column;
   }
 
   &__ranger-badge {
-    @include ranger-badge;
+    @include mixins.ranger-badge;
   }
 
   &__badge {
-    @include badge;
+    @include mixins.badge;
   }
 
   &__label {
-    @include detail-label;
+    @include mixins.detail-label;
     line-height: 1.125rem;
     margin-top: 1.125rem;
   }
 
   &__value {
-    @include detail-value-t2;
+    @include mixins.detail-value-t2;
   }
 
   &__button {
-    @include button;
+    @include mixins.button;
 
     &--logout {
       color: #d37872;
@@ -43,6 +41,6 @@
   }
 
   &__buttons {
-    @include buttons;
+    @include mixins.buttons;
   }
 }
