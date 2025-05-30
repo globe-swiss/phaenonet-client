@@ -26,12 +26,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v4.0.3
+    - uses: actions/setup-node@v4.4.0
       with:
         node-version: 20 # match requirements of FirebaseExtended/action-hosting-deploy
     - id: auth
       name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@v2.1.4
+      uses: google-github-actions/auth@v2.1.10
       with:
         workload_identity_provider: ${{ inputs.workload_identity_provider }}
         service_account: ${{ inputs.service_account }}
