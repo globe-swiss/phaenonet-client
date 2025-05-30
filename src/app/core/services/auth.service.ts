@@ -22,7 +22,7 @@ import { LocalService } from '@app/core/services/local.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '@core/services/alert.service';
 import { none } from 'fp-ts/lib/Option';
 import { Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { PhenonetUser } from '../core.model';
 import { BaseResourceService } from './base-resource.service';
 import { FirestoreDebugService } from './firestore-debug.service';
@@ -57,7 +57,8 @@ export class AuthService extends BaseResourceService<PhenonetUser> {
 
     this.authenticated = toSignal(
       this.firebaseUser$.pipe(
-        map(user => !!user) // Convert user object to boolean
+        map(user => !!user), // Convert user object to boolean
+        tap(authenticated => this.setCachedLoginState(authenticated))
       ),
       { initialValue: this.isCachedLoggedIn() }
     );
@@ -66,10 +67,6 @@ export class AuthService extends BaseResourceService<PhenonetUser> {
 
     onIdTokenChanged(this.afAuth, user => {
       this.email.set(user ? user.email : null);
-    });
-
-    effect(() => {
-      this.setCachedLoginState(this.authenticated());
     });
   }
 
