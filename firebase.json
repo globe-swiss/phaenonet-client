@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/phaenonet",
+    "public": "dist/phaenonet/browser",
     "rewrites": [
       {
         "source": "**",
