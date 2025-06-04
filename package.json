@@ -52,7 +52,7 @@
     "@softarc/sheriff-core": "^0.18.0",
     "@types/d3": "^7.4.3",
     "@types/lodash": "^4.17.17",
-    "@types/node": "^18.19.110",
+    "@types/node": "^20.17.57",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",
     "eslint": "^9.28.0",
@@ -73,7 +73,7 @@
     "stylelint-config-sass-guidelines": "^12.1.0",
     "stylelint-order": "^7.0.0",
     "ts-node": "^10.9.2",
-    "typescript": ">=5.8.0 <5.9.0"
+    "typescript": "^5.8.3"
   },
   "engines": {
     "node": "=20",
