@@ -82,10 +82,12 @@
   "name": "phaenonet",
   "pnpm": {
     "overrideComments": {
-      "canvas": "override from 2.8 -> 2.11 to be able to use binary dependency for resemblejs"
+      "canvas": "override from 2.8 -> 2.11 to be able to use binary dependency for resemblejs",
+      "xml2js": "pnpm audit"
     },
     "overrides": {
-      "canvas": "^2.11.2"
+      "canvas": "^2.11.2",
+      "xml2js@<0.5.0": ">=0.5.0"
     }
   },
   "private": true,
