@@ -11,6 +11,8 @@
   "altitude": "Höhe",
   "auth/email-already-in-use.message": "Die eingegebene Mailadresse wird bereits verwendet.",
   "auth/email-already-in-use.title": "Mailadresse bereits verwendet",
+  "auth/invalid-credential.message": "Der Benutzername oder das Passwort ist falsch.",
+  "auth/invalid-credential.title": "Anmeldung fehlgeschlagen",
   "auth/invalid-email.message": "Die eingegebene Mailadresse ist ungültig.",
   "auth/invalid-email.title": "Ungültige Mailadresse",
   "auth/network-request-failed.message": "Es ist ein Netzwerkfehler aufgetreten.",

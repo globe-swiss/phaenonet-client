@@ -95,6 +95,8 @@
   "Auswertungen": "Risultati",
   "auth/email-already-in-use.message": "L'indirizzo e-mail inserito è già usato.",
   "auth/email-already-in-use.title": "Indirizzo e-mail già usato",
+  "auth/invalid-credential.message": "Il nome utente o password non sono corretti.",
+  "auth/invalid-credential.title": "Login fallito",
   "auth/invalid-email.message": "L'indirizzo e-mail inserito non è valido.",
   "auth/invalid-email.title": "Indirizzo e-mail non valido",
   "auth/network-request-failed.message": "Si è verificato un errore di rete.",

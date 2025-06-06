@@ -95,6 +95,8 @@
   "Auswertungen": "Résultats",
   "auth/email-already-in-use.message": "L'adresse courriel saisie est déjà utilisée",
   "auth/email-already-in-use.title": "Adresse courriel déjà utilisée",
+  "auth/invalid-credential.message": "Le nom d'utilisateur ou le mot de passe est incorrect.",
+  "auth/invalid-credential.title": "Échec de la connexion",
   "auth/invalid-email.message": "L'adresse courriel saisie n'est pas valable.",
   "auth/invalid-email.title": "Adresse courriel non valable",
   "auth/network-request-failed.message": "Une erreur de réseau est survenue.",
