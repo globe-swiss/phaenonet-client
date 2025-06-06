@@ -26,7 +26,6 @@ import { ObservationService } from './shared/observation.service';
 @Component({
   templateUrl: './station.page.html',
   styleUrls: ['./station.page.scss'],
-  standalone: true,
   imports: [
     NgIf,
     IndividualHeaderComponent,

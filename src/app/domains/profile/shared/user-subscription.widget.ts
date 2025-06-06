@@ -12,7 +12,6 @@ import { map, shareReplay } from 'rxjs/operators';
   selector: 'app-user-subscription-button',
   templateUrl: './user-subscription.widget.html',
   styleUrls: ['./user-subscription.widget.scss'],
-  standalone: true,
   imports: [NgIf, MatFabButton, MatIcon, MatButton, TranslateModule, AsyncPipe]
 })
 export class UserSubscriptionButtonComponent implements OnInit {

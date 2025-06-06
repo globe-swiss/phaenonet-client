@@ -29,7 +29,6 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
   selector: 'app-individual-observation-view',
   templateUrl: './individual-observation.widget.html',
   styleUrls: ['./individual-observation.widget.scss'],
-  standalone: true,
   imports: [
     MatSelect,
     NgFor,

@@ -1,29 +1,36 @@
-@import 'src/theming/mixins';
-
-@import 'src/theming/typography';
+@use 'src/theming/mixins';
+@use 'src/theming/typography';
 
 .observation-species {
-  @include detail-view;
+  @include mixins.detail-view;
 
-  @include for-tablet-and-smaller {
-    max-width: 550px;
+  @include mixins.for-tablet-and-smaller {
+    & {
+      max-width: 550px;
+    }
   }
 
   &-component {
-    @include detail-view-content;
+    @include mixins.detail-view-content;
 
     &__title {
-      @include left-column;
-      text-decoration: none;
-      display: flex;
-      align-items: flex-start;
+      @include mixins.left-column;
+
+      & {
+        text-decoration: none;
+        display: flex;
+        align-items: flex-start;
+      }
 
       mat-icon {
         --icon-size: 13px;
-        height: var(--icon-size);
-        width: var(--icon-size);
-        font-size: calc(var(--icon-size) - 3px);
-        padding-right: 0.75rem;
+
+        & {
+          height: var(--icon-size);
+          width: var(--icon-size);
+          font-size: calc(var(--icon-size) - 3px);
+          padding-right: 0.75rem;
+        }
       }
 
       h2 {
@@ -32,26 +39,30 @@
     }
 
     &__title_container {
-      display: flex;
-      align-items: center;
+      & {
+        display: flex;
+        align-items: center;
+      }
     }
 
     &__year {
-      @include profile-detail-right-column;
-      @include year-select;
+      @include mixins.profile-detail-right-column;
+      @include mixins.year-select;
     }
 
     &__content {
-      @include profile-detail-right-column;
+      @include mixins.profile-detail-right-column;
     }
 
     &__species-year {
-      display: flex;
-      justify-content: space-between;
+      & {
+        display: flex;
+        justify-content: space-between;
+      }
     }
 
     &__no-entries {
-      @include profile-detail-right-column;
+      @include mixins.profile-detail-right-column;
     }
   }
 }

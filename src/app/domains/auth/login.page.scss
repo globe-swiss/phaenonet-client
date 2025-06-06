@@ -1,15 +1,13 @@
 @use '@angular/material' as mat;
-
-@import 'src/theming/mixins';
-@import 'src/theming/typography';
-
-@import 'src/theming/palettes';
+@use 'src/theming/mixins';
+@use 'src/theming/typography';
+@use 'src/theming/palettes';
 
 .login-form {
-  @include card-view;
+  @include mixins.card-view;
 
   &__content {
-    @include card-view-content;
+    @include mixins.card-view-content;
   }
 
   &__form {
@@ -18,11 +16,11 @@
   }
 
   &__button {
-    @include button;
+    @include mixins.button;
   }
 
   &__link {
-    @include detail-value;
-    color: mat.m2-get-color-from-palette($phaenonet-primary, 500);
+    @include mixins.detail-value;
+    color: mat.m2-get-color-from-palette(palettes.$phaenonet-primary, 500);
   }
 }

@@ -1,21 +1,18 @@
 @use '@angular/material' as mat;
-
-@import 'src/theming/typography';
-
-@import 'src/theming/mixins';
+@use 'src/theming/typography';
+@use 'src/theming/mixins';
 
 .masterdata-info {
   &__label {
-    @include detail-label;
+    @include mixins.detail-label;
   }
 
   &__value {
-    @include detail-value;
-
+    @include mixins.detail-value;
     padding-bottom: 10px;
   }
 
   &__value-addition {
-    @include detail-value-regular;
+    @include mixins.detail-value-regular;
   }
 }

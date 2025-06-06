@@ -19,7 +19,6 @@ import { map } from 'rxjs/operators';
   selector: 'app-profile-details',
   templateUrl: './profile-details.widget.html',
   styleUrls: ['./profile-details.widget.scss'],
-  standalone: true,
   imports: [
     TranslateModule,
     NgIf,

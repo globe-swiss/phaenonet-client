@@ -1,4 +1,4 @@
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
 .statistics-filter {
   form {
@@ -23,7 +23,7 @@
     }
   }
 
-  @include for-tablet-and-smaller {
+  @include mixins.for-tablet-and-smaller {
     .mat-mdc-form-field {
       width: 6rem;
       margin-bottom: 0 !important;
@@ -45,7 +45,7 @@
     }
   }
 
-  @include for-phone {
+  @include mixins.for-phone {
     .mat-mdc-form-field {
       width: 3.5rem;
       margin: 0.5rem !important;

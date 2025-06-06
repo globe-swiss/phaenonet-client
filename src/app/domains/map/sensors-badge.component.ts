@@ -6,7 +6,6 @@ import { SensorLiveData } from '@shared/models/individual.model';
   selector: 'app-sensors-badge',
   templateUrl: './sensors-badge.component.html',
   styleUrls: ['./sensors-badge.component.scss'],
-  standalone: true,
   imports: [NgIf, DecimalPipe]
 })
 export class SensorsBadgeComponent {

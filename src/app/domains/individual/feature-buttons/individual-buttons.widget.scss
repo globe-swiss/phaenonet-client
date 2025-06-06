@@ -1,16 +1,14 @@
 @use '@angular/material' as mat;
-
-@import 'src/theming/typography';
-
-@import 'src/theming/mixins';
+@use 'src/theming/typography';
+@use 'src/theming/mixins';
 
 .individual-buttons {
   &__buttons {
-    @include buttons;
+    @include mixins.buttons;
   }
 
   &__button {
-    @include button;
+    @include mixins.button;
 
     &--secondary {
       background-color: transparent;

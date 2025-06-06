@@ -12,7 +12,6 @@ import { switchMap } from 'rxjs/operators';
   selector: 'app-masterdata-info',
   templateUrl: './masterdata-info.component.html',
   styleUrls: ['./masterdata-info.component.scss'],
-  standalone: true,
   imports: [TranslateModule, AsyncPipe, RoundPipe]
 })
 export class IndividualDescriptionBasicInfoComponent implements OnInit {

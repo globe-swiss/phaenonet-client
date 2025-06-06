@@ -1,32 +1,32 @@
 @use '@angular/material' as mat;
 
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
-@import 'src/theming/typography';
+@use 'src/theming/typography';
 
 .profile-public {
-  @include detail-view-content;
-  @include profile-detail-bottom-padding;
+  @include mixins.detail-view-content;
+  @include mixins.profile-detail-bottom-padding;
 
   &__title {
-    @include left-column;
+    @include mixins.left-column;
   }
 
   &__content {
-    @include profile-detail-right-column;
+    @include mixins.profile-detail-right-column;
   }
 
   &__ranger-badge {
-    @include ranger-badge;
+    @include mixins.ranger-badge;
   }
 
   &__badge {
-    @include badge;
+    @include mixins.badge;
   }
 
   app-user-subscription-button ::ng-deep button {
     margin-top: 60px;
-    @include for-tablet-and-smaller {
+    @include mixins.for-tablet-and-smaller {
       margin-top: 30px;
     }
   }

@@ -1,30 +1,30 @@
 @use '@angular/material' as mat;
 
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
-@import 'src/theming/typography';
+@use 'src/theming/typography';
 
 mat-icon {
   cursor: pointer;
 }
 
 .profile-edit {
-  @include detail-view;
+  @include mixins.detail-view;
 
-  @include for-tablet-and-smaller {
+  @include mixins.for-tablet-and-smaller {
     max-width: 550px;
   }
 
   &__content {
-    @include detail-view-content;
+    @include mixins.detail-view-content;
   }
 
   &__title {
-    @include left-column;
+    @include mixins.left-column;
   }
 
   &__right-column {
-    @include profile-detail-right-column;
+    @include mixins.profile-detail-right-column;
   }
 
   &__form-field {
@@ -32,14 +32,14 @@ mat-icon {
   }
 
   &__button {
-    @include button;
+    @include mixins.button;
 
     &--secondary {
-      @include button-first-on-mobile;
+      @include mixins.button-first-on-mobile;
     }
   }
 
   &__buttons {
-    @include buttons;
+    @include mixins.buttons;
   }
 }

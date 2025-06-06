@@ -10,7 +10,6 @@ import { HeaderViews } from './individual-header.model';
 @Component({
   selector: 'app-individual-header',
   templateUrl: './individual-header.component.html',
-  standalone: true,
   imports: [IndividualHeaderMapComponent, IndividualHeaderGraphComponent, IndividualHeaderActionsComponent, AsyncPipe]
 })
 export class IndividualHeaderComponent implements OnInit {

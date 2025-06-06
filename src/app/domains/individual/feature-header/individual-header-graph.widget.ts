@@ -17,8 +17,7 @@ import { mergeMap } from 'rxjs/operators';
   selector: 'app-individual-header-graph',
   templateUrl: './individual-header-graph.widget.html',
   styleUrls: ['./individual-header-graph.widget.scss'],
-  imports: [TranslateModule],
-  standalone: true
+  imports: [TranslateModule]
 })
 export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Input() individual$: ReplaySubject<Individual>;

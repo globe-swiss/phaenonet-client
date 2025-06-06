@@ -8,7 +8,6 @@ import { PublicUser } from '@shared/models/public-user.model';
   selector: 'app-user-item',
   templateUrl: './user-item.component.html',
   styleUrls: ['./user-item.component.scss'],
-  standalone: true,
   imports: [RouterLink, TranslateModule]
 })
 export class UserItemComponent {

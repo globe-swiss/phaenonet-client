@@ -1,8 +1,6 @@
 @use '@angular/material' as mat;
-
-@import 'src/theming/typography';
-
-@import 'src/theming/mixins';
+@use 'src/theming/typography';
+@use 'src/theming/mixins';
 
 mat-toolbar.mat-toolbar {
   background-color: white;
@@ -22,16 +20,18 @@ mat-toolbar.mat-toolbar {
   height: 100%;
 
   &__row {
-    @include mobile-max-width;
-    @include default-left-right-padding;
+    @include mixins.mobile-max-width;
+    @include mixins.default-left-right-padding;
 
-    max-width: 1120px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
+    & {
+      max-width: 1120px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
 
-    display: flex;
-    flex-direction: row;
+      display: flex;
+      flex-direction: row;
+    }
   }
 
   &__logo {
@@ -42,16 +42,27 @@ mat-toolbar.mat-toolbar {
       width: 30px;
       height: 36px;
     }
+
+    & {
+      padding: 28px;
+      padding-left: 0;
+    }
   }
 
   &__buttons {
-    margin-left: auto;
-    align-self: center;
-    display: flex;
+    // Wrap declarations in & {}
+    & {
+      margin-left: auto;
+      align-self: center;
+      display: flex;
+    }
   }
 
   &__button {
-    @include typo-t4;
-    color: #5d5d5d;
+    @include typography.typo-t4;
+
+    & {
+      color: #5d5d5d;
+    }
   }
 }

@@ -1,36 +1,36 @@
 @use '@angular/material' as mat;
 
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
-@import 'src/theming/typography';
+@use 'src/theming/typography';
 
 .invite-list {
-  @include detail-view-content;
+  @include mixins.detail-view-content;
 
   &__title {
-    @include left-column;
+    @include mixins.left-column;
 
     &:not(:first-of-type) {
-      @include for-tablet-and-smaller {
+      @include mixins.for-tablet-and-smaller {
         padding-top: 40px;
       }
     }
   }
 
   &__right-column {
-    @include profile-detail-right-column;
+    @include mixins.profile-detail-right-column;
   }
 
   &__content {
-    @include profile-detail-right-column;
-    @include typo-t2;
+    @include mixins.profile-detail-right-column;
+    @include typography.typo-t2;
   }
 
   &__button {
-    @include button;
+    @include mixins.button;
   }
 
   &__buttons {
-    @include buttons;
+    @include mixins.buttons;
   }
 }

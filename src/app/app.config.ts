@@ -1,9 +1,16 @@
 import { registerLocaleData } from '@angular/common';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import localeIt from '@angular/common/locales/it';
-import { APP_INITIALIZER, ApplicationConfig, ErrorHandler, enableProdMode, importProvidersFrom } from '@angular/core';
+import {
+  ApplicationConfig,
+  ErrorHandler,
+  enableProdMode,
+  importProvidersFrom,
+  inject,
+  provideAppInitializer
+} from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -17,9 +24,15 @@ import { HeaderInterceptor } from '@core/providers/header.interceptor';
 import { LocaleInterceptor } from '@core/providers/locale.interceptor';
 import { GoogleMapsLoaderService } from '@core/services/google-maps-loader.service';
 import { DatetimeAdapter } from '@mat-datetimepicker/core';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import {
+  MissingTranslationHandler,
+  TranslateLoader,
+  TranslateService,
+  provideTranslateService
+} from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import * as Sentry from '@sentry/angular';
-import { Observable, from, lastValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { environment } from '~/environments/environment';
 import { routes } from './app.routes';
 import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/providers/app-moment-date-adapter';
@@ -98,38 +111,35 @@ export function setSentryConsoleHandlers() {
   console.log = () => {};
 }
 
-export class CustomTranslateLoader implements TranslateLoader {
-  getTranslation(lang: string): Observable<unknown> {
-    return from(import(`../assets/i18n/${lang}.json`));
-  }
-}
+const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
+  new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (translate: TranslateService) => () => lastValueFrom(translate.use('de-CH')),
-      deps: [TranslateService],
-      multi: true
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (googleMapsLoader: GoogleMapsLoaderService) => () => googleMapsLoader.load(),
-      deps: [GoogleMapsLoaderService],
-      multi: true
-    },
+    provideAppInitializer(() => {
+      const initializerFn = (
+        (translate: TranslateService) => () =>
+          lastValueFrom(translate.use('de-CH'))
+      )(inject(TranslateService));
+      return initializerFn();
+    }),
+    provideAppInitializer(() => {
+      const initializerFn = (
+        (googleMapsLoader: GoogleMapsLoaderService) => () =>
+          googleMapsLoader.load()
+      )(inject(GoogleMapsLoaderService));
+      return initializerFn();
+    }),
     provideRouter(routes),
-    importProvidersFrom(
-      BrowserModule,
-      ReactiveFormsModule,
-      TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useClass: CustomTranslateLoader
-        },
-        missingTranslationHandler: { provide: MissingTranslationHandler, useClass: SentryMissingTranslationHandler }
-      })
-    ),
+    provideTranslateService({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpClient]
+      },
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: SentryMissingTranslationHandler }
+    }),
+    importProvidersFrom(BrowserModule, ReactiveFormsModule),
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler
@@ -138,12 +148,10 @@ export const appConfig: ApplicationConfig = {
       provide: Sentry.TraceService,
       deps: [Router]
     },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: () => () => {},
-      deps: [Sentry.TraceService],
-      multi: true
-    },
+    provideAppInitializer(() => {
+      const initializerFn = ((_: Sentry.TraceService) => () => {})(inject(Sentry.TraceService));
+      return initializerFn();
+    }),
     [
       { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
       { provide: HTTP_INTERCEPTORS, useClass: LocaleInterceptor, multi: true }

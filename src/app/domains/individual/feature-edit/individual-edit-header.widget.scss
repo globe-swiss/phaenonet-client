@@ -1,15 +1,15 @@
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
 .individual-edit-header {
   height: 400px;
   display: flex;
   flex-direction: row;
 
-  @include for-tablet-and-smaller {
+  @include mixins.for-tablet-and-smaller {
     height: 300px;
   }
 
-  @include for-phone {
+  @include mixins.for-phone {
     height: 200px;
   }
 

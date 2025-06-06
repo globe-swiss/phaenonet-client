@@ -1,8 +1,8 @@
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
 .statistics {
   height: 100%;
-  @include default-left-right-padding;
+  @include mixins.default-left-right-padding;
 
   max-width: 1120px;
   margin-left: auto;

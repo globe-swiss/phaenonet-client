@@ -1,15 +1,15 @@
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
-@import 'src/theming/typography';
+@use 'src/theming/typography';
 
 .change-email-dialog {
-  @include dialog;
+  @include mixins.dialog;
 
   &__buttons {
-    @include buttons;
+    @include mixins.buttons;
   }
 
   &__button {
-    @include button;
+    @include mixins.button;
   }
 }

@@ -1,16 +1,16 @@
 @use '@angular/material' as mat;
 
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
-@import 'src/theming/typography';
+@use 'src/theming/typography';
 
 .activity-item {
   &__value {
-    @include typo-t1;
+    @include typography.typo-t1;
   }
 
   &__label {
-    @include detail-label;
+    @include mixins.detail-label;
   }
 
   &__card {

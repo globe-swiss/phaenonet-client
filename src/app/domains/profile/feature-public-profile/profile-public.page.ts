@@ -18,7 +18,6 @@ import { UserSubscriptionButtonComponent } from '../shared/user-subscription.wid
   selector: 'app-profile-public',
   templateUrl: './profile-public.page.html',
   styleUrls: ['./profile-public.page.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatIconButton,

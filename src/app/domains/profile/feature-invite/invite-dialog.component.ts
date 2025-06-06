@@ -19,7 +19,6 @@ import { InviteDialogData } from './invite-dialog.model';
   selector: 'app-invite-dialog',
   templateUrl: './invite-dialog.component.html',
   styleUrls: ['./invite-dialog.component.scss'],
-  standalone: true,
   imports: [
     MatButton,
     MatIcon,

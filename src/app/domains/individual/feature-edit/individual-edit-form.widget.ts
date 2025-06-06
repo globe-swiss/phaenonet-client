@@ -35,7 +35,6 @@ import { GeoposService } from '../shared/geopos.service';
   selector: 'app-individual-edit-form',
   templateUrl: './individual-edit-form.widget.html',
   styleUrls: ['./individual-edit-form.widget.scss'],
-  standalone: true,
   imports: [
     NgIf,
     FormsModule,

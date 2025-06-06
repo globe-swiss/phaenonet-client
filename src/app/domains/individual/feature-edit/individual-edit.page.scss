@@ -1,24 +1,27 @@
-@import 'src/theming/mixins';
+@use 'src/theming/mixins';
 
 .individual-edit {
-  @include detail-view;
+  @include mixins.detail-view;
 
   &__card {
-    @include detail-card;
+    @include mixins.detail-card;
   }
 
   &__content {
-    @include detail-view-content;
-    margin-top: 40px;
+    @include mixins.detail-view-content;
+
+    & {
+      margin-top: 40px;
+    }
   }
 
   &__left-content {
-    @include default-left-right-padding;
-    @include left-column;
+    @include mixins.default-left-right-padding;
+    @include mixins.left-column;
   }
 
   &__right-content {
-    @include default-left-right-padding;
-    @include complete-right-column;
+    @include mixins.default-left-right-padding;
+    @include mixins.complete-right-column;
   }
 }

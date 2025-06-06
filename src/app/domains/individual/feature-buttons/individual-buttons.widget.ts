@@ -16,7 +16,6 @@ import { ObservationService } from '../shared/observation.service';
   selector: 'app-individual-buttons',
   templateUrl: './individual-buttons.widget.html',
   styleUrls: ['./individual-buttons.widget.scss'],
-  standalone: true,
   imports: [NgIf, MatButton, RouterLink, AsyncPipe, TranslateModule]
 })
 export class IndividualDescriptionButtonsComponent {

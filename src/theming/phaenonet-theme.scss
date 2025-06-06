@@ -1,27 +1,26 @@
 @use '@angular/material' as mat;
-
-//@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
-
-@import './typography';
-@import './palettes';
+@use './typography';
+@use './palettes';
+@use './overwrite-mat';
 
 $phaenonet-theme: mat.m2-define-light-theme(
   (
     density: 0,
     color: (
-      primary: $phaenonet-primary,
-      accent: $phaenonet-accent,
-      warn: $phaenonet-warn
+      primary: palettes.$phaenonet-primary,
+      accent: palettes.$phaenonet-accent,
+      warn: palettes.$phaenonet-warn
     ),
-    typography: $phaenonet-typography
+    typography: typography.$phaenonet-typography
   )
 );
 
 //tutorial https://blog.thoughtram.io/angular/2017/05/23/custom-themes-with-angular-material.html#custom-theme-using-built-in-color-palettes
 //update: https://angular-material.dev/courses/m2-ng-components/m2-ng-components/overview
-@include mat.typography-hierarchy($phaenonet-typography);
+@include mat.typography-hierarchy(typography.$phaenonet-typography);
 
-@include mat.core-theme($phaenonet-theme);
+@include mat.elevation-classes();
+@include mat.app-background();
 @include mat.autocomplete-theme($phaenonet-theme);
 @include mat.button-theme($phaenonet-theme);
 @include mat.fab-theme($phaenonet-theme);
@@ -57,4 +56,4 @@ $phaenonet-theme: mat.m2-define-light-theme(
 //@include mat.tree-theme($phaenonet-theme);
 @include mat.snack-bar-theme($phaenonet-theme);
 
-@import './overwrite-mat';
+@include overwrite-mat.apply-overrides();

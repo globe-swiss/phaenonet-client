@@ -103,7 +103,7 @@ jobs:
       - name: Start server
         uses: ./.github/actions/angular-http-server-action
         with:
-          path: ./dist/phaenonet
+          path: ./dist/phaenonet/browser
           port: 4200
       - name: Setup CodeceptJS
         working-directory: e2e

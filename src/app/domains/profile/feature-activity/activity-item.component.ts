@@ -10,7 +10,6 @@ import { Activity } from './activity.model';
   selector: 'app-activity-item',
   templateUrl: './activity-item.component.html',
   styleUrls: ['./activity-item.component.scss'],
-  standalone: true,
   imports: [RouterLink, NgIf, TranslateModule]
 })
 export class ActivityItemComponent {

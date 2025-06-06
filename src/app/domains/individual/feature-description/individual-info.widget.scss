@@ -1,8 +1,6 @@
 @use '@angular/material' as mat;
-
-@import 'src/theming/typography';
-
-@import 'src/theming/mixins';
+@use 'src/theming/typography';
+@use 'src/theming/mixins';
 
 button.badge {
   transform: scale(0.7);
@@ -18,7 +16,7 @@ button.navigation {
 
 .individual-info {
   &__label {
-    @include detail-label;
+    @include mixins.detail-label;
   }
 
   &__sensor-badge {
@@ -28,33 +26,33 @@ button.navigation {
   }
 
   &__name {
-    @include typo-t1;
+    @include typography.typo-t1;
     margin-bottom: 20px;
   }
 
   &__open-mobile-info {
-    @include for-phone {
+    @include mixins.for-phone {
       display: none;
     }
   }
 
   &__phenophase-circle {
-    @include phenophase-circle;
+    @include mixins.phenophase-circle;
   }
 
   &__creator-name {
-    @include detail-value;
-    @include typo-t1;
+    @include mixins.detail-value;
+    @include typography.typo-t1;
 
     text-decoration: none;
   }
 
   &__value {
-    @include detail-value;
+    @include mixins.detail-value;
     padding-bottom: 10px;
   }
 
   &__value-addition {
-    @include detail-value-regular;
+    @include mixins.detail-value-regular;
   }
 }

@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 
-@import 'src/theming/typography';
-@import 'src/theming/custom-colours';
+@use 'src/theming/typography';
+@use 'src/theming/custom-colours' as colors;
 
 .sensor-badge {
   display: flex;
@@ -19,15 +19,15 @@
   }
 
   &__text {
-    @include typo-t4;
+    @include typography.typo-t4;
     font-weight: 500;
 
     &--soil {
-      color: $soil-color;
+      color: colors.$soil-color;
     }
 
     &--air {
-      color: $air-color;
+      color: colors.$air-color;
     }
 
     &:last-of-type {

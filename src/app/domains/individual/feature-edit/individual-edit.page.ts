@@ -11,7 +11,6 @@ import { IndividualEditHeaderComponent } from './individual-edit-header.widget';
 @Component({
   templateUrl: './individual-edit.page.html',
   styleUrls: ['./individual-edit.page.scss'],
-  standalone: true,
   imports: [TranslateModule, IndividualEditViewComponent, IndividualEditHeaderComponent]
 })
 export class IndividualEditComponent extends BaseDetailComponent<Individual> implements OnInit {

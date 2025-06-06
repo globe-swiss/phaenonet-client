@@ -18,7 +18,6 @@ import { ProfilePublicComponent } from './feature-public-profile/profile-public.
 @Component({
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
-  standalone: true,
   imports: [
     NgIf,
     ProfileDetailsComponent,
