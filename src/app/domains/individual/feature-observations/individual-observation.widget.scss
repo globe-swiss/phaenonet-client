@@ -2,7 +2,9 @@
 @use 'src/theming/typography';
 
 .individual-observation-view {
-  margin-top: 2.5625rem;
+  & {
+    margin-top: 2.5625rem;
+  }
 
   &__phenophase-group {
     @include mixins.detail-label;
@@ -13,38 +15,54 @@
   }
 
   &__form-field {
-    width: 100%;
+    & {
+      width: 100%;
+    }
   }
 
   &__add-phenophase {
-    cursor: pointer;
+    & {
+      cursor: pointer;
+    }
   }
 
   &__year {
     @include mixins.year-select;
-    margin-left: 40px;
-    margin-bottom: 0;
+
+    & {
+      margin-left: 40px;
+      margin-bottom: 0;
+    }
   }
 
   &__title {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+    & {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
   }
 
   &__add-phenophase--disabled {
-    cursor: not-allowed;
-    color: #f7f5f2;
+    & {
+      cursor: not-allowed;
+      color: #f7f5f2;
+    }
   }
 
   &__edit-phenophase {
-    cursor: pointer;
+    & {
+      cursor: pointer;
+    }
   }
 
   &__detail-sub {
     @include mixins.detail-value-t2;
-    font-style: italic;
-    margin-top: -1.25rem;
-    padding-bottom: 1.25rem;
+
+    & {
+      font-style: italic;
+      margin-top: -1.25rem;
+      padding-bottom: 1.25rem;
+    }
   }
 }

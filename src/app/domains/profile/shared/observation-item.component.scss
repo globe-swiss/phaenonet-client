@@ -1,7 +1,5 @@
 @use '@angular/material' as mat;
-
 @use 'src/theming/typography';
-
 @use 'src/theming/mixins';
 
 .observation-item {
@@ -19,8 +17,11 @@
 
   &__image_container {
     @include mixins.teaser-image;
-    width: 180px;
-    height: 180px;
+
+    & {
+      width: 180px;
+      height: 180px;
+    }
   }
 
   &__description {

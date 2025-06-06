@@ -9,7 +9,10 @@
 
   &__content {
     @include mixins.detail-view-content;
-    margin-top: 40px;
+
+    & {
+      margin-top: 40px;
+    }
   }
 
   &__left-content {

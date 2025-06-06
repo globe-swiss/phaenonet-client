@@ -6,24 +6,34 @@
   @include mixins.teaser-card;
 
   mat-icon {
-    align-self: center;
-    margin-right: 10px;
+    & {
+      align-self: center;
+      margin-right: 10px;
+    }
   }
 
   &__image_container {
-    width: 50px;
-    height: 50px;
+    & {
+      width: 50px;
+      height: 50px;
+    }
   }
 
   &__image {
     @include mixins.teaser-image;
-    width: 70px;
-    height: 70px;
-    padding: 36px 55px;
-    @include mixins.for-tablet-and-smaller {
+
+    & {
       width: 70px;
       height: 70px;
-      padding: 20px 20px;
+      padding: 36px 55px;
+    }
+
+    @include mixins.for-tablet-and-smaller {
+      & {
+        width: 70px;
+        height: 70px;
+        padding: 20px 20px;
+      }
     }
   }
 
@@ -48,22 +58,26 @@
   }
 
   &__quantity-container {
-    margin-left: auto;
-    align-self: center;
-    width: 47px;
-    height: 47px;
-    display: flex;
-    border-radius: 50%;
-    background-color: green;
-    align-items: center;
-    justify-content: center;
-    margin-right: 47px;
-    background-color: #b6cc99;
+    & {
+      margin-left: auto;
+      align-self: center;
+      width: 47px;
+      height: 47px;
+      display: flex;
+      border-radius: 50%;
+      background-color: green;
+      align-items: center;
+      justify-content: center;
+      margin-right: 47px;
+      background-color: #b6cc99;
+    }
   }
 
   &__quantity {
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
+    & {
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+    }
   }
 }

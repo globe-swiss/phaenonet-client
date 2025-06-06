@@ -1,12 +1,13 @@
 @use 'src/theming/mixins';
-
 @use 'src/theming/typography';
 
 .observation-species {
   @include mixins.detail-view;
 
   @include mixins.for-tablet-and-smaller {
-    max-width: 550px;
+    & {
+      max-width: 550px;
+    }
   }
 
   &-component {
@@ -14,16 +15,22 @@
 
     &__title {
       @include mixins.left-column;
-      text-decoration: none;
-      display: flex;
-      align-items: flex-start;
+
+      & {
+        text-decoration: none;
+        display: flex;
+        align-items: flex-start;
+      }
 
       mat-icon {
         --icon-size: 13px;
-        height: var(--icon-size);
-        width: var(--icon-size);
-        font-size: calc(var(--icon-size) - 3px);
-        padding-right: 0.75rem;
+
+        & {
+          height: var(--icon-size);
+          width: var(--icon-size);
+          font-size: calc(var(--icon-size) - 3px);
+          padding-right: 0.75rem;
+        }
       }
 
       h2 {
@@ -32,8 +39,10 @@
     }
 
     &__title_container {
-      display: flex;
-      align-items: center;
+      & {
+        display: flex;
+        align-items: center;
+      }
     }
 
     &__year {
@@ -46,8 +55,10 @@
     }
 
     &__species-year {
-      display: flex;
-      justify-content: space-between;
+      & {
+        display: flex;
+        justify-content: space-between;
+      }
     }
 
     &__no-entries {
