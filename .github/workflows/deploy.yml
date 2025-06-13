@@ -163,7 +163,7 @@ jobs:
           name: ${{ env.PROJECT }}
           node_version: ${{ env.NODE_VERSION }}
       - name: Remove source maps (prod)
-        run: rm ./dist/**/*.map
+        run: find ./dist -type f -name "*.map" -print -exec rm {} + | grep -q . # fail if no source maps found
         if: ${{ env.PROJECT == 'phaenonet' }}
       - uses: pnpm/action-setup@v4.1.0
         with:
