@@ -33,11 +33,15 @@ import {
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import * as Sentry from '@sentry/angular';
 import { lastValueFrom } from 'rxjs';
+import moment from 'moment-timezone';
 import { environment } from '~/environments/environment';
 import { routes } from './app.routes';
 import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/providers/app-moment-date-adapter';
 import { GlobalErrorHandler } from './core/providers/global-error-handler';
 import { SentryMissingTranslationHandler } from './core/providers/sentry-missing-translation-handler';
+
+// Set default timezone to Europe/Zurich for all moment operations
+moment.tz.setDefault('Europe/Zurich');
 
 Sentry.init({
   enabled: environment.sentryEnabled,

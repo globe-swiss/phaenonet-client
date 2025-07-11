@@ -7,7 +7,7 @@ import {
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { LanguageService } from '@core/services/language.service';
 import { MomentDatetimeAdapter } from '@mat-datetimepicker/moment';
-import moment, { Moment } from 'moment';
+import moment, { Moment } from 'moment-timezone';
 
 @Injectable()
 export class AppMomentDateAdapter extends MomentDateAdapter {

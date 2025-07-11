@@ -1,6 +1,6 @@
 import { axisBottom } from 'd3-axis';
 import { timeMonths } from 'd3-time';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 export function drawXAxis(
   g: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>,
