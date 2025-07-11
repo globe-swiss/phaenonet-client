@@ -20,7 +20,6 @@ import {
 import { Firestore } from '@angular/fire/firestore';
 import { LocalService } from '@app/core/services/local.service';
 import { AlertService, Level, UntranslatedAlertMessage } from '@core/services/alert.service';
-import { none } from 'fp-ts/lib/Option';
 import { Observable, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { PhenonetUser } from '../core.model';
@@ -176,7 +175,7 @@ export class AuthService extends BaseResourceService<PhenonetUser> {
         error: error
       },
       titleParams: Object,
-      duration: none
+      duration: null
     } as UntranslatedAlertMessage);
     if (throwError) {
       throw error;

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Option, some } from 'fp-ts/lib/Option';
 import { combineLatest, Subject } from 'rxjs';
 
 export enum Level {
@@ -22,7 +21,7 @@ export class UntranslatedAlertMessage {
   level: Level;
   messageParams: object;
   titleParams: object;
-  duration: Option<number>;
+  duration: number | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -41,7 +40,7 @@ export class AlertService {
         level: untranslated.level,
         title: pair.title,
         message: pair.message,
-        duration: untranslated.duration.getOrElse(7000)
+        duration: untranslated.duration ?? 7000
       } as AlertMessage);
     });
   }
@@ -49,7 +48,7 @@ export class AlertService {
   infoMessage(
     title: string,
     message: string,
-    duration: Option<number> = some(3000),
+    duration: number | null = 3000,
     messageParams: object = {},
     titleParams: object = {}
   ): void {
@@ -59,7 +58,7 @@ export class AlertService {
   errorMessage(
     title: string,
     message: string,
-    duration: Option<number> = some(3000),
+    duration: number | null = 3000,
     messageParams: object = {},
     titleParams: object = {}
   ): void {
@@ -70,7 +69,7 @@ export class AlertService {
     level: Level,
     title: string,
     message: string,
-    duration: Option<number> = some(3000),
+    duration: number | null = 3000,
     messageParams: object = {},
     titleParams: object = {}
   ): void {
