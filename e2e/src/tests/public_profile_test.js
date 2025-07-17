@@ -18,7 +18,7 @@ Scenario('public profile page loggedin', async ({ I, publicProfilePage, e2eTestU
   await I.checkVisual('public_profile-loggedin');
 }).tag('visual');
 
-Scenario('public profile page loggedout', async ({ I, publicProfilePage, e2eRangerUser }) => {
+Scenario('public profile page loggedout ranger', async ({ I, publicProfilePage, e2eRangerUser }) => {
   I.visit(publicProfilePage, publicProfilePage.url(e2eRangerUser.id));
   I.waitForText(e2eRangerUser.nickname);
   await I.checkVisual('public_profile-loggedout_ranger');
