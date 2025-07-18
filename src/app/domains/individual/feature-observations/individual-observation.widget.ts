@@ -135,6 +135,7 @@ export class ObservationViewComponent implements OnInit {
     const dialogRef = this.dialog.open(PhenophaseDialogComponent, {
       width: '615px',
       panelClass: 'phenonet-dialog-component',
+      disableClose: true,
       data: {
         phenophase: phenophaseObservation.phenophase,
         limits: phenophaseObservation.limits,
