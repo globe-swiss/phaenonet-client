@@ -10,7 +10,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
 import { IndividualService } from '@shared/services/individual.service'; //fixme
 import { MasterdataService } from '@shared/services/masterdata.service';
-import { parseInt } from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { ObservationItemComponent } from '../shared/observation-item.component';
