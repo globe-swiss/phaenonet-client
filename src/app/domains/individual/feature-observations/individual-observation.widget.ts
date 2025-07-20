@@ -178,7 +178,7 @@ export class ObservationViewComponent implements OnInit {
       } else if (!result?.observation?.date) {
         // delete observation
         if (phenophaseObservation.observation) {
-          this.observationService.delete((<IdLike>(<unknown>phenophaseObservation.observation)).id);
+          void this.observationService.delete((<IdLike>(<unknown>phenophaseObservation.observation)).id);
         }
       }
     });
