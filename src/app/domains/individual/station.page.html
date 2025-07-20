@@ -30,23 +30,20 @@
             {{ groupedItem.species.de | translate }} {{ groupedItem.treeId }}
           </div>
           <div *ngFor="let item of groupedItem.phenophaseObservations">
-            <ng-container *ngIf="item.observation.isSome()">
+            <ng-container *ngIf="item.observation !== null">
               <div class="station-detail__label">{{ item.phenophase.de | translate }}</div>
               <mat-form-field class="station-detail__form-field">
                 <input
                   matInput
                   [id]="item.phenophase.id"
                   [matDatepicker]="fakePicker"
-                  [value]="item.observation.toNullable()?.date"
+                  [value]="item.observation?.date"
                   readonly="true"
                 />
                 <mat-label translate>{{ item.phenophase.description_de }}</mat-label>
               </mat-form-field>
               <mat-datepicker #fakePicker></mat-datepicker>
-              <div
-                class="statiohn-detail__detail-sub"
-                *ngIf="item.observation.toNullable()?.comment?.toString() as comment"
-              >
+              <div class="statiohn-detail__detail-sub" *ngIf="item.observation?.comment?.toString() as comment">
                 {{ 'Kommentar' | translate }}: {{ staticComments[comment] | translate }}
               </div>
             </ng-container>

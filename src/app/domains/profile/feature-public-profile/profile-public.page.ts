@@ -9,7 +9,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PublicUser } from '@shared/models/public-user.model';
 import { PublicUserService } from '@shared/services/public-user.service';
 import { CopyClipboardDirective } from '@shared/utils/copy-clipboard.directive';
-import { none } from 'fp-ts/lib/Option';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserSubscriptionButtonComponent } from '../shared/user-subscription.widget';
@@ -61,7 +60,7 @@ export class ProfilePublicComponent implements OnInit {
       level: Level.INFO,
       messageParams: [],
       titleParams: Object,
-      duration: none
+      duration: null
     } as UntranslatedAlertMessage);
   }
 }

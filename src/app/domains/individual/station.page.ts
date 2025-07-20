@@ -15,7 +15,6 @@ import { Comment, Phenophase, PhenophaseGroup } from '@shared/models/masterdata.
 import { Observation } from '@shared/models/observation.model';
 import { IndividualService } from '@shared/services/individual.service';
 import { MasterdataService } from '@shared/services/masterdata.service';
-import { findFirst } from 'fp-ts/lib/Array';
 import { groupBy as _groupBy, map as _map } from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeAll, switchMap } from 'rxjs/operators';
@@ -101,7 +100,7 @@ export class StationComponent extends BaseDetailComponent<Individual> implements
                   phenophaseObservations: availablePhenophasesBySpecies.map(phenophase => {
                     return {
                       phenophase: phenophase,
-                      observation: findFirst((o: Observation) => o.phenophase === phenophase.id)(os)
+                      observation: os.find((o: Observation) => o.phenophase === phenophase.id) ?? null
                     } as PhenophaseObservation;
                   })
                 } as SpeciesPhenophaseObservations;

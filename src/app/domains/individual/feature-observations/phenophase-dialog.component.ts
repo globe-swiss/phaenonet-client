@@ -2,6 +2,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component, Inject } from '@angular/core';
+import { FieldValue } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
@@ -53,6 +54,22 @@ import { PhenophaseObservation } from '../shared/individual.model';
   ]
 })
 export class PhenophaseDialogComponent {
+  get observationComment(): string | FieldValue | null {
+    return this.data.observation?.comment || null;
+  }
+
+  set observationComment(value: string | FieldValue | null) {
+    if (this.data.observation) {
+      this.data.observation.comment = value;
+    }
+  }
+
+  setObservationDate(date: Date): void {
+    if (!this.data.observation) {
+      this.data.observation = {} as Observation;
+    }
+    this.data.observation.date = date;
+  }
   showTouchCalendar$: Observable<boolean>;
 
   originalDate: Observation['date'];
@@ -63,7 +80,7 @@ export class PhenophaseDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: PhenophaseObservation,
     private breakpointObserver: BreakpointObserver
   ) {
-    const original = this.data.observation.getOrElse(null);
+    const original = this.data.observation;
     if (original) {
       this.originalDate = original.date;
       this.originalComment = original.comment;
@@ -74,20 +91,18 @@ export class PhenophaseDialogComponent {
   }
 
   close(): void {
-    this.data.observation = this.data.observation.map(osb => {
-      osb.date = this.originalDate;
-      osb.comment = this.originalComment;
-      return osb;
-    });
+    if (this.data.observation) {
+      this.data.observation.date = this.originalDate;
+      this.data.observation.comment = this.originalComment;
+    }
     this.dialogRef.close(this.data);
   }
 
   deleteAndClose(): void {
-    this.data.observation = this.data.observation.map(osb => {
-      osb.date = null;
-      osb.comment = null;
-      return osb;
-    });
+    if (this.data.observation) {
+      this.data.observation.date = null;
+      this.data.observation.comment = null;
+    }
     this.dialogRef.close();
   }
 }

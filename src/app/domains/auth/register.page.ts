@@ -115,7 +115,7 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   register(): void {
     this.realRegisterRequest = true;
-    this.authService.register(
+    void this.authService.register(
       this.registerForm.value.email,
       this.registerForm.value.password,
       this.registerForm.value.nickname,

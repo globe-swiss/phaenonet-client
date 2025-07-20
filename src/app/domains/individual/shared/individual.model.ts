@@ -1,7 +1,6 @@
 import { AltitudeLimit } from '@shared/models/altitude-limits.model';
 import { Comment, Phenophase, PhenophaseGroup, Species } from '@shared/models/masterdata.model';
 import { Observation } from '@shared/models/observation.model';
-import { Option } from 'fp-ts/lib/Option';
 
 export class SpeciesPhenophaseObservations {
   treeId?: string;
@@ -12,7 +11,7 @@ export class SpeciesPhenophaseObservations {
 export class PhenophaseObservation {
   phenophase: Phenophase;
   limits: AltitudeLimit;
-  observation: Option<Observation>;
+  observation: Observation | null;
   availableComments: Comment[];
 }
 

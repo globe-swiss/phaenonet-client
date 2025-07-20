@@ -10,21 +10,21 @@
   <ng-container *ngIf="(isEditable$ | async) || groupedItem.hasObservations">
     <div class="individual-observation-view__phenophase-group">{{ groupedItem.phenophaseGroup.de | translate }}</div>
     <div *ngFor="let item of groupedItem.phenophaseObservations">
-      <ng-container *ngIf="(isEditable$ | async) || item.observation.isSome()">
+      <ng-container *ngIf="(isEditable$ | async) || item.observation !== null">
         <div class="individual-observation-view__phenophase">{{ item.phenophase.de | translate }}</div>
         <mat-form-field class="individual-observation-view__form-field">
           <input
             matInput
             [id]="item.phenophase.id"
             [matDatepicker]="fakePicker"
-            [value]="item.observation.toNullable()?.date"
+            [value]="item.observation?.date"
             readonly="true"
             data-test-id="observationDate"
           />
           <mat-label translate>{{ item.phenophase.description_de }}</mat-label>
           <mat-datepicker #fakePicker></mat-datepicker>
           <mat-icon
-            *ngIf="(isEditable$ | async) && item.observation.isNone() && item.limits.isEditable"
+            *ngIf="(isEditable$ | async) && item.observation === null && item.limits.isEditable"
             matSuffix
             class="individual-observation-view__add-phenophase"
             color="primary"
@@ -34,14 +34,14 @@
             add_circle</mat-icon
           >
           <mat-icon
-            *ngIf="(isEditable$ | async) && item.observation.isNone() && !item.limits.isEditable"
+            *ngIf="(isEditable$ | async) && item.observation === null && !item.limits.isEditable"
             matSuffix
             class="individual-observation-view__add-phenophase--disabled"
             color="accent"
             >add_circle</mat-icon
           >
           <mat-icon
-            *ngIf="(isEditable$ | async) && item.observation.isSome()"
+            *ngIf="(isEditable$ | async) && item.observation !== null"
             matSuffix
             color="primary"
             class="individual-observation-view__edit-phenophase"
@@ -50,10 +50,7 @@
             >edit</mat-icon
           >
         </mat-form-field>
-        <div
-          class="individual-observation-view__detail-sub"
-          *ngIf="item.observation.toNullable()?.comment?.toString() as comment"
-        >
+        <div class="individual-observation-view__detail-sub" *ngIf="item.observation?.comment?.toString() as comment">
           {{ 'Kommentar' | translate }}: {{ staticComments[comment] | translate }}
         </div>
       </ng-container>

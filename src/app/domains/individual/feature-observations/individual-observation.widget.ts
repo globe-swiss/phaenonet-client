@@ -17,8 +17,6 @@ import { Observation } from '@shared/models/observation.model';
 import { IndividualService } from '@shared/services/individual.service';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { UserService } from '@shared/services/user.service';
-import { findFirst } from 'fp-ts/lib/Array';
-import { some } from 'fp-ts/lib/Option';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, first, map, mergeAll, switchMap } from 'rxjs/operators';
 import { PhenophaseObservation, PhenophaseObservationsGroup } from '../shared/individual.model';
@@ -105,12 +103,12 @@ export class ObservationViewComponent implements OnInit {
                   this.masterdataService.getLimits(individual.species, p.id),
                   this.masterdataService.getPhenoYear()
                 ),
-                observation: findFirst((o: Observation) => o.phenophase === p.id)(observations),
+                observation: observations.find((o: Observation) => o.phenophase === p.id) ?? null,
                 availableComments: comments.filter(a => p.comments?.find(commentId => commentId === a.id))
               };
             });
 
-          const hasObservations = phenophaseObservations.find(po => po.observation.isSome()) !== undefined;
+          const hasObservations = phenophaseObservations.find(po => po.observation !== null) !== undefined;
 
           return {
             phenophaseGroup: phenophaseGroup,
@@ -139,18 +137,19 @@ export class ObservationViewComponent implements OnInit {
       data: {
         phenophase: phenophaseObservation.phenophase,
         limits: phenophaseObservation.limits,
-        observation: some(phenophaseObservation.observation.getOrElse({} as Observation)),
+        observation: phenophaseObservation.observation ?? ({} as Observation),
         availableComments: phenophaseObservation.availableComments
       } as PhenophaseObservation
     });
 
     dialogRef.afterClosed().subscribe((result: PhenophaseObservation) => {
       // discard result if empty or no data was selected (fixme -> disable button in form)
-      if (result && result.observation.toNullable().date) {
+      if (result && result.observation?.date) {
         combineLatest([this.individual$, this.userService.getSource()])
           .pipe(first())
           .subscribe(([detail, source]) => {
-            result.observation.map(observation => {
+            const observation = result.observation;
+            if (observation) {
               // fix undefined comment #28
               if (observation.comment === undefined) {
                 observation.comment = deleteField();
@@ -174,11 +173,13 @@ export class ObservationViewComponent implements OnInit {
               ].join('_');
 
               this.observationService.upsert(observation, observationId);
-            });
+            }
           });
-      } else if (!result?.observation.toNullable().date) {
+      } else if (!result?.observation?.date) {
         // delete observation
-        phenophaseObservation.observation.map(po => this.observationService.delete((<IdLike>(<unknown>po)).id));
+        if (phenophaseObservation.observation) {
+          void this.observationService.delete((<IdLike>(<unknown>phenophaseObservation.observation)).id);
+        }
       }
     });
   }

@@ -26,7 +26,6 @@ import {
 import { IndividualService } from '@shared/services/individual.service';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { UserService } from '@shared/services/user.service';
-import { some } from 'fp-ts/lib/Option';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { GeoposService } from '../shared/geopos.service';
@@ -161,7 +160,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
         this.alertService.errorMessage(
           'Fehlerhaftes Foto',
           'Das Foto konnte nicht hochgeladen werden. Das Format wird nicht unterstützt oder die maximale Grösse wurde überschritten.',
-          some(10000)
+          10000
         );
         void this.router.navigate(['individuals', this.toIndividualId(individual)]);
       });
