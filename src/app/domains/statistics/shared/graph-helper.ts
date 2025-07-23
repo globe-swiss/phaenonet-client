@@ -1,10 +1,12 @@
 import { axisBottom } from 'd3-axis';
+import { ScaleLinear } from 'd3-scale';
+import { Selection } from 'd3-selection';
 import { timeMonths } from 'd3-time';
 import moment from 'moment-timezone';
 
 export function drawXAxis(
-  g: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>,
-  xScale: d3.ScaleLinear<number, number>,
+  g: Selection<SVGGElement, unknown, HTMLElement, unknown>,
+  xScale: ScaleLinear<number, number>,
   width: number,
   yAxisStart: number,
   yAxisEnd: number

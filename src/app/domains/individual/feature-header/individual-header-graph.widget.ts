@@ -7,9 +7,12 @@ import { DailySensorData } from '@shared/models/sensors';
 import { IndividualService } from '@shared/services/individual.service';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { SensorsService } from '@shared/services/sensors.service';
-import * as d3 from 'd3';
-import * as d3Axis from 'd3-axis';
-import * as d3Scale from 'd3-scale';
+import { extent } from 'd3-array';
+import { axisBottom, axisLeft } from 'd3-axis';
+import { scaleLinear, scaleTime } from 'd3-scale';
+import { select } from 'd3-selection';
+import { line } from 'd3-shape';
+import { timeFormat } from 'd3-time-format';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription, combineLatest, zip } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
@@ -87,7 +90,7 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
   }
 
   drawChart(sensorData: DailySensorData[], observations: Observation[], individual: Individual) {
-    const svg = d3.select<SVGGraphicsElement, unknown>('#individual-header-graph');
+    const svg = select<SVGGraphicsElement, unknown>('#individual-header-graph');
 
     const boundingBox = svg.node()?.getBoundingClientRect();
 
@@ -102,13 +105,11 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
     const fontSize = this.isMobile(width) ? '12px' : '15px';
     const legendGapSize = this.isMobile(width) ? 20 : 30;
 
-    const xScale = d3Scale
-      .scaleTime()
+    const xScale = scaleTime()
       .domain([new Date(individual.year - 1, 11, 0), new Date(individual.year, 11, 31)])
       .range([0, width]);
-    const xAxisTicks = d3Axis.axisBottom(xScale).ticks(4).tickFormat(d3.timeFormat(''));
-    const xAxisLabels = d3Axis
-      .axisBottom(xScale)
+    const xAxisTicks = axisBottom(xScale).ticks(4).tickFormat(timeFormat(''));
+    const xAxisLabels = axisBottom(xScale)
       .tickValues([
         new Date(individual.year, 1, 15),
         new Date(individual.year, 4, 15),
@@ -116,42 +117,36 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
         new Date(individual.year, 10, 15)
       ])
       .tickSize(0)
-      .tickFormat(d3.timeFormat('Q%q'));
-    const tempScale = d3Scale
-      .scaleLinear()
-      .domain(d3.extent(sensorData.flatMap(d => [d.soilTemperature, d.airTemperature])))
+      .tickFormat(timeFormat('Q%q'));
+    const tempScale = scaleLinear()
+      .domain(extent(sensorData.flatMap(d => [d.soilTemperature, d.airTemperature])))
       .range([height, 0])
       .nice();
-    const tempAxis = d3Axis.axisLeft(tempScale);
-    const humidityScale = d3Scale
-      .scaleLinear()
-      .domain(d3.extent(sensorData.flatMap(d => [d.soilHumidity, d.airHumidity])))
+    const tempAxis = axisLeft(tempScale);
+    const humidityScale = scaleLinear()
+      .domain(extent(sensorData.flatMap(d => [d.soilHumidity, d.airHumidity])))
       .range([height, 0])
       .nice();
-    const humidityAxis = d3Axis.axisLeft(humidityScale);
+    const humidityAxis = axisLeft(humidityScale);
 
     if (this.isMobile(width)) {
       tempAxis.ticks(5);
       humidityAxis.ticks(5);
     }
 
-    const airTemperatureLine = d3
-      .line<DailySensorData>()
+    const airTemperatureLine = line<DailySensorData>()
       .x(d => xScale(d.day))
       .y(d => tempScale(d.airTemperature));
 
-    const soilTemperatureLine = d3
-      .line<DailySensorData>()
+    const soilTemperatureLine = line<DailySensorData>()
       .x(d => xScale(d.day))
       .y(d => tempScale(d.soilTemperature));
 
-    const airHumidityLine = d3
-      .line<DailySensorData>()
+    const airHumidityLine = line<DailySensorData>()
       .x(d => xScale(d.day))
       .y(d => humidityScale(d.airHumidity));
 
-    const soilHumidityLine = d3
-      .line<DailySensorData>()
+    const soilHumidityLine = line<DailySensorData>()
       .x(d => xScale(d.day))
       .y(d => humidityScale(d.soilHumidity));
 

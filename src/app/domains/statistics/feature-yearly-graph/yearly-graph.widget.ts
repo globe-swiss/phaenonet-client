@@ -5,7 +5,7 @@ import { MasterdataService } from '@shared/services/masterdata.service';
 import { formatShortDate } from '@shared/utils/formatDate';
 import { axisLeft } from 'd3-axis';
 import { ScaleBand, scaleBand, scaleLinear } from 'd3-scale';
-import { select } from 'd3-selection';
+import { select, Selection } from 'd3-selection';
 import { iif, Subject, Subscription } from 'rxjs';
 import { debounceTime, first, map, switchMap } from 'rxjs/operators';
 import { dateToDOY, drawXAxis } from '../shared/graph-helper';
@@ -253,7 +253,7 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
   }
 
   private drawVerticalLines(
-    g: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>,
+    g: Selection<SVGGElement, unknown, HTMLElement, unknown>,
     y: ScaleBand<string>,
     selection: string,
     analytics: Analytics,
