@@ -24,6 +24,7 @@ jobs:
           token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
           pull_request_title: '[Automated] Update GitHub Action Versions [no ci]'
           commit_message: 'Update GitHub Action Versions [no ci]'
+          extra_workflow_locations: .github/actions
   npm-update:
     permissions:
       contents: write
