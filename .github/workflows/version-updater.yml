@@ -18,12 +18,13 @@ jobs:
           # [Required] Access token with `workflow` scope.
           token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
       - name: Run GitHub Actions Version Updater
-        uses: saadmk11/github-actions-version-updater@v0.8.1
+        uses: saadmk11/github-actions-version-updater@v0.9.0
         with:
           # [Required] Access token with `workflow` scope.
           token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
           pull_request_title: '[Automated] Update GitHub Action Versions [no ci]'
           commit_message: 'Update GitHub Action Versions [no ci]'
+          extra_workflow_locations: .github/actions
   npm-update:
     permissions:
       contents: write
