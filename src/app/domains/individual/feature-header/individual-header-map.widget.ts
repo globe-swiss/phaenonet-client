@@ -37,7 +37,12 @@ export class IndividualHeaderMapComponent implements OnInit {
       streetViewControl: false,
       minZoom: 8,
       zoom: 13,
-      draggable: false
+      draggable: false,
+      zoomControl: true,
+      scrollwheel: true,
+      gestureHandling: 'none',
+      disableDefaultUI: true,
+      keyboardShortcuts: false
     };
 
     this.markerOptions$ = this.individual$.pipe(
