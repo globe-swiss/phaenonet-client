@@ -66,11 +66,11 @@ Scenario('test individual with sensor map', async ({ I, individualsPage }) => {
 Scenario('test individual with sensor humidity', async ({ I, individualsPage }) => {
   I.visit(individualsPage, individualsPage.url('2018_721'));
   I.click(individualsPage.map.humidityButton);
-  await I.checkVisual('individual_test-sensor-humidity', 0.01); // error due to playwright update
+  await I.checkVisual('individual_test-sensor-humidity');
 }).tag('visual');
 
 Scenario('test individual with sensor temperature', async ({ I, individualsPage }) => {
   I.visit(individualsPage, individualsPage.url('2018_721'));
   I.click(individualsPage.map.temperatureButton);
-  await I.checkVisual('individual_test-sensor-temperature', 0.01); // error due to playwright update
+  await I.checkVisual('individual_test-sensor-temperature');
 }).tag('visual');
