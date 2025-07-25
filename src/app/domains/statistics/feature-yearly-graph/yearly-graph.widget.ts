@@ -93,7 +93,7 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
 
     const domain = Array.from(new Set(this.data.map(analytics => analytics.species)));
     const subdomain = !this.year
-      ? this.availableYears
+      ? this.getFilteredYearRange()
       : [...new Set(this.data.map(analytics => analytics.altitude_grp))].sort().reverse();
 
     const resultingDomain = [];
@@ -280,5 +280,16 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
     } else {
       return this.translateService.instant(input) as string;
     }
+  }
+
+  private getFilteredYearRange(): number[] {
+    const yearsWithData = [...new Set(this.data.map(analytics => analytics.year))].sort((a, b) => a - b);
+    if (yearsWithData.length === 0) {
+      return [];
+    }
+
+    const firstYearWithData = yearsWithData[0];
+    const currentYear = this.availableYears[0];
+    return this.availableYears.filter(year => year >= firstYearWithData && year <= currentYear);
   }
 }
