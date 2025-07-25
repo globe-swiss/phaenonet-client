@@ -46,12 +46,12 @@ jobs:
           fetch-depth: 0
       - name: 'Get previous tag'
         id: previoustag
-        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1.4.0'
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
       - name: 'Get next versions'
         id: semvers
-        uses: 'WyriHaximus/github-action-next-semvers@v1'
+        uses: 'WyriHaximus/github-action-next-semvers@v1.2.1'
         with:
           version: ${{ steps.previoustag.outputs.tag }}
       - name: Set tag
@@ -175,7 +175,7 @@ jobs:
       - run: pnpm install
       - id: auth
         name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2.1.10
+        uses: google-github-actions/auth@v2.1.11
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
