@@ -21,10 +21,7 @@ export class UserSubscriptionButtonComponent implements OnInit {
   @Input()
   mode: 'FAB' | 'BUTTON' = 'FAB';
 
-  displayFabSubscribed$: Observable<boolean>;
-  displayFabNotSubscribed$: Observable<boolean>;
-  displayButtonSubscribed$: Observable<boolean>;
-  displayButtonNotSubscribed$: Observable<boolean>;
+  displaySubscribed$: Observable<boolean>;
 
   constructor(
     private userService: UserService,
@@ -33,10 +30,6 @@ export class UserSubscriptionButtonComponent implements OnInit {
 
   ngOnInit(): void {
     this.isFollowing$ = this.userService.isFollowingUser(this.userId).pipe(shareReplay(1));
-    this.displayFabSubscribed$ = this.isFollowing$.pipe(map(following => following && this.mode === 'FAB'));
-    this.displayFabNotSubscribed$ = this.isFollowing$.pipe(map(following => !following && this.mode === 'FAB'));
-    this.displayButtonSubscribed$ = this.isFollowing$.pipe(map(following => following && this.mode === 'BUTTON'));
-    this.displayButtonNotSubscribed$ = this.isFollowing$.pipe(map(following => !following && this.mode === 'BUTTON'));
   }
 
   follow(): void {
