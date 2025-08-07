@@ -3,6 +3,7 @@
 @use './theming/constants' as constants;
 @use './theming/mixins' as mixins;
 @use 'src/theming/typography';
+@use './theming/palettes' as palettes;
 
 @include mat.elevation-classes();
 @include mat.app-background();
@@ -18,7 +19,7 @@ body {
   width: 100%;
   margin: 0;
   font-family: 'Open Sans';
-  background: #f7f5f2;
+  background: mat.m2-get-color-from-palette(palettes.$phaenonet-accent, 500);
   color: #262626;
 }
 
@@ -108,7 +109,7 @@ mat-dialog-container .phenonet-dialog-component-close-button.mat-mdc-button {
 }
 
 snack-bar-container.info {
-  color: #a3c5b2;
+  color: mat.m2-get-color-from-palette(palettes.$phaenonet-primary, 200);
 }
 
 snack-bar-container.error {

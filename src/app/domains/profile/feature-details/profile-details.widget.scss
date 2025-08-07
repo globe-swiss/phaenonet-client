@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 @use 'src/theming/mixins';
 @use 'src/theming/typography';
+@use 'src/theming/palettes';
 
 .profile-details {
   @include mixins.detail-view-content;
@@ -36,7 +37,7 @@
     @include mixins.button;
 
     &--logout {
-      color: #d37872;
+      color: mat.m2-get-color-from-palette(palettes.$phaenonet-warn, 500);
     }
   }
 

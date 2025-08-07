@@ -1,3 +1,6 @@
+@use '@angular/material' as mat;
+@use 'src/theming/palettes';
+
 .individual-header-actions {
   &__select {
     width: 15rem;
@@ -39,6 +42,6 @@
 }
 
 .mat-selected {
-  background-color: #7bb53b;
+  background-color: mat.m2-get-color-from-palette(palettes.$phaenonet-primary, 'A100');
   color: #ffffff;
 }
