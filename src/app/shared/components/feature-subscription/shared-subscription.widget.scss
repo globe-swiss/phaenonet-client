@@ -14,5 +14,15 @@
 
   &__button-compact {
     @include mixins.button-compact;
+
+    // Workaround: Remove margins that are incorrectly included in the button mixin.
+    // Margins should be handled by layout containers, not by components themselves.
+    // This allows the component to be used in different layouts without unwanted spacing.
+    &--no-margin {
+      @include mixins.for-tablet-and-smaller {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+    }
   }
 }

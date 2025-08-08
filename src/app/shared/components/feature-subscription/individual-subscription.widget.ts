@@ -18,6 +18,7 @@ import { ButtonMode, SharedSubscriptionButtonComponent } from './shared-subscrip
 export class IndividualSubscriptionButtonComponent extends SharedSubscriptionButtonComponent implements OnInit {
   @Input() individual$: Observable<Individual>;
   @Input() mode: ButtonMode = 'FAB';
+  @Input() nomargin = false;
   isFollowing$: Observable<boolean>;
 
   constructor(

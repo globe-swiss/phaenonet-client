@@ -16,6 +16,7 @@ import { ButtonMode, SharedSubscriptionButtonComponent } from './shared-subscrip
 })
 export class UserSubscriptionButtonComponent extends SharedSubscriptionButtonComponent implements OnInit {
   @Input() userId: string;
+  @Input() nomargin = false;
   isFollowing$: Observable<boolean>;
 
   @Input()
