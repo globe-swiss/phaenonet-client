@@ -190,6 +190,23 @@
   }
 }
 
+@mixin button-compact {
+  @include button;
+
+  &.mat-mdc-button,
+  &.mat-mdc-raised-button,
+  &.mat-mdc-unelevated-button,
+  &.mat-mdc-outlined-button,
+  &.mdc-button--unelevated,
+  &.mdc-button--outlined {
+    height: 35px;
+  }
+
+  .mat-icon {
+    margin: 0;
+  }
+}
+
 @mixin buttons {
   margin-top: 2.5rem;
   display: flex;
