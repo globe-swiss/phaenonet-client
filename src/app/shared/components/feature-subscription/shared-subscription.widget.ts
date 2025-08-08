@@ -1,4 +1,4 @@
-export type ButtonMode = 'FAB' | 'BUTTON';
+export type ButtonMode = 'FAB' | 'BUTTON' | 'COMPACT';
 
 export abstract class SharedSubscriptionButtonComponent {
   abstract buttonMode(): ButtonMode;

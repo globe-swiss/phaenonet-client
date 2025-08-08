@@ -10,5 +10,18 @@
 .user-subscription-button {
   &__button {
     @include mixins.button;
+
+    &--compact {
+      &.mat-mdc-button,
+      &.mat-mdc-raised-button,
+      &.mdc-button--unelevated,
+      &.mdc-button--outlined {
+        height: 35px;
+      }
+
+      .mat-icon {
+        margin: 0;
+      }
+    }
   }
 }
