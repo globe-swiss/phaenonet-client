@@ -5,36 +5,40 @@
     [style.cursor]="item.register_user ? 'pointer' : 'default'"
     [routerLink]="item.register_user ? ['/profile', item.register_user] : []"
   />
-  <div
-    class="invite-card__description"
-    [style.cursor]="item.register_user ? 'pointer' : 'default'"
-    [routerLink]="item.register_user ? ['/profile', item.register_user] : []"
-  >
+  <div class="invite-card__content">
     <div class="invite-card__label">{{ 'Einladung für' | translate }}</div>
     <div id="email" data-test-id="item_email" class="invite-card__value">{{ item.email }}</div>
     <div class="invite-card__label" *ngIf="item.register_date; else notregistered">
       {{ 'Profil' | translate }} ({{ 'registriert am' | translate }} {{ item.register_date | shortdate }})
     </div>
-    <div class="invite-card__value invite-card__value--last">{{ item.register_nick }}</div>
-  </div>
-  <div class="invite-card__buttons">
-    <app-user-subscription-button
-      *ngIf="item.register_date"
-      [userId]="item.register_user"
-      class="invite-card__button"
-    ></app-user-subscription-button>
-    <button *ngIf="!item.register_date" mat-fab color="primary" (click)="resendInvite()" class="invite-card__button">
-      <mat-icon svgIcon="resend-mail"></mat-icon>
-    </button>
+    <div class="invite-card__value invite-card__value--last" *ngIf="item.register_nick">{{ item.register_nick }}</div>
+
+    <div class="invite-card__button-group">
+      <ng-container *ngIf="item.register_date; else pendingInvite">
+        <app-user-subscription-button
+          [userId]="item.register_user"
+          [mode]="'COMPACT'"
+          [nomargin]="true"
+        ></app-user-subscription-button>
+        <button mat-flat-button color="warn" (click)="deleteInvite()">
+          {{ 'Löschen' | translate }}
+        </button>
+      </ng-container>
+      <ng-template #pendingInvite>
+        <button mat-flat-button color="accent" (click)="resendInvite()">
+          {{ 'Erneut senden' | translate }}
+        </button>
+        <button mat-flat-button color="warn" (click)="deleteInvite()">
+          {{ 'Löschen' | translate }}
+        </button>
+      </ng-template>
+    </div>
   </div>
 </div>
 
 <ng-template #notregistered>
   <ng-container *ngIf="item.sent; else notsent">
     <div class="invite-card__label">{{ 'Versendet am' | translate }} {{ item.sent | shortdate }}</div>
-    <div (click)="resendInvite()" style="cursor: pointer" class="invite-card__value invite-card__value--last">
-      {{ 'Erneut senden' | translate }}
-    </div>
   </ng-container>
 </ng-template>
 

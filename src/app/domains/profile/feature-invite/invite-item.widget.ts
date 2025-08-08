@@ -1,7 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { MatFabButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { MaybeIdLike } from '@core/core.model';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,7 +13,7 @@ import { InviteService } from './invite.service';
   selector: 'app-invite-item',
   templateUrl: './invite-item.widget.html',
   styleUrls: ['./invite-item.widget.scss'],
-  imports: [RouterLink, NgIf, UserSubscriptionButtonComponent, MatFabButton, MatIcon, TranslateModule, ShortdatePipe]
+  imports: [RouterLink, NgIf, UserSubscriptionButtonComponent, MatButton, TranslateModule, ShortdatePipe]
 })
 export class InviteItemComponent {
   @Input() item: Invite & MaybeIdLike;
@@ -25,5 +24,10 @@ export class InviteItemComponent {
     if (this.item.id) {
       this.inviteService.resendInvite(this.item, this.item.id);
     }
+  }
+
+  deleteInvite(): void {
+    // TODO: Implement invite deletion
+    console.log('Delete invite:', this.item.id);
   }
 }
