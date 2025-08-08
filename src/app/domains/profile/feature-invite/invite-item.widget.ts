@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 import { MaybeIdLike } from '@core/core.model';
 import { TranslateModule } from '@ngx-translate/core';
 import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
-import { UserSubscriptionButtonComponent } from '../shared/user-subscription.widget';
+import { UserSubscriptionButtonComponent } from '../../../shared/components/feature-subscription/user-subscription.widget';
 import { Invite } from './invite.model';
 import { InviteService } from './invite.service';
 

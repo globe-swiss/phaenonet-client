@@ -1,0 +1,35 @@
+@if (isFollowing$ | async) {
+  @if (buttonMode() === 'FAB') {
+    <button mat-fab color="subscribed" (click)="unfollow()">
+      <mat-icon svgIcon="subscribe-active"></mat-icon>
+    </button>
+  } @else {
+    <button
+      mat-flat-button
+      color="subscribed"
+      (click)="unfollow()"
+      class="user-subscription-button__button"
+      translate
+      data-test-id="unfollowButton"
+    >
+      Abonniert
+    </button>
+  }
+} @else {
+  @if (buttonMode() === 'FAB') {
+    <button mat-fab color="primary" (click)="follow()">
+      <mat-icon svgIcon="subscribe"></mat-icon>
+    </button>
+  } @else {
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="follow()"
+      class="user-subscription-button__button"
+      translate
+      data-test-id="followButton"
+    >
+      Abonnieren
+    </button>
+  }
+}

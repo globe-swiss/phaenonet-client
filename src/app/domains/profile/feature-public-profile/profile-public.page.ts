@@ -11,7 +11,7 @@ import { PublicUserService } from '@shared/services/public-user.service';
 import { CopyClipboardDirective } from '@shared/utils/copy-clipboard.directive';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UserSubscriptionButtonComponent } from '../shared/user-subscription.widget';
+import { UserSubscriptionButtonComponent } from '../../../shared/components/feature-subscription/user-subscription.widget';
 
 @Component({
   selector: 'app-profile-public',

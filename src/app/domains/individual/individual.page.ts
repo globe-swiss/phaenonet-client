@@ -15,7 +15,7 @@ import { IndividualDescriptionHeaderComponent } from './feature-description/indi
 import { IndividualDescriptionBasicInfoComponent } from './feature-description/masterdata-info.component';
 import { IndividualHeaderComponent } from './feature-header/individual-header.component';
 import { ObservationViewComponent } from './feature-observations/individual-observation.widget';
-import { IndividualSubscriptionButtonComponent } from './feature-subscription/individual-subscription.widget';
+import { IndividualSubscriptionButtonComponent } from '../../shared/components/feature-subscription/individual-subscription.widget';
 
 @Component({
   templateUrl: './individual.page.html',

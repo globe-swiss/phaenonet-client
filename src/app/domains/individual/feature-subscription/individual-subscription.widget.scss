@@ -1,7 +1,0 @@
-@use '@angular/material' as mat;
-@use 'src/theming/palettes';
-
-.mat-subscribed {
-  background-color: mat.m2-get-color-from-palette(palettes.$phaenonet-primary, 'A100');
-  color: #ffffff;
-}

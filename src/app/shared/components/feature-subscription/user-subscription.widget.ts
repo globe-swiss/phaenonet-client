@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatButton, MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -6,30 +6,34 @@ import { AlertService } from '@core/services/alert.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserService } from '@shared/services/user.service';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { ButtonMode, SharedSubscriptionButtonComponent } from './shared-subscription.widget';
 
 @Component({
   selector: 'app-user-subscription-button',
-  templateUrl: './user-subscription.widget.html',
-  styleUrls: ['./user-subscription.widget.scss'],
-  imports: [NgIf, MatFabButton, MatIcon, MatButton, TranslateModule, AsyncPipe]
+  templateUrl: './shared-subscription.widget.html',
+  styleUrls: ['./shared-subscription.widget.scss'],
+  imports: [MatFabButton, MatIcon, MatButton, TranslateModule, AsyncPipe]
 })
-export class UserSubscriptionButtonComponent implements OnInit {
+export class UserSubscriptionButtonComponent extends SharedSubscriptionButtonComponent implements OnInit {
   @Input() userId: string;
   isFollowing$: Observable<boolean>;
 
   @Input()
-  mode: 'FAB' | 'BUTTON' = 'FAB';
-
-  displaySubscribed$: Observable<boolean>;
+  mode: ButtonMode = 'FAB';
 
   constructor(
     private userService: UserService,
     private alertService: AlertService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.isFollowing$ = this.userService.isFollowingUser(this.userId).pipe(shareReplay(1));
+    this.isFollowing$ = this.userService.isFollowingUser(this.userId);
+  }
+
+  buttonMode(): ButtonMode {
+    return this.mode;
   }
 
   follow(): void {
