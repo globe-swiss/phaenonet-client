@@ -7,7 +7,7 @@
   color: #ffffff;
 }
 
-.user-subscription-button {
+.shared-subscription-button {
   &__button {
     @include mixins.button;
     // Ensure consistent width for both "Abonniert" and "Abonnieren"
