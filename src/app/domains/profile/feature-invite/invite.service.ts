@@ -7,7 +7,7 @@ import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { LanguageService } from '@core/services/language.service';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { Invite } from './invite.model';
 
 @Injectable({ providedIn: 'root' })
@@ -41,12 +41,29 @@ export class InviteService extends BaseResourceService<Invite> {
   resendInvite(invite: Invite, id: string) {
     if (!invite.sent || new Date().getTime() - invite.sent.toDate().getTime() > 10 * 60 * 1000) {
       invite.resend = increment(1);
-      this.upsert(invite, id);
+      this.upsert(invite, id)
+        .pipe(
+          take(1),
+          tap(() => {
+            this.alertService.infoMessage(
+              'Einladung erneut gesendet',
+              'Die Einladung wurde erfolgreich erneut gesendet.'
+            );
+            this.fds.addWrite('invites (resendInvite)', 1);
+          })
+        )
+        .subscribe();
     } else {
       this.alertService.infoMessage(
         'Erneutes Senden noch nicht möglich',
         'Einladungen können höchstens alle 10 Minuten erneut gesendet werden.'
       );
     }
+  }
+
+  deleteInvite(id: string) {
+    void this.delete(id).then(() => {
+      this.fds.addWrite('invites (deleteInvite)', 1);
+    });
   }
 }

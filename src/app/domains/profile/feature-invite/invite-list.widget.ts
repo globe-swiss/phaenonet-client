@@ -1,7 +1,8 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { IdLike } from '@core/core.model';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -15,12 +16,12 @@ import { InviteService } from './invite.service';
   selector: 'app-invite-list',
   templateUrl: './invite-list.widget.html',
   styleUrls: ['./invite-list.widget.scss'],
-  imports: [TranslateModule, NgIf, NgFor, InviteItemComponent, MatButton, AsyncPipe]
+  imports: [TranslateModule, InviteItemComponent, MatButton, AsyncPipe]
 })
 export class InviteListComponent implements OnInit {
   @Input() userId: string;
-  openInvites$: Observable<Invite[]>;
-  acceptedInvites$: Observable<Invite[]>;
+  openInvites$: Observable<(Invite & IdLike)[]>;
+  acceptedInvites$: Observable<(Invite & IdLike)[]>;
 
   constructor(
     private dialog: MatDialog,
@@ -28,7 +29,7 @@ export class InviteListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const inviteSort = (i1: Invite, i2: Invite) => i2.modified.toMillis() - i1.modified.toMillis();
+    const inviteSort = (i1: Invite & IdLike, i2: Invite & IdLike) => i2.modified.toMillis() - i1.modified.toMillis();
 
     const invites$ = this.inviteService.getInvites().pipe(
       map(invites => invites.filter(invite => invite.modified)), // filter invites where modification ts was not set yet

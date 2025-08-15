@@ -1,4 +1,6 @@
+@use '@angular/material' as mat;
 @use 'src/theming/mixins';
+@use 'src/theming/palettes';
 @use 'src/theming/typography';
 
 .individual-observation-view {
@@ -46,7 +48,7 @@
   &__add-phenophase--disabled {
     & {
       cursor: not-allowed;
-      color: #f7f5f2;
+      color: mat.m2-get-color-from-palette(palettes.$phaenonet-accent, 500);
     }
   }
 

@@ -33,4 +33,29 @@
   &__buttons {
     @include mixins.buttons;
   }
+
+  &__no-invites {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 350px; // Same as button max-width from mixins
+    width: fit-content;
+    min-width: 220px; // Approximate button width
+    margin-left: -50px;
+
+    @include mixins.for-tablet-and-smaller {
+      margin: 0 auto;
+    }
+  }
+
+  &__no-invites-image {
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  &__no-invites-text {
+    @include typography.typo-t2;
+    margin: 0;
+    text-align: center;
+  }
 }

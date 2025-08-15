@@ -9,9 +9,13 @@
 
   &__image {
     @include mixins.teaser-image;
+
+    & {
+      align-self: center; // Center vertically in flex container
+    }
   }
 
-  &__description {
+  &__content {
     @include mixins.teaser-description;
   }
 
@@ -27,13 +31,46 @@
     padding-bottom: 0;
   }
 
-  &__buttons {
-    margin-left: auto;
+  &__button-group {
     display: flex;
-    padding-right: 25px;
-  }
+    gap: 12px;
+    margin-top: 20px;
 
-  &__button {
-    align-self: center;
+    @include mixins.for-tablet-and-smaller {
+      margin-top: 0;
+    }
+
+    // Apply to all buttons in the group
+    button {
+      @include mixins.button-compact;
+
+      // Override margins from button mixin
+      @include mixins.for-tablet-and-smaller {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      & {
+        width: 0 !important;
+        white-space: nowrap; // Prevent text wrapping
+      }
+
+      &.mat-mdc-button,
+      &.mat-mdc-raised-button,
+      &.mat-mdc-unelevated-button {
+        padding: 0 80px;
+      }
+    }
+
+    app-user-subscription-button {
+      display: contents; // Make wrapper invisible to layout
+      &.mat-mdc-button,
+      &.mat-mdc-raised-button,
+      &.mat-mdc-unelevated-button {
+        padding: 0 80px;
+      }
+      width: 0 !important;
+      white-space: nowrap; // Prevent text wrapping
+    }
   }
 }

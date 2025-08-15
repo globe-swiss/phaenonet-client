@@ -19,10 +19,10 @@ import {
 } from '@angular/fire/auth';
 import { Firestore } from '@angular/fire/firestore';
 import { LocalService } from '@app/core/services/local.service';
+import { PhenonetUser } from '@core/core.model';
 import { AlertService, Level, UntranslatedAlertMessage } from '@core/services/alert.service';
 import { Observable, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { PhenonetUser } from '../core.model';
 import { BaseResourceService } from './base-resource.service';
 import { FirestoreDebugService } from './firestore-debug.service';
 

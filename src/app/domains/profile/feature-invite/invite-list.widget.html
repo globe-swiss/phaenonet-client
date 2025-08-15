@@ -1,29 +1,43 @@
 <div class="invite-list">
-  <div class="invite-list__title">
-    <h2 translate>OFFENE EINLADUNGEN</h2>
-  </div>
-  <div class="invite-list__content" *ngIf="(openInvites$ | async)?.length > 0; else noinvites">
-    <app-invite-item *ngFor="let invite of openInvites$ | async" [item]="invite"></app-invite-item>
-  </div>
+  @let openInvites = openInvites$ | async;
+  @let acceptedInvites = acceptedInvites$ | async;
 
-  <div class="invite-list__title">
-    <h2 translate>ANGENOMMENE EINLADUNGEN</h2>
-  </div>
-  <div class="invite-list__content">
-    <ng-container *ngIf="(acceptedInvites$ | async)?.length > 0">
-      <app-invite-item *ngFor="let invite of acceptedInvites$ | async" [item]="invite"></app-invite-item>
-    </ng-container>
-    <div class="invite-list__buttons">
-      <button class="invite-list__button" id="invite" mat-flat-button color="primary" (click)="invite()" translate>
-        Jetzt einladen
-      </button>
+  @if (openInvites?.length > 0) {
+    <div class="invite-list__title">
+      <h2 translate>OFFENE EINLADUNGEN</h2>
     </div>
-  </div>
 
-  <ng-template #noinvites>
     <div class="invite-list__content">
-      <img src="assets/img/illu_noinvites.png" style="display: block; margin-left: auto; margin-right: auto" />
-      <p style="text-align: center" data-test-ide="invite_list_no_invites">Es sind noch keine Einladungen vorhanden</p>
+      @for (invite of openInvites; track invite.id) {
+        <app-invite-item [item]="invite"></app-invite-item>
+      }
     </div>
-  </ng-template>
+  }
+
+  @if (acceptedInvites?.length > 0) {
+    <div class="invite-list__title">
+      <h2 translate>ANGENOMMENE EINLADUNGEN</h2>
+    </div>
+    <div class="invite-list__content">
+      @for (invite of acceptedInvites; track invite.id) {
+        <app-invite-item [item]="invite"></app-invite-item>
+      }
+    </div>
+  }
+
+  @if (!openInvites?.length && !acceptedInvites?.length) {
+    <div class="invite-list__content">
+      <div class="invite-list__no-invites">
+        <img class="invite-list__no-invites-image" src="assets/img/illu_noinvites.png" alt="No invites illustration" />
+        <p class="invite-list__no-invites-text" data-test-id="invite_list_no_invites">Es sind noch keine Einladungen vorhanden</p>
+      </div>
+    </div>
+  }
+
+  <div class="invite-list__title"></div>
+  <div class="invite-list__buttons">
+    <button class="invite-list__button" id="invite" mat-flat-button color="primary" (click)="invite()" translate>
+      Jetzt einladen
+    </button>
+  </div>
 </div>
