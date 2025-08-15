@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - uses: pnpm/action-setup@v4.1.0
@@ -55,7 +55,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - name: Download Build Artifact
@@ -85,7 +85,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - uses: pnpm/action-setup@v4.1.0
@@ -143,7 +143,7 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - uses: pnpm/action-setup@v4.1.0
@@ -204,7 +204,7 @@ jobs:
       msg: ${{ steps.get-commit-msg.outputs.msg }}
     steps:
       - name: Get PR head commit
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Head git commit message
