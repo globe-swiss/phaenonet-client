@@ -1,7 +1,7 @@
 @if (isFollowing$ | async) {
   @switch (buttonMode()) {
     @case ('FAB') {
-      <button mat-fab color="subscribed" (click)="unfollow()">
+      <button mat-fab color="subscribed" (click)="unfollow()" data-test-id="unfollowButton">
         <mat-icon svgIcon="subscribe-active"></mat-icon>
       </button>
     }
@@ -34,7 +34,7 @@
 } @else {
   @switch (buttonMode()) {
     @case ('FAB') {
-      <button mat-fab color="primary" (click)="follow()">
+      <button mat-fab color="primary" (click)="follow()" data-test-id="followButton">
         <mat-icon svgIcon="subscribe"></mat-icon>
       </button>
     }
