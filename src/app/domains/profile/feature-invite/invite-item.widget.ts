@@ -26,7 +26,8 @@ export class InviteItemComponent {
   }
 
   deleteInvite(): void {
-    // TODO: Implement invite deletion
-    console.log('Delete invite:', this.item.id);
+    if (this.item.id) {
+      this.inviteService.deleteInvite(this.item.id);
+    }
   }
 }
