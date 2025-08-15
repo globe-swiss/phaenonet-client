@@ -8,13 +8,23 @@
   <div class="invite-card__content">
     <div class="invite-card__label">{{ 'Einladung für' | translate }}</div>
     <div id="email" data-test-id="item_email" class="invite-card__value">{{ item.email }}</div>
-    <div class="invite-card__label" *ngIf="item.register_date; else notregistered">
-      {{ 'Profil' | translate }} ({{ 'registriert am' | translate }} {{ item.register_date | shortdate }})
-    </div>
-    <div class="invite-card__value invite-card__value--last" *ngIf="item.register_nick">{{ item.register_nick }}</div>
+    @if (item.register_date) {
+      <div class="invite-card__label">
+        {{ 'Profil' | translate }} ({{ 'registriert am' | translate }} {{ item.register_date | shortdate }})
+      </div>
+    } @else {
+      @if (item.sent) {
+        <div class="invite-card__label">{{ 'Versendet am' | translate }} {{ item.sent | shortdate }}</div>
+      } @else {
+        <div class="invite-card__label">Wird gesendet…</div>
+      }
+    }
+    @if (item.register_nick) {
+      <div class="invite-card__value invite-card__value--last">{{ item.register_nick }}</div>
+    }
 
     <div class="invite-card__button-group">
-      <ng-container *ngIf="item.register_date; else pendingInvite">
+      @if (item.register_date) {
         <app-user-subscription-button
           [userId]="item.register_user"
           [mode]="'COMPACT'"
@@ -23,25 +33,14 @@
         <button mat-flat-button color="warn" (click)="deleteInvite()">
           {{ 'Löschen' | translate }}
         </button>
-      </ng-container>
-      <ng-template #pendingInvite>
+      } @else {
         <button mat-flat-button color="accent" (click)="resendInvite()">
           {{ 'Erneut senden' | translate }}
         </button>
         <button mat-flat-button color="warn" (click)="deleteInvite()">
           {{ 'Löschen' | translate }}
         </button>
-      </ng-template>
+      }
     </div>
   </div>
 </div>
-
-<ng-template #notregistered>
-  <ng-container *ngIf="item.sent; else notsent">
-    <div class="invite-card__label">{{ 'Versendet am' | translate }} {{ item.sent | shortdate }}</div>
-  </ng-container>
-</ng-template>
-
-<ng-template #notsent>
-  <div class="detail-label">Wird gesendet…</div>
-</ng-template>
