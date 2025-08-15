@@ -10,10 +10,30 @@
 .user-subscription-button {
   &__button {
     @include mixins.button;
+    // Ensure consistent width for both "Abonniert" and "Abonnieren"
+    & {
+      width: 0;
+    }
+
+    &.mat-mdc-button,
+    &.mat-mdc-raised-button,
+    &.mat-mdc-unelevated-button {
+      padding: 0 115px;
+    }
   }
 
   &__button-compact {
     @include mixins.button-compact;
+    // Ensure consistent width for compact mode
+    & {
+      width: 0;
+    }
+
+    &.mat-mdc-button,
+    &.mat-mdc-raised-button,
+    &.mat-mdc-unelevated-button {
+      padding: 0 80px;
+    }
 
     // Workaround: Remove margins that are incorrectly included in the button mixin.
     // Margins should be handled by layout containers, not by components themselves.

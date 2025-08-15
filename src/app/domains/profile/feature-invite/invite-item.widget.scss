@@ -9,7 +9,10 @@
 
   &__image {
     @include mixins.teaser-image;
-    align-self: center; // Center vertically in flex container
+
+    & {
+      align-self: center; // Center vertically in flex container
+    }
   }
 
   &__content {
@@ -47,21 +50,27 @@
         margin-right: 0;
       }
 
-      // "Erneut senden" button should match subscription button width
-      &:first-child:not(:last-child) {
-        width: 220px !important; // Match the subscription button's approximate width
+      & {
+        width: 0 !important;
         white-space: nowrap; // Prevent text wrapping
       }
 
-      // "Löschen" button stays at 150px
-      &:last-child {
-        width: 150px !important;
-        margin-left: auto; // Keep right alignment
+      &.mat-mdc-button,
+      &.mat-mdc-raised-button,
+      &.mat-mdc-unelevated-button {
+        padding: 0 80px;
       }
     }
 
     app-user-subscription-button {
       display: contents; // Make wrapper invisible to layout
+      &.mat-mdc-button,
+      &.mat-mdc-raised-button,
+      &.mat-mdc-unelevated-button {
+        padding: 0 80px;
+      }
+      width: 0 !important;
+      white-space: nowrap; // Prevent text wrapping
     }
   }
 }

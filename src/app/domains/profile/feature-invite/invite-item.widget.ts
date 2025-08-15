@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
@@ -13,7 +12,7 @@ import { InviteService } from './invite.service';
   selector: 'app-invite-item',
   templateUrl: './invite-item.widget.html',
   styleUrls: ['./invite-item.widget.scss'],
-  imports: [RouterLink, NgIf, UserSubscriptionButtonComponent, MatButton, TranslateModule, ShortdatePipe]
+  imports: [RouterLink, UserSubscriptionButtonComponent, MatButton, TranslateModule, ShortdatePipe]
 })
 export class InviteItemComponent {
   @Input() item: Invite & MaybeIdLike;
