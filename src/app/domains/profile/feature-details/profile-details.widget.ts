@@ -12,7 +12,7 @@ import { PublicUser } from '@shared/models/public-user.model';
 import { UserService } from '@shared/services/user.service';
 import { CopyClipboardDirective } from '@shared/utils/copy-clipboard.directive';
 import { Observable, ReplaySubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile-details',
@@ -50,7 +50,7 @@ export class ProfileDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.email = this.authService.email;
-    const user$ = this.userService.user$;
+    const user$ = this.userService.user$.pipe(filter(u => u != null));
     this.nickname$ = user$.pipe(map(u => u.nickname));
     this.firstname$ = user$.pipe(map(u => u.firstname));
     this.lastname$ = user$.pipe(map(u => u.lastname));
