@@ -99,7 +99,7 @@ export class UserService extends BaseResourceService<PhenonetUser> {
   // TODO test upsert! (former update op)
   private followUnfollow(partial: Partial<unknown>): Observable<void> {
     return this.upsert(partial, this.authService.getUserId()).pipe(
-      tap(() => this.fds.addWrite('users (followUnfollow)')),
+      tap(() => this.fds.addWrite(`users (${this.constructor.name}.followUnfollow)`)),
       map(() => {
         return; // map to void
       })

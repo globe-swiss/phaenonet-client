@@ -28,7 +28,7 @@ export class StatisticsAltitudeService extends BaseResourceService<StatisticsYea
     }
 
     return this.queryCollection(...queryConstraints).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (listByYear)`, x.length)),
+      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByYear)`, x.length)),
       map(statisticsYearlyAltitudeArray => this.statisticToAnalytics(statisticsYearlyAltitudeArray)),
       map(analytics => this.groupAltitudes(analytics))
     );

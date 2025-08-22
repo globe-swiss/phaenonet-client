@@ -20,6 +20,6 @@ export class ActivityService extends BaseResourceService<Activity> {
       where('followers', 'array-contains', userId),
       orderBy('activity_date', 'desc'),
       limit(limitAmount)
-    ).pipe(tap(x => this.fds.addRead('activities (listByUser)', x.length)));
+    ).pipe(tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByUser)`, x.length)));
   }
 }

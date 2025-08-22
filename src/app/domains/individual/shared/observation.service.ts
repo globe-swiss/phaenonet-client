@@ -17,7 +17,7 @@ export class ObservationService extends BaseResourceService<Observation> {
 
   listByIndividual(individualId: string): Observable<Observation[]> {
     return this.queryCollection(where('individual_id', '==', individualId)).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (listByIndividual)`, x.length)),
+      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByIndividual)`, x.length)),
       map(obs =>
         obs.map(o => {
           o.date = o.date ? (o.date as any).toDate() : o.date;
@@ -32,7 +32,7 @@ export class ObservationService extends BaseResourceService<Observation> {
 
   hasObservations(individualId: string): Observable<boolean> {
     return this.queryCollection(where('individual_id', '==', individualId), limit(1)).pipe(
-      tap(x => this.fds.addRead('observations (hasObservations)', x.length)),
+      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.hasObservations)`, x.length)),
       map(observations => {
         return observations.length > 0;
       })

@@ -85,7 +85,7 @@ export class MasterdataService extends BaseResourceService<unknown> implements O
   ) {
     super(afs, 'definitions', fds);
     this.configDynamic$ = this.get('config_dynamic').pipe(
-      tap(() => this.fds.addRead('config_dynamic')),
+      tap(() => this.fds.addRead(`definitions.config_dynamic (${this.constructor.name}.constructor)`)),
       shareReplay(1)
     ) as Observable<ConfigDynamic>;
     this.availableYears$ = this.configDynamic$.pipe(

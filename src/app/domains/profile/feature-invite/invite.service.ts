@@ -34,7 +34,7 @@ export class InviteService extends BaseResourceService<Invite> {
 
   getInvites(): Observable<(Invite & IdLike)[]> {
     return this.queryCollection(where('user', '==', this.authService.getUserId())).pipe(
-      tap(x => this.fds.addRead('activities (getInvites)', x.length))
+      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.getInvites`, x.length))
     );
   }
 
@@ -49,7 +49,7 @@ export class InviteService extends BaseResourceService<Invite> {
               'Einladung erneut gesendet',
               'Die Einladung wurde erfolgreich erneut gesendet.'
             );
-            this.fds.addWrite('invites (resendInvite)', 1);
+            this.fds.addWrite(`invites (${this.constructor.name}.resendInvite)`);
           })
         )
         .subscribe();
@@ -63,7 +63,7 @@ export class InviteService extends BaseResourceService<Invite> {
 
   deleteInvite(id: string) {
     void this.delete(id).then(() => {
-      this.fds.addWrite('invites (deleteInvite)', 1);
+      this.fds.addWrite(`invites (${this.constructor.name}.deleteInvite)`);
     });
   }
 }

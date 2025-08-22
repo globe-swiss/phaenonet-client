@@ -53,7 +53,7 @@ export abstract class BaseResourceService<T> {
 
   list(): Observable<(T & IdLike)[]> {
     return collectionData<T & IdLike>(this.collectionRef, { idField: 'id' }).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (list)`, x.length))
+      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.list)`, x.length))
     );
   }
 
@@ -64,7 +64,7 @@ export abstract class BaseResourceService<T> {
    */
   protected queryCollection(...queryConstraints: QueryConstraint[]): Observable<(T & IdLike)[]> {
     return collectionData(query(this.collectionRef, ...queryConstraints), { idField: 'id' }).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (base-resource.queryCollection)`, x.length))
+      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.queryCollection)`, x.length))
     );
   }
 
@@ -78,7 +78,7 @@ export abstract class BaseResourceService<T> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     const { id, created, modified, ...withoutDates }: any = t;
 
-    this.fds.addWrite(`${this.collectionName} (upsert)`);
+    this.fds.addWrite(`${this.collectionName} (${this.constructor.name}.upsert)`);
 
     const docPromise = setDoc(this.getDocRef(uid), withoutDates, { merge: true }).then(() =>
       this.get(uid).pipe(first())
@@ -97,9 +97,11 @@ export abstract class BaseResourceService<T> {
     return docData<T>(this.getDocRef(String(id))).pipe(
       tap(data => {
         if (!data && !returnUndefined) {
-          console.warn(`Document with ID ${id} not found in collection ${this.collectionName} (base-resource.get)`);
+          console.warn(
+            `Document with ID ${id} not found in collection ${this.collectionName} (${this.constructor.name}.get)`
+          );
         }
-        this.fds.addRead(`${this.collectionName} (base-resource.get)`);
+        this.fds.addRead(`${this.collectionName} (${this.constructor.name}.get)`);
       }),
       filter(data => !!data || returnUndefined) // Skip undefined/null values
     );
@@ -117,10 +119,10 @@ export abstract class BaseResourceService<T> {
       tap(data => {
         if (!data && !returnUndefined) {
           console.warn(
-            `Document with ID ${id} not found in collection ${this.collectionName} (base-resource.getWithId)`
+            `Document with ID ${id} not found in collection ${this.collectionName} (${this.constructor.name}.getWithId)`
           );
         }
-        this.fds.addRead(`${this.collectionName} (base-resource.getWithId)`);
+        this.fds.addRead(`${this.collectionName} (${this.constructor.name}.getWithId)`);
       }),
       filter(data => !!data || returnUndefined) // Skip undefined/null values
     );
@@ -131,6 +133,7 @@ export abstract class BaseResourceService<T> {
    * @param id the id of the document to be deleted
    */
   delete(id: string): Promise<void> {
+    this.fds.addWrite(`${this.collectionName} (${this.constructor.name}.delete)`);
     return deleteDoc(this.getDocRef(id));
   }
 }

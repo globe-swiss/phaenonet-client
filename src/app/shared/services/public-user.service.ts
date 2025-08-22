@@ -20,7 +20,7 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
   existingNickname(nickname: string): Observable<boolean> {
     if (nickname && nickname.length > 0) {
       return this.queryCollection(where('nickname', '==', nickname)).pipe(
-        tap(x => this.fds.addRead(`${this.collectionName} (existingNickname)`, x.length)),
+        tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.existingNickname)`, x.length)),
         first(),
         map(users => users.length > 0)
       );

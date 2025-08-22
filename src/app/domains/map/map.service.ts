@@ -53,7 +53,7 @@ export class MapService extends BaseResourceService<MapData> {
       first(), // do not subscribe to changes
       map(mapData => this.convertIndividuals(mapData)),
       map(mapIndividuals => this.filterMapIndividuals(mapIndividuals)),
-      tap(() => this.fds.addRead('maps'))
+      tap(() => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.getMapIndividuals)`))
     );
   }
 
