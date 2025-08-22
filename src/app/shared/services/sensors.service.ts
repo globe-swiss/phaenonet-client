@@ -17,7 +17,7 @@ export class SensorsService extends BaseResourceService<Sensors> {
 
   getSensorData(individual_id: string): Observable<DailySensorData[]> {
     return this.get(individual_id).pipe(
-      tap(() => this.fds.addRead(`${this.collectionName} (getSensorData)`, 1)),
+      tap(() => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.getSensorData)`)),
       filter(sensors => sensors !== undefined),
       map(sensors => {
         const data = sensors.data;

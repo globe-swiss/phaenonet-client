@@ -36,7 +36,7 @@ export class StatisticsService extends BaseResourceService<Statistics> {
     }
 
     return this.queryCollection(...queryConstraints).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (getStatistics)`, x.length)),
+      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.getStatistics)`, x.length)),
       map(statisticsAggs =>
         statisticsAggs.map(sa => ({
           agg_obs_sum: sa.agg_obs_sum,

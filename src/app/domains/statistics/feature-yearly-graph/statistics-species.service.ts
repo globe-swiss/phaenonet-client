@@ -27,7 +27,7 @@ export class StatisticsSpeciesService extends BaseResourceService<StatisticsYear
     }
 
     return this.queryCollection(...queryConstraints).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (listByYear)`, x.length)),
+      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByYear)`, x.length)),
       map(statisticsYearlySpecies =>
         statisticsYearlySpecies.map(a => ({
           source: a.source,

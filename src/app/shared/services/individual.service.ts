@@ -60,7 +60,7 @@ export class IndividualService extends BaseResourceService<Individual> {
 
   listByUserAndYear(userId: string, year: number, limitAmount: number = 1000): Observable<(Individual & IdLike)[]> {
     return this.queryCollection(where('user', '==', userId), where('year', '==', year), limit(limitAmount)).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (listByUserAndYear)`, x.length))
+      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByUserAndYear)`, x.length))
     );
   }
 
@@ -75,7 +75,9 @@ export class IndividualService extends BaseResourceService<Individual> {
       where('year', '==', year),
       where('species', '==', species),
       limit(limitAmount)
-    ).pipe(tap(x => this.fds.addRead(`${this.collectionName} (listByUserAndSpecies)`, x.length)));
+    ).pipe(
+      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByUserAndSpecies)`, x.length))
+    );
   }
 
   listByIds(individuals: string[], year: number, limitAmount: number = 100): Observable<(Individual & IdLike)[]> {
@@ -93,7 +95,7 @@ export class IndividualService extends BaseResourceService<Individual> {
       )
     ).pipe(
       map(results => results.flat()),
-      tap(x => this.fds.addRead(`${this.collectionName} (listByIds)`, x.length))
+      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByIds)`, x.length))
     );
   }
 
@@ -143,7 +145,9 @@ export class IndividualService extends BaseResourceService<Individual> {
    */
   getSelectableIndividuals(individual: string, includeOwned: boolean): Observable<(Individual & IdLike)[]> {
     return this.queryCollection(where('individual', '==', individual)).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (getSelectableIndividuals)`, x.length)),
+      tap(x =>
+        this.fds.addRead(`${this.collectionName} (${this.constructor.name}.getSelectableIndividuals)`, x.length)
+      ),
       map(individuals => individuals.filter(i => includeOwned || i.last_observation_date))
     );
   }
