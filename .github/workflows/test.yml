@@ -29,7 +29,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install
       - name: Set API info
-        uses: suisei-cn/actions-download-file@v1.6.0
+        uses: suisei-cn/actions-download-file@v1.6.1
         with:
           url: ${{ secrets.FIREBASE_TEST_API_URL }}
           target: ./src/local/
