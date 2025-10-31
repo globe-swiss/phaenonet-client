@@ -44,6 +44,7 @@ jobs:
       - uses: actions/checkout@v5.0.0
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: 'Get previous tag'
         id: previoustag
         uses: 'WyriHaximus/github-action-get-previous-tag@v1.4.0'
@@ -78,6 +79,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5.0.0
+        with:
+          persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - uses: pnpm/action-setup@v4.2.0
@@ -90,7 +93,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
       - name: 'set release version: ${{ env.VERSION }}'
-        run: sed -ri "s|'#VERSION#'|'${{ env.VERSION }}'|" src/environments/environment*.ts
+        run: sed -ri "s|'#VERSION#'|'${VERSION}'|" src/environments/environment*.ts
       - name: Build
         run: pnpm exec ng build ${{ env.PROJECT == 'phaenonet' && '--c=production' || '' }}
       - name: Upload Artifact
@@ -110,6 +113,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5.0.0
+        with:
+          persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - name: Download Artifact
@@ -127,14 +132,14 @@ jobs:
       - run: pnpm install
       - name: Release ${{ env.VERSION }}
         run: |
-          echo "Create new release ${{ env.VERSION }}"
-          pnpm exec sentry-cli releases new ${{ env.VERSION }}
-          pnpm exec sentry-cli releases set-commits ${{ env.VERSION }} --auto
-          pnpm exec sentry-cli releases files ${{ env.VERSION }} upload-sourcemaps ./dist/phaenonet/browser -x=js -x=map -x=css -i=**/src_assets_i18n* --validate --verbose --rewrite --strip-common-prefix
-          pnpm exec sentry-cli releases finalize ${{ env.VERSION }}
-          echo "Finalized release ${{ env.VERSION }}"
-          echo "Adding deployment for ${{ env.ENVIRONMENT }} environment"
-          pnpm exec sentry-cli releases deploys ${{ env.VERSION }} new --env ${{ env.ENVIRONMENT }}
+          echo "Create new release ${VERSION}"
+          pnpm exec sentry-cli releases new ${VERSION}
+          pnpm exec sentry-cli releases set-commits ${VERSION} --auto
+          pnpm exec sentry-cli releases files ${VERSION} upload-sourcemaps ./dist/phaenonet/browser -x=js -x=map -x=css -i=**/src_assets_i18n* --validate --verbose --rewrite --strip-common-prefix
+          pnpm exec sentry-cli releases finalize ${VERSION}
+          echo "Finalized release ${VERSION}"
+          echo "Adding deployment for ${ENVIRONMENT} environment"
+          pnpm exec sentry-cli releases deploys ${VERSION} new --env ${ENVIRONMENT}
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: phaenonet
@@ -149,6 +154,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5.0.0
+        with:
+          persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - name: Checkout rules
@@ -157,6 +164,7 @@ jobs:
           repository: globe-swiss/phaenonet-client-security
           path: security
           ssh-key: ${{ secrets.SECURITY_REPO_DEPLOY_KEY }}
+          persist-credentials: false
       - name: Download Artifact
         uses: ./.github/actions/download-zip-artifact
         with:
@@ -181,7 +189,7 @@ jobs:
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
           create_credentials_file: true
       - name: Deploy to Firebase
-        run: pnpm exec firebase deploy --project ${{ env.PROJECT }}
+        run: pnpm exec firebase deploy --project ${PROJECT}
   tag:
     name: Tag
     needs:

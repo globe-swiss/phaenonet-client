@@ -39,7 +39,9 @@ runs:
     - name: extract service account
       shell: sh
       run: |
-        echo "SERVICE_ACCOUNT_KEY=$(cat "${{ steps.auth.outputs.credentials_file_path }}" | tr -d '\n')" >> $GITHUB_ENV
+        echo "SERVICE_ACCOUNT_KEY=$(cat "${STEPS_AUTH_OUTPUTS_CREDENTIALS_FILE_PATH}" | tr -d '\n')" >> $GITHUB_ENV
+      env:
+        STEPS_AUTH_OUTPUTS_CREDENTIALS_FILE_PATH: ${{ steps.auth.outputs.credentials_file_path }}
     - name: Deploy E2E-Test Report
       uses: FirebaseExtended/action-hosting-deploy@v0.10.0
       with:
