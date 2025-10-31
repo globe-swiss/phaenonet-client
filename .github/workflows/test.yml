@@ -29,7 +29,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install
       - name: Set API info
-        uses: suisei-cn/actions-download-file@v1.6.0
+        uses: suisei-cn/actions-download-file@v1.6.1
         with:
           url: ${{ secrets.FIREBASE_TEST_API_URL }}
           target: ./src/local/
@@ -165,7 +165,7 @@ jobs:
       - name: check style
         run: pnpm exec prettier -c "."
         if: always()
-      - uses: EPMatt/reviewdog-action-prettier@v1.2.0
+      - uses: EPMatt/reviewdog-action-prettier@v1.3.0
         with:
           reporter: github-pr-check
           level: error
