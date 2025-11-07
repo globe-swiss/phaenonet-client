@@ -79,6 +79,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           project_Id: phaenonet-test
           expires: 30d
+          node_version: ${{ env.NODE_VERSION }}
   e2e-tests:
     needs: [build, commit-info]
     if: ${{ !contains(needs.commit-info.outputs.msg, '#no-e2e') }}
@@ -139,6 +140,7 @@ jobs:
           entry_point: e2e/
           channel_id: ${{ github.ref == 'refs/heads/master' && 'live' || null }}
           expires: 30d
+          node_version: ${{ env.NODE_VERSION }}
         if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
       - name: Codecov
         uses: codecov/codecov-action@v5.5.1
