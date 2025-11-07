@@ -42,6 +42,7 @@ runs:
         {
           echo "SERVICE_ACCOUNT_KEY<<EOF"
           cat "${STEPS_AUTH_OUTPUTS_CREDENTIALS_FILE_PATH}" | tr -d '\n'
+          echo ""
           echo "EOF"
         } >> $GITHUB_ENV
       env:
