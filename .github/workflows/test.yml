@@ -6,6 +6,7 @@ on:
   push:
     branches: [master, test-pr]
 
+# No default permissions - each job explicitly defines what it needs
 permissions: {}
 
 env:
@@ -56,9 +57,9 @@ jobs:
     environment: phaenonet-test
     permissions:
       contents: read
-      id-token: write
-      checks: write
-      pull-requests: write
+      id-token: write # Required for GCP Workload Identity Federation (google-github-actions/auth)
+      checks: write # Required for FirebaseExtended/action-hosting-deploy to create check runs
+      pull-requests: write # Required for FirebaseExtended/action-hosting-deploy to comment on PRs
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5.0.0
@@ -88,9 +89,9 @@ jobs:
     environment: phaenonet-test
     permissions:
       contents: read
-      id-token: write
-      checks: write
-      pull-requests: write
+      id-token: write # Required for GCP Workload Identity Federation (google-github-actions/auth) and Codecov OIDC
+      checks: write # Required for FirebaseExtended/action-hosting-deploy to create check runs
+      pull-requests: write # Required for FirebaseExtended/action-hosting-deploy to comment on PRs
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5.0.0
@@ -150,6 +151,7 @@ jobs:
   checks:
     permissions:
       contents: read
+      checks: write # Required for reviewdog to create check runs with github-pr-check reporter
     name: Code Quality
     runs-on: ubuntu-22.04
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'

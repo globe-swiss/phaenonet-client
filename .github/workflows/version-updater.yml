@@ -5,6 +5,7 @@ on:
   schedule:
     - cron: '30 5 * * 5'
 
+# No default permissions - each job explicitly defines what it needs
 permissions: {}
 
 env:

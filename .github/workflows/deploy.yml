@@ -30,6 +30,7 @@ env:
   PNPM_VERSION: '<loaded from .env>'
   REVIEWDOG_VERSION: '<loaded from .env>'
 
+# No default permissions - each job explicitly defines what it needs
 permissions: {}
 
 jobs:
@@ -167,7 +168,7 @@ jobs:
   deploy:
     permissions:
       contents: read
-      id-token: write
+      id-token: write # Required for GCP Workload Identity Federation (google-github-actions/auth)
     concurrency: deploy
     name: Deploy
     needs: build
@@ -219,7 +220,7 @@ jobs:
       - next-versions
     runs-on: ubuntu-22.04
     permissions:
-      contents: write
+      contents: write # Required to create git tags (tvdias/github-tagger)
     if: ${{ github.event.inputs.tag != null && github.event.inputs.tag != 'none' }}
     steps:
       - name: Tag version ${{ needs.next-versions.outputs.tag }}
