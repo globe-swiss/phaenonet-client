@@ -59,4 +59,3 @@ jobs:
           project_Id: ${{ env.PROJECT }}
           channel_id: ${{ github.ref }}
           expires: ${{ env.EXP }}
-          node_version: ${{ env.NODE_VERSION }}
