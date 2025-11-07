@@ -6,6 +6,8 @@ on:
   push:
     branches: [master, test-pr]
 
+permissions: {}
+
 env:
   NODE_VERSION: '<loaded from .env>'
   PNPM_VERSION: '<loaded from .env>'
@@ -13,6 +15,8 @@ env:
 
 jobs:
   build:
+    permissions:
+      contents: read
     name: Build
     runs-on: ubuntu-22.04
     steps:
@@ -144,6 +148,8 @@ jobs:
           flags: e2e
         if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
   checks:
+    permissions:
+      contents: read
     name: Code Quality
     runs-on: ubuntu-22.04
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
@@ -206,6 +212,8 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
   commit-info:
+    permissions:
+      contents: read
     name: Commit Info
     runs-on: ubuntu-latest
     outputs:

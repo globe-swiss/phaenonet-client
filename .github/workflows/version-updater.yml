@@ -5,12 +5,16 @@ on:
   schedule:
     - cron: '30 5 * * 5'
 
+permissions: {}
+
 env:
   NODE_VERSION: '<loaded from .env>'
   PNPM_VERSION: '<loaded from .env>'
 
 jobs:
   actions-update:
+    permissions:
+      contents: read
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v5.0.0
@@ -28,8 +32,7 @@ jobs:
           extra_workflow_locations: .github/actions
   npm-update:
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
     runs-on: ubuntu-22.04
     steps:
       - name: Check out repository

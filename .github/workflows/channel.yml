@@ -16,6 +16,8 @@ on:
         required: true
         default: 30d
 
+permissions: {}
+
 env:
   PROJECT: ${{ github.event.inputs.project }}
   EXP: ${{ github.event.inputs.expires }}
@@ -30,7 +32,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-      checks: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5.0.0
