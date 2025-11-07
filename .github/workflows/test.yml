@@ -151,7 +151,8 @@ jobs:
   checks:
     permissions:
       contents: read
-      checks: write # Required for reviewdog to create check runs with github-pr-check reporter
+      checks: write # Required for reviewdog to create and update check runs
+      pull-requests: write # Required for reviewdog github-pr-check reporter to access/modify PR data
     name: Code Quality
     runs-on: ubuntu-22.04
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
