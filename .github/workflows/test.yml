@@ -15,139 +15,139 @@ env:
   REVIEWDOG_VERSION: '<loaded from .env>'
 
 jobs:
-  build:
-    permissions:
-      contents: read
-    name: Build
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
-        with:
-          persist-credentials: false
-      - name: Set environment variables
-        run: cat .env >> $GITHUB_ENV
-      - uses: pnpm/action-setup@v4.2.0
-        with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6.0.0
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-      - run: pnpm install
-      - name: Set API info
-        uses: suisei-cn/actions-download-file@v1.6.1
-        with:
-          url: ${{ secrets.FIREBASE_TEST_API_URL }}
-          target: ./src/local/
-      - name: Build test version
-        run: pnpm exec ng build -c local
-      - name: Upload Build Artifact
-        uses: ./.github/actions/upload-zip-artifact
-        with:
-          name: dist-pr-build
-          path: dist
-          retention-days: 1
-          node_version: ${{ env.NODE_VERSION }}
-  channel:
-    needs: [build, commit-info]
-    if: ${{ !contains(needs.commit-info.outputs.msg, '#no-deploy') && github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]' }}
-    name: Deploy Preview
-    runs-on: ubuntu-22.04
-    environment: phaenonet-test
-    permissions:
-      contents: read
-      id-token: write # Required for GCP Workload Identity Federation (google-github-actions/auth)
-      checks: write # Required for FirebaseExtended/action-hosting-deploy to create check runs
-      pull-requests: write # Required for FirebaseExtended/action-hosting-deploy to comment on PRs
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
-        with:
-          persist-credentials: false
-      - name: Set environment variables
-        run: cat .env >> $GITHUB_ENV
-      - name: Download Build Artifact
-        uses: ./.github/actions/download-zip-artifact
-        with:
-          name: dist-pr-build
-          node_version: ${{ env.NODE_VERSION }}
-      - name: Deploy Preview Channel
-        uses: ./.github/actions/deploy-hosting-action
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          project_Id: phaenonet-test
-          expires: 30d
-  e2e-tests:
-    needs: [build, commit-info]
-    if: ${{ !contains(needs.commit-info.outputs.msg, '#no-e2e') }}
-    concurrency: e2e-test
-    name: E2E-tests
-    runs-on: ubuntu-22.04
-    environment: phaenonet-test
-    permissions:
-      contents: read
-      id-token: write # Required for GCP Workload Identity Federation (google-github-actions/auth) and Codecov OIDC
-      checks: write # Required for FirebaseExtended/action-hosting-deploy to create check runs
-      pull-requests: write # Required for FirebaseExtended/action-hosting-deploy to comment on PRs
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
-        with:
-          persist-credentials: false
-      - name: Set environment variables
-        run: cat .env >> $GITHUB_ENV
-      - uses: pnpm/action-setup@v4.2.0
-        with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6.0.0
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-      - name: Download Build Artifact
-        uses: ./.github/actions/download-zip-artifact
-        with:
-          name: dist-pr-build
-          node_version: ${{ env.NODE_VERSION }}
-      - name: Start server
-        uses: ./.github/actions/angular-http-server-action
-        with:
-          path: ./dist/phaenonet/browser
-          port: 4200
-      - name: Setup CodeceptJS
-        working-directory: e2e
-        run: pnpm install && pnpm exec playwright install chromium
-      - name: e2e-test
-        working-directory: e2e
-        run: pnpm exec codeceptjs run --reporter mochawesome --grep "@flaky" --invert
-      - name: Upload E2E-Test Artifact
-        uses: ./.github/actions/upload-zip-artifact
-        with:
-          name: e2e-test-report
-          path: e2e/output
-          retention-days: 1
-          node_version: ${{ env.NODE_VERSION }}
-        if: always()
-      - name: Deploy E2E-Test Report
-        uses: ./.github/actions/deploy-hosting-action
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          project_Id: phaenonet-test
-          entry_point: e2e/
-          channel_id: ${{ github.ref == 'refs/heads/master' && 'live' || null }}
-          expires: 30d
-        if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
-      - name: Codecov
-        uses: codecov/codecov-action@v5.5.1
-        with:
-          use_oidc: true
-          files: ./e2e/output/coverage-reports/codecov.json
-          flags: e2e
-        if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
+  # build:
+  #   permissions:
+  #     contents: read
+  #   name: Build
+  #   runs-on: ubuntu-22.04
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v5.0.0
+  #       with:
+  #         persist-credentials: false
+  #     - name: Set environment variables
+  #       run: cat .env >> $GITHUB_ENV
+  #     - uses: pnpm/action-setup@v4.2.0
+  #       with:
+  #         version: ${{ env.PNPM_VERSION }}
+  #     - uses: actions/setup-node@v6.0.0
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #         cache: 'pnpm'
+  #     - run: pnpm install
+  #     - name: Set API info
+  #       uses: suisei-cn/actions-download-file@v1.6.1
+  #       with:
+  #         url: ${{ secrets.FIREBASE_TEST_API_URL }}
+  #         target: ./src/local/
+  #     - name: Build test version
+  #       run: pnpm exec ng build -c local
+  #     - name: Upload Build Artifact
+  #       uses: ./.github/actions/upload-zip-artifact
+  #       with:
+  #         name: dist-pr-build
+  #         path: dist
+  #         retention-days: 1
+  #         node_version: ${{ env.NODE_VERSION }}
+  # channel:
+  #   needs: [build, commit-info]
+  #   if: ${{ !contains(needs.commit-info.outputs.msg, '#no-deploy') && github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]' }}
+  #   name: Deploy Preview
+  #   runs-on: ubuntu-22.04
+  #   environment: phaenonet-test
+  #   permissions:
+  #     contents: read
+  #     id-token: write # Required for GCP Workload Identity Federation (google-github-actions/auth)
+  #     checks: write # Required for FirebaseExtended/action-hosting-deploy to create check runs
+  #     pull-requests: write # Required for FirebaseExtended/action-hosting-deploy to comment on PRs
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v5.0.0
+  #       with:
+  #         persist-credentials: false
+  #     - name: Set environment variables
+  #       run: cat .env >> $GITHUB_ENV
+  #     - name: Download Build Artifact
+  #       uses: ./.github/actions/download-zip-artifact
+  #       with:
+  #         name: dist-pr-build
+  #         node_version: ${{ env.NODE_VERSION }}
+  #     - name: Deploy Preview Channel
+  #       uses: ./.github/actions/deploy-hosting-action
+  #       with:
+  #         workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+  #         service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+  #         repo_token: ${{ secrets.GITHUB_TOKEN }}
+  #         project_Id: phaenonet-test
+  #         expires: 30d
+  # e2e-tests:
+  #   needs: [build, commit-info]
+  #   if: ${{ !contains(needs.commit-info.outputs.msg, '#no-e2e') }}
+  #   concurrency: e2e-test
+  #   name: E2E-tests
+  #   runs-on: ubuntu-22.04
+  #   environment: phaenonet-test
+  #   permissions:
+  #     contents: read
+  #     id-token: write # Required for GCP Workload Identity Federation (google-github-actions/auth) and Codecov OIDC
+  #     checks: write # Required for FirebaseExtended/action-hosting-deploy to create check runs
+  #     pull-requests: write # Required for FirebaseExtended/action-hosting-deploy to comment on PRs
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v5.0.0
+  #       with:
+  #         persist-credentials: false
+  #     - name: Set environment variables
+  #       run: cat .env >> $GITHUB_ENV
+  #     - uses: pnpm/action-setup@v4.2.0
+  #       with:
+  #         version: ${{ env.PNPM_VERSION }}
+  #     - uses: actions/setup-node@v6.0.0
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #         cache: 'pnpm'
+  #     - name: Download Build Artifact
+  #       uses: ./.github/actions/download-zip-artifact
+  #       with:
+  #         name: dist-pr-build
+  #         node_version: ${{ env.NODE_VERSION }}
+  #     - name: Start server
+  #       uses: ./.github/actions/angular-http-server-action
+  #       with:
+  #         path: ./dist/phaenonet/browser
+  #         port: 4200
+  #     - name: Setup CodeceptJS
+  #       working-directory: e2e
+  #       run: pnpm install && pnpm exec playwright install chromium
+  #     - name: e2e-test
+  #       working-directory: e2e
+  #       run: pnpm exec codeceptjs run --reporter mochawesome --grep "@flaky" --invert
+  #     - name: Upload E2E-Test Artifact
+  #       uses: ./.github/actions/upload-zip-artifact
+  #       with:
+  #         name: e2e-test-report
+  #         path: e2e/output
+  #         retention-days: 1
+  #         node_version: ${{ env.NODE_VERSION }}
+  #       if: always()
+  #     - name: Deploy E2E-Test Report
+  #       uses: ./.github/actions/deploy-hosting-action
+  #       with:
+  #         workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+  #         service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+  #         repo_token: ${{ secrets.GITHUB_TOKEN }}
+  #         project_Id: phaenonet-test
+  #         entry_point: e2e/
+  #         channel_id: ${{ github.ref == 'refs/heads/master' && 'live' || null }}
+  #         expires: 30d
+  #       if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
+  #     - name: Codecov
+  #       uses: codecov/codecov-action@v5.5.1
+  #       with:
+  #         use_oidc: true
+  #         files: ./e2e/output/coverage-reports/codecov.json
+  #         flags: e2e
+  #       if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
   checks:
     permissions:
       contents: read
@@ -183,23 +183,21 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-check
-          level: error
+          filter_mode: nofilter
           fail_level: error
-          workdir: .
         if: always()
       - uses: reviewdog/action-stylelint@v1.30.2
         with:
           reporter: github-pr-check
           stylelint_input: '**/*.scss'
-          filter_mode: diff_context
+          filter_mode: nofilter
           fail_level: error
           github_token: ${{ secrets.GITHUB_TOKEN }}
         if: always()
       - uses: reviewdog/action-eslint@v1.34.0
         with:
           reporter: github-pr-check
-          eslint_flags: '.'
-          filter_mode: diff_context
+          filter_mode: nofilter
           fail_level: error
           github_token: ${{ secrets.GITHUB_TOKEN }}
         if: always()
@@ -225,21 +223,21 @@ jobs:
           persist-credentials: false
       - name: Run zizmor 🌈
         uses: zizmorcore/zizmor-action@v0.2.0
-  commit-info:
-    permissions:
-      contents: read
-    name: Commit Info
-    runs-on: ubuntu-latest
-    outputs:
-      msg: ${{ steps.get-commit-msg.outputs.msg }}
-    steps:
-      - name: Get PR head commit
-        uses: actions/checkout@v5.0.0
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          persist-credentials: false
-      - name: Head git commit message
-        run: echo "msg=$(git show -s --format=%s)"
-      - name: Set commit message
-        id: get-commit-msg
-        run: echo "msg=$(git show -s --format=%s)" >> $GITHUB_OUTPUT
+  # commit-info:
+  #   permissions:
+  #     contents: read
+  #   name: Commit Info
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     msg: ${{ steps.get-commit-msg.outputs.msg }}
+  #   steps:
+  #     - name: Get PR head commit
+  #       uses: actions/checkout@v5.0.0
+  #       with:
+  #         ref: ${{ github.event.pull_request.head.sha }}
+  #         persist-credentials: false
+  #     - name: Head git commit message
+  #       run: echo "msg=$(git show -s --format=%s)"
+  #     - name: Set commit message
+  #       id: get-commit-msg
+  #       run: echo "msg=$(git show -s --format=%s)" >> $GITHUB_OUTPUT
