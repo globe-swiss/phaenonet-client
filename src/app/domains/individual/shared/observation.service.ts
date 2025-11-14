@@ -20,7 +20,7 @@ export class ObservationService extends BaseResourceService<Observation> {
       tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByIndividual)`, x.length)),
       map(obs =>
         obs.map(o => {
-          o.date = o.date ? (o.date as any).toDate() : o.date;
+          o.date = o.date ? (o.date as any).toDate() : o.date; // there are errors
           o.created = o.created ? (o.created as any).toDate() : o.created;
           o.modified = o.modified ? (o.modified as any).toDate() : o.modified;
 
