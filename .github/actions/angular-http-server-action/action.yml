@@ -10,8 +10,11 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: pnpm dlx angular-http-server --path ${{ inputs.path }} --p ${{ inputs.port }} &
+    - run: pnpm dlx angular-http-server --path ${INPUTS_PATH} --p ${INPUTS_PORT} &
       shell: bash
+      env:
+        INPUTS_PATH: ${{ inputs.path }}
+        INPUTS_PORT: ${{ inputs.port }}
     - name: Wait on
       uses: iFaxity/wait-on-action@v1.2.1
       with:
