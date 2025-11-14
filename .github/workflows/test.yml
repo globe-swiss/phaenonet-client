@@ -194,11 +194,12 @@ jobs:
           filter_mode: nofilter
           fail_level: error
         if: always()
-      - uses: reviewdog/action-eslint@v1.34.0
+      - uses: reviewdog/action-eslint@v1.31.0
         with:
           reporter: github-pr-check
           filter_mode: diff_context
-          fail_level: error
+          #fail_level: error
+          fail_on_error: true
         if: always()
       - name: markdown
         # reviewdog/action-markdownlint Uses a fixed version in a Docker container (currently v0.41.0)
