@@ -60,6 +60,7 @@ $phaenonet-typography: mat.m2-define-typography-config(
       $line-height: var(--h1--line-height),
       $font-weight: var(--h1-font-weight)
     ),
+  /* something wrong here*/
   $headline-6: mat.m2-define-typography-level(
       $font-size: var(--h2-font-size),
       $line-height: var(--h2--line-height),
