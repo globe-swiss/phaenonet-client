@@ -181,7 +181,6 @@ jobs:
         if: always()
       - uses: EPMatt/reviewdog-action-prettier@v1.3.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-check
           filter_mode: nofilter
           fail_level: error
@@ -192,14 +191,13 @@ jobs:
           stylelint_input: '**/*.scss'
           filter_mode: nofilter
           fail_level: error
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          packages: 'stylelint-config-prettier-scss stylelint-config-sass-guidelines stylelint-order'
         if: always()
       - uses: reviewdog/action-eslint@v1.34.0
         with:
           reporter: github-pr-check
           filter_mode: nofilter
           fail_level: error
-          github_token: ${{ secrets.GITHUB_TOKEN }}
         if: always()
       - name: markdown
         # reviewdog/action-markdownlint Uses a fixed version in a Docker container (currently v0.41.0)
