@@ -187,14 +187,16 @@ jobs:
           filter_mode: nofilter
           fail_level: error
         if: always()
-      - uses: reviewdog/action-stylelint@v1.30.2
+      - uses: reviewdog/action-stylelint@v1.29.0
         with:
           reporter: github-pr-check
           stylelint_input: '**/*.scss'
           filter_mode: nofilter
-          fail_level: error
+          #fail_level: error
+          fail_on_error: true
         if: always()
       - uses: reviewdog/action-eslint@v1.31.0
+        # pin to v1.31.0: later versions do not report filtered results
         with:
           reporter: github-pr-check
           filter_mode: diff_context
