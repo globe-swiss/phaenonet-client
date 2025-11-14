@@ -191,12 +191,11 @@ jobs:
           stylelint_input: '**/*.scss'
           filter_mode: nofilter
           fail_level: error
-          packages: 'stylelint-config-prettier-scss stylelint-config-sass-guidelines stylelint-order'
         if: always()
       - uses: reviewdog/action-eslint@v1.34.0
         with:
           reporter: github-pr-check
-          filter_mode: nofilter
+          filter_mode: diff_context
           fail_level: error
         if: always()
       - name: markdown
