@@ -16,6 +16,9 @@ on:
         required: true
         default: 30d
 
+# No default permissions - each job explicitly defines what it needs
+permissions: {}
+
 env:
   PROJECT: ${{ github.event.inputs.project }}
   EXP: ${{ github.event.inputs.expires }}
@@ -29,11 +32,12 @@ jobs:
     environment: ${{ github.event.inputs.project }}
     permissions:
       contents: read
-      id-token: write
-      checks: write
+      id-token: write # Required for GCP Workload Identity Federation (google-github-actions/auth)
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5.0.0
+        with:
+          persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - uses: pnpm/action-setup@v4.2.0
