@@ -41,7 +41,7 @@ jobs:
       tag: ${{ steps.set-tag.outputs.tag }}
       version: ${{ steps.set-version.outputs.version }}
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@v6.0.0
         with:
           fetch-depth: 0
       - name: 'Get previous tag'
@@ -77,7 +77,7 @@ jobs:
       VERSION: ${{ needs.next-versions.outputs.version }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.0
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - uses: pnpm/action-setup@v4.2.0
@@ -109,7 +109,7 @@ jobs:
       VERSION: ${{ needs.next-versions.outputs.version }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.0
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - name: Download Artifact
@@ -148,11 +148,11 @@ jobs:
     environment: ${{ github.event.inputs.project || 'phaenonet-test' }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.0
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - name: Checkout rules
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.0
         with:
           repository: globe-swiss/phaenonet-client-security
           path: security
