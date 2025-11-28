@@ -86,7 +86,22 @@
     "overrides": {
       "canvas": "^3.0.0",
       "xml2js@<0.5.0": ">=0.5.0"
-    }
+    },
+    "ignoredBuiltDependencies": [
+      "@firebase/util",
+      "detox",
+      "dtrace-provider",
+      "lmdb",
+      "msgpackr-extract",
+      "protobufjs",
+      "re2"
+    ],
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@sentry/cli",
+      "canvas",
+      "esbuild"
+    ]
   },
   "private": true,
   "scripts": {
