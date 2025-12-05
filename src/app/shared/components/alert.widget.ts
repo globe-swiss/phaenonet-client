@@ -1,5 +1,5 @@
 import { NgFor } from '@angular/common';
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, viewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertService } from '@core/services/alert.service';
 import { Subscription } from 'rxjs';
@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
   imports: [NgFor]
 })
 export class AppSnackBarComponent implements OnInit, OnDestroy {
-  @ViewChild('alertSnackBar') alertSnackBar!: TemplateRef<unknown>;
+  readonly alertSnackBar = viewChild.required<TemplateRef<unknown>>('alertSnackBar');
 
   title: string;
   message: string[];
@@ -27,7 +27,7 @@ export class AppSnackBarComponent implements OnInit, OnDestroy {
       this.alertService.latestMessage.subscribe(alertMessage => {
         this.title = alertMessage.title;
         this.message = alertMessage.message.split('\n');
-        this.snackBar.openFromTemplate(this.alertSnackBar, {
+        this.snackBar.openFromTemplate(this.alertSnackBar(), {
           duration: alertMessage.duration
         });
       })
