@@ -4,7 +4,6 @@
     "codeceptjs-resemblehelper": "^1.9.7",
     "mocha": "^11.7.4",
     "mochawesome": "^7.1.4",
-    "node-fetch": "^2.7.0",
     "playwright": "~1.51.1",
     "uuid": "^11.1.0"
   },
