@@ -226,9 +226,6 @@ importers:
       mochawesome:
         specifier: ^7.1.4
         version: 7.1.4(mocha@11.7.5)
-      node-fetch:
-        specifier: ^2.7.0
-        version: 2.7.0(encoding@0.1.13)
       playwright:
         specifier: ~1.51.1
         version: 1.51.1
