@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import localeIt from '@angular/common/locales/it';
@@ -24,16 +24,11 @@ import { HeaderInterceptor } from '@core/providers/header.interceptor';
 import { LocaleInterceptor } from '@core/providers/locale.interceptor';
 import { GoogleMapsLoaderService } from '@core/services/google-maps-loader.service';
 import { DatetimeAdapter } from '@mat-datetimepicker/core';
-import {
-  MissingTranslationHandler,
-  TranslateLoader,
-  TranslateService,
-  provideTranslateService
-} from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { MissingTranslationHandler, TranslateService, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import * as Sentry from '@sentry/angular';
-import { lastValueFrom } from 'rxjs';
 import moment from 'moment-timezone';
+import { lastValueFrom } from 'rxjs';
 import { environment } from '~/environments/environment';
 import { routes } from './app.routes';
 import { AppMomentDateAdapter, AppMomentDatetimeAdapter } from './core/providers/app-moment-date-adapter';
@@ -115,9 +110,6 @@ export function setSentryConsoleHandlers() {
   console.log = () => {};
 }
 
-const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
-  new TranslateHttpLoader(http, './assets/i18n/', '.json');
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAppInitializer(() => {
@@ -136,13 +128,9 @@ export const appConfig: ApplicationConfig = {
     }),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideTranslateService({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpClient]
-      },
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: SentryMissingTranslationHandler }
     }),
+    provideTranslateHttpLoader({ prefix: './assets/i18n/', suffix: '.json' }),
     importProvidersFrom(BrowserModule, ReactiveFormsModule),
     {
       provide: ErrorHandler,
