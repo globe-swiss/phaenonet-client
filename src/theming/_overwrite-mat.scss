@@ -20,9 +20,9 @@
 
   // ***** FORM *****
   :root {
-    --mdc-filled-text-field-active-indicator-color: #f7f5f2; // input field underline color
-    --mdc-filled-text-field-hover-active-indicator-color: #e7e5e2; // input field underline color (hover)
-    --mdc-filled-text-field-container-color: transparent; // input field background
+    --mat-form-field-filled-active-indicator-color: #f7f5f2; // input field underline color
+    --mat-form-field-filled-hover-active-indicator-color: #e7e5e2; // input field underline color (hover)
+    --mat-form-field-filled-container-color: transparent; // input field background
     --mat-form-field-state-layer-color: transparent; // input field background (active)
   }
 
@@ -79,8 +79,8 @@
     --mat-dialog-with-actions-content-padding: 0;
     --mat-dialog-headline-padding: 0;
     --mat-dialog-content-padding: 0;
-    --mdc-dialog-subhead-color: var(--h2-color); // color needs to be overridden to default
-    --mdc-dialog-container-shape: 1rem; // set boarder radius
+    --mat-dialog-subhead-color: var(--h2-color); // color needs to be overridden to default
+    --mat-dialog-container-shape: 1rem; // set boarder radius
   }
 
   mat-dialog-container .mdc-dialog__container .mat-mdc-dialog-surface {
