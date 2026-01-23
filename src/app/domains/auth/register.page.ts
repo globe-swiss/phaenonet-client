@@ -103,7 +103,7 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
     setTimeout(() => {
       try {
         (this.nicknameField().nativeElement as HTMLInputElement).focus();
-      } catch (error) {
+      } catch {
         console.warn('Unable to set focus on nickname, already logged in?');
       }
     }, 0);
