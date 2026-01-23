@@ -19,7 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { Router, provideRouter } from '@angular/router';
+import { PreloadAllModules, Router, provideRouter, withPreloading } from '@angular/router';
 import { HeaderInterceptor } from '@core/providers/header.interceptor';
 import { LocaleInterceptor } from '@core/providers/locale.interceptor';
 import { GoogleMapsLoaderService } from '@core/services/google-maps-loader.service';
@@ -134,7 +134,7 @@ export const appConfig: ApplicationConfig = {
       )(inject(GoogleMapsLoaderService));
       return initializerFn();
     }),
-    provideRouter(routes),
+    provideRouter(routes, withPreloading(PreloadAllModules)),
     provideTranslateService({
       loader: {
         provide: TranslateLoader,
