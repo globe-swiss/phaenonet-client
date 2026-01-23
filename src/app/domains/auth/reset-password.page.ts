@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -17,7 +16,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatCardHeader,
     MatCardTitle,
     MatCardContent,
-    NgIf,
     FormsModule,
     ReactiveFormsModule,
     MatFormField,

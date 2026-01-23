@@ -1,6 +1,8 @@
 <ng-template #alertSnackBar>
   <div>
     <h2>{{ title }}</h2>
-    <div class="mat-subtitle-2" *ngFor="let line of message">{{ line }}</div>
+    @for (line of message; track line) {
+      <div class="mat-subtitle-2">{{ line }}</div>
+    }
   </div>
 </ng-template>

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit, Signal } from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -20,7 +20,6 @@ import { filter, map } from 'rxjs/operators';
   styleUrls: ['./profile-details.widget.scss'],
   imports: [
     TranslateModule,
-    NgIf,
     MatIcon,
     MatTooltip,
     MatIconButton,

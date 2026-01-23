@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -10,7 +9,7 @@ import { Activity } from './activity.model';
   selector: 'app-activity-item',
   templateUrl: './activity-item.component.html',
   styleUrls: ['./activity-item.component.scss'],
-  imports: [RouterLink, NgIf, TranslateModule]
+  imports: [RouterLink, TranslateModule]
 })
 export class ActivityItemComponent {
   @Input() activity: Activity;

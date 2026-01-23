@@ -1,8 +1,12 @@
 <div class="follow-list">
   <div class="follow-list__title"><h2 translate>ABONNEMENTE</h2></div>
   <div class="follow-list__content">
-    <app-user-item *ngFor="let item of followedUsers$ | async" [item]="item"></app-user-item>
-    <app-observation-item *ngFor="let item of followedIndividuals$ | async" [item]="item"></app-observation-item>
+    @for (item of followedUsers$ | async; track item) {
+      <app-user-item [item]="item"></app-user-item>
+    }
+    @for (item of followedIndividuals$ | async; track item) {
+      <app-observation-item [item]="item"></app-observation-item>
+    }
     <div class="follow-list__buttons">
       <button class="follow-list__button" mat-flat-button color="primary" routerLink="invites" translate>
         Einladungen

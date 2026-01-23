@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,7 +19,6 @@ import { ProfilePublicComponent } from './feature-public-profile/profile-public.
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   imports: [
-    NgIf,
     ProfileDetailsComponent,
     ProfilePublicComponent,
     ObservationListComponent,

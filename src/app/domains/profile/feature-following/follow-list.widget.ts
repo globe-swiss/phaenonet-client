@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
@@ -15,7 +15,7 @@ import { UserItemComponent } from './user-item.component';
   selector: 'app-follow-list',
   templateUrl: './follow-list.widget.html',
   styleUrls: ['./follow-list.widget.scss'],
-  imports: [TranslateModule, NgFor, UserItemComponent, ObservationItemComponent, MatButton, RouterLink, AsyncPipe]
+  imports: [TranslateModule, UserItemComponent, ObservationItemComponent, MatButton, RouterLink, AsyncPipe]
 })
 export class FollowListComponent implements OnInit {
   followedIndividuals$: Observable<IndividualPhenophase[]>;

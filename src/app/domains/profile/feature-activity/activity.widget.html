@@ -3,7 +3,9 @@
     <h2 translate>AKTIVITÄTEN</h2>
   </div>
   <div class="activity__content">
-    <app-activity-item *ngFor="let activity of activities$ | async" [activity]="activity"></app-activity-item>
+    @for (activity of activities$ | async; track activity) {
+      <app-activity-item [activity]="activity"></app-activity-item>
+    }
     <button
       class="activity__button activity__button--more"
       mat-flat-button

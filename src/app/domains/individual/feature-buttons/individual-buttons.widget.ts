@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,7 +16,7 @@ import { ObservationService } from '../shared/observation.service';
   selector: 'app-individual-buttons',
   templateUrl: './individual-buttons.widget.html',
   styleUrls: ['./individual-buttons.widget.scss'],
-  imports: [NgIf, MatButton, RouterLink, AsyncPipe, TranslateModule]
+  imports: [MatButton, RouterLink, AsyncPipe, TranslateModule]
 })
 export class IndividualDescriptionButtonsComponent {
   @Input() individual$: Observable<Individual>; // injected ReplaySubject

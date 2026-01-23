@@ -5,18 +5,22 @@
     </div>
     <div class="individual-info__name" data-test-id="individual_name">{{ (individual$ | async).name }}</div>
   </div>
-  <div class="individual-info__label" *ngIf="(individual$ | async).last_observation_date">
-    <span translate>Letzte Beobachtung</span>
-    <span>, </span>
-    <span>{{ (individual$ | async).last_observation_date | shortdate }}</span>
-  </div>
-  <div class="individual-info__name" *ngIf="lastPhenophase$ | async">
-    <span
-      class="individual-info__phenophase-circle"
-      [ngStyle]="{ 'background-color': lastPhenophaseColor$ | async }"
-    ></span>
-    <span>{{ (lastPhenophase$ | async)?.de | translate }}</span>
-  </div>
+  @if ((individual$ | async).last_observation_date) {
+    <div class="individual-info__label">
+      <span translate>Letzte Beobachtung</span>
+      <span>, </span>
+      <span>{{ (individual$ | async).last_observation_date | shortdate }}</span>
+    </div>
+  }
+  @if (lastPhenophase$ | async) {
+    <div class="individual-info__name">
+      <span
+        class="individual-info__phenophase-circle"
+        [ngStyle]="{ 'background-color': lastPhenophaseColor$ | async }"
+      ></span>
+      <span>{{ (lastPhenophase$ | async)?.de | translate }}</span>
+    </div>
+  }
   <div>
     <span class="individual-info__label">{{ 'Von' | translate }} </span>
     <a
@@ -25,19 +29,22 @@
       data-test-id="individual_creator"
       >{{ individualCreatorNickname$ | async }}
     </a>
-    <button
-      mat-icon-button
-      class="badge"
-      matTooltip="{{
-        'PhenoRanger sind speziell ausgebildete Personen, welche Daten zu zusätzlichen Arten erfassen können. Für weitere Informationen, oder um selbst PhenoRanger zu werden, wenden Sie sich an pheno.rangers@wsl.ch.'
-          | translate
-      }}"
-      *ngIf="isRanger$ | async"
-    >
-      <mat-icon svgIcon="ranger-badge"></mat-icon>
-    </button>
+    @if (isRanger$ | async) {
+      <button
+        mat-icon-button
+        class="badge"
+        matTooltip="{{
+          'PhenoRanger sind speziell ausgebildete Personen, welche Daten zu zusätzlichen Arten erfassen können. Für weitere Informationen, oder um selbst PhenoRanger zu werden, wenden Sie sich an pheno.rangers@wsl.ch.'
+            | translate
+        }}"
+      >
+        <mat-icon svgIcon="ranger-badge"></mat-icon>
+      </button>
+    }
   </div>
-  <div *ngIf="(individual$ | async)?.sensor as sensor" class="individual-info__sensor-badge">
-    <app-sensors-box [sensorLiveData]="sensor"></app-sensors-box>
-  </div>
+  @if ((individual$ | async)?.sensor; as sensor) {
+    <div class="individual-info__sensor-badge">
+      <app-sensors-box [sensorLiveData]="sensor"></app-sensors-box>
+    </div>
+  }
 </div>

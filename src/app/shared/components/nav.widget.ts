@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
@@ -11,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-nav',
   templateUrl: './nav.widget.html',
   styleUrls: ['./nav.widget.scss'],
-  imports: [MatToolbar, MatToolbarRow, NgIf, MatButton, RouterLink, TranslateModule]
+  imports: [MatToolbar, MatToolbarRow, MatButton, RouterLink, TranslateModule]
 })
 export class NavComponent {
   constructor(

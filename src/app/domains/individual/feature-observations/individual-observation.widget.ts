@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { deleteField } from '@angular/fire/firestore';
 import { MatOption } from '@angular/material/core';
@@ -29,9 +29,7 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
   styleUrls: ['./individual-observation.widget.scss'],
   imports: [
     MatSelect,
-    NgFor,
     MatOption,
-    NgIf,
     MatFormField,
     MatInput,
     MatDatepickerInput,

@@ -9,7 +9,9 @@
   >
     <map-marker #marker [position]="center$ | async" [options]="markerOptions$ | async"></map-marker>
   </google-map>
-  <div class="individual-header-map__image-container" *ngIf="imageUrl$ | async; let url">
-    <img class="individual-header-map__image" [src]="url" />
-  </div>
+  @if (imageUrl$ | async; as url) {
+    <div class="individual-header-map__image-container">
+      <img class="individual-header-map__image" [src]="url" />
+    </div>
+  }
 </div>

@@ -1,5 +1,5 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { NgIf } from '@angular/common';
+
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -33,7 +33,6 @@ import { ChangePasswordData } from './change-password.model';
     MatLabel,
     MatInput,
     MatError,
-    NgIf,
     MatDialogClose,
     TranslateModule
   ]

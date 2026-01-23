@@ -1,176 +1,162 @@
-<form id="createForm" [formGroup]="createForm" (ngSubmit)="onSubmit()" *ngIf="individual$ | async">
-  <div>
-    <mat-form-field class="geopos-width">
+@if (individual$ | async) {
+  <form id="createForm" [formGroup]="createForm" (ngSubmit)="onSubmit()">
+    <div>
+      <mat-form-field class="geopos-width">
+        <input
+          matInput
+          name="geopos"
+          [value]="geopos().lat + ', ' + geopos().lng"
+          placeholder="{{ 'Standort (Geo-Koordinaten)' | translate }}"
+          type="text"
+          disabled
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          name="altitude"
+          [value]="altitude()"
+          placeholder="{{ 'Höhe m ü. M.' | translate }}"
+          type="number"
+          disabled
+        />
+      </mat-form-field>
+    </div>
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'Art' | translate }}</mat-label>
+      <mat-select formControlName="species" required data-test-id="speciesDropdown">
+        <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+        @for (element of selectableSpecies$ | async; track element) {
+          <mat-option [value]="element.id" [attr.data-testid]="element.id">
+            {{ element.de | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'Name / Kennzeichnung' | translate }} </mat-label>
       <input
         matInput
-        name="geopos"
-        [value]="geopos().lat + ', ' + geopos().lng"
-        placeholder="{{ 'Standort (Geo-Koordinaten)' | translate }}"
+        formControlName="name"
+        id="name"
+        placeholder="{{ 'Name / Kennzeichnung' | translate }}"
         type="text"
-        disabled
         required
       />
     </mat-form-field>
-    <mat-form-field>
-      <input
-        matInput
-        name="altitude"
-        [value]="altitude()"
-        placeholder="{{ 'Höhe m ü. M.' | translate }}"
-        type="number"
-        disabled
-      />
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'Foto' | translate }} </mat-label>
+      <input matInput id="fotos" type="text" value="{{ fileToUpload?.name }}" readonly="true" />
+      <mat-icon class="add-image" matSuffix color="primary" (click)="fileInput.click()">add_circle</mat-icon>
+      @if (fileToUpload) {
+        <mat-icon class="add-image" matSuffix color="warn" (click)="removeUploadedFile()">delete </mat-icon>
+      }
+      <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" accept=".jpg,.jpeg,.png," />
     </mat-form-field>
-  </div>
-  <mat-form-field class="full-width">
-    <mat-label>{{ 'Art' | translate }}</mat-label>
-    <mat-select formControlName="species" required data-test-id="speciesDropdown">
-      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-      <mat-option
-        *ngFor="let element of selectableSpecies$ | async"
-        [value]="element.id"
-        [attr.data-testid]="element.id"
-      >
-        {{ element.de | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>{{ 'Name / Kennzeichnung' | translate }} </mat-label>
-    <input
-      matInput
-      formControlName="name"
-      id="name"
-      placeholder="{{ 'Name / Kennzeichnung' | translate }}"
-      type="text"
-      required
-    />
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>{{ 'Foto' | translate }} </mat-label>
-    <input matInput id="fotos" type="text" value="{{ fileToUpload?.name }}" readonly="true" />
-    <mat-icon class="add-image" matSuffix color="primary" (click)="fileInput.click()">add_circle</mat-icon>
-    <mat-icon *ngIf="fileToUpload" class="add-image" matSuffix color="warn" (click)="removeUploadedFile()"
-      >delete
-    </mat-icon>
-    <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" accept=".jpg,.jpeg,.png," />
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>{{ 'Umgebung' | translate }}</mat-label>
-    <mat-select formControlName="description" required>
-      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-      <mat-option
-        *ngFor="let element of selectableDescriptions$ | async"
-        [value]="element.id"
-        [attr.data-testid]="element.id"
-      >
-        {{ element.de | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>{{ 'Exposition' | translate }}</mat-label>
-    <mat-select formControlName="exposition" required>
-      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-      <mat-option
-        *ngFor="let element of selectableExpositions$ | async"
-        [value]="element.id"
-        [attr.data-testid]="element.id"
-      >
-        {{ element.de | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <div>
-    <mat-form-field>
-      <mat-label>{{ 'Hangneigung' | translate }}</mat-label>
-      <input
-        matInput
-        formControlName="gradient"
-        type="number"
-        min="0"
-        max="100"
-        step="1"
-        class="right-align"
-        required
-      />
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'Umgebung' | translate }}</mat-label>
+      <mat-select formControlName="description" required>
+        <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+        @for (element of selectableDescriptions$ | async; track element) {
+          <mat-option [value]="element.id" [attr.data-testid]="element.id">
+            {{ element.de | translate }}
+          </mat-option>
+        }
+      </mat-select>
     </mat-form-field>
-    <span>%</span>
-    <img class="gradient-info-img" src="assets/img/info_gradient.png" />
-  </div>
-  <mat-form-field class="full-width">
-    <mat-label>{{ 'Schatten' | translate }}</mat-label>
-    <mat-select formControlName="shade" required>
-      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-      <mat-option
-        *ngFor="let element of selectableShades$ | async"
-        [value]="element.id"
-        [attr.data-testid]="element.id"
-      >
-        {{ element.de | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>{{ 'Bewässerung' | translate }}</mat-label>
-    <mat-select formControlName="watering" required>
-      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-      <mat-option
-        *ngFor="let element of selectableIrrigations$ | async"
-        [value]="element.id"
-        [attr.data-testid]="element.id"
-      >
-        {{ element.de | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>{{ 'Distanz zu Gebäude / Strasse' | translate }}</mat-label>
-    <mat-select formControlName="less100" required>
-      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-      <mat-option
-        *ngFor="let element of selectableDistances$ | async"
-        [value]="element.id"
-        [attr.data-testid]="element.id"
-      >
-        {{ element.de | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>{{ 'Habitat' | translate }}</mat-label>
-    <mat-select formControlName="habitat" required>
-      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-      <mat-option
-        *ngFor="let element of selectableHabitats$ | async"
-        [value]="element.id"
-        [attr.data-testid]="element.id"
-      >
-        {{ element.de | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>{{ 'Waldtyp' | translate }}</mat-label>
-    <mat-select formControlName="forest" required>
-      <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-      <mat-option
-        *ngFor="let element of selectableForests$ | async"
-        [value]="element.id"
-        [attr.data-testid]="element.id"
-      >
-        {{ element.de | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button
-    mat-flat-button
-    color="primary"
-    type="submit"
-    id="create-button"
-    [disabled]="createForm.invalid || (processing$ | async)"
-    [class.spinner]="processing$ | async"
-  >
-    {{ 'Objekt speichern' | translate }}
-  </button>
-</form>
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'Exposition' | translate }}</mat-label>
+      <mat-select formControlName="exposition" required>
+        <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+        @for (element of selectableExpositions$ | async; track element) {
+          <mat-option [value]="element.id" [attr.data-testid]="element.id">
+            {{ element.de | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <div>
+      <mat-form-field>
+        <mat-label>{{ 'Hangneigung' | translate }}</mat-label>
+        <input
+          matInput
+          formControlName="gradient"
+          type="number"
+          min="0"
+          max="100"
+          step="1"
+          class="right-align"
+          required
+        />
+      </mat-form-field>
+      <span>%</span>
+      <img class="gradient-info-img" src="assets/img/info_gradient.png" />
+    </div>
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'Schatten' | translate }}</mat-label>
+      <mat-select formControlName="shade" required>
+        <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+        @for (element of selectableShades$ | async; track element) {
+          <mat-option [value]="element.id" [attr.data-testid]="element.id">
+            {{ element.de | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'Bewässerung' | translate }}</mat-label>
+      <mat-select formControlName="watering" required>
+        <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+        @for (element of selectableIrrigations$ | async; track element) {
+          <mat-option [value]="element.id" [attr.data-testid]="element.id">
+            {{ element.de | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'Distanz zu Gebäude / Strasse' | translate }}</mat-label>
+      <mat-select formControlName="less100" required>
+        <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+        @for (element of selectableDistances$ | async; track element) {
+          <mat-option [value]="element.id" [attr.data-testid]="element.id">
+            {{ element.de | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'Habitat' | translate }}</mat-label>
+      <mat-select formControlName="habitat" required>
+        <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+        @for (element of selectableHabitats$ | async; track element) {
+          <mat-option [value]="element.id" [attr.data-testid]="element.id">
+            {{ element.de | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'Waldtyp' | translate }}</mat-label>
+      <mat-select formControlName="forest" required>
+        <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+        @for (element of selectableForests$ | async; track element) {
+          <mat-option [value]="element.id" [attr.data-testid]="element.id">
+            {{ element.de | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      id="create-button"
+      [disabled]="createForm.invalid || (processing$ | async)"
+      [class.spinner]="processing$ | async"
+    >
+      {{ 'Objekt speichern' | translate }}
+    </button>
+  </form>
+}

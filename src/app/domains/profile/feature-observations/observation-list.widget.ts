@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
@@ -22,10 +22,8 @@ import { ObservationSpeciesItemComponent } from './observation-species-item.comp
   templateUrl: './observation-list.widget.html',
   styleUrls: ['./observation-list.widget.scss'],
   imports: [
-    NgIf,
     TranslateModule,
     MatSelect,
-    NgFor,
     MatOption,
     ObservationSpeciesItemComponent,
     ObservationItemComponent,

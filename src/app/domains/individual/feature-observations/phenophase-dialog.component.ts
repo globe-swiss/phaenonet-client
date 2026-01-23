@@ -1,6 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FieldValue } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
@@ -44,10 +44,8 @@ import { PhenophaseObservation } from '../shared/individual.model';
     MatDatepickerToggle,
     MatSuffix,
     MatDatepicker,
-    NgIf,
     MatSelect,
     MatOption,
-    NgFor,
     MatDialogActions,
     MatDialogClose,
     AsyncPipe

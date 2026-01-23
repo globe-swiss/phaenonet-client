@@ -33,9 +33,11 @@
           autocomplete="current-password"
         />
       </mat-form-field>
-      <mat-error *ngIf="changeEmailForm.hasError('emailMissmatch')">
-        {{ 'Die E-Mails stimmen nicht überein.' | translate }}
-      </mat-error>
+      @if (changeEmailForm.hasError('emailMissmatch')) {
+        <mat-error>
+          {{ 'Die E-Mails stimmen nicht überein.' | translate }}
+        </mat-error>
+      }
       <div class="change-email-dialog__buttons">
         <button
           mat-flat-button
