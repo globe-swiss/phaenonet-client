@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { allValue } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
@@ -22,7 +22,7 @@ import { Analytics, AnalyticsValue } from './statistics-yearly.model';
   standalone: true
 })
 export class YearlyGraphComponent implements OnInit, OnDestroy {
-  @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef<HTMLDivElement>;
+  readonly statisticsContainer = viewChild.required<ElementRef<HTMLDivElement>>('statisticsContainer');
 
   private _redraw$ = new Subject<void>();
   @Input()
@@ -85,8 +85,8 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
     svg.selectAll('*').remove();
 
     const margin = { top: 0, right: 20, bottom: 30, left: 130 };
-    const offsetLeft = this.statisticsContainer.nativeElement.offsetLeft;
-    const offsetTop = this.statisticsContainer.nativeElement.offsetTop;
+    const offsetLeft = this.statisticsContainer().nativeElement.offsetLeft;
+    const offsetTop = this.statisticsContainer().nativeElement.offsetTop;
     const width = boundingBox.width - margin.left - margin.right;
     const xScale = scaleLinear().domain([-30, 365]).range([0, width]);
     const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);

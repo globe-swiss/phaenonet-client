@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
@@ -42,7 +42,7 @@ import { Subscription } from 'rxjs';
   ]
 })
 export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('nickname') nicknameField!: ElementRef;
+  readonly nicknameField = viewChild.required<ElementRef>('nickname');
   registerForm: FormGroup<{
     nickname: FormControl<string>;
     firstname: FormControl<string>;
@@ -102,8 +102,8 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     setTimeout(() => {
       try {
-        (this.nicknameField.nativeElement as HTMLInputElement).focus();
-      } catch (error) {
+        (this.nicknameField().nativeElement as HTMLInputElement).focus();
+      } catch {
         console.warn('Unable to set focus on nickname, already logged in?');
       }
     }, 0);

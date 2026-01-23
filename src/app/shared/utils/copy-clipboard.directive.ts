@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Directive, HostListener, Input, output } from '@angular/core';
 
 @Directive({
   selector: '[appCopyClipboard]',
@@ -8,8 +8,7 @@ export class CopyClipboardDirective {
   @Input('appCopyClipboard')
   public payload: string;
 
-  @Output()
-  public copied: EventEmitter<string> = new EventEmitter<string>();
+  public readonly copied = output<string>();
 
   @HostListener('click', ['$event'])
   public onClick(event: MouseEvent): void {

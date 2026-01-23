@@ -1,5 +1,5 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { MatButton, MatFabButton } from '@angular/material/button';
@@ -60,8 +60,8 @@ type InfoWindowData = IndividualInfoWindowData | StationInfoWindowData;
   ]
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild(GoogleMap, { static: false }) googleMap: GoogleMap;
-  @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
+  readonly googleMap = viewChild.required(GoogleMap);
+  readonly infoWindow = viewChild.required(MapInfoWindow);
 
   private defaultMapParams = { center: { lat: 46.818188, lng: 8.227512 }, zoom: 9 };
   private defaultBasemapIndex = MapType.TERRAIN;
@@ -117,7 +117,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // open info window on the last marker that was clicked when new data is available
     this.infoWindowData$ = this.mapInfoService.infoWindowData$.pipe(
-      tap(() => this.infoWindow.open(this.markerClicked))
+      tap(() => this.infoWindow().open(this.markerClicked))
     );
 
     this.initFilters();
@@ -153,7 +153,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.basemapIndex = this.localService.localStorageGetObjectCompressed('basemapIndex') ?? this.defaultBasemapIndex;
     this.mapParams = this.localService.sessionStorageGetObjectCompressed('mapParams') ?? this.defaultMapParams;
-    this.googleMap.googleMap.setOptions({ center: this.mapParams.center, zoom: this.mapParams.zoom });
+    this.googleMap().googleMap.setOptions({ center: this.mapParams.center, zoom: this.mapParams.zoom });
     this.setBasemap(this.basemapIndex);
   }
 
@@ -166,8 +166,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private saveState() {
     this.localService.sessionStorageSetObjectCompressed('mapParams', {
-      center: this.googleMap.getCenter(),
-      zoom: this.googleMap.getZoom()
+      center: this.googleMap().getCenter(),
+      zoom: this.googleMap().getZoom()
     });
     this.localService.localStorageSetObjectCompressed('basemapIndex', this.basemapIndex);
   }
@@ -182,7 +182,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   closeInfoWindow(): void {
-    this.infoWindow.close();
+    this.infoWindow().close();
   }
 
   private initFilters(): void {
@@ -236,7 +236,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private setBasemap(index: number) {
-    this.googleMap.googleMap.setOptions({ mapTypeId: basemaps[index].mapTypeID });
-    this.googleMap.googleMap.setOptions({ styles: basemaps[index].styles });
+    this.googleMap().googleMap.setOptions({ mapTypeId: basemaps[index].mapTypeID });
+    this.googleMap().googleMap.setOptions({ styles: basemaps[index].styles });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { ObsDoy, ObsWoy, Statistics } from '@app/domains/statistics/feature-weekly-graph/statistics-weekly.model';
 import { TranslateService } from '@ngx-translate/core';
 import { max } from 'd3-array';
@@ -17,7 +17,7 @@ import { StatisticsService } from './statistics.service';
   standalone: true
 })
 export class WeeklyGraphComponent implements OnInit, OnDestroy {
-  @ViewChild('statisticsContainer', { static: true }) statisticsContainer: ElementRef<HTMLDivElement>;
+  readonly statisticsContainer = viewChild.required<ElementRef<HTMLDivElement>>('statisticsContainer');
   private readonly legendFontSize = getComputedStyle(document.documentElement).getPropertyValue('--legend-font-size');
 
   private _redraw$ = new Subject<void>();
@@ -76,8 +76,8 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
 
     const margin = { top: legendSize, right: 20, bottom: 30 };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const offsetLeft = this.statisticsContainer.nativeElement.offsetLeft; // aligned with year chart
-    const offsetTop = this.statisticsContainer.nativeElement.offsetTop;
+    const offsetLeft = this.statisticsContainer().nativeElement.offsetLeft; // aligned with year chart
+    const offsetTop = this.statisticsContainer().nativeElement.offsetTop;
     const width = boundingBox.width - margin.right;
     const height = Math.max(window.innerHeight - offsetTop - 5, legendSize + 100);
     this.svgComponentHeight = height;

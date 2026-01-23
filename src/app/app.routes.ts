@@ -1,20 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/providers/auth.guard';
-import { NotFoundComponent } from './core/components/not-found.page';
+
 import { LoadingGuard } from './core/providers/loading.guard';
-import { LoggedOutComponent } from './domains/auth/logged-out.page';
-import { LoginComponent } from './domains/auth/login.page';
-import { RegisterComponent } from './domains/auth/register.page';
-import { ResetPasswordComponent } from './domains/auth/reset-password.page';
-import { IndividualEditComponent } from './domains/individual/feature-edit/individual-edit.page';
-import { IndividualDetailComponent } from './domains/individual/individual.page';
-import { StationComponent } from './domains/individual/station.page';
-import { MapComponent } from './domains/map/map.page';
-import { InviteComponent } from './domains/profile/feature-invite/invite.widget';
-import { ProfileSpeciesComponent } from './domains/profile/feature-observations/observation-species.page';
-import { ProfileEditComponent } from './domains/profile/feature-profile-edit/profile-edit.page';
-import { ProfileComponent } from './domains/profile/profile.page';
-import { StatisticsComponent } from './domains/statistics/statistics.page';
 
 export const LOGIN_URL = '/auth/login';
 export const LOGGED_OUT_URL = '/auth/logged-out';
@@ -28,38 +15,68 @@ export const routes: Routes = [
       {
         path: 'individuals',
         children: [
-          { path: ':id/edit', component: IndividualEditComponent, canActivate: [AuthGuard] },
-          { path: ':id', component: IndividualDetailComponent },
+          {
+            path: ':id/edit',
+            loadComponent: () =>
+              import('./domains/individual/feature-edit/individual-edit.page').then(m => m.IndividualEditComponent),
+            canActivate: [AuthGuard]
+          },
+          {
+            path: ':id',
+            loadComponent: () => import('./domains/individual/individual.page').then(m => m.IndividualDetailComponent)
+          },
           { path: '', redirectTo: '/map', pathMatch: 'full' }
         ]
       },
       {
         path: 'stations',
         children: [
-          { path: ':id', component: StationComponent },
+          {
+            path: ':id',
+            loadComponent: () => import('./domains/individual/station.page').then(m => m.StationComponent)
+          },
           { path: '', redirectTo: '/map', pathMatch: 'full' } // Redirects to /map if no ID is provided
         ]
       },
       {
         path: 'map',
         children: [
-          { path: '', component: MapComponent },
+          { path: '', loadComponent: () => import('./domains/map/map.page').then(m => m.MapComponent) },
           { path: '**', redirectTo: '/map', pathMatch: 'full' }
         ]
       },
       {
         path: 'profile',
         children: [
-          { path: 'invites', component: InviteComponent, canActivate: [AuthGuard] },
-          { path: ':id/edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
-          { path: ':id/species/:species/year/:year', component: ProfileSpeciesComponent },
-          { path: ':id', component: ProfileComponent },
-          { path: '', component: ProfileComponent, canActivate: [AuthGuard] }
+          {
+            path: 'invites',
+            loadComponent: () => import('./domains/profile/feature-invite/invite.widget').then(m => m.InviteComponent),
+            canActivate: [AuthGuard]
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () =>
+              import('./domains/profile/feature-profile-edit/profile-edit.page').then(m => m.ProfileEditComponent),
+            canActivate: [AuthGuard]
+          },
+          {
+            path: ':id/species/:species/year/:year',
+            loadComponent: () =>
+              import('./domains/profile/feature-observations/observation-species.page').then(
+                m => m.ProfileSpeciesComponent
+              )
+          },
+          { path: ':id', loadComponent: () => import('./domains/profile/profile.page').then(m => m.ProfileComponent) },
+          {
+            path: '',
+            loadComponent: () => import('./domains/profile/profile.page').then(m => m.ProfileComponent),
+            canActivate: [AuthGuard]
+          }
         ]
       },
       {
         path: 'statistics',
-        component: StatisticsComponent
+        loadComponent: () => import('./domains/statistics/statistics.page').then(m => m.StatisticsComponent)
       },
       {
         path: '',
@@ -71,10 +88,16 @@ export const routes: Routes = [
   {
     path: 'auth',
     children: [
-      { path: 'login', component: LoginComponent },
-      { path: 'logged-out', component: LoggedOutComponent },
-      { path: 'reset-password', component: ResetPasswordComponent },
-      { path: 'register', component: RegisterComponent },
+      { path: 'login', loadComponent: () => import('./domains/auth/login.page').then(m => m.LoginComponent) },
+      {
+        path: 'logged-out',
+        loadComponent: () => import('./domains/auth/logged-out.page').then(m => m.LoggedOutComponent)
+      },
+      {
+        path: 'reset-password',
+        loadComponent: () => import('./domains/auth/reset-password.page').then(m => m.ResetPasswordComponent)
+      },
+      { path: 'register', loadComponent: () => import('./domains/auth/register.page').then(m => m.RegisterComponent) },
       { path: '', redirectTo: 'login', pathMatch: 'full' }
     ]
   },
@@ -85,6 +108,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    component: NotFoundComponent
+    loadComponent: () => import('./core/components/not-found.page').then(m => m.NotFoundComponent)
   }
 ];
