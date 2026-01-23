@@ -62,7 +62,7 @@
     "eslint-plugin-jsdoc": "^50.8.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-prettier": "^5.5.5",
-    "firebase-tools": "^14.27.0",
+    "firebase-tools": "^15.4.0",
     "markdownlint-cli": "^0.47.0",
     "postcss": "^8.5.6",
     "prettier": "3.6.2",
@@ -81,7 +81,13 @@
   "pnpm": {
     "overrideComments": {
       "canvas": "override from 2.8 -> 3.0 to be able to use binary dependency for resemblejs",
-      "xml2js": "pnpm audit"
+      "xml2js": "pnpm audit",
+      "firebase-tools": "@angular/fire peer dep lags behind, safe to ignore (CLI tool only)"
+    },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "@angular/fire>firebase-tools": ">=14.0.0"
+      }
     },
     "overrides": {
       "canvas": "^3.0.0",

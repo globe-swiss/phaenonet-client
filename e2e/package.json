@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "codeceptjs": "^3.7.5",
+    "codeceptjs": "^3.7.6",
     "codeceptjs-resemblehelper": "^1.9.7",
-    "mocha": "^11.7.4",
+    "mocha": "^11.7.5",
     "mochawesome": "^7.1.4",
     "playwright": "~1.51.1",
     "uuid": "^11.1.0"
@@ -10,7 +10,7 @@
   "description": "e2e test for phaenonet-client",
   "devDependencies": {
     "eslint-plugin-codeceptjs": "^1.3.0",
-    "firebase-tools": "^14.23.0"
+    "firebase-tools": "^15.4.0"
   },
   "main": "codecept.conf.js",
   "name": "e2e",
