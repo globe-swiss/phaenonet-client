@@ -21,7 +21,12 @@
               [value]="individualService.composedId(detailSubject$ | async)"
               (selectionChange)="selectYear($event)"
             >
-              <mat-option [value]="year.composedId" *ngFor="let year of years$ | async">{{ year.year }}</mat-option>
+              <mat-option
+                [value]="year.composedId"
+                *ngFor="let year of years$ | async"
+                [attr.data-testid]="year.composedId"
+                >{{ year.year }}</mat-option
+              >
             </mat-select>
           </div>
         </div>

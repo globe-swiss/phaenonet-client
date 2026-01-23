@@ -56,9 +56,9 @@
         <div>
           <mat-form-field class="profile-edit__form-field">
             <mat-select id="langueselect" formControlName="locale" (selectionChange)="changeLocale($event)">
-              <mat-option value="de-CH">Deutsch</mat-option>
-              <mat-option value="fr-CH">Français</mat-option>
-              <mat-option value="it-CH">Italiano</mat-option>
+              <mat-option value="de-CH" data-testid="de-CH">Deutsch</mat-option>
+              <mat-option value="fr-CH" data-testid="fr-CH">Français</mat-option>
+              <mat-option value="it-CH" data-testid="it-CH">Italiano</mat-option>
             </mat-select>
           </mat-form-field>
         </div>

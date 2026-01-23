@@ -8,7 +8,9 @@
   <div *ngIf="userId" class="observation-list__content">
     <div class="observation-list__year">
       <mat-select [value]="selectedYear | async" (selectionChange)="selectYear($event)" data-test-id="selectYear">
-        <mat-option [value]="year" *ngFor="let year of avaiableYears() | async">{{ year }}</mat-option>
+        <mat-option [value]="year" *ngFor="let year of avaiableYears() | async" [attr.data-testid]="year">{{
+          year
+        }}</mat-option>
       </mat-select>
     </div>
     <div *ngIf="(latestIndividualObservationsMap$ | async)?.length > 0">

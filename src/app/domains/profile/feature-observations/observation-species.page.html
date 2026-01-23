@@ -10,7 +10,9 @@
       <h2 class="observation-species-component__species">{{ (data$ | async).speciesText }}</h2>
       <div class="observation-species-component__year">
         <mat-select [value]="(data$ | async).year" (selectionChange)="selectYear($event)" data-test-id="selectYear">
-          <mat-option [value]="year" *ngFor="let year of (data$ | async).avaiableYears">{{ year }}</mat-option>
+          <mat-option [value]="year" *ngFor="let year of (data$ | async).avaiableYears" [attr.data-testid]="year">{{
+            year
+          }}</mat-option>
         </mat-select>
       </div>
     </div>

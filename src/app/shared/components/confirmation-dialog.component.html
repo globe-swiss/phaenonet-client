@@ -12,6 +12,7 @@
       [mat-dialog-close]="true"
       color="{{ data.yesColor }}"
       cdkFocusInitial
+      data-testid="confirm-yes"
     >
       {{ data.yes | translate }}
     </button>
@@ -21,6 +22,7 @@
       mat-flat-button
       [mat-dialog-close]="false"
       color="{{ data.noColor }}"
+      data-testid="confirm-no"
     >
       {{ data.no | translate }}
     </button>

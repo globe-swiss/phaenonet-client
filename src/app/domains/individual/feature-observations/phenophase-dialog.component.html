@@ -22,7 +22,7 @@
       <mat-label>{{ 'Kommentar' | translate }}</mat-label>
       <mat-select [(value)]="observationComment">
         <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-        <mat-option *ngFor="let element of data.availableComments" [value]="element.id">
+        <mat-option *ngFor="let element of data.availableComments" [value]="element.id" [attr.data-testid]="element.id">
           {{ element.de | translate }}
         </mat-option>
       </mat-select>
