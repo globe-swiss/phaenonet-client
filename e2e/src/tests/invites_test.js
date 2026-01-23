@@ -13,7 +13,7 @@ Scenario('test no invites', async ({ I }) => {
 Scenario('test component send invite', async ({ I, invitesPage }) => {
   I.see('keine Einladungen vorhanden');
   I.click(invitesPage.invitesList.inviteButton);
-  await I.checkVisual('invites-dialog', 0.02, { retries: 5, wait: 0.5 }); // ng20 minor diff
+  await I.checkVisual('invites-dialog', 0.02, { retries: 5, wait: 0.5 }); // ng20 minor diff - reset tolerance when updating base image
   I.wait(0.2); // why-so-ever without waiting fillField fails
   I.fillField(invitesPage.invitesDialog.textfield, 'verylongunusedemailadress@example.com');
   I.click(invitesPage.invitesDialog.sendButton);

@@ -55,22 +55,22 @@ Scenario('test subscribe to individual', ({ I, individualsPage }) => {
 
 Scenario('test individual with image', async ({ I, individualsPage }) => {
   I.visit(individualsPage, individualsPage.url('2018_1326'));
-  await I.checkVisual('individual_test-image', 0.01, { retries: 5, wait: 0.5 }); // ng20 minor diff
+  await I.checkVisual('individual_test-image', 0.01, { retries: 5, wait: 0.5 }); // ng20 minor diff - reset tolerance when updating base image
 }).tag('visual');
 
 Scenario('test individual with sensor map', async ({ I, individualsPage }) => {
   I.visit(individualsPage, individualsPage.url('2018_721'));
-  await I.checkVisual('individual_test-sensor-map', 0.01, { retries: 5, wait: 0.5 }); // ng20 minor diff
+  await I.checkVisual('individual_test-sensor-map', 0.01, { retries: 5, wait: 0.5 }); // ng20 minor diff - reset tolerance when updating base image
 }).tag('visual');
 
 Scenario('test individual with sensor humidity', async ({ I, individualsPage }) => {
   I.visit(individualsPage, individualsPage.url('2018_721'));
   I.click(individualsPage.map.humidityButton);
-  await I.checkVisual('individual_test-sensor-humidity', 0.01); // ng20 minor diff
+  await I.checkVisual('individual_test-sensor-humidity', 0.01); // ng20 minor diff - reset tolerance when updating base image
 }).tag('visual');
 
 Scenario('test individual with sensor temperature', async ({ I, individualsPage }) => {
   I.visit(individualsPage, individualsPage.url('2018_721'));
   I.click(individualsPage.map.temperatureButton);
-  await I.checkVisual('individual_test-sensor-temperature', 0.01); // ng20 minor diff
+  await I.checkVisual('individual_test-sensor-temperature', 0.01); // ng20 minor diff - reset tolerance when updating base image
 }).tag('visual');

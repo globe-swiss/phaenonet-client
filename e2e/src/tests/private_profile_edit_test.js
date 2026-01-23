@@ -42,12 +42,12 @@ Scenario('test edit profile email', async ({ I, profileEditPage, e2eTestUser }) 
   I.login();
   I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
   I.click(profileEditPage.editEmailIcon);
-  await I.checkVisual('private_profile_edit-edit_email', 0.02); // ng20 minor diff
+  await I.checkVisual('private_profile_edit-edit_email', 0.02); // ng20 minor diff - reset tolerance when updating base image
 }).tag('visual');
 
 Scenario('test edit profile password', async ({ I, profileEditPage, e2eTestUser }) => {
   I.login();
   I.visit(profileEditPage, profileEditPage.url(e2eTestUser));
   I.click(profileEditPage.editPasswordIcon);
-  await I.checkVisual('private_profile_edit-edit_password', 0.02); // ng20 minor diff
+  await I.checkVisual('private_profile_edit-edit_password', 0.02); // ng20 minor diff - reset tolerance when updating base image
 }).tag('visual');

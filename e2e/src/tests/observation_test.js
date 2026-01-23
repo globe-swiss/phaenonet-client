@@ -12,11 +12,11 @@ Scenario('add observation', async ({ I, individualsPage }) => {
   const individualId = await I.createDefaultIndividual('BL'); // use ranger species without limits
   I.visit(individualsPage, individualsPage.url(individualId));
   I.click(individualsPage.observations.addButtons.at(1));
-  await I.checkVisual('observation_empty_dialog', 0.01, { retries: 5, wait: 0.5 }); // ng20 minor diff
+  await I.checkVisual('observation_empty_dialog', 0.01, { retries: 5, wait: 0.5 }); // ng20 minor diff - reset tolerance when updating base image
   I.click(individualsPage.observations.observationDialog.toggleCalendar);
-  await I.checkVisual('observation_calendar_dialog', 0.01, { retries: 5, wait: 0.5 }); // ng20 minor diff
+  await I.checkVisual('observation_calendar_dialog', 0.01, { retries: 5, wait: 0.5 }); // ng20 minor diff - reset tolerance when updating base image
   I.click(individualsPage.observations.observationDialog.calendar.day1);
-  await I.checkVisual('observation_filled_dialog', 0.01, { retries: 5, wait: 0.5 }); // ng20 minor diff
+  await I.checkVisual('observation_filled_dialog', 0.01, { retries: 5, wait: 0.5 }); // ng20 minor diff - reset tolerance when updating base image
 }).tag('visual');
 
 Scenario('add/edit/delete observation', async ({ I, individualsPage }) => {

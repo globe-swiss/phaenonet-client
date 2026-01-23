@@ -6,7 +6,7 @@ Scenario('profile values', async ({ I, privateProfilePage, e2eTestUser }) => {
   I.login();
   I.visit(privateProfilePage);
   I.waitForText(e2eTestUser.nickname);
-  await I.checkVisual(`${pf}-profile_values`);
+  await I.checkVisual(`${pf}-profile_values`, 0.01); // ng20 minor diff - reset tolerance when updating base image
 }).tag('visual');
 
 Scenario('test logout', async ({ I, privateProfilePage, logoutPage }) => {
@@ -38,7 +38,7 @@ Scenario('test new individual shown on profile', async ({ I, privateProfilePage 
   await I.createDefaultIndividual();
   I.visit(privateProfilePage);
   I.waitForElement(privateProfilePage.observations.listItems);
-  await I.checkVisual(`${pf}-new_individual`);
+  await I.checkVisual(`${pf}-new_individual`, 0.01); // ng20 minor diff - reset tolerance when updating base image
 }).tag('visual');
 
 Scenario('test loggedout profile access', ({ I, privateProfilePage, loginPage }) => {
