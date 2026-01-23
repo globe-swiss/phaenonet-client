@@ -7,7 +7,7 @@
         "commonjs": true,
         "es2021": true
       },
-      "extends": ["airbnb-base", "plugin:codeceptjs/recommended", "plugin:prettier/recommended"],
+      "extends": ["eslint:recommended", "plugin:codeceptjs/recommended", "plugin:prettier/recommended"],
       "files": ["**/*.js"],
       "parserOptions": {
         "ecmaVersion": 12
