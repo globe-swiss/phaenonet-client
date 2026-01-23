@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Storage, ref, uploadBytes } from '@angular/fire/storage';
@@ -35,7 +35,6 @@ import { GeoposService } from '../shared/geopos.service';
   templateUrl: './individual-edit-form.widget.html',
   styleUrls: ['./individual-edit-form.widget.scss'],
   imports: [
-    NgIf,
     FormsModule,
     ReactiveFormsModule,
     MatFormField,
@@ -43,7 +42,6 @@ import { GeoposService } from '../shared/geopos.service';
     MatLabel,
     MatSelect,
     MatOption,
-    NgFor,
     MatIcon,
     MatSuffix,
     MatButton,

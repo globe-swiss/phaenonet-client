@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { GoogleMap, MapMarker } from '@angular/google-maps';
 import { basemaps, MapType } from '@shared/models/basemaps.model';
@@ -12,7 +12,7 @@ import { filter, map, mergeAll } from 'rxjs/operators';
   selector: 'app-individual-header-map',
   templateUrl: './individual-header-map.widget.html',
   styleUrls: ['./individual-header-map.widget.scss'],
-  imports: [GoogleMap, MapMarker, NgIf, AsyncPipe]
+  imports: [GoogleMap, MapMarker, AsyncPipe]
 })
 export class IndividualHeaderMapComponent implements OnInit {
   @Input() individual$: ReplaySubject<Individual>;

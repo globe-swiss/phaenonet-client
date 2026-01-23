@@ -5,7 +5,7 @@
       <div>
         <mat-select formControlName="year" data-test-id="select-year">
           @for (year of selectableYears$ | async; track year) {
-            <mat-option [value]="year">{{ year | translate }}</mat-option>
+            <mat-option [value]="year" [attr.data-testid]="year">{{ year | translate }}</mat-option>
           }
         </mat-select>
       </div>
@@ -15,7 +15,7 @@
         <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
         <mat-select formControlName="datasource" data-test-id="select-source">
           @for (datasource of selectableSources$ | async; track datasource) {
-            <mat-option [value]="datasource">{{ datasource | translate }}</mat-option>
+            <mat-option [value]="datasource" [attr.data-testid]="datasource">{{ datasource | translate }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
@@ -23,7 +23,9 @@
         <mat-label>{{ 'Auswertung' | translate }}</mat-label>
         <mat-select formControlName="analyticsType" data-test-id="select-analyticstype">
           @for (analyticsType of selectableAnalyticsTypes$ | async; track analyticsType) {
-            <mat-option [value]="analyticsType">{{ analyticsType | translate }}</mat-option>
+            <mat-option [value]="analyticsType" [attr.data-testid]="analyticsType">{{
+              analyticsType | translate
+            }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
@@ -31,7 +33,7 @@
         <mat-label>{{ 'Art' | translate }}</mat-label>
         <mat-select formControlName="species" data-test-id="select-species">
           @for (s of selectableSpecies$ | async; track s.id) {
-            <mat-option [value]="s.id">{{ s.de | translate }}</mat-option>
+            <mat-option [value]="s.id" [attr.data-testid]="s.id">{{ s.de | translate }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
@@ -50,7 +52,7 @@
         <mat-label>{{ 'Art' | translate }}</mat-label>
         <mat-select formControlName="species" data-test-id="select-species">
           @for (s of selectableSpecies$ | async; track s.id) {
-            <mat-option [value]="s.id">{{ s.de | translate }}</mat-option>
+            <mat-option [value]="s.id" [attr.data-testid]="s.id">{{ s.de | translate }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
@@ -58,7 +60,9 @@
         <mat-label>{{ 'Phänophase' | translate }}</mat-label>
         <mat-select formControlName="phenophase" data-test-id="select-phenophase">
           @for (phenophase of selectablePhenophases$ | async; track phenophase.id) {
-            <mat-option [value]="phenophase.id">{{ phenophase.de | translate }}</mat-option>
+            <mat-option [value]="phenophase.id" [attr.data-testid]="phenophase.id">{{
+              phenophase.de | translate
+            }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
@@ -66,7 +70,7 @@
         <mat-label>{{ 'Höhe' | translate }}</mat-label>
         <mat-select formControlName="altitude" data-test-id="select-altgrp">
           @for (altitude of selectableAltitudeGroups$ | async; track altitude) {
-            <mat-option [value]="altitude">{{ altitude | translate }}</mat-option>
+            <mat-option [value]="altitude" [attr.data-testid]="altitude">{{ altitude | translate }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
@@ -74,8 +78,8 @@
     <mat-form-field>
       <mat-label>{{ 'Grafik' | translate }}</mat-label>
       <mat-select formControlName="graph" panelClass="align-select-box-right" data-test-id="select-graphtype">
-        <mat-option value="yearly">{{ 'Jahresvergleich' | translate }}</mat-option>
-        <mat-option value="weekly">{{ 'Wochenvergleich' | translate }}</mat-option>
+        <mat-option value="yearly" data-testid="yearly">{{ 'Jahresvergleich' | translate }}</mat-option>
+        <mat-option value="weekly" data-testid="weekly">{{ 'Wochenvergleich' | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
   </form>

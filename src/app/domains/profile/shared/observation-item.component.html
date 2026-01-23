@@ -5,12 +5,9 @@
   data-test-id="observation-item"
 >
   <div class="observation-item__image_container">
-    <img
-      class="observation-item__image"
-      data-test-id="observation-item__image"
-      *ngIf="item.imgUrl$ | async"
-      [src]="item.imgUrl$ | async"
-    />
+    @if (item.imgUrl$ | async) {
+      <img class="observation-item__image" data-test-id="observation-item__image" [src]="item.imgUrl$ | async" />
+    }
   </div>
   <div class="observation-item__description">
     <div class="observation-item__name">
@@ -20,20 +17,26 @@
       <div class="observation-item__value" data-test-id="observation-item_name">{{ item.individual.name }}</div>
     </div>
     <div class="observation-item__observation">
-      <div class="observation-item__label" *ngIf="item.individual.last_observation_date">
-        {{ 'Letzte Beobachtung' | translate }},
-        {{ getLastObservationDate() }}
-      </div>
-      <div class="observation-item__label" *ngIf="!item.individual.last_observation_date">
-        {{ 'Noch keine Beobachtungen' | translate }}
-      </div>
-      <div class="observation-item__value" *ngIf="item.lastPhenophase">
-        <span
-          class="observation-item__phenophase-circle"
-          [ngStyle]="{ 'background-color': getColor(item.individual.last_phenophase) }"
-        ></span>
-        {{ item.lastPhenophase.de | translate }}
-      </div>
+      @if (item.individual.last_observation_date) {
+        <div class="observation-item__label">
+          {{ 'Letzte Beobachtung' | translate }},
+          {{ getLastObservationDate() }}
+        </div>
+      }
+      @if (!item.individual.last_observation_date) {
+        <div class="observation-item__label">
+          {{ 'Noch keine Beobachtungen' | translate }}
+        </div>
+      }
+      @if (item.lastPhenophase) {
+        <div class="observation-item__value">
+          <span
+            class="observation-item__phenophase-circle"
+            [ngStyle]="{ 'background-color': getColor(item.individual.last_phenophase) }"
+          ></span>
+          {{ item.lastPhenophase.de | translate }}
+        </div>
+      }
     </div>
   </div>
   <mat-icon svgIcon="arrow-right"></mat-icon>

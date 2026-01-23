@@ -1,5 +1,5 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { NgIf } from '@angular/common';
+
 import { Component, Inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
@@ -33,7 +33,6 @@ export interface ConfirmationDialogData {
     CdkScrollable,
     MatDialogContent,
     MatDialogActions,
-    NgIf,
     MatDialogClose,
     TranslateModule
   ]

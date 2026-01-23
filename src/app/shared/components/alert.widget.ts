@@ -1,4 +1,3 @@
-import { NgFor } from '@angular/common';
 import { Component, OnDestroy, OnInit, TemplateRef, viewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertService } from '@core/services/alert.service';
@@ -7,7 +6,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-alert',
   templateUrl: 'alert.widget.html',
-  imports: [NgFor]
+  imports: []
 })
 export class AppSnackBarComponent implements OnInit, OnDestroy {
   readonly alertSnackBar = viewChild.required<TemplateRef<unknown>>('alertSnackBar');

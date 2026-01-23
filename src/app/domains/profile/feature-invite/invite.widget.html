@@ -1,3 +1,5 @@
 <div class="invite-component">
-  <app-invite-list [userId]="detailId()" *ngIf="detailId()"></app-invite-list>
+  @if (detailId()) {
+    <app-invite-list [userId]="detailId()"></app-invite-list>
+  }
 </div>

@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, Signal } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
 import { InviteListComponent } from './invite-list.widget';
@@ -7,7 +6,7 @@ import { InviteListComponent } from './invite-list.widget';
   selector: 'app-invite',
   templateUrl: './invite.widget.html',
   styleUrls: ['./invite.widget.scss'],
-  imports: [NgIf, InviteListComponent]
+  imports: [InviteListComponent]
 })
 export class InviteComponent {
   detailId: Signal<string>;

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { AfterViewInit, Component, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
@@ -38,10 +38,8 @@ type InfoWindowData = IndividualInfoWindowData | StationInfoWindowData;
   styleUrls: ['./map.page.scss'],
   imports: [
     GoogleMap,
-    NgFor,
     MapMarker,
     MapInfoWindow,
-    NgIf,
     RouterLink,
     SensorsBadgeComponent,
     MatIcon,

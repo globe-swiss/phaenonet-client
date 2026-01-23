@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
+import { AsyncPipe, NgStyle } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -20,7 +20,6 @@ import { SensorsBoxComponent } from './sensors-box.component';
   templateUrl: './individual-info.widget.html',
   styleUrls: ['./individual-info.widget.scss'],
   imports: [
-    NgIf,
     TranslateModule,
     NgStyle,
     RouterLink,

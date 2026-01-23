@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material/datepicker';
@@ -25,11 +25,9 @@ import { ObservationService } from './shared/observation.service';
   templateUrl: './station.page.html',
   styleUrls: ['./station.page.scss'],
   imports: [
-    NgIf,
     IndividualHeaderComponent,
     TranslateModule,
     MatSelect,
-    NgFor,
     MatOption,
     MatFormField,
     MatInput,

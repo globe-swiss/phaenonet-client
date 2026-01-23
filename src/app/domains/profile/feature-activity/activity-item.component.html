@@ -9,8 +9,10 @@
     <div class="activity-item__value" style="padding-bottom: 0">
       {{ activity.individual_name }} - {{ activity.phenophase_name | translate }}
     </div>
-    <div class="activity-item__label" style="margin-top: 0" *ngIf="activity.action">
-      <span>{{ 'activity.action.' + activity.action | translate }}</span>
-    </div>
+    @if (activity.action) {
+      <div class="activity-item__label" style="margin-top: 0">
+        <span>{{ 'activity.action.' + activity.action | translate }}</span>
+      </div>
+    }
   </div>
 </div>

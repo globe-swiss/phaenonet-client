@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
@@ -12,7 +12,7 @@ import { ActivityService } from './activity.service';
   selector: 'app-activity',
   templateUrl: './activity.widget.html',
   styleUrls: ['./activity.widget.scss'],
-  imports: [TranslateModule, NgFor, ActivityItemComponent, MatButton, AsyncPipe]
+  imports: [TranslateModule, ActivityItemComponent, MatButton, AsyncPipe]
 })
 export class ActivityComponent implements OnInit {
   @Input() userId: string;

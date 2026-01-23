@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,7 +21,6 @@ import { IndividualSubscriptionButtonComponent } from '@shared/components/featur
   templateUrl: './individual.page.html',
   styleUrls: ['./individual.page.scss'],
   imports: [
-    NgIf,
     IndividualHeaderComponent,
     IndividualSubscriptionButtonComponent,
     IndividualDescriptionHeaderComponent,

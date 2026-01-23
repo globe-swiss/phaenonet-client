@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, effect, OnDestroy, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -28,7 +27,6 @@ import { ChangePasswordData } from './change-password.model';
   templateUrl: './profile-edit.page.html',
   styleUrls: ['./profile-edit.page.scss'],
   imports: [
-    NgIf,
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,

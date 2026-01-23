@@ -1,26 +1,28 @@
 <div class="individual-buttons">
   <div class="individual-buttons__buttons">
-    <button
-      class="individual-buttons__button"
-      mat-flat-button
-      color="primary"
-      type="button"
-      id="edit-button"
-      [routerLink]="['/individuals', individualId, 'edit']"
-      *ngIf="isEditable$ | async"
-    >
-      {{ 'Objekt bearbeiten' | translate }}
-    </button>
-    <button
-      class="individual-buttons__button individual-buttons__button--secondary"
-      mat-flat-button
-      color="accent"
-      type="button"
-      id="delete-button"
-      (click)="deleteIndividual()"
-      *ngIf="isEditable$ | async"
-    >
-      {{ 'Objekt löschen' | translate }}
-    </button>
+    @if (isEditable$ | async) {
+      <button
+        class="individual-buttons__button"
+        mat-flat-button
+        color="primary"
+        type="button"
+        id="edit-button"
+        [routerLink]="['/individuals', individualId, 'edit']"
+      >
+        {{ 'Objekt bearbeiten' | translate }}
+      </button>
+    }
+    @if (isEditable$ | async) {
+      <button
+        class="individual-buttons__button individual-buttons__button--secondary"
+        mat-flat-button
+        color="accent"
+        type="button"
+        id="delete-button"
+        (click)="deleteIndividual()"
+      >
+        {{ 'Objekt löschen' | translate }}
+      </button>
+    }
   </div>
 </div>

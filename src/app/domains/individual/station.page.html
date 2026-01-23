@@ -1,55 +1,69 @@
-<div class="station-detail" *ngIf="(detailSubject$ | async) !== null">
-  <div class="station-detail__card">
-    <app-individual-header [individual$]="detailSubject$" mode="detail"></app-individual-header>
-    <div class="station-detail__content" data-test-id="station-description">
-      <div *ngIf="detailSubject$ | async" class="station-detail__description-header">
-        <div class="station-detail__label">{{ 'Standort' | translate }}</div>
-        <div class="station-detail__name">{{ (detailSubject$ | async).name }}</div>
-        <div class="station-detail__label">{{ 'Von' | translate }}</div>
-        <div class="station-detail__name">{{ (detailSubject$ | async).source | translate }}</div>
-        <div class="station-detail__label">{{ 'Höhe' | translate }}</div>
-        <div>
-          <span class="station-detail__value">{{ (detailSubject$ | async)?.altitude }}</span
-          ><span class="station-detail__value-addition" translate> {{ 'm ü. M.' }}</span>
-        </div>
-      </div>
-      <div class="station-detail__observation-content" data-test-id="station-observations">
-        <div class="station-detail__title">
-          <h2>{{ 'Phänophasen' | translate }}</h2>
-          <div class="station-detail__year">
-            <mat-select
-              [value]="individualService.composedId(detailSubject$ | async)"
-              (selectionChange)="selectYear($event)"
-            >
-              <mat-option [value]="year.composedId" *ngFor="let year of years$ | async">{{ year.year }}</mat-option>
-            </mat-select>
+@if ((detailSubject$ | async) !== null) {
+  <div class="station-detail">
+    <div class="station-detail__card">
+      <app-individual-header [individual$]="detailSubject$" mode="detail"></app-individual-header>
+      <div class="station-detail__content" data-test-id="station-description">
+        @if (detailSubject$ | async) {
+          <div class="station-detail__description-header">
+            <div class="station-detail__label">{{ 'Standort' | translate }}</div>
+            <div class="station-detail__name">{{ (detailSubject$ | async).name }}</div>
+            <div class="station-detail__label">{{ 'Von' | translate }}</div>
+            <div class="station-detail__name">{{ (detailSubject$ | async).source | translate }}</div>
+            <div class="station-detail__label">{{ 'Höhe' | translate }}</div>
+            <div>
+              <span class="station-detail__value">{{ (detailSubject$ | async)?.altitude }}</span
+              ><span class="station-detail__value-addition" translate> {{ 'm ü. M.' }}</span>
+            </div>
           </div>
-        </div>
-        <div *ngFor="let groupedItem of phenophaseObservationsBySpecies$ | async">
-          <div class="station-detail__observation-species">
-            {{ groupedItem.species.de | translate }} {{ groupedItem.treeId }}
+        }
+        <div class="station-detail__observation-content" data-test-id="station-observations">
+          <div class="station-detail__title">
+            <h2>{{ 'Phänophasen' | translate }}</h2>
+            <div class="station-detail__year">
+              <mat-select
+                [value]="individualService.composedId(detailSubject$ | async)"
+                (selectionChange)="selectYear($event)"
+              >
+                @for (year of years$ | async; track year) {
+                  <mat-option [value]="year.composedId" [attr.data-testid]="year.composedId">{{
+                    year.year
+                  }}</mat-option>
+                }
+              </mat-select>
+            </div>
           </div>
-          <div *ngFor="let item of groupedItem.phenophaseObservations">
-            <ng-container *ngIf="item.observation !== null">
-              <div class="station-detail__label">{{ item.phenophase.de | translate }}</div>
-              <mat-form-field class="station-detail__form-field">
-                <input
-                  matInput
-                  [id]="item.phenophase.id"
-                  [matDatepicker]="fakePicker"
-                  [value]="item.observation?.date"
-                  readonly="true"
-                />
-                <mat-label translate>{{ item.phenophase.description_de }}</mat-label>
-              </mat-form-field>
-              <mat-datepicker #fakePicker></mat-datepicker>
-              <div class="statiohn-detail__detail-sub" *ngIf="item.observation?.comment?.toString() as comment">
-                {{ 'Kommentar' | translate }}: {{ staticComments[comment] | translate }}
+          @for (groupedItem of phenophaseObservationsBySpecies$ | async; track groupedItem) {
+            <div>
+              <div class="station-detail__observation-species">
+                {{ groupedItem.species.de | translate }} {{ groupedItem.treeId }}
               </div>
-            </ng-container>
-          </div>
+              @for (item of groupedItem.phenophaseObservations; track item) {
+                <div>
+                  @if (item.observation !== null) {
+                    <div class="station-detail__label">{{ item.phenophase.de | translate }}</div>
+                    <mat-form-field class="station-detail__form-field">
+                      <input
+                        matInput
+                        [id]="item.phenophase.id"
+                        [matDatepicker]="fakePicker"
+                        [value]="item.observation?.date"
+                        readonly="true"
+                      />
+                      <mat-label translate>{{ item.phenophase.description_de }}</mat-label>
+                    </mat-form-field>
+                    <mat-datepicker #fakePicker></mat-datepicker>
+                    @if (item.observation?.comment?.toString(); as comment) {
+                      <div class="statiohn-detail__detail-sub">
+                        {{ 'Kommentar' | translate }}: {{ staticComments[comment] | translate }}
+                      </div>
+                    }
+                  }
+                </div>
+              }
+            </div>
+          }
         </div>
       </div>
     </div>
   </div>
-</div>
+}

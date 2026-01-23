@@ -1,5 +1,4 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT, Inject, Injectable } from '@angular/core';
 import { LocalService } from '@app/core/services/local.service';
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment-timezone';

@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -23,7 +22,6 @@ import { Subscription } from 'rxjs';
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   imports: [
-    NgIf,
     MatCard,
     MatCardHeader,
     MatCardTitle,

@@ -40,7 +40,7 @@ module.exports = function () {
         this.waitForDropdown(dropdownLocator);
       }
       this.click(dropdownLocator);
-      const optionLocator = { css: `mat-option[ng-reflect-value='${value}']` };
+      const optionLocator = { css: `mat-option[data-testid='${value}']` };
       this.waitForElement(optionLocator); // option might no be present if role check is still pending
       this.click(optionLocator);
     },

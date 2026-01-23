@@ -232,6 +232,10 @@
 @mixin badge {
   background-color: white;
   border-radius: 50%;
+
+  button {
+    vertical-align: -6px;
+  }
 }
 
 @mixin card-view {

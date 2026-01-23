@@ -18,15 +18,19 @@
       <mat-datepicker-toggle matSuffix [for]="picker" data-test-id="datePickerToggle"></mat-datepicker-toggle>
       <mat-datepicker #picker [touchUi]="showTouchCalendar$ | async"></mat-datepicker>
     </mat-form-field>
-    <mat-form-field class="phenophase-dialog__form-field" *ngIf="data.availableComments.length > 0">
-      <mat-label>{{ 'Kommentar' | translate }}</mat-label>
-      <mat-select [(value)]="observationComment">
-        <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
-        <mat-option *ngFor="let element of data.availableComments" [value]="element.id">
-          {{ element.de | translate }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    @if (data.availableComments.length > 0) {
+      <mat-form-field class="phenophase-dialog__form-field">
+        <mat-label>{{ 'Kommentar' | translate }}</mat-label>
+        <mat-select [(value)]="observationComment">
+          <mat-option>{{ 'Bitte wählen' | translate }}</mat-option>
+          @for (element of data.availableComments; track element) {
+            <mat-option [value]="element.id" [attr.data-testid]="element.id">
+              {{ element.de | translate }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
   </div>
   <div mat-dialog-actions class="phenophase-dialog__buttons">
     <button

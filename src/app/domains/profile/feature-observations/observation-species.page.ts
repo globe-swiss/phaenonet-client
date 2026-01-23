@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,17 +24,7 @@ class Data {
 @Component({
   templateUrl: './observation-species.page.html',
   styleUrls: ['./observation-species.page.scss'],
-  imports: [
-    NgIf,
-    RouterLink,
-    MatIcon,
-    MatSelect,
-    NgFor,
-    MatOption,
-    ObservationItemComponent,
-    AsyncPipe,
-    TranslateModule
-  ]
+  imports: [RouterLink, MatIcon, MatSelect, MatOption, ObservationItemComponent, AsyncPipe, TranslateModule]
 })
 export class ProfileSpeciesComponent implements OnInit {
   latestIndividualObservations$: Observable<IndividualPhenophase[]>;

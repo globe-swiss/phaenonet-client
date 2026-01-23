@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
+import { AsyncPipe, NgStyle } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -11,7 +11,7 @@ import { formatShortDate } from '@shared/utils/formatDate';
   selector: 'app-observation-item',
   templateUrl: './observation-item.component.html',
   styleUrls: ['./observation-item.component.scss'],
-  imports: [RouterLink, NgIf, NgStyle, MatIcon, AsyncPipe, TranslateModule]
+  imports: [RouterLink, NgStyle, MatIcon, AsyncPipe, TranslateModule]
 })
 export class ObservationItemComponent {
   @Input() item: IndividualPhenophase;

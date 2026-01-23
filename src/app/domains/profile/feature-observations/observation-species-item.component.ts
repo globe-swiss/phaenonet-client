@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -11,7 +10,7 @@ import { formatShortDate } from '@shared/utils/formatDate';
   selector: 'app-observation-species-item',
   templateUrl: './observation-species-item.component.html',
   styleUrls: ['./observation-species-item.component.scss'],
-  imports: [RouterLink, TranslateModule, NgIf, MatIcon]
+  imports: [RouterLink, TranslateModule, MatIcon]
 })
 export class ObservationSpeciesItemComponent {
   @Input() species: string;

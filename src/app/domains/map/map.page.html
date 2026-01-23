@@ -1,24 +1,22 @@
 <div class="map">
   <google-map width="100%" height="100%" [options]="staticOptions" (mapClick)="closeInfoWindow()">
-    <map-marker
-      #marker="mapMarker"
-      *ngFor="let individualWithMarkerOpts of mapMarkers$ | async"
-      [position]="individualWithMarkerOpts.geopos"
-      [options]="individualWithMarkerOpts.markerOptions"
-      (mapClick)="openInfoWindow(marker, individualWithMarkerOpts.individualId)"
-      data-test-id="map-marker"
-    >
-    </map-marker>
+    @for (individualWithMarkerOpts of mapMarkers$ | async; track individualWithMarkerOpts) {
+      <map-marker
+        #marker="mapMarker"
+        [position]="individualWithMarkerOpts.geopos"
+        [options]="individualWithMarkerOpts.markerOptions"
+        (mapClick)="openInfoWindow(marker, individualWithMarkerOpts.individualId)"
+        data-test-id="map-marker"
+      >
+      </map-marker>
+    }
     <map-info-window data-test-id="info-window">
-      <ng-container *ngIf="infoWindowData$ | async | guardType: isIndividualInfoWindowData as d">
+      @if (infoWindowData$ | async | guardType: isIndividualInfoWindowData; as d) {
         <div [routerLink]="d.url" class="map__info-window">
           <div class="map__info-window-image-container">
-            <img
-              class="map__info-window-image"
-              *ngIf="d.imgUrl$ | async"
-              [src]="d.imgUrl$ | async"
-              data-test-id="individual-image"
-            />
+            @if (d.imgUrl$ | async) {
+              <img class="map__info-window-image" [src]="d.imgUrl$ | async" data-test-id="individual-image" />
+            }
           </div>
           <div class="map__info-window-text">
             <div class="map__info-window-label">
@@ -26,15 +24,19 @@
               <app-sensors-badge [sensorLiveData]="d.sensor"></app-sensors-badge>
             </div>
             <div class="map__info-window-value">{{ d.individual_name }}</div>
-            <div class="map__info-window-label" *ngIf="d.phenophase_name">
-              {{ 'Letzte Beobachtung' | translate }}: {{ d.last_observation_date | shortdate }}
-            </div>
-            <div *ngIf="d.phenophase_name" class="map__info-window-value">{{ d.phenophase_name | translate }}</div>
+            @if (d.phenophase_name) {
+              <div class="map__info-window-label">
+                {{ 'Letzte Beobachtung' | translate }}: {{ d.last_observation_date | shortdate }}
+              </div>
+            }
+            @if (d.phenophase_name) {
+              <div class="map__info-window-value">{{ d.phenophase_name | translate }}</div>
+            }
           </div>
           <mat-icon>chevron_right</mat-icon>
         </div>
-      </ng-container>
-      <ng-container *ngIf="infoWindowData$ | async | guardType: isStationInfoWindowData as d">
+      }
+      @if (infoWindowData$ | async | guardType: isStationInfoWindowData; as d) {
         <div class="map__info-window" [routerLink]="d.url">
           <img src="assets/img/pic_placeholder.svg" style="max-height: 100px" data-test-id="individual-placeholder" />
           <div class="map__info-window-text">
@@ -43,7 +45,7 @@
           </div>
           <mat-icon>chevron_right</mat-icon>
         </div>
-      </ng-container>
+      }
     </map-info-window>
   </google-map>
   <div class="map__map-actions" data-test-id="actions-component">
@@ -69,7 +71,9 @@
         <mat-form-field>
           <mat-label>{{ 'Phänojahr' | translate }}</mat-label>
           <mat-select formControlName="year" data-test-id="select-year">
-            <mat-option *ngFor="let year of yearFilterValues$ | async" [value]="year">{{ year }}</mat-option>
+            @for (year of yearFilterValues$ | async; track year) {
+              <mat-option [value]="year" [attr.data-testid]="year">{{ year }}</mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>
@@ -77,9 +81,9 @@
         <mat-form-field>
           <mat-label>{{ 'Datenquelle' | translate }}</mat-label>
           <mat-select formControlName="datasource" data-test-id="select-source">
-            <mat-option *ngFor="let datasource of datasourceFilterValues" [value]="datasource">{{
-              datasource | translate
-            }}</mat-option>
+            @for (datasource of datasourceFilterValues; track datasource) {
+              <mat-option [value]="datasource" [attr.data-testid]="datasource">{{ datasource | translate }}</mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>
@@ -87,9 +91,9 @@
         <mat-form-field>
           <mat-label>{{ 'Art' | translate }}</mat-label>
           <mat-select formControlName="species" data-test-id="select-species">
-            <mat-option *ngFor="let specie of speciesFilterValues$ | async" [value]="specie.id">{{
-              specie.de | translate
-            }}</mat-option>
+            @for (specie of speciesFilterValues$ | async; track specie) {
+              <mat-option [value]="specie.id" [attr.data-testid]="specie.id">{{ specie.de | translate }}</mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>

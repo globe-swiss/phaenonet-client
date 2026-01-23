@@ -10,7 +10,7 @@ export class SentryMissingTranslationHandler implements MissingTranslationHandle
     }
 
     // ignore numbers and missing translations is german
-    if (params.translateService.currentLang !== 'de-CH' && !Number(params.key)) {
+    if (params.translateService.getCurrentLang() !== 'de-CH' && !Number(params.key)) {
       if (environment.name === 'local') {
         console.error(this.getMsg(params));
       }
@@ -20,7 +20,7 @@ export class SentryMissingTranslationHandler implements MissingTranslationHandle
   }
 
   getMsg(params: MissingTranslationHandlerParams) {
-    return 'Translation Error: ' + params.key + ' not found for ' + params.translateService.currentLang;
+    return 'Translation Error: ' + params.key + ' not found for ' + params.translateService.getCurrentLang();
   }
 
   /*
@@ -31,6 +31,7 @@ export class SentryMissingTranslationHandler implements MissingTranslationHandle
    */
 
   checkTranslationError(params: MissingTranslationHandlerParams) {
-    return !params.translateService.translations[params.translateService.currentLang];
+    const currentLang = params.translateService.getCurrentLang();
+    return !params.translateService.getLangs().includes(currentLang);
   }
 }

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -18,7 +18,6 @@ import { map } from 'rxjs/operators';
   templateUrl: './profile-public.page.html',
   styleUrls: ['./profile-public.page.scss'],
   imports: [
-    NgIf,
     MatIconButton,
     MatTooltip,
     MatIcon,

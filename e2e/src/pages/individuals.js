@@ -53,7 +53,7 @@ module.exports = {
   editButton: { css: 'app-individual-buttons #edit-button' },
   deleteButton: { css: 'app-individual-buttons #delete-button' },
   deleteDialog: {
-    deleteConfirmationButton: { css: 'app-confirmation-dialog button[ng-reflect-dialog-result=true]' }
+    deleteConfirmationButton: { css: 'app-confirmation-dialog button[data-testid="confirm-yes"]' }
   },
   deleteIndividual() {
     I.click(this.description.deleteButton);

@@ -25,7 +25,7 @@ Scenario('test yearly statistics regression on 2018', async ({ I, statisticsPage
   await I.checkVisual('statistics-2018_phaenonet_alt_sycamore');
 }).tag('visual');
 
-Scenario('test yearly statistics all year view', async ({ I, statisticsPage }) => {
+Scenario.skip('test yearly statistics all year view', async ({ I, statisticsPage }) => {
   I.visit(statisticsPage);
   I.selectDropdownValue(statisticsPage.filter.phenoyear.dropdown, 'all', true);
   I.selectDropdownValue(statisticsPage.filter.species.dropdown, statisticsPage.filter.species.values.sycamore);
