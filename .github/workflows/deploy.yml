@@ -42,7 +42,7 @@ jobs:
       tag: ${{ steps.set-tag.outputs.tag }}
       version: ${{ steps.set-version.outputs.version }}
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -96,7 +96,7 @@ jobs:
       VERSION: ${{ needs.next-versions.outputs.version }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
@@ -104,7 +104,7 @@ jobs:
       - uses: pnpm/action-setup@v4.2.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6.0.0
+      - uses: actions/setup-node@v6.2.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -132,7 +132,7 @@ jobs:
       VERSION: ${{ needs.next-versions.outputs.version }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
@@ -145,7 +145,7 @@ jobs:
       - uses: pnpm/action-setup@v4.2.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6.0.0
+      - uses: actions/setup-node@v6.2.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -176,13 +176,13 @@ jobs:
     environment: ${{ github.event.inputs.project || 'phaenonet-test' }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - name: Checkout rules
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.2
         with:
           repository: globe-swiss/phaenonet-client-security
           path: security
@@ -199,7 +199,7 @@ jobs:
       - uses: pnpm/action-setup@v4.2.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6.0.0
+      - uses: actions/setup-node@v6.2.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
