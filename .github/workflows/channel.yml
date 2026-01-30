@@ -35,7 +35,7 @@ jobs:
       id-token: write # Required for GCP Workload Identity Federation (google-github-actions/auth)
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
@@ -43,7 +43,7 @@ jobs:
       - uses: pnpm/action-setup@v4.2.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6.0.0
+      - uses: actions/setup-node@v6.2.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
