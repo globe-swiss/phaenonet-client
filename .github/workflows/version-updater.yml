@@ -23,7 +23,7 @@ jobs:
         with:
           # [Required] Access token with `workflow` scope.
           token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
-          # persist-credentials must be true (default) for git push to work
+          persist-credentials: true # persist-credentials must be true (default) for git push to work
       - name: Run GitHub Actions Version Updater
         uses: saadmk11/github-actions-version-updater@v0.9.0
         with:
