@@ -3,3 +3,6 @@ rules:
     config:
       policies:
         '*': ref-pin
+  artipacked:
+    ignore:
+      - version-updater.yml:22

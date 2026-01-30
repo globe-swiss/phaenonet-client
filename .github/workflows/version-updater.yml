@@ -15,14 +15,15 @@ env:
 jobs:
   actions-update:
     permissions:
-      contents: read
+      contents: write # Required to commit updated action versions
+      pull-requests: write # Required to create PRs with the updates
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v5.0.0
         with:
           # [Required] Access token with `workflow` scope.
           token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
-          persist-credentials: false
+          # persist-credentials must be true (default) for git push to work
       - name: Run GitHub Actions Version Updater
         uses: saadmk11/github-actions-version-updater@v0.9.0
         with:
