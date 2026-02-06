@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
@@ -30,7 +30,7 @@ jobs:
       - uses: pnpm/action-setup@v4.2.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6.0.0
+      - uses: actions/setup-node@v6.2.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -62,7 +62,7 @@ jobs:
       pull-requests: write # Required for FirebaseExtended/action-hosting-deploy to comment on PRs
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
@@ -94,7 +94,7 @@ jobs:
       pull-requests: write # Required for FirebaseExtended/action-hosting-deploy to comment on PRs
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
@@ -102,7 +102,7 @@ jobs:
       - uses: pnpm/action-setup@v4.2.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6.0.0
+      - uses: actions/setup-node@v6.2.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -142,7 +142,7 @@ jobs:
           expires: 30d
         if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
       - name: Codecov
-        uses: codecov/codecov-action@v5.5.1
+        uses: codecov/codecov-action@v5.5.2
         with:
           use_oidc: true
           files: ./e2e/output/coverage-reports/codecov.json
@@ -158,7 +158,7 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
@@ -166,12 +166,12 @@ jobs:
       - uses: pnpm/action-setup@v4.2.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6.0.0
+      - uses: actions/setup-node@v6.2.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm -r install
-      - uses: reviewdog/action-setup@v1.4.0
+      - uses: reviewdog/action-setup@v1.5.0
         with:
           reviewdog_version: ${{ env.REVIEWDOG_VERSION }}
       - name: check map icon completeness
@@ -223,11 +223,11 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
       - name: Run zizmor 🌈
-        uses: zizmorcore/zizmor-action@v0.2.0
+        uses: zizmorcore/zizmor-action@v0.5.0
   commit-info:
     permissions:
       contents: read
@@ -237,7 +237,7 @@ jobs:
       msg: ${{ steps.get-commit-msg.outputs.msg }}
     steps:
       - name: Get PR head commit
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
