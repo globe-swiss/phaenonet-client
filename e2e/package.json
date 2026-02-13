@@ -10,7 +10,7 @@
   "description": "e2e test for phaenonet-client",
   "devDependencies": {
     "eslint-plugin-codeceptjs": "^1.3.0",
-    "firebase-tools": "^15.5.1"
+    "firebase-tools": "^15.6.0"
   },
   "main": "codecept.conf.js",
   "name": "e2e",
