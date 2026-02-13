@@ -196,21 +196,21 @@ jobs:
         run: |
           pnpm exec stylelint "**/*.scss" -f json \
             | jq -r '.[] | {source: .source, warnings:.warnings[]} | "\(.source):\(.warnings.line):\(.warnings.column):\(.warnings.severity): \(.warnings.text)"' \
-            | reviewdog -name=stylelint -efm="%f:%l:%c:%t%*[^:]: %m" -filter-mode=diff_context -diff="git diff master" -f.diff.strip=0 -fail-on-error -reporter=github-pr-check
+            | reviewdog -name=stylelint -efm="%f:%l:%c:%t%*[^:]: %m" -filter-mode=diff_context -diff="git diff master" -f.diff.strip=0 -fail-level=error -reporter=github-pr-check
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
       - name: eslint
         run: |
           pnpm exec eslint -f rdjson . \
-            | reviewdog -name=eslint -f=rdjson -f.diff.strip=0 -filter-mode=diff_context -diff="git diff master" -fail-on-error -reporter=github-pr-check
+            | reviewdog -name=eslint -f=rdjson -f.diff.strip=0 -filter-mode=diff_context -diff="git diff master" -fail-level=error -reporter=github-pr-check
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
       - name: markdown
         run: |
           pnpm exec markdownlint -c ./markdownlint.json . 2>&1 \
-            | reviewdog -name=markdown -efm="%f:%l:%c %m" -efm="%f:%l %m" -filter-mode=diff_context -diff="git diff master" -f.diff.strip=1 -fail-on-error -reporter=github-pr-check
+            | reviewdog -name=markdown -efm="%f:%l:%c %m" -efm="%f:%l %m" -filter-mode=diff_context -diff="git diff master" -f.diff.strip=1 -fail-level=error -reporter=github-pr-check
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
