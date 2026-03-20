@@ -101,7 +101,7 @@ jobs:
           persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
-      - uses: pnpm/action-setup@v4.3.0
+      - uses: pnpm/action-setup@v5.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v6.3.0
@@ -142,7 +142,7 @@ jobs:
         with:
           name: ${{ env.PROJECT }}
           node_version: ${{ env.NODE_VERSION }}
-      - uses: pnpm/action-setup@v4.3.0
+      - uses: pnpm/action-setup@v5.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v6.3.0
@@ -196,7 +196,7 @@ jobs:
       - name: Remove source maps (prod)
         run: find ./dist -type f -name "*.map" -print -exec rm {} + | grep -q . # fail if no source maps found
         if: ${{ env.PROJECT == 'phaenonet' }}
-      - uses: pnpm/action-setup@v4.3.0
+      - uses: pnpm/action-setup@v5.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v6.3.0
