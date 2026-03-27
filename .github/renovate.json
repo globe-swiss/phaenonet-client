@@ -1,0 +1,74 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "enabledManagers": ["github-actions", "npm"],
+  "extends": ["config:best-practices"],
+  "packageRules": [
+    {
+      "automerge": false,
+      "enabled": true,
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["major"]
+    },
+    {
+      "enabled": false,
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["digest", "minor", "patch", "pin"]
+    },
+    {
+      "automerge": true,
+      "automergeType": "branch",
+      "enabled": true,
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "schedule": ["before 6am on friday"]
+    },
+    {
+      "dependencyDashboardApproval": true,
+      "groupName": "angular",
+      "matchPackagePatterns": [
+        "^@angular-devkit/",
+        "^@angular-eslint",
+        "^@angular/",
+        "^@mat-datetimepicker/",
+        "^@types/node",
+        "^rxjs$",
+        "^tslib$",
+        "^typescript$",
+        "^zone.js$"
+      ]
+    },
+    {
+      "groupName": "translate",
+      "matchPackagePatterns": ["^@ngx-translate/"]
+    },
+    {
+      "description": "Playwright pinned to ~1.51.x due to compatibility issues",
+      "enabled": false,
+      "matchPackageNames": ["playwright"]
+    },
+    {
+      "groupName": "linting",
+      "matchPackagePatterns": [
+        "^@eslint",
+        "^@softarc",
+        "^@typescript-eslint",
+        "^eslint",
+        "^markdownlint",
+        "^postcss",
+        "^stylint"
+      ]
+    },
+    {
+      "groupName": "d3",
+      "matchPackagePatterns": ["^@types/d3", "^d3"]
+    },
+    {
+      "groupName": "sentry",
+      "matchPackagePatterns": ["^@sentry/"]
+    },
+    {
+      "enabled": false,
+      "groupName": "prettier",
+      "matchPackagePatterns": ["^prettier$"]
+    }
+  ]
+}
