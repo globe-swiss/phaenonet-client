@@ -12,14 +12,14 @@
     {
       "enabled": false,
       "matchManagers": ["npm"],
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"]
+      "matchUpdateTypes": ["digest", "minor", "patch", "pin"]
     },
     {
       "automerge": true,
       "automergeType": "branch",
       "enabled": true,
       "matchUpdateTypes": ["lockFileMaintenance"],
-      "schedule": ["before 5am on monday"]
+      "schedule": ["before 6am on friday"]
     },
     {
       "dependencyDashboardApproval": true,
@@ -39,6 +39,11 @@
     {
       "groupName": "translate",
       "matchPackagePatterns": ["^@ngx-translate/"]
+    },
+    {
+      "description": "Playwright pinned to ~1.51.x due to compatibility issues",
+      "enabled": false,
+      "matchPackageNames": ["playwright"]
     },
     {
       "groupName": "linting",
