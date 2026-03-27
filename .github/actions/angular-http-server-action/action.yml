@@ -16,6 +16,6 @@ runs:
         INPUTS_PATH: ${{ inputs.path }}
         INPUTS_PORT: ${{ inputs.port }}
     - name: Wait on
-      uses: iFaxity/wait-on-action@v1.2.1
+      uses: iFaxity/wait-on-action@a7d13170ec542bdca4ef8ac4b15e9c6aa00a6866 # v1.2.1
       with:
         resource: http://localhost:${{ inputs.port }}
