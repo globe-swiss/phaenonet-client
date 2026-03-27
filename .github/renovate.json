@@ -4,6 +4,23 @@
   "extends": ["config:best-practices"],
   "packageRules": [
     {
+      "automerge": true,
+      "automergeType": "branch",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["patch"]
+    },
+    {
+      "automerge": true,
+      "automergeType": "pr",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor"]
+    },
+    {
+      "automerge": false,
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["major"]
+    },
+    {
       "automerge": false,
       "enabled": true,
       "matchManagers": ["npm"],
