@@ -22,21 +22,21 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
-      - uses: pnpm/action-setup@v5.0.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6.3.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm install
       - name: Set API info
-        uses: suisei-cn/actions-download-file@v1.6.1
+        uses: suisei-cn/actions-download-file@9f75b8c2dad5ccced7509c44a3b881c5613abde2 # v1.6.1
         with:
           url: ${{ secrets.FIREBASE_TEST_API_URL }}
           target: ./src/local/
@@ -62,7 +62,7 @@ jobs:
       pull-requests: write # Required for FirebaseExtended/action-hosting-deploy to comment on PRs
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
@@ -94,15 +94,15 @@ jobs:
       pull-requests: write # Required for FirebaseExtended/action-hosting-deploy to comment on PRs
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
-      - uses: pnpm/action-setup@v5.0.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6.3.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -142,7 +142,7 @@ jobs:
           expires: 30d
         if: always() && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
       - name: Codecov
-        uses: codecov/codecov-action@v5.5.3
+        uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5.5.3
         with:
           use_oidc: true
           files: ./e2e/output/coverage-reports/codecov.json
@@ -158,20 +158,20 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
-      - uses: pnpm/action-setup@v5.0.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6.3.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm -r install
-      - uses: reviewdog/action-setup@v1.5.0
+      - uses: reviewdog/action-setup@d8a7baabd7f3e8544ee4dbde3ee41d0011c3a93f # v1.5.0
         with:
           reviewdog_version: ${{ env.REVIEWDOG_VERSION }}
       - name: check map icon completeness
@@ -182,7 +182,7 @@ jobs:
       - name: check style
         run: pnpm exec prettier -c "."
         if: always()
-      - uses: EPMatt/reviewdog-action-prettier@v1.3.0
+      - uses: EPMatt/reviewdog-action-prettier@f691104cbeb4b0299df971275444c64be93c03ae # v1.3.0
         with:
           reporter: github-pr-check
           level: error
@@ -223,11 +223,11 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       - name: Run zizmor 🌈
-        uses: zizmorcore/zizmor-action@v0.5.2
+        uses: zizmorcore/zizmor-action@71321a20a9ded102f6e9ce5718a2fcec2c4f70d8 # v0.5.2
   commit-info:
     permissions:
       contents: read
@@ -237,7 +237,7 @@ jobs:
       msg: ${{ steps.get-commit-msg.outputs.msg }}
     steps:
       - name: Get PR head commit
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
