@@ -63,6 +63,11 @@
       "matchPackageNames": ["playwright"]
     },
     {
+      "description": "Starting with uuid@12 CommonJS is no longer supported.",
+      "enabled": false,
+      "matchPackageNames": ["uuid"]
+    },
+    {
       "groupName": "linting",
       "matchPackagePatterns": [
         "^@eslint",
