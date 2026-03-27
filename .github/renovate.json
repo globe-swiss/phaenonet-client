@@ -1,0 +1,69 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "enabledManagers": ["github-actions", "npm"],
+  "extends": ["config:best-practices"],
+  "packageRules": [
+    {
+      "automerge": false,
+      "enabled": true,
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["major"]
+    },
+    {
+      "enabled": false,
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"]
+    },
+    {
+      "automerge": true,
+      "automergeType": "branch",
+      "enabled": true,
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "schedule": ["before 5am on monday"]
+    },
+    {
+      "dependencyDashboardApproval": true,
+      "groupName": "angular",
+      "matchPackagePatterns": [
+        "^@angular-devkit/",
+        "^@angular-eslint",
+        "^@angular/",
+        "^@mat-datetimepicker/",
+        "^@types/node",
+        "^rxjs$",
+        "^tslib$",
+        "^typescript$",
+        "^zone.js$"
+      ]
+    },
+    {
+      "groupName": "translate",
+      "matchPackagePatterns": ["^@ngx-translate/"]
+    },
+    {
+      "groupName": "linting",
+      "matchPackagePatterns": [
+        "^@eslint",
+        "^@softarc",
+        "^@typescript-eslint",
+        "^eslint",
+        "^markdownlint",
+        "^postcss",
+        "^stylint"
+      ]
+    },
+    {
+      "groupName": "d3",
+      "matchPackagePatterns": ["^@types/d3", "^d3"]
+    },
+    {
+      "groupName": "sentry",
+      "matchPackagePatterns": ["^@sentry/"]
+    },
+    {
+      "enabled": false,
+      "groupName": "prettier",
+      "matchPackagePatterns": ["^prettier$"]
+    }
+  ]
+}
