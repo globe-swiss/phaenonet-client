@@ -71,7 +71,7 @@
         "^eslint",
         "^markdownlint",
         "^postcss",
-        "^stylint"
+        "^stylelint"
       ]
     },
     {
