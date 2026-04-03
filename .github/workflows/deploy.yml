@@ -42,7 +42,7 @@ jobs:
       tag: ${{ steps.set-tag.outputs.tag }}
       version: ${{ steps.set-version.outputs.version }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@v6.0.2 # v6.0.2
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -96,15 +96,15 @@ jobs:
       VERSION: ${{ needs.next-versions.outputs.version }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2 # v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+      - uses: pnpm/action-setup@v5.0.0 # v5.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: actions/setup-node@v6.3.0 # v6.3.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -132,7 +132,7 @@ jobs:
       VERSION: ${{ needs.next-versions.outputs.version }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2 # v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
@@ -142,10 +142,10 @@ jobs:
         with:
           name: ${{ env.PROJECT }}
           node_version: ${{ env.NODE_VERSION }}
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+      - uses: pnpm/action-setup@v5.0.0 # v5.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: actions/setup-node@v6.3.0 # v6.3.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -176,13 +176,13 @@ jobs:
     environment: ${{ github.event.inputs.project || 'phaenonet-test' }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2 # v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - name: Checkout rules
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2 # v6.0.2
         with:
           repository: globe-swiss/phaenonet-client-security
           path: security
@@ -196,17 +196,17 @@ jobs:
       - name: Remove source maps (prod)
         run: find ./dist -type f -name "*.map" -print -exec rm {} + | grep -q . # fail if no source maps found
         if: ${{ env.PROJECT == 'phaenonet' }}
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+      - uses: pnpm/action-setup@v5.0.0 # v5.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: actions/setup-node@v6.3.0 # v6.3.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm install
       - id: auth
         name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        uses: google-github-actions/auth@v3.0.0 # v3.0.0
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}

@@ -14,16 +14,16 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+    - uses: actions/setup-node@v6.3.0 # v6.3.0
       with:
         node-version: ${{ inputs.node_version }}
     - name: Download Build Artifact
-      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      uses: actions/download-artifact@v8.0.1 # v8.0.1
       with:
         name: ${{ inputs.name }}
         path: ${{ runner.temp }}/
     - name: unzip contents
-      uses: DuckSoft/extract-7z-action@6eaaa506b410f047eaa9b22498696aad1e19a834 # v1.0
+      uses: DuckSoft/extract-7z-action@v1.0 # v1.0
       with:
         pathSource: ${{ runner.temp }}/${{ inputs.name }}.zip
         pathTarget: ${{ inputs.path }}

@@ -19,13 +19,13 @@ jobs:
       pull-requests: write # Required to create PRs with the updates
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@v6.0.2 # v6.0.2
         with:
           # [Required] Access token with `workflow` scope.
           token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
           persist-credentials: true # persist-credentials must be true (default) for git push to work
       - name: Run GitHub Actions Version Updater
-        uses: saadmk11/github-actions-version-updater@d8781caf11d11168579c8e5e94f62b068038f442 # v0.9.0
+        uses: saadmk11/github-actions-version-updater@v0.9.0 # v0.9.0
         with:
           # [Required] Access token with `workflow` scope.
           token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
@@ -38,15 +38,15 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Check out repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2 # v6.0.2
         with:
           persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+      - uses: pnpm/action-setup@v5.0.0 # v5.0.0
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: actions/setup-node@v6.3.0 # v6.3.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -58,7 +58,7 @@ jobs:
           git diff --exit-code || echo "changes=true" >> $GITHUB_OUTPUT
       - name: Create Pull Request
         if: ${{ steps.git-check.outputs.changes == 'true' }}
-        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
+        uses: peter-evans/create-pull-request@v8.1.0 # v8.1.0
         with:
           # required to trigger e2e-test workflow
           token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
