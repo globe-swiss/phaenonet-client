@@ -38,7 +38,7 @@ jobs:
       - name: Set API info
         uses: suisei-cn/actions-download-file@9f75b8c2dad5ccced7509c44a3b881c5613abde2 # v1.6.1
         with:
-          url: ${{ secrets.FIREBASE_TEST_API_URL }}
+          url: ${{ secrets.FIREBASE_TEST_API_URL }} # zizmor: ignore[secrets-outside-env]
           target: ./src/local/
       - name: Build test version
         run: pnpm exec ng build -c local
