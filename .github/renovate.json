@@ -45,8 +45,11 @@
         "^@angular-devkit/",
         "^@angular-eslint",
         "^@angular/",
+        "^@eslint/",
         "^@mat-datetimepicker/",
         "^@types/node",
+        "^@typescript-eslint/",
+        "^eslint$",
         "^rxjs$",
         "^tslib$",
         "^typescript$",
@@ -69,15 +72,7 @@
     },
     {
       "groupName": "linting",
-      "matchPackagePatterns": [
-        "^@eslint",
-        "^@softarc",
-        "^@typescript-eslint",
-        "^eslint",
-        "^markdownlint",
-        "^postcss",
-        "^stylelint"
-      ]
+      "matchPackagePatterns": ["^@softarc", "^markdownlint", "^postcss", "^stylelint"]
     },
     {
       "groupName": "d3",
