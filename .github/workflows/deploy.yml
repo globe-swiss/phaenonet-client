@@ -155,13 +155,13 @@ jobs:
           echo "Create new release ${VERSION}"
           pnpm exec sentry-cli releases new ${VERSION}
           pnpm exec sentry-cli releases set-commits ${VERSION} --auto
-          pnpm exec sentry-cli releases files ${VERSION} upload-sourcemaps ./dist/phaenonet/browser -x=js -x=map -x=css -i=**/src_assets_i18n* --validate --verbose --rewrite --strip-common-prefix
+          pnpm exec sentry-cli sourcemaps upload --release ${VERSION} ./dist/phaenonet/browser --ext js --ext map --ext css --ignore '**/src_assets_i18n*' --strip-common-prefix --validate --verbose --strict
           pnpm exec sentry-cli releases finalize ${VERSION}
           echo "Finalized release ${VERSION}"
           echo "Adding deployment for ${ENVIRONMENT} environment"
           pnpm exec sentry-cli releases deploys ${VERSION} new --env ${ENVIRONMENT}
         env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }} # zizmor: ignore[secrets-outside-env]
           SENTRY_ORG: phaenonet
           SENTRY_PROJECT: phaenonet-client
           ENVIRONMENT: ${{ env.PROJECT == 'phaenonet' && 'production' || 'test' }}
