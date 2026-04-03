@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Loader } from '@googlemaps/js-api-loader';
+import { importLibrary, setOptions } from '@googlemaps/js-api-loader';
 import { environment } from '~/environments/environment';
 
 @Injectable({
@@ -15,16 +15,16 @@ export class GoogleMapsLoaderService {
     }
 
     if (this.loadPromise === null) {
-      const loader = new Loader({
-        apiKey: environment.firebaseConfig.apiKey,
-        version: 'quarterly'
+      setOptions({
+        key: environment.firebaseConfig.apiKey,
+        v: 'quarterly'
       });
 
       this.loadPromise = Promise.all([
-        loader.importLibrary('core'),
-        loader.importLibrary('maps'),
-        loader.importLibrary('marker'),
-        loader.importLibrary('elevation')
+        importLibrary('core'),
+        importLibrary('maps'),
+        importLibrary('marker'),
+        importLibrary('elevation')
       ]).then(() => {
         this.apiLoaded = true;
       });
