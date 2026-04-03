@@ -46,7 +46,7 @@
     "@angular/language-service": "^20.3.18",
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^9.39.4",
-    "@sentry/cli": "^2.58.5",
+    "@sentry/cli": "^3.0.0",
     "@softarc/eslint-plugin-sheriff": "^0.19.6",
     "@softarc/sheriff-core": "^0.19.6",
     "@types/d3": "^7.4.3",
