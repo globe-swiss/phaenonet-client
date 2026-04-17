@@ -35,8 +35,7 @@
       "automerge": true,
       "automergeType": "branch",
       "enabled": true,
-      "matchUpdateTypes": ["lockFileMaintenance"],
-      "schedule": ["before 6am on friday"]
+      "matchUpdateTypes": ["lockFileMaintenance"]
     },
     {
       "dependencyDashboardApproval": true,
@@ -72,12 +71,7 @@
     },
     {
       "groupName": "linting",
-      "matchPackageNames": [
-        "/^@softarc/",
-        "/^markdownlint/",
-        "/^postcss/",
-        "/^stylelint/"
-      ]
+      "matchPackageNames": ["/^@softarc/", "/^markdownlint/", "/^postcss/", "/^stylelint/"]
     },
     {
       "groupName": "d3",
@@ -92,5 +86,6 @@
       "groupName": "prettier",
       "matchPackageNames": ["/^prettier$/"]
     }
-  ]
+  ],
+  "schedule": ["after 10pm and before 6am"]
 }

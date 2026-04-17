@@ -4,7 +4,6 @@ on:
   pull_request:
     branches: [master]
   push:
-    branches: [master, test-pr]
 
 # No default permissions - each job explicitly defines what it needs
 permissions: {}
@@ -51,7 +50,7 @@ jobs:
           node_version: ${{ env.NODE_VERSION }}
   channel:
     needs: [build, commit-info]
-    if: ${{ !contains(needs.commit-info.outputs.msg, '#no-deploy') && github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]' }}
+    if: ${{ github.event_name == 'pull_request' && !contains(needs.commit-info.outputs.msg, '#no-deploy') && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]' }}
     name: Deploy Preview
     runs-on: ubuntu-22.04
     environment: phaenonet-test
@@ -239,7 +238,7 @@ jobs:
       - name: Get PR head commit
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - name: Head git commit message
         run: echo "msg=$(git show -s --format=%s)"
