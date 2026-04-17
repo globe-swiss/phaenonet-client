@@ -5,7 +5,7 @@
   "packageRules": [
     {
       "automerge": true,
-      "automergeType": "branch",
+      "automergeType": "pr",
       "matchManagers": ["github-actions"],
       "matchUpdateTypes": ["patch"]
     },
@@ -33,7 +33,7 @@
     },
     {
       "automerge": true,
-      "automergeType": "branch",
+      "automergeType": "pr",
       "enabled": true,
       "matchUpdateTypes": ["lockFileMaintenance"],
       "schedule": ["before 6am on friday"]
@@ -72,12 +72,7 @@
     },
     {
       "groupName": "linting",
-      "matchPackageNames": [
-        "/^@softarc/",
-        "/^markdownlint/",
-        "/^postcss/",
-        "/^stylelint/"
-      ]
+      "matchPackageNames": ["/^@softarc/", "/^markdownlint/", "/^postcss/", "/^stylelint/"]
     },
     {
       "groupName": "d3",
