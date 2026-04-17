@@ -41,24 +41,24 @@
     {
       "dependencyDashboardApproval": true,
       "groupName": "angular",
-      "matchPackagePatterns": [
-        "^@angular-devkit/",
-        "^@angular-eslint",
-        "^@angular/",
-        "^@eslint/",
-        "^@mat-datetimepicker/",
-        "^@types/node",
-        "^@typescript-eslint/",
-        "^eslint$",
-        "^rxjs$",
-        "^tslib$",
-        "^typescript$",
-        "^zone.js$"
+      "matchPackageNames": [
+        "/^@angular-devkit//",
+        "/^@angular-eslint/",
+        "/^@angular//",
+        "/^@eslint//",
+        "/^@mat-datetimepicker//",
+        "/^@types/node/",
+        "/^@typescript-eslint//",
+        "/^eslint$/",
+        "/^rxjs$/",
+        "/^tslib$/",
+        "/^typescript$/",
+        "/^zone.js$/"
       ]
     },
     {
       "groupName": "translate",
-      "matchPackagePatterns": ["^@ngx-translate/"]
+      "matchPackageNames": ["/^@ngx-translate//"]
     },
     {
       "description": "Playwright pinned to ~1.51.x due to compatibility issues",
@@ -72,20 +72,25 @@
     },
     {
       "groupName": "linting",
-      "matchPackagePatterns": ["^@softarc", "^markdownlint", "^postcss", "^stylelint"]
+      "matchPackageNames": [
+        "/^@softarc/",
+        "/^markdownlint/",
+        "/^postcss/",
+        "/^stylelint/"
+      ]
     },
     {
       "groupName": "d3",
-      "matchPackagePatterns": ["^@types/d3", "^d3"]
+      "matchPackageNames": ["/^@types/d3/", "/^d3/"]
     },
     {
       "groupName": "sentry",
-      "matchPackagePatterns": ["^@sentry/"]
+      "matchPackageNames": ["/^@sentry//"]
     },
     {
       "enabled": false,
       "groupName": "prettier",
-      "matchPackagePatterns": ["^prettier$"]
+      "matchPackageNames": ["/^prettier$/"]
     }
   ]
 }
