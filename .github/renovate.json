@@ -5,7 +5,7 @@
   "packageRules": [
     {
       "automerge": true,
-      "automergeType": "branch",
+      "automergeType": "pr",
       "matchManagers": ["github-actions"],
       "matchUpdateTypes": ["patch"]
     },
@@ -33,10 +33,9 @@
     },
     {
       "automerge": true,
-      "automergeType": "branch",
+      "automergeType": "pr",
       "enabled": true,
-      "matchUpdateTypes": ["lockFileMaintenance"],
-      "schedule": ["before 6am on friday"]
+      "matchUpdateTypes": ["lockFileMaintenance"]
     },
     {
       "dependencyDashboardApproval": true,
@@ -92,5 +91,6 @@
       "groupName": "prettier",
       "matchPackageNames": ["/^prettier$/"]
     }
-  ]
+  ],
+  "schedule": ["after 10pm", "before 6am"]
 }
