@@ -35,8 +35,7 @@
       "automerge": true,
       "automergeType": "pr",
       "enabled": true,
-      "matchUpdateTypes": ["lockFileMaintenance"],
-      "schedule": ["before 6am on friday"]
+      "matchUpdateTypes": ["lockFileMaintenance"]
     },
     {
       "dependencyDashboardApproval": true,
@@ -87,5 +86,6 @@
       "groupName": "prettier",
       "matchPackageNames": ["/^prettier$/"]
     }
-  ]
+  ],
+  "schedule": ["after 10pm and before 6am"]
 }
