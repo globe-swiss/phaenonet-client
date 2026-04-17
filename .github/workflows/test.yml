@@ -90,7 +90,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          fetch-depth: 0
+          fetch-depth: 2
           persist-credentials: false
       - name: Check for non-actions changes
         id: check
@@ -188,6 +188,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          fetch-depth: 2
           persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
@@ -229,11 +230,18 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
       - name: eslint
-        run: |
-          pnpm exec eslint -f rdjson . \
-            | reviewdog -name=eslint -f=rdjson -f.diff.strip=0 -filter-mode=diff_context -diff="git diff master" -fail-level=error -reporter=github-pr-check
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            DIFF_CMD="git diff origin/$BASE_REF"
+          else
+            DIFF_CMD="git diff HEAD~1"
+          fi
+          pnpm exec eslint -f rdjson . \
+            | reviewdog -name=eslint -f=rdjson -f.diff.strip=0 -filter-mode=diff_context -diff="$DIFF_CMD" -fail-level=error -reporter=github-pr-check
         if: always()
       - name: markdown
         run: |
