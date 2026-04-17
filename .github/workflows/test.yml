@@ -80,9 +80,37 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           project_Id: phaenonet-test
           expires: 30d
+  changes:
+    permissions:
+      contents: read
+    name: Detect Changes
+    runs-on: ubuntu-22.04
+    outputs:
+      non_actions: ${{ steps.check.outputs.non_actions }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check for non-actions changes
+        id: check
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            DIFF_BASE="origin/$BASE_REF"
+          else
+            DIFF_BASE="HEAD~1"
+          fi
+          if git diff --name-only "$DIFF_BASE" | grep -qvE '^\.github/'; then
+            echo "non_actions=true" >> $GITHUB_OUTPUT
+          else
+            echo "non_actions=false" >> $GITHUB_OUTPUT
+          fi
   e2e-tests:
-    needs: [build, commit-info]
-    if: ${{ !contains(needs.commit-info.outputs.msg, '#no-e2e') }}
+    needs: [build, commit-info, changes]
+    if: ${{ !contains(needs.commit-info.outputs.msg, '#no-e2e') && needs.changes.outputs.non_actions == 'true' }}
     concurrency: e2e-test
     name: E2E-tests
     runs-on: ubuntu-22.04
