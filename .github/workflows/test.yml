@@ -80,9 +80,29 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           project_Id: phaenonet-test
           expires: 30d
+  changes:
+    permissions:
+      contents: read
+    name: Detect Changes
+    runs-on: ubuntu-22.04
+    outputs:
+      non_actions: ${{ steps.check.outputs.non_actions }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Check for non-actions changes
+        id: check
+        run: |
+          if git diff --name-only HEAD~1 | grep -qvE '^\.github/'; then
+            echo "non_actions=true" >> $GITHUB_OUTPUT
+          else
+            echo "non_actions=false" >> $GITHUB_OUTPUT
+          fi
   e2e-tests:
-    needs: [build, commit-info]
-    if: ${{ !contains(needs.commit-info.outputs.msg, '#no-e2e') }}
+    needs: [build, commit-info, changes]
+    if: ${{ !contains(needs.commit-info.outputs.msg, '#no-e2e') && needs.changes.outputs.non_actions == 'true' }}
     concurrency: e2e-test
     name: E2E-tests
     runs-on: ubuntu-22.04
@@ -160,6 +180,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          fetch-depth: 2
           persist-credentials: false
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
@@ -203,7 +224,7 @@ jobs:
       - name: eslint
         run: |
           pnpm exec eslint -f rdjson . \
-            | reviewdog -name=eslint -f=rdjson -f.diff.strip=0 -filter-mode=diff_context -diff="git diff master" -fail-level=error -reporter=github-pr-check
+            | reviewdog -name=eslint -f=rdjson -f.diff.strip=0 -filter-mode=diff_context -diff="git diff HEAD~1" -fail-level=error -reporter=github-pr-check
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
