@@ -19,7 +19,7 @@ jobs:
     permissions:
       contents: read
     name: Build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -53,7 +53,7 @@ jobs:
     needs: [build, commit-info]
     if: ${{ !contains(needs.commit-info.outputs.msg, '#no-deploy') && github.ref != 'refs/heads/master' && github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]' }}
     name: Deploy Preview
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     environment: phaenonet-test
     permissions:
       contents: read
@@ -84,7 +84,7 @@ jobs:
     permissions:
       contents: read
     name: Detect Changes
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       non_actions: ${{ steps.check.outputs.non_actions }}
     steps:
@@ -105,7 +105,7 @@ jobs:
     if: ${{ !contains(needs.commit-info.outputs.msg, '#no-e2e') && needs.changes.outputs.non_actions == 'true' }}
     concurrency: e2e-test
     name: E2E-tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     environment: phaenonet-test
     permissions:
       contents: read
@@ -174,7 +174,7 @@ jobs:
       checks: write # Required for reviewdog to create and update check runs
       pull-requests: write # Required for reviewdog github-pr-check reporter to access/modify PR data
     name: Code Quality
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     steps:
       - name: Checkout Repository
@@ -241,7 +241,7 @@ jobs:
       contents: read # Only needed for private repos
       actions: read # Only needed for private repos
     name: Workflow Security
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
