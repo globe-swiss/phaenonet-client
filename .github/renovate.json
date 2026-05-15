@@ -2,6 +2,9 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "enabledManagers": ["github-actions", "npm"],
   "extends": ["config:best-practices"],
+  "npm": {
+    "postUpdateOptions": ["pnpmDedupe"]
+  },
   "packageRules": [
     {
       "automerge": true,
