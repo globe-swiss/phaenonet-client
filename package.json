@@ -73,9 +73,10 @@
   },
   "engines": {
     "node": "=22",
-    "pnpm": ">=3"
+    "pnpm": "10.24.0"
   },
   "name": "phaenonet",
+  "packageManager": "pnpm@10.24.0",
   "pnpm": {
     "overrideComments": {
       "canvas": "override from 2.8 -> 3.0 to be able to use binary dependency for resemblejs",
