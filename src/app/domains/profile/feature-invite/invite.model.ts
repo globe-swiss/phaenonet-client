@@ -1,4 +1,4 @@
-import { Timestamp } from '@angular/fire/firestore';
+import { FieldValue, Timestamp } from '@angular/fire/firestore';
 
 export class Invite {
   user: string;
@@ -8,7 +8,7 @@ export class Invite {
   register_user?: string;
   register_date?: Timestamp;
   sent?: Timestamp;
-  resend?: any;
+  resend?: number | FieldValue;
   created?: Timestamp;
   modified?: Timestamp;
 }

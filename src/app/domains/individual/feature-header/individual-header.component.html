@@ -9,6 +9,6 @@
     ></app-individual-header-graph>
   }
   @if (hasSensor$ | async) {
-    <app-individual-header-actions (onSelectView)="currentView.set($event)"></app-individual-header-actions>
+    <app-individual-header-actions (selectView)="currentView.set($event)"></app-individual-header-actions>
   }
 </div>
