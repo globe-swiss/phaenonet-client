@@ -144,7 +144,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   }
 
   changeLocale(event: MatSelectChange): void {
-    this.languageService.changeLocale(event.value);
+    this.languageService.changeLocale(event.value as string);
   }
 
   isOwner(): boolean {
