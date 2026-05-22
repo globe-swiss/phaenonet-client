@@ -45,7 +45,13 @@ Sentry.init({
   dsn: 'https://b0f9e54dab264d1881553cbfbcc1641a@o510696.ingest.sentry.io/5606738',
   integrations: [Sentry.browserTracingIntegration()],
   tracePropagationTargets: ['localhost', /^\//],
-  tracesSampleRate: environment.sentrySamplerate
+  tracesSampleRate: environment.sentrySamplerate,
+  beforeSend(event) {
+    if (event.level === 'warning') {
+      return null; // do not send warnings
+    }
+    return event;
+  }
 });
 
 Sentry.addEventProcessor(event => {
