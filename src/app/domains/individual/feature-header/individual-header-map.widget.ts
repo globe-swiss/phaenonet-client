@@ -47,13 +47,10 @@ export class IndividualHeaderMapComponent implements OnInit {
 
     this.markerOptions$ = this.individual$.pipe(
       filter(i => i !== undefined),
-      map(
-        i =>
-          ({
-            clickable: false,
-            icon: this.masterdataService.individualToIcon(i)
-          }) as google.maps.MarkerOptions
-      )
+      map(i => ({
+        clickable: false,
+        icon: this.masterdataService.individualToIcon(i)
+      }))
     );
 
     this.center$ = this.individual$.pipe(

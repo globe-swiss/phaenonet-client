@@ -5,7 +5,7 @@ import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { AllType, allValue, SourceType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { AltitudeGroup, AnalyticsType } from '../shared/statistics-common.model';
+import { AltitudeGroup } from '../shared/statistics-common.model';
 import { YearFilterType } from '../shared/statistics-filter.model';
 import { Analytics, StatisticsYearlyAltitude } from './statistics-yearly.model';
 
@@ -45,7 +45,7 @@ export class StatisticsAltitudeService extends BaseResourceService<StatisticsYea
         Object.entries(altitudeMap).map(([altitude, stats]) => ({
           source: a.source,
           species: a.species,
-          type: 'altitude' as AnalyticsType,
+          type: 'altitude',
           altitude_grp: altitude as AltitudeGroup,
           year: a.year,
           values: [

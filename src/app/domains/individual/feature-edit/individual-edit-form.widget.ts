@@ -129,7 +129,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     this.processing$.next(true);
     this.individual$.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
-      const individual = { ...detail, ...this.createForm.value } as Individual;
+      const individual = { ...detail, ...this.createForm.value };
       individual.geopos = this.geoposService.getGeoPos();
       individual.altitude = this.geoposService.getAltitude();
 

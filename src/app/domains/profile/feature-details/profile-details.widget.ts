@@ -5,7 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
 import { LOGGED_OUT_URL } from '@app/app.routes';
-import { AlertService, Level, UntranslatedAlertMessage } from '@core/services/alert.service';
+import { AlertService, Level } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { PublicUser } from '@shared/models/public-user.model';
@@ -69,7 +69,7 @@ export class ProfileDetailsComponent implements OnInit {
       messageParams: [],
       titleParams: Object,
       duration: null
-    } as UntranslatedAlertMessage);
+    });
   }
 
   logout(): void {

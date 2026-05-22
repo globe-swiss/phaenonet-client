@@ -137,7 +137,7 @@ export class ObservationViewComponent implements OnInit {
         limits: phenophaseObservation.limits,
         observation: phenophaseObservation.observation ?? ({} as Observation),
         availableComments: phenophaseObservation.availableComments
-      } as PhenophaseObservation
+      }
     });
 
     dialogRef.afterClosed().subscribe((result: PhenophaseObservation) => {

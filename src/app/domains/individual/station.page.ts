@@ -110,7 +110,7 @@ export class StationComponent extends BaseDetailComponent<Individual> implements
                       observation: os.find((o: Observation) => o.phenophase === phenophase.id) ?? null
                     } as PhenophaseObservation;
                   })
-                } as SpeciesPhenophaseObservations;
+                };
               })
             );
           })
