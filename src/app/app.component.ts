@@ -23,7 +23,7 @@ export class AppComponent {
   ) {
     languageService.init();
 
-    browserUpdate({
+    (browserUpdate as (opts: Record<string, unknown>) => void)({
       api: 2018.12,
       required: { e: 14, f: 60, o: 53, s: 11, c: 67 },
       l: languageService.determineCurrentLang()
