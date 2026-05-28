@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "codeceptjs": "^3.7.7",
+    "codeceptjs": "^4.0.0",
     "codeceptjs-resemblehelper": "^1.9.7",
     "mocha": "^11.7.5",
     "mochawesome": "^7.1.4",
