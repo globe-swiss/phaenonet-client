@@ -25,6 +25,7 @@ Scenario('test yearly statistics regression on 2018', async ({ I, statisticsPage
   await I.checkVisual('statistics-2018_phaenonet_alt_sycamore');
 }).tag('visual');
 
+// eslint-disable-next-line codeceptjs/no-skipped-tests -- intentionally skipped pending visual baseline
 Scenario.skip('test yearly statistics all year view', async ({ I, statisticsPage }) => {
   I.visit(statisticsPage);
   I.selectDropdownValue(statisticsPage.filter.phenoyear.dropdown, 'all', true);
