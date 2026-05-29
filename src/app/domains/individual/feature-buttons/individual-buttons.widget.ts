@@ -55,7 +55,7 @@ export class IndividualDescriptionButtonsComponent {
           'Möchten Sie das Objekt definitiv löschen? In Zukunft können Sie keine Daten mehr zu diesem Objekt eingeben. Daten zu diesem Objekt aus vergangenen Jahren bleiben erhalten.',
         yes: 'Objekt löschen',
         yesColor: 'warn'
-      } as ConfirmationDialogData
+      }
     });
 
     combineLatest([dialogRef.afterClosed(), this.individual$])

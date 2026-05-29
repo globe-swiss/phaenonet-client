@@ -73,6 +73,6 @@ export class LanguageService {
   }
 
   public sortTranslated(a: string, b: string): number {
-    return (this.translateService.instant(a) as string).localeCompare(this.translateService.instant(b));
+    return (this.translateService.instant(a) as string).localeCompare(this.translateService.instant(b) as string);
   }
 }

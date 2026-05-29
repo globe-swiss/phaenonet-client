@@ -104,7 +104,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   save() {
     this.detailSubject$.pipe(first()).subscribe(detail => {
       // merge the detail with the new values from the form
-      const user: PhenonetUser = { ...detail, ...this.editForm.value } as PhenonetUser;
+      const user: PhenonetUser = { ...detail, ...this.editForm.value };
 
       this.userService.upsert(user, this.detailId).subscribe(() => {
         void this.router.navigate(['profile']);
@@ -144,7 +144,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   }
 
   changeLocale(event: MatSelectChange): void {
-    this.languageService.changeLocale(event.value);
+    this.languageService.changeLocale(event.value as string);
   }
 
   isOwner(): boolean {

@@ -156,7 +156,7 @@ export class IndividualService extends BaseResourceService<Individual> {
     // fixme: probably switch on individual.type
     try {
       return this.masterdataService.getPhenophaseValue(individual.species, individual.last_phenophase);
-    } catch (error) {
+    } catch {
       // fixme: does this case actually happen?
       return of(null as Phenophase);
     }

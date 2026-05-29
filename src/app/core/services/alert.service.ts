@@ -41,7 +41,7 @@ export class AlertService {
         title: pair.title,
         message: pair.message,
         duration: untranslated.duration ?? 7000
-      } as AlertMessage);
+      });
     });
   }
 
@@ -80,6 +80,6 @@ export class AlertService {
       messageParams: messageParams,
       titleParams: titleParams,
       duration: duration
-    } as UntranslatedAlertMessage);
+    });
   }
 }

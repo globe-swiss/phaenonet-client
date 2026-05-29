@@ -12,10 +12,10 @@ import { HeaderViews } from './individual-header.model';
 export class IndividualHeaderActionsComponent {
   HeaderViews = HeaderViews;
   headerViewSelected = signal<HeaderViews>(HeaderViews.Map);
-  onSelectView = output<HeaderViews>();
+  selectView = output<HeaderViews>();
 
   onHeaderViewSelect(type: HeaderViews) {
     this.headerViewSelected.set(type);
-    this.onSelectView.emit(type);
+    this.selectView.emit(type);
   }
 }

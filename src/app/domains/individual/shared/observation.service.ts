@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, limit, where } from '@angular/fire/firestore';
+import { Firestore, Timestamp, limit, where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { Observation } from '@shared/models/observation.model';
@@ -20,9 +20,9 @@ export class ObservationService extends BaseResourceService<Observation> {
       tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByIndividual)`, x.length)),
       map(obs =>
         obs.map(o => {
-          o.date = o.date ? (o.date as any).toDate() : o.date;
-          o.created = o.created ? (o.created as any).toDate() : o.created;
-          o.modified = o.modified ? (o.modified as any).toDate() : o.modified;
+          o.date = o.date ? (o.date as unknown as Timestamp).toDate() : o.date;
+          o.created = o.created ? (o.created as unknown as Timestamp).toDate() : o.created;
+          o.modified = o.modified ? (o.modified as unknown as Timestamp).toDate() : o.modified;
 
           return o;
         })

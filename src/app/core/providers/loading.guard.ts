@@ -14,7 +14,7 @@ export class LoadingGuard {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const test = google.maps.LatLng;
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }

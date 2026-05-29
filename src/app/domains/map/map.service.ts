@@ -99,7 +99,7 @@ export class MapService extends BaseResourceService<MapData> {
         individualId: individual.id,
         geopos: individual.geopos,
         markerOptions: markerOptions
-      } as IndividualWithMarkerOpt;
+      };
     });
   }
 }
