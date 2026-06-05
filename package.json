@@ -4,23 +4,23 @@
     "defaults"
   ],
   "dependencies": {
-    "@angular/animations": "^20.3.18",
-    "@angular/cdk": "^20.2.14",
-    "@angular/common": "^20.3.18",
-    "@angular/compiler": "^20.3.18",
-    "@angular/core": "^20.3.18",
+    "@angular/animations": "^21.2.16",
+    "@angular/cdk": "^21.2.14",
+    "@angular/common": "^21.2.16",
+    "@angular/compiler": "^21.2.16",
+    "@angular/core": "^21.2.16",
     "@angular/fire": "^20.0.1",
-    "@angular/forms": "^20.3.18",
-    "@angular/google-maps": "^20.2.14",
-    "@angular/localize": "^20.3.18",
-    "@angular/material": "^20.2.14",
-    "@angular/material-moment-adapter": "^20.2.14",
-    "@angular/platform-browser": "^20.3.18",
-    "@angular/platform-browser-dynamic": "^20.3.18",
-    "@angular/router": "^20.3.18",
+    "@angular/forms": "^21.2.16",
+    "@angular/google-maps": "^21.2.14",
+    "@angular/localize": "^21.2.16",
+    "@angular/material": "^21.2.14",
+    "@angular/material-moment-adapter": "^21.2.14",
+    "@angular/platform-browser": "^21.2.16",
+    "@angular/platform-browser-dynamic": "^21.2.16",
+    "@angular/router": "^21.2.16",
     "@googlemaps/js-api-loader": "^2.0.0",
-    "@mat-datetimepicker/core": "^16.0.1",
-    "@mat-datetimepicker/moment": "^16.0.1",
+    "@mat-datetimepicker/core": "^17.0.5",
+    "@mat-datetimepicker/moment": "^17.0.5",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
     "@sentry/angular": "^10.45.0",
@@ -35,15 +35,15 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular-devkit/architect": "^0.2003.27",
-    "@angular-eslint/builder": "^20.7.0",
-    "@angular-eslint/eslint-plugin": "^20.7.0",
-    "@angular-eslint/eslint-plugin-template": "^20.7.0",
-    "@angular-eslint/template-parser": "^20.7.0",
-    "@angular/build": "^20.3.21",
-    "@angular/cli": "^20.3.21",
-    "@angular/compiler-cli": "^20.3.18",
-    "@angular/language-service": "^20.3.18",
+    "@angular-devkit/architect": "^0.2102.14",
+    "@angular-eslint/builder": "^21.4.0",
+    "@angular-eslint/eslint-plugin": "^21.4.0",
+    "@angular-eslint/eslint-plugin-template": "^21.4.0",
+    "@angular-eslint/template-parser": "^21.4.0",
+    "@angular/build": "^21.2.14",
+    "@angular/cli": "^21.2.14",
+    "@angular/compiler-cli": "^21.2.16",
+    "@angular/language-service": "^21.2.16",
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^9.39.4",
     "@sentry/cli": "^3.0.0",
@@ -69,7 +69,7 @@
     "stylelint-config-sass-guidelines": "^13.0.0",
     "stylelint-order": "^8.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "~5.8.3"
+    "typescript": "~5.9.3"
   },
   "engines": {
     "node": "=22",
@@ -78,24 +78,6 @@
   "name": "phaenonet",
   "packageManager": "pnpm@10.24.0",
   "pnpm": {
-    "overrideComments": {
-      "canvas": "override from 2.8 -> 3.0 to be able to use binary dependency for resemblejs",
-      "xml2js": "pnpm audit",
-      "diff": "pnpm audit",
-      "firebase-tools": "@angular/fire peer dep lags behind, safe to ignore (CLI tool only)",
-      "@types/google.maps": "pin to version compatible with @angular/google-maps@20 visualization namespace types"
-    },
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "@angular/fire>firebase-tools": ">=14.0.0"
-      }
-    },
-    "overrides": {
-      "canvas": "^3.0.0",
-      "xml2js@<0.5.0": ">=0.5.0",
-      "diff@>=6.0.0 <8.0.3": ">=8.0.3",
-      "@types/google.maps": "3.55.x"
-    },
     "ignoredBuiltDependencies": [
       "@firebase/util",
       "detox",
@@ -110,7 +92,30 @@
       "@sentry/cli",
       "canvas",
       "esbuild"
-    ]
+    ],
+    "overrideComments": {
+      "@angular/fire>@angular": "@angular/fire is not released for ng21, keeping version for ng20 until release",
+      "@angular/fire>firebase-tools": "@angular/fire peer dep lags behind, safe to ignore (CLI tool only)",
+      "@types/google.maps": "pin to version compatible with @angular/google-maps@20 visualization namespace types",
+      "canvas": "override from 2.8 -> 3.0 to be able to use binary dependency for resemblejs",
+      "diff": "pnpm audit",
+      "xml2js": "pnpm audit"
+    },
+    "overrides": {
+      "@types/google.maps": "3.55.x",
+      "canvas": "^3.0.0",
+      "diff@>=6.0.0 <8.0.3": ">=8.0.3",
+      "xml2js@<0.5.0": ">=0.5.0"
+    },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "@angular/fire>@angular/common": ">=20.0.0",
+        "@angular/fire>@angular/core": ">=20.0.0",
+        "@angular/fire>@angular/platform-browser": ">=20.0.0",
+        "@angular/fire>@angular/platform-browser-dynamic": ">=20.0.0",
+        "@angular/fire>firebase-tools": ">=14.0.0"
+      }
+    }
   },
   "private": true,
   "scripts": {
