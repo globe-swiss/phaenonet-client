@@ -32,7 +32,7 @@
         <div class="observation-item__value">
           <span
             class="observation-item__phenophase-circle"
-            [ngStyle]="{ 'background-color': getColor(item.individual.last_phenophase) }"
+            [style.background-color]="getColor(item.individual.last_phenophase)"
           ></span>
           {{ item.lastPhenophase.de | translate }}
         </div>
