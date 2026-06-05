@@ -82,7 +82,8 @@
       "canvas": "override from 2.8 -> 3.0 to be able to use binary dependency for resemblejs",
       "xml2js": "pnpm audit",
       "diff": "pnpm audit",
-      "firebase-tools": "@angular/fire peer dep lags behind, safe to ignore (CLI tool only)"
+      "firebase-tools": "@angular/fire peer dep lags behind, safe to ignore (CLI tool only)",
+      "@types/google.maps": "pin to version compatible with @angular/google-maps@20 visualization namespace types"
     },
     "peerDependencyRules": {
       "allowedVersions": {
@@ -92,7 +93,8 @@
     "overrides": {
       "canvas": "^3.0.0",
       "xml2js@<0.5.0": ">=0.5.0",
-      "diff@>=6.0.0 <8.0.3": ">=8.0.3"
+      "diff@>=6.0.0 <8.0.3": ">=8.0.3",
+      "@types/google.maps": "3.55.x"
     },
     "ignoredBuiltDependencies": [
       "@firebase/util",
