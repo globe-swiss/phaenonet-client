@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@types/google.maps': 3.55.x
+  '@types/google.maps': 3.64.1
   canvas: ^3.0.0
   diff@>=6.0.0 <8.0.3: '>=8.0.3'
   xml2js@<0.5.0: '>=0.5.0'
@@ -2597,8 +2597,8 @@ packages:
   '@types/geojson@7946.0.16':
     resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
 
-  '@types/google.maps@3.65.0':
-    resolution: {integrity: sha512-u4SHiRC3m27lPa4vDBxh2AI7mDcHcheX6GSHn1Mwi0Gap8/uhM2kFppiFTnWASXLHZO+1ahHciLeEIV+Sjqk/A==}
+  '@types/google.maps@3.64.1':
+    resolution: {integrity: sha512-nEBoa6iDNipICtxJ5VlrOgPNZQ6ixIg5nuv8iryFj0Z/1NLgxyg3pQCVegPuCzGCyTQwQI/N3uZvLUysqAzaaw==}
 
   '@types/graceful-fs@4.1.9':
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
@@ -7930,7 +7930,7 @@ snapshots:
     dependencies:
       '@angular/common': 21.2.16(@angular/core@21.2.16(@angular/compiler@21.2.16)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       '@angular/core': 21.2.16(@angular/compiler@21.2.16)(rxjs@7.8.2)(zone.js@0.15.1)
-      '@types/google.maps': 3.65.0
+      '@types/google.maps': 3.64.1
       rxjs: 7.8.2
       tslib: 2.8.1
 
@@ -8892,7 +8892,7 @@ snapshots:
 
   '@googlemaps/js-api-loader@2.1.0':
     dependencies:
-      '@types/google.maps': 3.65.0
+      '@types/google.maps': 3.64.1
 
   '@grpc/grpc-js@1.14.4':
     dependencies:
@@ -10131,7 +10131,7 @@ snapshots:
 
   '@types/geojson@7946.0.16': {}
 
-  '@types/google.maps@3.65.0': {}
+  '@types/google.maps@3.64.1': {}
 
   '@types/graceful-fs@4.1.9':
     dependencies:

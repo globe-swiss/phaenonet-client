@@ -96,13 +96,13 @@
     "overrideComments": {
       "@angular/fire>@angular": "@angular/fire is not released for ng21, keeping version for ng20 until release",
       "@angular/fire>firebase-tools": "@angular/fire peer dep lags behind, safe to ignore (CLI tool only)",
-      "@types/google.maps": "pin to version compatible with @angular/google-maps@20 visualization namespace types",
+      "@types/google.maps": "pinned to 3.64.1: js-api-loader@2.1.0 needs AddressValidationLibrary/AirQualityLibrary (added in 3.64.0), while @angular/google-maps@21 still uses WeightedLocation/HeatmapLayerOptions (removed in 3.65.0)",
       "canvas": "override from 2.8 -> 3.0 to be able to use binary dependency for resemblejs",
       "diff": "pnpm audit",
       "xml2js": "pnpm audit"
     },
     "overrides": {
-      "@types/google.maps": "3.55.x",
+      "@types/google.maps": "3.64.1",
       "canvas": "^3.0.0",
       "diff@>=6.0.0 <8.0.3": ">=8.0.3",
       "xml2js@<0.5.0": ">=0.5.0"
