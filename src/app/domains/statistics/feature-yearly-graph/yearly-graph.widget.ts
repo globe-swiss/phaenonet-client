@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { allValue } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
@@ -31,7 +31,7 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
   }
 
   private subscriptions = new Subscription();
-  svgComponentHeight = 0; // height used to scale the svg component
+  svgComponentHeight = signal(0); // height used to scale the svg component
 
   private data: Analytics[];
   private year: null | number; // null if all year
@@ -113,7 +113,7 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
     const requiredHeight = resultingDomain.length * 12 + margin.top + margin.bottom;
     // svg component height to fill screen without scrollbar or to the minimum required to display the y-axis
     const svgComponentHeight = Math.max(window.innerHeight - offsetTop - 5, requiredHeight);
-    this.svgComponentHeight = svgComponentHeight;
+    this.svgComponentHeight.set(svgComponentHeight);
 
     const yAxisHeight = svgComponentHeight - (margin.top + margin.bottom);
     let y = scaleBand().domain(resultingDomain).padding(0.4);

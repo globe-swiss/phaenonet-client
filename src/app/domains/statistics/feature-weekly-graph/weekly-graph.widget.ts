@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { ObsDoy, ObsWoy, Statistics } from '@app/domains/statistics/feature-weekly-graph/statistics-weekly.model';
 import { TranslateService } from '@ngx-translate/core';
 import { max } from 'd3-array';
@@ -27,7 +27,7 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
   }
 
   private subscriptions = new Subscription();
-  svgComponentHeight = 0; // height used to scale the svg component
+  svgComponentHeight = signal(0); // height used to scale the svg component
 
   private obsWoyCurrentYear: ObsDoy[] = [];
   private obsWoy5Years: ObsDoy[] = [];
@@ -80,7 +80,7 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
     const offsetTop = this.statisticsContainer().nativeElement.offsetTop;
     const width = boundingBox.width - margin.right;
     const height = Math.max(window.innerHeight - offsetTop - 5, legendSize + 100);
-    this.svgComponentHeight = height;
+    this.svgComponentHeight.set(height);
 
     // Set up the scales
     const xScale = scaleLinear().domain([-30, 365]).range([30, width]);
