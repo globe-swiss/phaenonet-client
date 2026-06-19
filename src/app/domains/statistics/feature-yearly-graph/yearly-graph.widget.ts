@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { allValue } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
@@ -6,7 +6,7 @@ import { formatShortDate } from '@shared/utils/formatDate';
 import { axisLeft } from 'd3-axis';
 import { ScaleBand, scaleBand, scaleLinear } from 'd3-scale';
 import { select, Selection } from 'd3-selection';
-import { iif, Subject, Subscription } from 'rxjs';
+import { fromEvent, iif, Subject, Subscription } from 'rxjs';
 import { debounceTime, first, map, switchMap } from 'rxjs/operators';
 import { dateToDOY, drawXAxis } from '../shared/graph-helper';
 import { AltitudeGroup } from '../shared/statistics-common.model';
@@ -25,13 +25,9 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
   readonly statisticsContainer = viewChild.required<ElementRef<HTMLDivElement>>('statisticsContainer');
 
   private _redraw$ = new Subject<void>();
-  @Input()
-  set triggerRedraw(value: unknown) {
-    this._redraw$.next();
-  }
 
   private subscriptions = new Subscription();
-  svgComponentHeight = 0; // height used to scale the svg component
+  svgComponentHeight = signal(0); // height used to scale the svg component
 
   private data: Analytics[];
   private year: null | number; // null if all year
@@ -69,8 +65,12 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
     //redraw chart when triggered
     const redrawSubscription = this._redraw$.pipe(debounceTime(10)).subscribe(() => this.drawChart());
 
+    // redraw the svg on window resize
+    const resizeSubscription = fromEvent(window, 'resize').subscribe(() => this._redraw$.next());
+
     this.subscriptions.add(filterSubscription);
     this.subscriptions.add(redrawSubscription);
+    this.subscriptions.add(resizeSubscription);
   }
 
   ngOnDestroy(): void {
@@ -113,7 +113,7 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
     const requiredHeight = resultingDomain.length * 12 + margin.top + margin.bottom;
     // svg component height to fill screen without scrollbar or to the minimum required to display the y-axis
     const svgComponentHeight = Math.max(window.innerHeight - offsetTop - 5, requiredHeight);
-    this.svgComponentHeight = svgComponentHeight;
+    this.svgComponentHeight.set(svgComponentHeight);
 
     const yAxisHeight = svgComponentHeight - (margin.top + margin.bottom);
     let y = scaleBand().domain(resultingDomain).padding(0.4);

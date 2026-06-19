@@ -1,4 +1,4 @@
-import { AsyncPipe, NgStyle } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -21,7 +21,6 @@ import { SensorsBoxComponent } from './sensors-box.component';
   styleUrls: ['./individual-info.widget.scss'],
   imports: [
     TranslateModule,
-    NgStyle,
     RouterLink,
     MatIconButton,
     MatTooltip,
