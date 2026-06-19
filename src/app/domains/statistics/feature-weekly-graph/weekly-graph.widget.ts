@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { ObsDoy, ObsWoy, Statistics } from '@app/domains/statistics/feature-weekly-graph/statistics-weekly.model';
 import { TranslateService } from '@ngx-translate/core';
 import { max } from 'd3-array';
@@ -6,7 +6,7 @@ import { axisLeft } from 'd3-axis';
 import { scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
 import { area, curveMonotoneX } from 'd3-shape';
-import { debounceTime, Subject, Subscription, switchMap } from 'rxjs';
+import { debounceTime, fromEvent, Subject, Subscription, switchMap } from 'rxjs';
 import { drawXAxis } from '../shared/graph-helper';
 import { StatisticsFilterService } from '../shared/statistics-filter.service';
 import { StatisticsService } from './statistics.service';
@@ -21,10 +21,6 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
   private readonly legendFontSize = getComputedStyle(document.documentElement).getPropertyValue('--legend-font-size');
 
   private _redraw$ = new Subject<void>();
-  @Input()
-  set triggerRedraw(value: unknown) {
-    this._redraw$.next();
-  }
 
   private subscriptions = new Subscription();
   svgComponentHeight = signal(0); // height used to scale the svg component
@@ -56,8 +52,12 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
     //redraw chart when triggered
     const redrawSubscription = this._redraw$.pipe(debounceTime(10)).subscribe(() => this.drawChart());
 
+    // redraw the svg on window resize
+    const resizeSubscription = fromEvent(window, 'resize').subscribe(() => this._redraw$.next());
+
     this.subscriptions.add(filterSubscription);
     this.subscriptions.add(redrawSubscription);
+    this.subscriptions.add(resizeSubscription);
   }
 
   ngOnDestroy(): void {
