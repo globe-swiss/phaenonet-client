@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle } from '@angular/material/card';
@@ -31,11 +31,9 @@ import { TranslateModule } from '@ngx-translate/core';
   ]
 })
 export class LoginComponent implements OnInit {
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private titleService: TitleService
-  ) {}
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private titleService = inject(TitleService);
 
   ngOnInit(): void {
     this.titleService.setLocation('Anmeldung');

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { MapMarker } from '@angular/google-maps';
 import { IdLike } from '@core/core.model';
@@ -32,13 +32,13 @@ export interface StationInfoWindowData {
 
 @Injectable({ providedIn: 'root' })
 export class MapInfoService {
+  private individualService = inject(IndividualService);
+  private masterdataService = inject(MasterdataService);
+
   private individualIdSubject = new ReplaySubject<string>(1);
   public readonly infoWindowData$: Observable<IndividualInfoWindowData | StationInfoWindowData>;
 
-  constructor(
-    private individualService: IndividualService,
-    private masterdataService: MasterdataService
-  ) {
+  constructor() {
     this.infoWindowData$ = this.individualIdSubject.pipe(
       switchMap(id => this.individualService.getWithId(id)),
       switchMap(individual =>

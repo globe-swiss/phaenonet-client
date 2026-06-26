@@ -1,20 +1,18 @@
-import { Directive, OnDestroy, OnInit } from '@angular/core';
+import { Directive, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
 import { filter, mergeMap, switchMap, tap } from 'rxjs/operators';
 
 @Directive()
-export class BaseDetailComponent<T> implements OnInit, OnDestroy {
+export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
+  protected abstract resourceService: BaseResourceService<T>;
+  protected route = inject(ActivatedRoute);
+  protected router = inject(Router);
+
   private baseSubscriptions = new Subscription();
   detailSubject$: ReplaySubject<T> = new ReplaySubject<T>(1);
   detailId: string;
-
-  constructor(
-    protected resourceService: BaseResourceService<T>,
-    protected route: ActivatedRoute,
-    protected router: Router
-  ) {}
 
   ngOnInit(): void {
     this.baseSubscriptions.add(

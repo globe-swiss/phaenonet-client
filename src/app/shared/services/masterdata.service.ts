@@ -1,8 +1,6 @@
-import { Injectable, OnDestroy, Signal } from '@angular/core';
+import { Injectable, OnDestroy, Signal, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Firestore } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
-import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { LanguageService } from '@core/services/language.service';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { map, mergeAll, publishReplay, refCount, shareReplay, tap } from 'rxjs/operators';
@@ -70,6 +68,8 @@ interface ConfigStatic {
 
 @Injectable({ providedIn: 'root' })
 export class MasterdataService extends BaseResourceService<unknown> implements OnDestroy {
+  private languageService = inject(LanguageService);
+
   private subscriptions = new Subscription();
   public availableYears$: Observable<number[]>;
   public phenoYear$: Observable<number>;
@@ -78,12 +78,9 @@ export class MasterdataService extends BaseResourceService<unknown> implements O
   private configDynamic: ConfigDynamic;
   private configStatic = <ConfigStatic>configStatic_import;
 
-  constructor(
-    protected afs: Firestore,
-    private languageService: LanguageService,
-    protected fds: FirestoreDebugService
-  ) {
-    super(afs, 'definitions', fds);
+  constructor() {
+    super('definitions');
+
     this.configDynamic$ = this.get('config_dynamic').pipe(
       tap(() => this.fds.addRead(`definitions.config_dynamic (${this.constructor.name}.constructor)`)),
       shareReplay(1)

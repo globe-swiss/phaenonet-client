@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Firestore, where } from '@angular/fire/firestore';
+import { where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
-import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { AllType, allValue, SourceType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -11,11 +10,8 @@ import { Analytics, StatisticsYearlyAltitude } from './statistics-yearly.model';
 
 @Injectable({ providedIn: 'root' })
 export class StatisticsAltitudeService extends BaseResourceService<StatisticsYearlyAltitude> {
-  constructor(
-    protected afs: Firestore,
-    protected fds: FirestoreDebugService
-  ) {
-    super(afs, 'statistics_yearly_altitude', fds);
+  constructor() {
+    super('statistics_yearly_altitude');
   }
 
   listByYear(year: YearFilterType, source: AllType | SourceType, species: string): Observable<Analytics[]> {

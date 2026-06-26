@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
@@ -21,7 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
   ]
 })
 export class NotFoundComponent implements OnInit {
-  constructor(private titleService: TitleService) {}
+  private titleService = inject(TitleService);
 
   ngOnInit(): void {
     this.titleService.setLocation('Hier ist etwas schiefgelaufen.');

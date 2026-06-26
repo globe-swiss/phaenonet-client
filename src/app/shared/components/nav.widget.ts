@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
@@ -13,10 +13,8 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [MatToolbar, MatToolbarRow, MatButton, RouterLink, TranslateModule]
 })
 export class NavComponent {
-  constructor(
-    private authService: AuthService,
-    private languageService: LanguageService
-  ) {}
+  private authService = inject(AuthService);
+  private languageService = inject(LanguageService);
 
   authenticated(): boolean {
     return this.authService.authenticated();

@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit, Signal } from '@angular/core';
+import { Component, Input, OnInit, Signal, inject } from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -30,6 +30,11 @@ import { filter, map } from 'rxjs/operators';
   ]
 })
 export class ProfileDetailsComponent implements OnInit {
+  protected authService = inject(AuthService);
+  protected alertService = inject(AlertService);
+  private userService = inject(UserService);
+  private router = inject(Router);
+
   @Input() userId: string;
   @Input() user$: ReplaySubject<PublicUser>;
 
@@ -39,13 +44,6 @@ export class ProfileDetailsComponent implements OnInit {
   email: Signal<string>;
   locale$: Observable<string>;
   isRanger$: Observable<boolean>;
-
-  constructor(
-    protected authService: AuthService,
-    protected alertService: AlertService,
-    private userService: UserService,
-    private router: Router
-  ) {}
 
   ngOnInit(): void {
     this.email = this.authService.email;

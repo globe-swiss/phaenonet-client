@@ -1,12 +1,11 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
-import { ActivatedRoute, Router } from '@angular/router';
 import { BaseDetailComponent } from '@core/components/base-detail.component';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -38,6 +37,13 @@ import { ObservationService } from './shared/observation.service';
   ]
 })
 export class StationComponent extends BaseDetailComponent<Individual> implements OnInit {
+  private titleService = inject(TitleService);
+  individualService = inject(IndividualService);
+  protected resourceService = this.individualService;
+  private observationService = inject(ObservationService);
+  private masterdataService = inject(MasterdataService);
+  dialog = inject(MatDialog);
+
   availablePhenophases$: Observable<Phenophase[]>;
   availablePhenophaseGroups$: Observable<PhenophaseGroup[]>;
   availableComments$: Observable<Comment[]>;
@@ -50,18 +56,6 @@ export class StationComponent extends BaseDetailComponent<Individual> implements
   isFollowing$: Observable<boolean>;
 
   staticComments = {};
-
-  constructor(
-    private titleService: TitleService,
-    protected route: ActivatedRoute,
-    public individualService: IndividualService,
-    private observationService: ObservationService,
-    private masterdataService: MasterdataService,
-    public dialog: MatDialog,
-    protected router: Router
-  ) {
-    super(individualService, route, router);
-  }
 
   ngOnInit(): void {
     super.ngOnInit();

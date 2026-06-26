@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { allTranslatableFilterValue, allValue } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import {
@@ -25,13 +25,15 @@ import {
   providedIn: 'root'
 })
 export class StatisticsFilterService {
+  private masterdataService = inject(MasterdataService);
+
   private filtersSubject = new BehaviorSubject<StatisticFilters>(DEFAULT_FILTERS);
   currentFilters$ = this.filtersSubject.asObservable().pipe(
     debounceTime(100),
     distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr))
   );
 
-  constructor(private masterdataService: MasterdataService) {
+  constructor() {
     this.initPhenoyear();
   }
 

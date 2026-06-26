@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
@@ -14,13 +14,14 @@ import browserUpdate from 'browser-update';
   imports: [AppSnackBarComponent, RouterOutlet, NavComponent]
 })
 export class AppComponent {
+  private matIconRegistry = inject(MatIconRegistry);
+  private domSanitizer = inject(DomSanitizer);
+
   title = 'phaenonet';
 
-  constructor(
-    languageService: LanguageService,
-    private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer
-  ) {
+  constructor() {
+    const languageService = inject(LanguageService);
+
     languageService.init();
 
     (browserUpdate as (opts: Record<string, unknown>) => void)({

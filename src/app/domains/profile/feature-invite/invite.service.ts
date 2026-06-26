@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Firestore, increment, where } from '@angular/fire/firestore';
+import { Injectable, inject } from '@angular/core';
+import { increment, where } from '@angular/fire/firestore';
 import { IdLike } from '@core/core.model';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { BaseResourceService } from '@core/services/base-resource.service';
-import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { LanguageService } from '@core/services/language.service';
 import { Observable } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
@@ -12,14 +11,12 @@ import { Invite } from './invite.model';
 
 @Injectable({ providedIn: 'root' })
 export class InviteService extends BaseResourceService<Invite> {
-  constructor(
-    protected afs: Firestore,
-    protected fds: FirestoreDebugService,
-    private alertService: AlertService,
-    private authService: AuthService,
-    private languageService: LanguageService
-  ) {
-    super(afs, 'invites', fds);
+  private alertService = inject(AlertService);
+  private authService = inject(AuthService);
+  private languageService = inject(LanguageService);
+
+  constructor() {
+    super('invites');
   }
 
   addInvite(email: string) {

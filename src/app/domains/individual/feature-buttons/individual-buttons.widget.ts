@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterLink } from '@angular/router';
@@ -19,17 +19,15 @@ import { ObservationService } from '../shared/observation.service';
   imports: [MatButton, RouterLink, AsyncPipe, TranslateModule]
 })
 export class IndividualDescriptionButtonsComponent {
+  private router = inject(Router);
+  private dialog = inject(MatDialog);
+  private individualService = inject(IndividualService);
+  private observationService = inject(ObservationService);
+  private alertService = inject(AlertService);
+
   @Input() individual$: Observable<Individual>; // injected ReplaySubject
   @Input() isEditable$: Observable<boolean>;
-  @Input() individualId: string; // should be added to the individual by the resource service
-
-  constructor(
-    private router: Router,
-    private dialog: MatDialog,
-    private individualService: IndividualService,
-    private observationService: ObservationService,
-    private alertService: AlertService
-  ) {}
+  @Input() individualId: string;
 
   deleteIndividual(): void {
     this.observationService

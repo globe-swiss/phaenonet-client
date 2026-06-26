@@ -1,4 +1,4 @@
-import { DOCUMENT, Inject, Injectable } from '@angular/core';
+import { DOCUMENT, Injectable, inject } from '@angular/core';
 import { LocalService } from '@app/core/services/local.service';
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment-timezone';
@@ -9,13 +9,11 @@ import 'moment/locale/it-ch';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
-  private LOCALSTORAGE_KEY = 'lang';
+  private document = inject<Document>(DOCUMENT);
+  private translateService = inject(TranslateService);
+  private localService = inject(LocalService);
 
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private translateService: TranslateService,
-    private localService: LocalService
-  ) {}
+  private LOCALSTORAGE_KEY = 'lang';
 
   init(): void {
     this.translateService.addLangs(['de-CH', 'fr-CH', 'it-CH']);

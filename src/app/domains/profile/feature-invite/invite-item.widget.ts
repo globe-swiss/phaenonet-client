@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { MaybeIdLike } from '@core/core.model';
@@ -15,9 +15,9 @@ import { InviteService } from './invite.service';
   imports: [RouterLink, UserSubscriptionButtonComponent, MatButton, TranslateModule, ShortdatePipe]
 })
 export class InviteItemComponent {
-  @Input() item: Invite & MaybeIdLike;
+  private inviteService = inject(InviteService);
 
-  constructor(private inviteService: InviteService) {}
+  @Input() item: Invite & MaybeIdLike;
 
   resendInvite(): void {
     if (this.item.id) {

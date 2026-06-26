@@ -1,7 +1,6 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
 import { BaseDetailComponent } from '@core/components/base-detail.component';
 import { AuthService } from '@core/services/auth.service';
 import { TitleService } from '@core/services/title.service';
@@ -28,16 +27,10 @@ import { ProfilePublicComponent } from './feature-public-profile/profile-public.
   ]
 })
 export class ProfileComponent extends BaseDetailComponent<PublicUser> implements OnInit {
-  constructor(
-    private titleService: TitleService,
-    protected route: ActivatedRoute,
-    private publicUserService: PublicUserService,
-    public dialog: MatDialog,
-    private authService: AuthService,
-    protected router: Router
-  ) {
-    super(publicUserService, route, router);
-  }
+  private titleService = inject(TitleService);
+  protected resourceService = inject(PublicUserService);
+  dialog = inject(MatDialog);
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
     super.ngOnInit();

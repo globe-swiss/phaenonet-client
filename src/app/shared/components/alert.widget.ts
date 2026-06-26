@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, TemplateRef, viewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, viewChild, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertService } from '@core/services/alert.service';
 import { Subscription } from 'rxjs';
@@ -9,17 +9,15 @@ import { Subscription } from 'rxjs';
   imports: []
 })
 export class AppSnackBarComponent implements OnInit, OnDestroy {
+  snackBar = inject(MatSnackBar);
+  private alertService = inject(AlertService);
+
   readonly alertSnackBar = viewChild.required<TemplateRef<unknown>>('alertSnackBar');
 
   title: string;
   message: string[];
 
   subscriptions = new Subscription();
-
-  constructor(
-    public snackBar: MatSnackBar,
-    private alertService: AlertService
-  ) {}
 
   ngOnInit() {
     this.subscriptions.add(

@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -15,12 +15,12 @@ import { ActivityService } from './activity.service';
   imports: [TranslateModule, ActivityItemComponent, MatButton, AsyncPipe]
 })
 export class ActivityComponent implements OnInit {
+  private activityService = inject(ActivityService);
+
   @Input() userId: string;
 
   private limitActivities$ = new BehaviorSubject<number>(8);
   activities$: Observable<Activity[]>;
-
-  constructor(private activityService: ActivityService) {}
 
   ngOnInit() {
     this.activities$ = this.limitActivities$.pipe(

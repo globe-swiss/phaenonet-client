@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { AfterViewInit, Component, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, viewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { MatButton, MatFabButton } from '@angular/material/button';
@@ -58,6 +58,12 @@ type InfoWindowData = IndividualInfoWindowData | StationInfoWindowData;
   ]
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
+  private titleService = inject(TitleService);
+  private mapService = inject(MapService);
+  private masterdataService = inject(MasterdataService);
+  private localService = inject(LocalService);
+  private mapInfoService = inject(MapInfoService);
+
   readonly googleMap = viewChild.required(GoogleMap);
   readonly infoWindow = viewChild.required(MapInfoWindow);
 
@@ -101,14 +107,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ): data is StationInfoWindowData => data?.type === 'station';
 
   private subscriptions = new Subscription();
-
-  constructor(
-    private titleService: TitleService,
-    private mapService: MapService,
-    private masterdataService: MasterdataService,
-    private localService: LocalService,
-    private mapInfoService: MapInfoService
-  ) {}
 
   ngOnInit(): void {
     this.titleService.setLocation('Karte');

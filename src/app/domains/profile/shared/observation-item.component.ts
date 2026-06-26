@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,10 +14,10 @@ import { formatShortDate } from '@shared/utils/formatDate';
   imports: [RouterLink, MatIcon, AsyncPipe, TranslateModule]
 })
 export class ObservationItemComponent {
+  private masterdataService = inject(MasterdataService);
+
   @Input() item: IndividualPhenophase;
   @Input() year: number;
-
-  constructor(private masterdataService: MasterdataService) {}
 
   getColor(phenophase: string): string {
     return this.masterdataService.getColor(phenophase);

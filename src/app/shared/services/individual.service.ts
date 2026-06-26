@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Firestore, limit, where } from '@angular/fire/firestore';
+import { Injectable, inject } from '@angular/core';
+import { limit, where } from '@angular/fire/firestore';
 import { deleteObject, getDownloadURL, ref, Storage } from '@angular/fire/storage';
 import { IdLike } from '@core/core.model';
 import { AuthService } from '@core/services/auth.service';
 import { BaseResourceService } from '@core/services/base-resource.service';
-import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
 import { Individual, SensorLiveData } from '@shared/models/individual.model';
 import { Phenophase, Species } from '@shared/models/masterdata.model';
@@ -15,15 +14,14 @@ import { first, map, mergeAll, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class IndividualService extends BaseResourceService<Individual> {
+  private authService = inject(AuthService);
+  private afStorage = inject(Storage);
+  private masterdataService = inject(MasterdataService);
+
   individualsByYear$$: Map<number, Observable<(Individual & IdLike)[]>>;
-  constructor(
-    protected afs: Firestore,
-    private authService: AuthService,
-    private afStorage: Storage,
-    private masterdataService: MasterdataService,
-    protected fds: FirestoreDebugService
-  ) {
-    super(afs, 'individuals', fds);
+  constructor() {
+    super('individuals');
+
     this.individualsByYear$$ = new Map();
   }
 

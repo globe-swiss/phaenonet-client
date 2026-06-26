@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -31,6 +31,9 @@ import { SensorsBoxComponent } from './sensors-box.component';
   ]
 })
 export class IndividualDescriptionHeaderComponent implements OnInit {
+  private masterdataService = inject(MasterdataService);
+  private publicUserService = inject(PublicUserService);
+
   @Input() individual$: Observable<Individual>; // injected ReplaySubject
 
   species$: Observable<Species>;
@@ -42,11 +45,6 @@ export class IndividualDescriptionHeaderComponent implements OnInit {
   lastPhenophaseColor$: Observable<string>;
 
   isRanger$: Observable<boolean>;
-
-  constructor(
-    private masterdataService: MasterdataService,
-    private publicUserService: PublicUserService
-  ) {}
 
   ngOnInit(): void {
     const publicUser$ = this.individual$.pipe(switchMap(i => this.publicUserService.get(i.user)));

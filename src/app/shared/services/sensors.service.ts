@@ -1,18 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
-import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { DailySensorData, SensorDataInternal, Sensors } from '@shared/models/sensors';
 import { Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class SensorsService extends BaseResourceService<Sensors> {
-  constructor(
-    protected afs: Firestore,
-    protected fds: FirestoreDebugService
-  ) {
-    super(afs, 'sensors', fds);
+  constructor() {
+    super('sensors');
   }
 
   getSensorData(individual_id: string): Observable<DailySensorData[]> {

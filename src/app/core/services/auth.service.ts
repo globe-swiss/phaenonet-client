@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, signal, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FirebaseError } from '@angular/fire/app';
 import {
@@ -17,19 +17,21 @@ import {
   updatePassword,
   updateProfile
 } from '@angular/fire/auth';
-import { Firestore } from '@angular/fire/firestore';
 import { LocalService } from '@app/core/services/local.service';
 import { PhenonetUser } from '@core/core.model';
 import { AlertService, Level } from '@core/services/alert.service';
 import { Observable, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { BaseResourceService } from './base-resource.service';
-import { FirestoreDebugService } from './firestore-debug.service';
 
 const LOCALSTORAGE_LOGGEDIN_KEY = 'loggedin';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService extends BaseResourceService<PhenonetUser> {
+  private alertService = inject(AlertService);
+  private afAuth = inject(Auth);
+  private localService = inject(LocalService);
+
   browserIdHeaders: HttpHeaders;
 
   /**
@@ -43,14 +45,9 @@ export class AuthService extends BaseResourceService<PhenonetUser> {
 
   redirectUrl: string;
 
-  constructor(
-    private alertService: AlertService,
-    protected afs: Firestore,
-    protected fds: FirestoreDebugService,
-    private afAuth: Auth,
-    private localService: LocalService
-  ) {
-    super(afs, 'users', fds);
+  constructor() {
+    super('users');
+
     this.firebaseUser$ = authState(this.afAuth);
     const firebaseUser = toSignal(this.firebaseUser$);
 

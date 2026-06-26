@@ -1,4 +1,4 @@
-import { Component, effect, OnDestroy, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit, signal, Signal, WritableSignal, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
@@ -7,7 +7,6 @@ import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/f
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
-import { ActivatedRoute, Router } from '@angular/router';
 import { BaseDetailComponent } from '@core/components/base-detail.component';
 import { PhenonetUser } from '@core/core.model';
 import { AuthService } from '@core/services/auth.service';
@@ -42,6 +41,14 @@ import { ChangePasswordData } from './change-password.model';
   ]
 })
 export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> implements OnInit, OnDestroy {
+  private titleService = inject(TitleService);
+  private userService = inject(UserService);
+  protected resourceService = this.userService;
+  private publicUserService = inject(PublicUserService);
+  dialog = inject(MatDialog);
+  private languageService = inject(LanguageService);
+  private authService = inject(AuthService);
+
   editForm: FormGroup<{
     nickname: FormControl<string>;
     firstname: FormControl<string>;
@@ -53,17 +60,9 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   email: Signal<string>;
   formInitialized: WritableSignal<boolean> = signal(false);
 
-  constructor(
-    private titleService: TitleService,
-    protected router: Router,
-    protected route: ActivatedRoute,
-    private userService: UserService,
-    private publicUserService: PublicUserService,
-    public dialog: MatDialog,
-    private languageService: LanguageService,
-    private authService: AuthService
-  ) {
-    super(userService, route, router);
+  constructor() {
+    super();
+
     this.editForm = new FormGroup({
       nickname: new FormControl('', {
         asyncValidators: this.publicUserService.uniqueNicknameValidator(this.userService.user()?.nickname)

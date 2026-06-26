@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { GoogleMap, MapMarker } from '@angular/google-maps';
 import { basemaps, MapType } from '@shared/models/basemaps.model';
 import { Individual } from '@shared/models/individual.model';
@@ -15,6 +15,9 @@ import { filter, map, mergeAll } from 'rxjs/operators';
   imports: [GoogleMap, MapMarker, AsyncPipe]
 })
 export class IndividualHeaderMapComponent implements OnInit {
+  private individualService = inject(IndividualService);
+  private masterdataService = inject(MasterdataService);
+
   @Input() individual$: ReplaySubject<Individual>;
 
   mapOptions: google.maps.MapOptions;
@@ -22,11 +25,6 @@ export class IndividualHeaderMapComponent implements OnInit {
   center$: Observable<google.maps.LatLngLiteral>;
 
   imageUrl$: Observable<string>;
-
-  constructor(
-    private individualService: IndividualService,
-    private masterdataService: MasterdataService
-  ) {}
 
   ngOnInit(): void {
     this.mapOptions = {

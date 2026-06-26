@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { deleteField } from '@angular/fire/firestore';
 import { MatOption } from '@angular/material/core';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material/datepicker';
@@ -42,6 +42,14 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
   ]
 })
 export class ObservationViewComponent implements OnInit {
+  private dialog = inject(MatDialog);
+  private observationService = inject(ObservationService);
+  private masterdataService = inject(MasterdataService);
+  private userService = inject(UserService);
+  individualService = inject(IndividualService);
+  protected router = inject(Router);
+  protected route = inject(ActivatedRoute);
+
   @Input() individual$: Observable<Individual>;
   @Input() isEditable$: Observable<boolean>;
   @Input() isOwn$: Observable<boolean>;
@@ -49,16 +57,6 @@ export class ObservationViewComponent implements OnInit {
   phenophaseObservationsGroups$: Observable<PhenophaseObservationsGroup[]>;
   staticComments = {};
   years$: Observable<{ year: number; composedId: string }[]>;
-
-  constructor(
-    private dialog: MatDialog,
-    private observationService: ObservationService,
-    private masterdataService: MasterdataService,
-    private userService: UserService,
-    public individualService: IndividualService,
-    protected router: Router,
-    protected route: ActivatedRoute
-  ) {}
 
   ngOnInit(): void {
     const availablePhenophases$ = this.individual$.pipe(

@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit, Signal } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Signal, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Storage, ref, uploadBytes } from '@angular/fire/storage';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -50,6 +50,14 @@ import { GeoposService } from '../shared/geopos.service';
   ]
 })
 export class IndividualEditViewComponent implements OnInit, OnDestroy {
+  private router = inject(Router);
+  private afStorage = inject(Storage);
+  private masterdataService = inject(MasterdataService);
+  private individualService = inject(IndividualService);
+  private geoposService = inject(GeoposService);
+  private alertService = inject(AlertService);
+  private userService = inject(UserService);
+
   @Input() individual$: ReplaySubject<Individual>;
   @Input() createNewIndividual: boolean;
   subscriptions = new Subscription();
@@ -84,15 +92,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
     watering: new FormControl<string>('')
   });
 
-  constructor(
-    private router: Router,
-    private afStorage: Storage,
-    private masterdataService: MasterdataService,
-    private individualService: IndividualService,
-    private geoposService: GeoposService,
-    private alertService: AlertService,
-    private userService: UserService
-  ) {
+  constructor() {
     this.geopos = toSignal(this.geoposService.geopos$);
     this.altitude = toSignal(this.geoposService.altitude$);
   }

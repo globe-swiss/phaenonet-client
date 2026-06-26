@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
@@ -34,18 +34,16 @@ import { ObservationSpeciesItemComponent } from './observation-species-item.comp
   ]
 })
 export class ObservationListComponent implements OnInit {
+  private authService = inject(AuthService);
+  private individualService = inject(IndividualService);
+  private languageService = inject(LanguageService);
+  private masterdataService = inject(MasterdataService);
+
   @Input() userId: string;
 
   latestIndividualObservationsMap$: Observable<Array<[string, IndividualPhenophase[]]>>;
 
   selectedYear = new ReplaySubject<number>(1);
-
-  constructor(
-    private authService: AuthService,
-    private individualService: IndividualService,
-    private languageService: LanguageService,
-    private masterdataService: MasterdataService
-  ) {}
 
   avaiableYears() {
     return this.masterdataService.availableYears$;
