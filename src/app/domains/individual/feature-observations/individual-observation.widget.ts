@@ -168,13 +168,20 @@ export class ObservationViewComponent implements OnInit {
                 observation.phenophase
               ].join('_');
 
-              this.observationService.upsert(observation, observationId);
+              this.observationService.upsert(
+                'IndividualObservationWidget.upsertObservation',
+                observation,
+                observationId
+              );
             }
           });
       } else if (!result?.observation?.date) {
         // delete observation
         if (phenophaseObservation.observation) {
-          void this.observationService.delete((<IdLike>(<unknown>phenophaseObservation.observation)).id);
+          void this.observationService.delete(
+            'IndividualObservationWidget.deleteObservation',
+            (<IdLike>(<unknown>phenophaseObservation.observation)).id
+          );
         }
       }
     });

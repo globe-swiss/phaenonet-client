@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { DailySensorData, SensorDataInternal, Sensors } from '@shared/models/sensors';
 import { Observable } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class SensorsService extends BaseResourceService<Sensors> {
@@ -11,8 +11,7 @@ export class SensorsService extends BaseResourceService<Sensors> {
   }
 
   getSensorData(individual_id: string): Observable<DailySensorData[]> {
-    return this.get(individual_id).pipe(
-      tap(() => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.getSensorData)`)),
+    return this.get('SensorsService.getSensorData', individual_id).pipe(
       filter(sensors => sensors !== undefined),
       map(sensors => {
         const data = sensors.data;

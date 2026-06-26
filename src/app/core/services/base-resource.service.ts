@@ -51,37 +51,63 @@ export abstract class BaseResourceService<T> {
     return doc(collection(this.afs, '_')).id;
   }
 
-  list(): Observable<(T & IdLike)[]> {
+  /**
+   * Records a read access in the FirestoreDebugService for an operation that does not
+   * go through one of the base methods below.
+   * @param caller label identifying the operation (e.g. the method name)
+   * @param amt the number of documents read
+   */
+  protected trackRead(caller: string, amt = 1): void {
+    this.fds.addRead(`${this.collectionName} (${caller})`, amt);
+  }
+
+  /**
+   * Records a write access in the FirestoreDebugService for an operation that does not
+   * go through one of the base methods below.
+   * @param caller label identifying the operation (e.g. the method name)
+   * @param amt the number of documents written
+   */
+  protected trackWrite(caller: string, amt = 1): void {
+    this.fds.addWrite(`${this.collectionName} (${caller})`, amt);
+  }
+
+  /**
+   * Lists the resource collection (adding id field)
+   * @param caller label identifying the calling operation (e.g. the method name)
+   */
+  list(caller: string): Observable<(T & IdLike)[]> {
     return collectionData<T & IdLike>(this.collectionRef, { idField: 'id' }).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.list)`, x.length))
+      tap(x => this.trackRead(caller, x.length))
     );
   }
 
   /**
    * Queries the resource collection (adding id field)
+   * @param caller label identifying the calling operation (e.g. the method name)
    * @param queryConstraints
    * @returns
    */
-  protected queryCollection(...queryConstraints: QueryConstraint[]): Observable<(T & IdLike)[]> {
+  protected queryCollection(caller: string, ...queryConstraints: QueryConstraint[]): Observable<(T & IdLike)[]> {
     return collectionData(query(this.collectionRef, ...queryConstraints), { idField: 'id' }).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.queryCollection)`, x.length))
+      tap(x => this.trackRead(caller, x.length))
     );
   }
 
   /**
    * Upserts the given object t stripping it of created and modified dates as they will be set by cloud functions.
    *
+   * @param caller label identifying the calling operation (e.g. the method name)
    * @param t the object to be created or updated
-   * @param id the id of the object
+   * @param uid the id of the object
    */
-  upsert(t: Partial<T>, uid: string): Observable<T> {
+  upsert(caller: string, t: Partial<T>, uid: string): Observable<T> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     const { id, created, modified, ...withoutDates }: any = t;
 
-    this.fds.addWrite(`${this.collectionName} (${this.constructor.name}.upsert)`);
+    this.trackWrite(caller);
 
     const docPromise = setDoc(this.getDocRef(uid), withoutDates, { merge: true }).then(() =>
-      this.get(uid).pipe(first())
+      this.get(caller, uid).pipe(first())
     );
     return from(docPromise).pipe(mergeMap(identity));
   }
@@ -89,19 +115,18 @@ export abstract class BaseResourceService<T> {
   /**
    * Gets a document from this collection.
    * Note: By default, if the document is not found, no document is returned.
+   * @param caller label identifying the calling operation (e.g. the method name)
    * @param id the id of the document to be retrieved
    * @param returnUndefined if true, returns undefined if the document is not found, otherwise no document is returned
    * @returns an observable of the document
    */
-  get(id: string, returnUndefined = false): Observable<T> {
+  get(caller: string, id: string, returnUndefined = false): Observable<T> {
     return docData<T>(this.getDocRef(String(id))).pipe(
       tap(data => {
         if (!data && !returnUndefined) {
-          console.warn(
-            `Document with ID ${id} not found in collection ${this.collectionName} (${this.constructor.name}.get)`
-          );
+          console.warn(`Document with ID ${id} not found in collection ${this.collectionName} (${caller})`);
         }
-        this.fds.addRead(`${this.collectionName} (${this.constructor.name}.get)`);
+        this.trackRead(caller);
       }),
       filter(data => !!data || returnUndefined) // Skip undefined/null values
     );
@@ -110,19 +135,18 @@ export abstract class BaseResourceService<T> {
   /**
    * Gets a document from this collection and includes its docuement id in the 'id' field.
    * Note: By default, if the document is not found, no document is returned.
+   * @param caller label identifying the calling operation (e.g. the method name)
    * @param id the id of the document to be retrieved
    * @param returnUndefined if true, returns undefined if the document is not found, otherwise no document is returned
    * @returns an observable of the document
    */
-  getWithId(id: string, returnUndefined = false): Observable<T & IdLike> {
+  getWithId(caller: string, id: string, returnUndefined = false): Observable<T & IdLike> {
     return docData<T & IdLike>(this.getDocRef(String(id)), { idField: 'id' }).pipe(
       tap(data => {
         if (!data && !returnUndefined) {
-          console.warn(
-            `Document with ID ${id} not found in collection ${this.collectionName} (${this.constructor.name}.getWithId)`
-          );
+          console.warn(`Document with ID ${id} not found in collection ${this.collectionName} (${caller})`);
         }
-        this.fds.addRead(`${this.collectionName} (${this.constructor.name}.getWithId)`);
+        this.trackRead(caller);
       }),
       filter(data => !!data || returnUndefined) // Skip undefined/null values
     );
@@ -130,10 +154,11 @@ export abstract class BaseResourceService<T> {
 
   /**
    * Deletes an document from this collection.
+   * @param caller label identifying the calling operation (e.g. the method name)
    * @param id the id of the document to be deleted
    */
-  delete(id: string): Promise<void> {
-    this.fds.addWrite(`${this.collectionName} (${this.constructor.name}.delete)`);
+  delete(caller: string, id: string): Promise<void> {
+    this.trackWrite(caller);
     return deleteDoc(this.getDocRef(id));
   }
 }

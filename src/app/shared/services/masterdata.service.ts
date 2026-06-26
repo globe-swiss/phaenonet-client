@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { LanguageService } from '@core/services/language.service';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
-import { map, mergeAll, publishReplay, refCount, shareReplay, tap } from 'rxjs/operators';
+import { map, mergeAll, publishReplay, refCount, shareReplay } from 'rxjs/operators';
 import configStatic_import from '~/assets/config_static.json';
 import { environment } from '~/environments/environment';
 import { AltitudeLimits } from '../models/altitude-limits.model';
@@ -81,8 +81,7 @@ export class MasterdataService extends BaseResourceService<unknown> implements O
   constructor() {
     super('definitions');
 
-    this.configDynamic$ = this.get('config_dynamic').pipe(
-      tap(() => this.fds.addRead(`definitions.config_dynamic (${this.constructor.name}.constructor)`)),
+    this.configDynamic$ = this.get('MasterdataService.configDynamic', 'config_dynamic').pipe(
       shareReplay(1)
     ) as Observable<ConfigDynamic>;
     this.availableYears$ = this.configDynamic$.pipe(

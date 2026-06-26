@@ -133,7 +133,7 @@ export class IndividualEditViewComponent implements OnInit, OnDestroy {
       individual.geopos = this.geoposService.getGeoPos();
       individual.altitude = this.geoposService.getAltitude();
 
-      this.individualService.upsert(individual).subscribe(result => {
+      this.individualService.upsert('IndividualEditFormWidget.save', individual).subscribe(result => {
         if (this.fileToUpload) {
           this.uploadImage(result, this.fileToUpload);
         } else {

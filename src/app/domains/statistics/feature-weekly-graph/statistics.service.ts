@@ -3,7 +3,7 @@ import { where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { AllType, allValue } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AltitudeGroup } from '../shared/statistics-common.model';
 import { Statistics } from './statistics-weekly.model';
 
@@ -31,8 +31,7 @@ export class StatisticsService extends BaseResourceService<Statistics> {
       queryConstraints.push(where('altitude_grp', '==', altitude));
     }
 
-    return this.queryCollection(...queryConstraints).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.getStatistics)`, x.length)),
+    return this.queryCollection('StatisticsService.getStatistics', ...queryConstraints).pipe(
       map(statisticsAggs =>
         statisticsAggs.map(sa => ({
           agg_obs_sum: sa.agg_obs_sum,

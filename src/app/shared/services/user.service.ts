@@ -12,7 +12,7 @@ import { Roles } from '@shared/models/user-roles.enum';
 import { IndividualService } from '@shared/services/individual.service'; // fixme
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { combineLatest, Observable, of } from 'rxjs';
-import { filter, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { filter, first, map, shareReplay, switchMap } from 'rxjs/operators';
 import { PublicUserService } from './public-user.service';
 
 @Injectable({ providedIn: 'root' })
@@ -35,10 +35,12 @@ export class UserService extends BaseResourceService<PhenonetUser> {
 
     const sharedFirebaseUser$ = this.authService.firebaseUser$.pipe(shareReplay({ bufferSize: 1, refCount: true }));
     this.publicUser$ = sharedFirebaseUser$.pipe(
-      switchMap(firebaseUser => (firebaseUser?.uid ? this.publicUserService.get(firebaseUser.uid) : of(null)))
+      switchMap(firebaseUser =>
+        firebaseUser?.uid ? this.publicUserService.get('UserService.publicUser$', firebaseUser.uid) : of(null)
+      )
     );
     this.user$ = sharedFirebaseUser$.pipe(
-      switchMap(firebaseUser => (firebaseUser?.uid ? this.get(firebaseUser.uid) : of(null)))
+      switchMap(firebaseUser => (firebaseUser?.uid ? this.get('UserService.user$', firebaseUser.uid) : of(null)))
     );
 
     // load roles or initialize roles array if public user document does not exist or roles array is not defined
@@ -95,8 +97,7 @@ export class UserService extends BaseResourceService<PhenonetUser> {
 
   // TODO test upsert! (former update op)
   private followUnfollow(partial: Partial<unknown>): Observable<void> {
-    return this.upsert(partial, this.authService.getUserId()).pipe(
-      tap(() => this.fds.addWrite(`users (${this.constructor.name}.followUnfollow)`)),
+    return this.upsert('UserService.followUnfollow', partial, this.authService.getUserId()).pipe(
       map(() => {
         return; // map to void
       })
@@ -117,7 +118,11 @@ export class UserService extends BaseResourceService<PhenonetUser> {
     return combineLatest([this.user$, limit$]).pipe(
       filter(([user]) => user.following_users !== undefined && user.following_users.length !== 0),
       switchMap(([user, limit]) =>
-        combineLatest(user.following_users.slice(0, limit).map(user_id => this.publicUserService.getWithId(user_id)))
+        combineLatest(
+          user.following_users
+            .slice(0, limit)
+            .map(user_id => this.publicUserService.getWithId('UserService.getFollowedUsers', user_id))
+        )
       )
     );
   }
