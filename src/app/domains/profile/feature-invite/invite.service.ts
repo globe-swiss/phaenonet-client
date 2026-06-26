@@ -26,19 +26,17 @@ export class InviteService extends BaseResourceService<Invite> {
       email: email,
       locale: this.languageService.determineCurrentLang()
     };
-    this.upsert(invite, this.authService.getUserId() + '_' + email);
+    this.upsert('InviteService.addInvite', invite, this.authService.getUserId() + '_' + email);
   }
 
   getInvites(): Observable<(Invite & IdLike)[]> {
-    return this.queryCollection(where('user', '==', this.authService.getUserId())).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.getInvites`, x.length))
-    );
+    return this.queryCollection('InviteService.getInvites', where('user', '==', this.authService.getUserId()));
   }
 
   resendInvite(invite: Invite, id: string) {
     if (!invite.sent || new Date().getTime() - invite.sent.toDate().getTime() > 10 * 60 * 1000) {
       invite.resend = increment(1);
-      this.upsert(invite, id)
+      this.upsert('InviteService.resendInvite', invite, id)
         .pipe(
           take(1),
           tap(() => {
@@ -46,7 +44,6 @@ export class InviteService extends BaseResourceService<Invite> {
               'Einladung erneut gesendet',
               'Die Einladung wurde erfolgreich erneut gesendet.'
             );
-            this.fds.addWrite(`invites (${this.constructor.name}.resendInvite)`);
           })
         )
         .subscribe();
@@ -59,8 +56,6 @@ export class InviteService extends BaseResourceService<Invite> {
   }
 
   deleteInvite(id: string) {
-    void this.delete(id).then(() => {
-      this.fds.addWrite(`invites (${this.constructor.name}.deleteInvite)`);
-    });
+    void this.delete('InviteService.deleteInvite', id);
   }
 }

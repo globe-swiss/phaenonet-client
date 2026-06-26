@@ -10,7 +10,7 @@ import { Phenophase, Species } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { formatShortDate, formatShortDateTime } from '@shared/utils/formatDate';
 import { combineLatest, from, Observable, of } from 'rxjs';
-import { first, map, mergeAll, tap } from 'rxjs/operators';
+import { first, map, mergeAll } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class IndividualService extends BaseResourceService<Individual> {
@@ -43,7 +43,7 @@ export class IndividualService extends BaseResourceService<Individual> {
     }
   }
 
-  upsert(individual: Individual): Observable<Individual> {
+  upsert(caller: string, individual: Individual): Observable<Individual> {
     if (!individual.individual) {
       individual.individual = this.createId();
       individual.user = this.authService.getUserId();
@@ -53,12 +53,15 @@ export class IndividualService extends BaseResourceService<Individual> {
       individual.year = this.masterdataService.getPhenoYear();
     }
 
-    return super.upsert(individual, `${individual.year}_${individual.individual}`);
+    return super.upsert(caller, individual, `${individual.year}_${individual.individual}`);
   }
 
   listByUserAndYear(userId: string, year: number, limitAmount: number = 1000): Observable<(Individual & IdLike)[]> {
-    return this.queryCollection(where('user', '==', userId), where('year', '==', year), limit(limitAmount)).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByUserAndYear)`, x.length))
+    return this.queryCollection(
+      'IndividualService.listByUserAndYear',
+      where('user', '==', userId),
+      where('year', '==', year),
+      limit(limitAmount)
     );
   }
 
@@ -69,12 +72,11 @@ export class IndividualService extends BaseResourceService<Individual> {
     limitAmount: number = 1000
   ): Observable<(Individual & IdLike)[]> {
     return this.queryCollection(
+      'IndividualService.listByUserAndSpecies',
       where('user', '==', userId),
       where('year', '==', year),
       where('species', '==', species),
       limit(limitAmount)
-    ).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByUserAndSpecies)`, x.length))
     );
   }
 
@@ -89,12 +91,14 @@ export class IndividualService extends BaseResourceService<Individual> {
 
     return combineLatest(
       chunks.map(chunk =>
-        this.queryCollection(where('individual', 'in', chunk), where('year', '==', year), limit(limitAmount))
+        this.queryCollection(
+          'IndividualService.listByIds',
+          where('individual', 'in', chunk),
+          where('year', '==', year),
+          limit(limitAmount)
+        )
       )
-    ).pipe(
-      map(results => results.flat()),
-      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByIds)`, x.length))
-    );
+    ).pipe(map(results => results.flat()));
   }
 
   // fixme move near component
@@ -142,12 +146,10 @@ export class IndividualService extends BaseResourceService<Individual> {
    * @returns list of all selectable individuals
    */
   getSelectableIndividuals(individual: string, includeOwned: boolean): Observable<(Individual & IdLike)[]> {
-    return this.queryCollection(where('individual', '==', individual)).pipe(
-      tap(x =>
-        this.fds.addRead(`${this.collectionName} (${this.constructor.name}.getSelectableIndividuals)`, x.length)
-      ),
-      map(individuals => individuals.filter(i => includeOwned || i.last_observation_date))
-    );
+    return this.queryCollection(
+      'IndividualService.getSelectableIndividuals',
+      where('individual', '==', individual)
+    ).pipe(map(individuals => individuals.filter(i => includeOwned || i.last_observation_date)));
   }
 
   getPhenophaseNameIfDefined(individual: Individual): Observable<Phenophase> {

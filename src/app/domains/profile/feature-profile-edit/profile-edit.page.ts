@@ -105,7 +105,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
       // merge the detail with the new values from the form
       const user: PhenonetUser = { ...detail, ...this.editForm.value };
 
-      this.userService.upsert(user, this.detailId).subscribe(() => {
+      this.userService.upsert('ProfileEditPage.save', user, this.detailId).subscribe(() => {
         void this.router.navigate(['profile']);
       });
     });

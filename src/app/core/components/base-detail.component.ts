@@ -51,7 +51,7 @@ export abstract class BaseDetailComponent<T> implements OnInit, OnDestroy {
       return of<T>({} as T);
     } else {
       this.detailId = id;
-      return this.resourceService.get(this.detailId, true); // get detail subject or null values to enable navigation to 404 page
+      return this.resourceService.get('BaseDetailComponent.getDetailSubject', this.detailId, true); // get detail subject or null values to enable navigation to 404 page
     }
   }
 

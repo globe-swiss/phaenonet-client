@@ -5,7 +5,7 @@ import { BaseResourceService } from '@core/services/base-resource.service';
 import { PublicUser } from '@shared/models/public-user.model';
 import { Roles } from '@shared/models/user-roles.enum';
 import { Observable, of } from 'rxjs';
-import { first, map, tap } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class PublicUserService extends BaseResourceService<PublicUser> {
@@ -15,8 +15,7 @@ export class PublicUserService extends BaseResourceService<PublicUser> {
 
   existingNickname(nickname: string): Observable<boolean> {
     if (nickname && nickname.length > 0) {
-      return this.queryCollection(where('nickname', '==', nickname)).pipe(
-        tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.existingNickname)`, x.length)),
+      return this.queryCollection('PublicUserService.existingNickname', where('nickname', '==', nickname)).pipe(
         first(),
         map(users => users.length > 0)
       );

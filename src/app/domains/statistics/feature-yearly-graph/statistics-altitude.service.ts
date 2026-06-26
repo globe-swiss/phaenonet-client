@@ -3,7 +3,7 @@ import { where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { AllType, allValue, SourceType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AltitudeGroup } from '../shared/statistics-common.model';
 import { YearFilterType } from '../shared/statistics-filter.model';
 import { Analytics, StatisticsYearlyAltitude } from './statistics-yearly.model';
@@ -23,8 +23,7 @@ export class StatisticsAltitudeService extends BaseResourceService<StatisticsYea
       queryConstraints.push(where('year', '==', year));
     }
 
-    return this.queryCollection(...queryConstraints).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByYear)`, x.length)),
+    return this.queryCollection('StatisticsAltitudeService.listByYear', ...queryConstraints).pipe(
       map(statisticsYearlyAltitudeArray => this.statisticToAnalytics(statisticsYearlyAltitudeArray)),
       map(analytics => this.groupAltitudes(analytics))
     );

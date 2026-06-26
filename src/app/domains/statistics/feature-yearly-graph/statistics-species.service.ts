@@ -3,7 +3,7 @@ import { where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { AllType, allValue, SourceType } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { YearFilterType } from '../shared/statistics-filter.model';
 import { Analytics, StatisticsYearlySpecies } from './statistics-yearly.model';
 
@@ -22,8 +22,7 @@ export class StatisticsSpeciesService extends BaseResourceService<StatisticsYear
       queryConstraints.push(where('year', '==', year));
     }
 
-    return this.queryCollection(...queryConstraints).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByYear)`, x.length)),
+    return this.queryCollection('StatisticsSpeciesService.listByYear', ...queryConstraints).pipe(
       map(statisticsYearlySpecies =>
         statisticsYearlySpecies.map(a => ({
           source: a.source,

@@ -6,7 +6,7 @@ import { IndividualType, MapIndividual } from '@shared/models/individual.model';
 import { AllType, SourceType } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { Observable } from 'rxjs';
-import { first, map, tap } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 
 interface MapData {
   data: {
@@ -45,11 +45,10 @@ export class MapService extends BaseResourceService<MapData> {
   }
 
   getMapIndividuals(year: number): Observable<MapIndividual[]> {
-    return this.get(year.toString()).pipe(
+    return this.get('MapService.getMapIndividuals', year.toString()).pipe(
       first(), // do not subscribe to changes
       map(mapData => this.convertIndividuals(mapData)),
-      map(mapIndividuals => this.filterMapIndividuals(mapIndividuals)),
-      tap(() => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.getMapIndividuals)`))
+      map(mapIndividuals => this.filterMapIndividuals(mapIndividuals))
     );
   }
 

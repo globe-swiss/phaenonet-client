@@ -40,7 +40,7 @@ export class MapInfoService {
 
   constructor() {
     this.infoWindowData$ = this.individualIdSubject.pipe(
-      switchMap(id => this.individualService.getWithId(id)),
+      switchMap(id => this.individualService.getWithId('MapInfoService.infoWindowData$', id)),
       switchMap(individual =>
         iif(
           () => individual.type === 'individual',

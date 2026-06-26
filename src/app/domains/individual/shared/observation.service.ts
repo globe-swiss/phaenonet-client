@@ -3,7 +3,7 @@ import { Timestamp, limit, where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
 import { Observation } from '@shared/models/observation.model';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ObservationService extends BaseResourceService<Observation> {
@@ -12,8 +12,7 @@ export class ObservationService extends BaseResourceService<Observation> {
   }
 
   listByIndividual(individualId: string): Observable<Observation[]> {
-    return this.queryCollection(where('individual_id', '==', individualId)).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.listByIndividual)`, x.length)),
+    return this.queryCollection('ObservationService.listByIndividual', where('individual_id', '==', individualId)).pipe(
       map(obs =>
         obs.map(o => {
           o.date = o.date ? (o.date as unknown as Timestamp).toDate() : o.date;
@@ -27,8 +26,11 @@ export class ObservationService extends BaseResourceService<Observation> {
   }
 
   hasObservations(individualId: string): Observable<boolean> {
-    return this.queryCollection(where('individual_id', '==', individualId), limit(1)).pipe(
-      tap(x => this.fds.addRead(`${this.collectionName} (${this.constructor.name}.hasObservations)`, x.length)),
+    return this.queryCollection(
+      'ObservationService.hasObservations',
+      where('individual_id', '==', individualId),
+      limit(1)
+    ).pipe(
       map(observations => {
         return observations.length > 0;
       })

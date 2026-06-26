@@ -132,6 +132,7 @@ export class AuthService extends BaseResourceService<PhenonetUser> {
       await createUserWithEmailAndPassword(this.afAuth, email, password);
       void updateProfile(this.afAuth.currentUser, { displayName: nickname });
       this.upsert(
+        'AuthService.register',
         {
           nickname: nickname,
           firstname: firstname,

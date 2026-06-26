@@ -63,7 +63,7 @@ export class IndividualDescriptionButtonsComponent {
           void this.router.navigate(['/profile']).then(() => {
             this.individualService.deleteImages(individual);
             this.individualService
-              .delete(this.individualId)
+              .delete('IndividualButtonsWidget.delete', this.individualId)
               .then(() => {
                 this.alertService.infoMessage('Löschen erfolgreich', 'Das Objekt wurde gelöscht.');
               })
