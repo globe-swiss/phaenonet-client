@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MasterdataService } from '@shared/services/masterdata.service';
@@ -12,10 +12,10 @@ import { Activity } from './activity.model';
   imports: [RouterLink, TranslateModule]
 })
 export class ActivityItemComponent {
+  private masterdataService = inject(MasterdataService);
+
   @Input() activity: Activity;
   formatShortDateTime = formatShortDateTime;
-
-  constructor(private masterdataService: MasterdataService) {}
 
   getIcon(): string {
     return this.masterdataService.getIndividualIconPath(

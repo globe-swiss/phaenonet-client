@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,14 +18,12 @@ import { UserItemComponent } from './user-item.component';
   imports: [TranslateModule, UserItemComponent, ObservationItemComponent, MatButton, RouterLink, AsyncPipe]
 })
 export class FollowListComponent implements OnInit {
+  private individualService = inject(IndividualService);
+  private userService = inject(UserService);
+
   followedIndividuals$: Observable<IndividualPhenophase[]>;
   followedUsers$: Observable<PublicUser[]>;
   limit$ = new BehaviorSubject<number>(1);
-
-  constructor(
-    private individualService: IndividualService,
-    private userService: UserService
-  ) {}
 
   ngOnInit(): void {
     this.followedIndividuals$ = this.individualService.getIndividualPhenohases(

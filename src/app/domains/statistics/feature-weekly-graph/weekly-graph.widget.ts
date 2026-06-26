@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, signal, viewChild, inject } from '@angular/core';
 import { ObsDoy, ObsWoy, Statistics } from '@app/domains/statistics/feature-weekly-graph/statistics-weekly.model';
 import { TranslateService } from '@ngx-translate/core';
 import { max } from 'd3-array';
@@ -17,6 +17,10 @@ import { StatisticsService } from './statistics.service';
   standalone: true
 })
 export class WeeklyGraphComponent implements OnInit, OnDestroy {
+  private statisticsService = inject(StatisticsService);
+  private statisticsFilterService = inject(StatisticsFilterService);
+  private translateService = inject(TranslateService);
+
   readonly statisticsContainer = viewChild.required<ElementRef<HTMLDivElement>>('statisticsContainer');
   private readonly legendFontSize = getComputedStyle(document.documentElement).getPropertyValue('--legend-font-size');
 
@@ -28,12 +32,6 @@ export class WeeklyGraphComponent implements OnInit, OnDestroy {
   private obsWoyCurrentYear: ObsDoy[] = [];
   private obsWoy5Years: ObsDoy[] = [];
   private obsWoy30Years: ObsDoy[] = [];
-
-  constructor(
-    private statisticsService: StatisticsService,
-    private statisticsFilterService: StatisticsFilterService,
-    private translateService: TranslateService
-  ) {}
 
   ngOnInit() {
     const filterSubscription = this.statisticsFilterService.currentFilters$

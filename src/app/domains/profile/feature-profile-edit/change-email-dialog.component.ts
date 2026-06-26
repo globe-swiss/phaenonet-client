@@ -1,6 +1,6 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
 
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import {
@@ -38,16 +38,14 @@ import { ChangeEmailData } from './change-email.model';
   ]
 })
 export class ChangeEmailDialogComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<ChangeEmailDialogComponent>>(MatDialogRef);
+  data = inject<ChangeEmailData>(MAT_DIALOG_DATA);
+
   changeEmailForm = new UntypedFormGroup({
     email: new UntypedFormControl(''),
     emailConfirm: new UntypedFormControl(''),
     password: new UntypedFormControl('')
   });
-
-  constructor(
-    public dialogRef: MatDialogRef<ChangeEmailDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ChangeEmailData
-  ) {}
 
   ngOnInit(): void {
     const equalValidator = equalValidation('email', 'emailConfirm', 'emailMissmatch');

@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
 import { ObservationService } from '@app/domains/individual/shared/observation.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
@@ -23,6 +23,12 @@ import { mergeMap } from 'rxjs/operators';
   imports: [TranslateModule]
 })
 export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDestroy {
+  private individualService = inject(IndividualService);
+  private masterdataService = inject(MasterdataService);
+  private sensorsService = inject(SensorsService);
+  private observationService = inject(ObservationService);
+  private translateService = inject(TranslateService);
+
   @Input() individual$: ReplaySubject<Individual>;
   @Input() displayTemperature: boolean;
   @Input() displayHumidity: boolean;
@@ -39,14 +45,6 @@ export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDest
   sensorData$: Observable<DailySensorData[]>;
   observations$: Observable<Observation[]>;
   changeEvent$ = new BehaviorSubject(0);
-
-  constructor(
-    private individualService: IndividualService,
-    private masterdataService: MasterdataService,
-    private sensorsService: SensorsService,
-    private observationService: ObservationService,
-    private translateService: TranslateService
-  ) {}
   ngOnChanges(_changes: SimpleChanges): void {
     // re-render the svg on temperature/humidity selection
     this.changeEvent$.next(1);

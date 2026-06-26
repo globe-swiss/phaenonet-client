@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { StatisticsFilterService } from '../shared/statistics-filter.service';
 
@@ -34,6 +34,9 @@ import { altitudeGroupValues, FilterGraphType, YearFilterType } from '../shared/
   ]
 })
 export class StatisticFilterComponent implements OnInit {
+  private statisticsFilterService = inject(StatisticsFilterService);
+  private fb = inject(FormBuilder);
+
   private subscriptions = new Subscription();
 
   filter: FormGroup<{
@@ -53,10 +56,7 @@ export class StatisticFilterComponent implements OnInit {
   selectablePhenophases$: Observable<TranslatableFilterType[]>;
   selectableAltitudeGroups$: Observable<(AllType | AltitudeGroup)[]>;
 
-  constructor(
-    private statisticsFilterService: StatisticsFilterService,
-    private fb: FormBuilder
-  ) {
+  constructor() {
     this.filter = this.fb.group({
       year: [],
       datasource: [],

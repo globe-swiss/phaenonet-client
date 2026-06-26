@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { Component, Signal, inject } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
 import { InviteListComponent } from './invite-list.widget';
 
@@ -9,9 +9,11 @@ import { InviteListComponent } from './invite-list.widget';
   imports: [InviteListComponent]
 })
 export class InviteComponent {
+  private authService = inject(AuthService);
+
   detailId: Signal<string>;
 
-  constructor(private authService: AuthService) {
+  constructor() {
     this.detailId = this.authService.uid;
   }
 }

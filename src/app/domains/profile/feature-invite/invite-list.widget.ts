@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { IdLike } from '@core/core.model';
@@ -19,14 +19,12 @@ import { InviteService } from './invite.service';
   imports: [TranslateModule, InviteItemComponent, MatButton, AsyncPipe]
 })
 export class InviteListComponent implements OnInit {
+  private dialog = inject(MatDialog);
+  private inviteService = inject(InviteService);
+
   @Input() userId: string;
   openInvites$: Observable<(Invite & IdLike)[]>;
   acceptedInvites$: Observable<(Invite & IdLike)[]>;
-
-  constructor(
-    private dialog: MatDialog,
-    private inviteService: InviteService
-  ) {}
 
   ngOnInit(): void {
     const inviteSort = (i1: Invite & IdLike, i2: Invite & IdLike) => i2.modified.toMillis() - i1.modified.toMillis();

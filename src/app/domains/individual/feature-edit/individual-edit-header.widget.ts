@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { GoogleMap, MapMarker } from '@angular/google-maps';
 import { MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -16,6 +16,8 @@ import { GeoposService } from '../shared/geopos.service';
   imports: [GoogleMap, MapMarker, MatIcon, MatFabButton, AsyncPipe]
 })
 export class IndividualEditHeaderComponent implements OnInit {
+  private geoposService = inject(GeoposService);
+
   @Input() individual$: ReplaySubject<Individual>;
 
   geopos$: Observable<google.maps.LatLngLiteral>;
@@ -23,8 +25,6 @@ export class IndividualEditHeaderComponent implements OnInit {
   zoom: number;
   mapOptions: google.maps.MapOptions;
   markerOptions: google.maps.MarkerOptions;
-
-  constructor(private geoposService: GeoposService) {}
 
   ngOnInit(): void {
     this.mapOptions = {

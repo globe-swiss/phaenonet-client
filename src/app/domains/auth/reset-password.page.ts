@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
@@ -27,16 +27,14 @@ import { TranslateModule } from '@ngx-translate/core';
   ]
 })
 export class ResetPasswordComponent implements OnInit {
+  private authService = inject(AuthService);
+  private titleService = inject(TitleService);
+
   resetPasswordForm = new FormGroup({
     email: new FormControl('')
   });
 
   resetPasswordEmailSent = false;
-
-  constructor(
-    private authService: AuthService,
-    private titleService: TitleService
-  ) {}
 
   ngOnInit(): void {
     this.titleService.setLocation('Passwort zurücksetzen');

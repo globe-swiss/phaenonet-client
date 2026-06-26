@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
 import { BaseDetailComponent } from '@core/components/base-detail.component';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,16 +13,10 @@ import { IndividualEditHeaderComponent } from './individual-edit-header.widget';
   imports: [TranslateModule, IndividualEditViewComponent, IndividualEditHeaderComponent]
 })
 export class IndividualEditComponent extends BaseDetailComponent<Individual> implements OnInit {
-  isNewIndividual: boolean;
+  private titleService = inject(TitleService);
+  protected resourceService = inject(IndividualService);
 
-  constructor(
-    private titleService: TitleService,
-    protected route: ActivatedRoute,
-    private individualService: IndividualService,
-    protected router: Router
-  ) {
-    super(individualService, route, router);
-  }
+  isNewIndividual: boolean;
 
   ngOnInit(): void {
     super.ngOnInit();

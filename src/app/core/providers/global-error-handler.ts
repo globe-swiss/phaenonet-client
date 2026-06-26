@@ -1,10 +1,10 @@
-import { ErrorHandler, Injectable } from '@angular/core';
+import { ErrorHandler, Injectable, inject } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
 import * as Sentry from '@sentry/angular';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
-  constructor(private authService: AuthService) {}
+  private authService = inject(AuthService);
 
   private sentryErrorHandler = Sentry.createErrorHandler({ showDialog: false });
 

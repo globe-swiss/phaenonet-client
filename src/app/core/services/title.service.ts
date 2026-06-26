@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -6,14 +6,15 @@ import { switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class TitleService implements OnDestroy {
+  private title = inject(Title);
+
   private DEFAULT_LOCATION = 'PhaenoNet';
   private location$: BehaviorSubject<string> = new BehaviorSubject(this.DEFAULT_LOCATION);
   private subscriptions = new Subscription();
 
-  constructor(
-    translateService: TranslateService,
-    private title: Title
-  ) {
+  constructor() {
+    const translateService = inject(TranslateService);
+
     this.subscriptions.add(
       this.location$
         .pipe(switchMap(untranslatedLocation => translateService.get(untranslatedLocation)))

@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
@@ -27,18 +27,16 @@ class Data {
   imports: [RouterLink, MatIcon, MatSelect, MatOption, ObservationItemComponent, AsyncPipe, TranslateModule]
 })
 export class ProfileSpeciesComponent implements OnInit {
+  private titleService = inject(TitleService);
+  protected route = inject(ActivatedRoute);
+  dialog = inject(MatDialog);
+  private individualService = inject(IndividualService);
+  private masterdataService = inject(MasterdataService);
+  protected router = inject(Router);
+  private translateService = inject(TranslateService);
+
   latestIndividualObservations$: Observable<IndividualPhenophase[]>;
   data$: Observable<Data>;
-
-  constructor(
-    private titleService: TitleService,
-    protected route: ActivatedRoute,
-    public dialog: MatDialog,
-    private individualService: IndividualService,
-    private masterdataService: MasterdataService,
-    protected router: Router,
-    private translateService: TranslateService
-  ) {}
 
   ngOnInit(): void {
     this.data$ = combineLatest([

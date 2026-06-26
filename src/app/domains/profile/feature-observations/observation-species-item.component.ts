@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -13,12 +13,12 @@ import { formatShortDate } from '@shared/utils/formatDate';
   imports: [RouterLink, TranslateModule, MatIcon]
 })
 export class ObservationSpeciesItemComponent {
+  private masterdataService = inject(MasterdataService);
+
   @Input() species: string;
   @Input() items: IndividualPhenophase[];
   @Input() userId: string;
   @Input() year: number;
-
-  constructor(private masterdataService: MasterdataService) {}
 
   getColor(phenophase: string): string {
     return this.masterdataService.getColor(phenophase);

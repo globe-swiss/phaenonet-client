@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, viewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
@@ -40,6 +40,14 @@ import { Subscription } from 'rxjs';
   ]
 })
 export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
+  private publicUserService = inject(PublicUserService);
+  private alertService = inject(AlertService);
+  private router = inject(Router);
+  private titleService = inject(TitleService);
+  private languageService = inject(LanguageService);
+
   readonly nicknameField = viewChild.required<ElementRef>('nickname');
   registerForm: FormGroup<{
     nickname: FormControl<string>;
@@ -53,16 +61,6 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private subscription: Subscription;
   private realRegisterRequest: boolean;
-
-  constructor(
-    private authService: AuthService,
-    private userService: UserService,
-    private publicUserService: PublicUserService,
-    private alertService: AlertService,
-    private router: Router,
-    private titleService: TitleService,
-    private languageService: LanguageService
-  ) {}
 
   ngOnInit(): void {
     this.titleService.setLocation('Registrierung');

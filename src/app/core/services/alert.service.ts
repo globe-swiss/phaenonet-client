@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, Subject } from 'rxjs';
 
@@ -26,7 +26,7 @@ export class UntranslatedAlertMessage {
 
 @Injectable({ providedIn: 'root' })
 export class AlertService {
-  constructor(private translateService: TranslateService) {}
+  private translateService = inject(TranslateService);
 
   latestMessage: Subject<AlertMessage> = new Subject<AlertMessage>();
 

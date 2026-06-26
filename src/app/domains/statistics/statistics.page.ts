@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TitleService } from '@core/services/title.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -24,12 +24,10 @@ import { StatisticsFilterService } from './shared/statistics-filter.service';
   ]
 })
 export class StatisticsComponent implements OnInit {
-  currentGraph$: Observable<FilterGraphType>;
+  private titleService = inject(TitleService);
+  private statisticsFilterService = inject(StatisticsFilterService);
 
-  constructor(
-    private titleService: TitleService,
-    private statisticsFilterService: StatisticsFilterService
-  ) {}
+  currentGraph$: Observable<FilterGraphType>;
 
   ngOnInit(): void {
     this.titleService.setLocation('Auswertungen');

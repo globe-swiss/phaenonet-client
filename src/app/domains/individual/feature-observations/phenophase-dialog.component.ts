@@ -1,7 +1,7 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AsyncPipe } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FieldValue } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -52,6 +52,10 @@ import { PhenophaseObservation } from '../shared/individual.model';
   ]
 })
 export class PhenophaseDialogComponent {
+  dialogRef = inject<MatDialogRef<PhenophaseDialogComponent>>(MatDialogRef);
+  data = inject<PhenophaseObservation>(MAT_DIALOG_DATA);
+  private breakpointObserver = inject(BreakpointObserver);
+
   get observationComment(): string | FieldValue | null {
     return this.data.observation?.comment || null;
   }
@@ -73,11 +77,7 @@ export class PhenophaseDialogComponent {
   originalDate: Observation['date'];
   originalComment: Observation['comment'];
 
-  constructor(
-    public dialogRef: MatDialogRef<PhenophaseDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: PhenophaseObservation,
-    private breakpointObserver: BreakpointObserver
-  ) {
+  constructor() {
     const original = this.data.observation;
     if (original) {
       this.originalDate = original.date;

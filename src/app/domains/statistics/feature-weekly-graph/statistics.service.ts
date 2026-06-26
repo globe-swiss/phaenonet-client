@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Firestore, where } from '@angular/fire/firestore';
+import { where } from '@angular/fire/firestore';
 import { BaseResourceService } from '@core/services/base-resource.service';
-import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { AllType, allValue } from '@shared/models/source-type.model';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -10,11 +9,8 @@ import { Statistics } from './statistics-weekly.model';
 
 @Injectable({ providedIn: 'root' })
 export class StatisticsService extends BaseResourceService<Statistics> {
-  constructor(
-    protected afs: Firestore,
-    protected fds: FirestoreDebugService
-  ) {
-    super(afs, 'statistics', fds);
+  constructor() {
+    super('statistics');
   }
 
   getStatistics(

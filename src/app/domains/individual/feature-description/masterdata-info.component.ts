@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import { Description, Distance, Exposition, Forest, Habitat, Irrigation, Shade } from '@shared/models/masterdata.model';
@@ -15,6 +15,8 @@ import { switchMap } from 'rxjs/operators';
   imports: [TranslateModule, AsyncPipe, RoundPipe]
 })
 export class IndividualDescriptionBasicInfoComponent implements OnInit {
+  private masterdataService = inject(MasterdataService);
+
   @Input() individual$: Observable<Individual>; // injected ReplaySubject
 
   description$: Observable<Description>;
@@ -24,8 +26,6 @@ export class IndividualDescriptionBasicInfoComponent implements OnInit {
   forest$: Observable<Forest>;
   distance$: Observable<Distance>;
   irrigation$: Observable<Irrigation>;
-
-  constructor(private masterdataService: MasterdataService) {}
 
   ngOnInit(): void {
     this.description$ = this.individual$.pipe(

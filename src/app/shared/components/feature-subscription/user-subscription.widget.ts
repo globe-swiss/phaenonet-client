@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatButton, MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { AlertService } from '@core/services/alert.service';
@@ -15,19 +15,15 @@ import { ButtonMode, SharedSubscriptionButtonComponent } from './shared-subscrip
   imports: [MatFabButton, MatIcon, MatButton, TranslateModule, AsyncPipe]
 })
 export class UserSubscriptionButtonComponent extends SharedSubscriptionButtonComponent implements OnInit {
+  private userService = inject(UserService);
+  private alertService = inject(AlertService);
+
   @Input() userId: string;
   @Input() nomargin = false;
   isFollowing$: Observable<boolean>;
 
   @Input()
   mode: ButtonMode = 'FAB';
-
-  constructor(
-    private userService: UserService,
-    private alertService: AlertService
-  ) {
-    super();
-  }
 
   ngOnInit(): void {
     this.isFollowing$ = this.userService.isFollowingUser(this.userId);

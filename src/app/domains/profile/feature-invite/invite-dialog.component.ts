@@ -1,5 +1,5 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import {
@@ -36,14 +36,12 @@ import { InviteDialogData } from './invite-dialog.model';
   ]
 })
 export class InviteDialogComponent {
+  private dialogRef = inject<MatDialogRef<InviteDialogComponent>>(MatDialogRef);
+  data = inject<InviteDialogData>(MAT_DIALOG_DATA);
+
   inviteForm = new UntypedFormGroup({
     email: new UntypedFormControl('')
   });
-
-  constructor(
-    private dialogRef: MatDialogRef<InviteDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: InviteDialogData
-  ) {}
 
   close(): void {
     this.dialogRef.close();

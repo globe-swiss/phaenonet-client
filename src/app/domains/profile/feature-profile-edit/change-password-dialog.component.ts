@@ -1,6 +1,6 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
 
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import {
@@ -38,16 +38,14 @@ import { ChangePasswordData } from './change-password.model';
   ]
 })
 export class ChangePasswordDialogComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<ChangePasswordDialogComponent>>(MatDialogRef);
+  data = inject<ChangePasswordData>(MAT_DIALOG_DATA);
+
   changePasswordForm = new UntypedFormGroup({
     currentPassword: new UntypedFormControl(''),
     password: new UntypedFormControl(''),
     passwordConfirm: new UntypedFormControl('')
   });
-
-  constructor(
-    public dialogRef: MatDialogRef<ChangePasswordDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ChangePasswordData
-  ) {}
 
   ngOnInit(): void {
     const equalValidator = equalValidation('password', 'passwordConfirm', 'passwordMissmatch');

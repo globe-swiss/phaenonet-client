@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, signal, viewChild, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { allValue } from '@shared/models/source-type.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
@@ -22,6 +22,12 @@ import { Analytics, AnalyticsValue } from './statistics-yearly.model';
   standalone: true
 })
 export class YearlyGraphComponent implements OnInit, OnDestroy {
+  private statisticsSpeciesService = inject(StatisticsSpeciesService);
+  private statisticsAltitudeService = inject(StatisticsAltitudeService);
+  private masterdataService = inject(MasterdataService);
+  private translateService = inject(TranslateService);
+  private statisticsFilterService = inject(StatisticsFilterService);
+
   readonly statisticsContainer = viewChild.required<ElementRef<HTMLDivElement>>('statisticsContainer');
 
   private _redraw$ = new Subject<void>();
@@ -32,14 +38,6 @@ export class YearlyGraphComponent implements OnInit, OnDestroy {
   private data: Analytics[];
   private year: null | number; // null if all year
   private availableYears: number[] = [];
-
-  constructor(
-    private statisticsSpeciesService: StatisticsSpeciesService,
-    private statisticsAltitudeService: StatisticsAltitudeService,
-    private masterdataService: MasterdataService,
-    private translateService: TranslateService,
-    private statisticsFilterService: StatisticsFilterService
-  ) {}
 
   ngOnInit() {
     // set avaialble years once

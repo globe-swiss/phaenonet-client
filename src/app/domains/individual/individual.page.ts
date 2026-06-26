@@ -1,7 +1,6 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
 import { BaseDetailComponent } from '@core/components/base-detail.component';
 import { AuthService } from '@core/services/auth.service';
 import { TitleService } from '@core/services/title.service';
@@ -31,21 +30,15 @@ import { IndividualSubscriptionButtonComponent } from '@shared/components/featur
   ]
 })
 export class IndividualDetailComponent extends BaseDetailComponent<Individual> implements OnInit {
+  private titleService = inject(TitleService);
+  protected resourceService = inject(IndividualService);
+  dialog = inject(MatDialog);
+  private authService = inject(AuthService);
+  private masterdataService = inject(MasterdataService);
+
   isEditable$: Observable<boolean>;
   isOwn$: Observable<boolean>;
   isLoggedIn: boolean;
-
-  constructor(
-    private titleService: TitleService,
-    protected route: ActivatedRoute,
-    protected individualService: IndividualService,
-    public dialog: MatDialog,
-    private authService: AuthService,
-    private masterdataService: MasterdataService,
-    protected router: Router
-  ) {
-    super(individualService, route, router);
-  }
 
   ngOnInit(): void {
     super.ngOnInit();

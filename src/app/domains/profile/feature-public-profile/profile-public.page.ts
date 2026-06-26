@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -28,18 +28,16 @@ import { map } from 'rxjs/operators';
   ]
 })
 export class ProfilePublicComponent implements OnInit {
+  protected authService = inject(AuthService);
+  protected alertService = inject(AlertService);
+  private publicUserService = inject(PublicUserService);
+
   @Input() userId: string;
   @Input() user$: ReplaySubject<PublicUser>;
 
   isLoggedIn: boolean;
   nickname$: Observable<string>;
   isRanger$: Observable<boolean>;
-
-  constructor(
-    protected authService: AuthService,
-    protected alertService: AlertService,
-    private publicUserService: PublicUserService
-  ) {}
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.authenticated();

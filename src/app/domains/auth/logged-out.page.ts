@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
@@ -21,9 +21,9 @@ import { TranslateModule } from '@ngx-translate/core';
   ]
 })
 export class LoggedOutComponent implements OnInit {
-  loginUrl = LOGIN_URL;
+  private titleService = inject(TitleService);
 
-  constructor(private titleService: TitleService) {}
+  loginUrl = LOGIN_URL;
 
   ngOnInit(): void {
     this.titleService.setLocation('Abgemeldet');

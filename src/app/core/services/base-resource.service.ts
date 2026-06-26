@@ -1,3 +1,4 @@
+import { inject } from '@angular/core';
 import {
   collection,
   collectionData,
@@ -20,6 +21,9 @@ import { from, identity, Observable } from 'rxjs';
 import { filter, first, mergeMap, tap } from 'rxjs/operators';
 
 export abstract class BaseResourceService<T> {
+  private afs = inject(Firestore);
+  protected fds = inject(FirestoreDebugService);
+
   protected converter: FirestoreDataConverter<T & IdLike> = {
     toFirestore: (data: T & IdLike): DocumentData => {
       return { ...data };
@@ -35,11 +39,7 @@ export abstract class BaseResourceService<T> {
 
   protected collectionRef: CollectionReference<T & IdLike, DocumentData>;
 
-  constructor(
-    protected afs: Firestore,
-    protected collectionName: string,
-    protected fds: FirestoreDebugService
-  ) {
+  constructor(protected collectionName: string) {
     this.collectionRef = collection(this.afs, this.collectionName).withConverter(this.converter);
   }
 

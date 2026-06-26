@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Firestore, where } from '@angular/fire/firestore';
+import { where } from '@angular/fire/firestore';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { BaseResourceService } from '@core/services/base-resource.service';
-import { FirestoreDebugService } from '@core/services/firestore-debug.service';
 import { PublicUser } from '@shared/models/public-user.model';
 import { Roles } from '@shared/models/user-roles.enum';
 import { Observable, of } from 'rxjs';
@@ -10,11 +9,8 @@ import { first, map, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class PublicUserService extends BaseResourceService<PublicUser> {
-  constructor(
-    protected afs: Firestore,
-    protected fds: FirestoreDebugService
-  ) {
-    super(afs, 'public_users', fds);
+  constructor() {
+    super('public_users');
   }
 
   existingNickname(nickname: string): Observable<boolean> {
