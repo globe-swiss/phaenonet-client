@@ -25,12 +25,10 @@ export class LanguageService {
 
   async changeLocale(newLocale: string): Promise<void> {
     const locale = this.parseLang(newLocale) ?? 'de-CH';
-
-    await firstValueFrom(this.translateService.use(locale));
-
     moment.locale(locale);
     this.localService.localStorageSet(this.LOCALSTORAGE_KEY, locale);
     this.document.documentElement.lang = locale;
+    await firstValueFrom(this.translateService.use(locale));
   }
 
   determineCurrentLang(): string {

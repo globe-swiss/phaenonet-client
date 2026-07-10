@@ -1,4 +1,4 @@
-import { Component, effect, OnDestroy, OnInit, signal, Signal, WritableSignal, inject } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
@@ -112,7 +112,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   }
 
   cancel() {
-    void this.languageService.changeLocale(this.initialLanguage);
+    this.userService.changeLanguage('ProfileEditPage.cancel', this.initialLanguage);
     void this.router.navigate(['profile']);
   }
 
@@ -143,7 +143,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   }
 
   changeLocale(event: MatSelectChange): void {
-    void this.languageService.changeLocale(event.value as string);
+    this.userService.changeLanguage('ProfileEditPage.changeLocale', event.value as string);
   }
 
   isOwner(): boolean {
