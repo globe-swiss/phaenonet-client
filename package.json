@@ -1,7 +1,9 @@
 {
   "browserslist": [
     "> 0.5% in CH",
-    "defaults"
+    "defaults",
+    "not ios_saf < 15",
+    "not safari < 15"
   ],
   "dependencies": {
     "@angular/animations": "^21.2.16",
