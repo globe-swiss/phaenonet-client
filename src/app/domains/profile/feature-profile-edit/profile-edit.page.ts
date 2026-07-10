@@ -112,7 +112,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   }
 
   cancel() {
-    this.languageService.changeLocale(this.initialLanguage);
+    void this.languageService.changeLocale(this.initialLanguage);
     void this.router.navigate(['profile']);
   }
 
@@ -143,7 +143,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   }
 
   changeLocale(event: MatSelectChange): void {
-    this.languageService.changeLocale(event.value as string);
+    void this.languageService.changeLocale(event.value as string);
   }
 
   isOwner(): boolean {

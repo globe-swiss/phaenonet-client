@@ -131,6 +131,6 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   changeLocale(event: MatSelectChange): void {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    this.languageService.changeLocale(event.value);
+    void this.languageService.changeLocale(event.value);
   }
 }

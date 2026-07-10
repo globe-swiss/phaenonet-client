@@ -1,4 +1,4 @@
-import { effect, Injectable, Signal, inject } from '@angular/core';
+import { effect, inject, Injectable, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import { IdLike, PhenonetUser } from '@core/core.model';
@@ -50,7 +50,7 @@ export class UserService extends BaseResourceService<PhenonetUser> {
     this.publicUser = toSignal(this.publicUser$);
     this.roles = toSignal(this.roles$);
 
-    effect(() => (this.user() ? this.languageService.changeLocale(this.user().locale) : null));
+    effect(() => (this.user() ? void this.languageService.changeLocale(this.user().locale) : null));
   }
 
   followIndividual(target: string | Observable<Individual>): Observable<void> {
