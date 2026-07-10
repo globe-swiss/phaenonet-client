@@ -3,7 +3,6 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { IdLike } from '@core/core.model';
-import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { InviteDialogComponent } from './invite-dialog.component';
@@ -16,7 +15,7 @@ import { InviteService } from './invite.service';
   selector: 'app-invite-list',
   templateUrl: './invite-list.widget.html',
   styleUrls: ['./invite-list.widget.scss'],
-  imports: [TranslateModule, InviteItemComponent, MatButton, AsyncPipe]
+  imports: [InviteItemComponent, MatButton, AsyncPipe]
 })
 export class InviteListComponent implements OnInit {
   private dialog = inject(MatDialog);

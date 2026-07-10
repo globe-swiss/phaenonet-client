@@ -12,7 +12,7 @@ import {
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { InviteDialogData } from './invite-dialog.model';
 
 @Component({
@@ -32,7 +32,7 @@ import { InviteDialogData } from './invite-dialog.model';
     MatInput,
     MatError,
     MatDialogClose,
-    TranslateModule
+    TranslatePipe
   ]
 })
 export class InviteDialogComponent {

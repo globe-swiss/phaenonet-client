@@ -1,4 +1,4 @@
-import { effect, Injectable, Signal, inject } from '@angular/core';
+import { inject, Injectable, OnDestroy, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import { IdLike, PhenonetUser } from '@core/core.model';
@@ -11,18 +11,19 @@ import { SourceType } from '@shared/models/source-type.model';
 import { Roles } from '@shared/models/user-roles.enum';
 import { IndividualService } from '@shared/services/individual.service'; // fixme
 import { MasterdataService } from '@shared/services/masterdata.service';
-import { combineLatest, Observable, of } from 'rxjs';
-import { filter, first, map, shareReplay, switchMap } from 'rxjs/operators';
+import { combineLatest, Observable, of, Subscription } from 'rxjs';
+import { distinctUntilKeyChanged, filter, first, map, shareReplay, switchMap } from 'rxjs/operators';
 import { PublicUserService } from './public-user.service';
 
 @Injectable({ providedIn: 'root' })
-export class UserService extends BaseResourceService<PhenonetUser> {
+export class UserService extends BaseResourceService<PhenonetUser> implements OnDestroy {
   private publicUserService = inject(PublicUserService);
   private authService = inject(AuthService);
   private individualService = inject(IndividualService);
   private masterdataService = inject(MasterdataService);
   private languageService = inject(LanguageService);
 
+  private subscriptions = new Subscription();
   public publicUser$: Observable<PublicUser>;
   public publicUser: Signal<PublicUser>;
   public user$: Observable<PhenonetUser>;
@@ -33,7 +34,7 @@ export class UserService extends BaseResourceService<PhenonetUser> {
   constructor() {
     super('users');
 
-    const sharedFirebaseUser$ = this.authService.firebaseUser$.pipe(shareReplay({ bufferSize: 1, refCount: true }));
+    const sharedFirebaseUser$ = this.authService.firebaseUser$.pipe(shareReplay({ bufferSize: 1, refCount: false }));
     this.publicUser$ = sharedFirebaseUser$.pipe(
       switchMap(firebaseUser =>
         firebaseUser?.uid ? this.publicUserService.get('UserService.publicUser$', firebaseUser.uid) : of(null)
@@ -50,7 +51,22 @@ export class UserService extends BaseResourceService<PhenonetUser> {
     this.publicUser = toSignal(this.publicUser$);
     this.roles = toSignal(this.roles$);
 
-    effect(() => (this.user() ? this.languageService.changeLocale(this.user().locale) : null));
+    this.subscriptions.add(
+      this.user$
+        .pipe(
+          filter(user => !!user?.locale),
+          distinctUntilKeyChanged('locale')
+        )
+        .subscribe(user => void this.languageService.changeLocale(user.locale))
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  changeLanguage(caller: string, newLocale: string) {
+    this.upsert(caller, { locale: newLocale }, this.authService.getUserId());
   }
 
   followIndividual(target: string | Observable<Individual>): Observable<void> {

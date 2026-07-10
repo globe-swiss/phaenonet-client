@@ -2,7 +2,6 @@ import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule } from '@ngx-translate/core';
 import { map, Observable } from 'rxjs';
 import { StatisticFilterComponent } from './feature-statistics-filter/statistics-filter.widget';
 import { WeeklyGraphComponent } from './feature-weekly-graph/weekly-graph.widget';
@@ -17,7 +16,6 @@ import { StatisticsFilterService } from './shared/statistics-filter.service';
     FormsModule,
     ReactiveFormsModule,
     AsyncPipe,
-    TranslateModule,
     StatisticFilterComponent,
     YearlyGraphComponent,
     WeeklyGraphComponent

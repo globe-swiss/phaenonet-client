@@ -6,6 +6,7 @@ import moment from 'moment-timezone';
 import 'moment/locale/de-ch';
 import 'moment/locale/fr-ch';
 import 'moment/locale/it-ch';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
@@ -18,19 +19,16 @@ export class LanguageService {
   init(): void {
     this.translateService.addLangs(['de-CH', 'fr-CH', 'it-CH']);
     const currentLang = this.determineCurrentLang();
-    this.translateService.setDefaultLang('de-CH');
-    this.changeLocale(currentLang);
+    this.translateService.setFallbackLang('de-CH');
+    void this.changeLocale(currentLang);
   }
 
-  changeLocale(newLocale: string): void {
-    let locale = this.parseLang(newLocale);
-    if (locale == null) {
-      locale = 'de-CH';
-    }
+  async changeLocale(newLocale: string): Promise<void> {
+    const locale = this.parseLang(newLocale) ?? 'de-CH';
     moment.locale(locale);
-    this.translateService.use(locale);
     this.localService.localStorageSet(this.LOCALSTORAGE_KEY, locale);
     this.document.documentElement.lang = locale;
+    await firstValueFrom(this.translateService.use(locale));
   }
 
   determineCurrentLang(): string {

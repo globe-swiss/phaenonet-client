@@ -11,7 +11,7 @@ import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PublicUserService } from '@shared/services/public-user.service';
 import { UserService } from '@shared/services/user.service';
 import { equalValidation } from '@shared/utils/validation';
@@ -25,7 +25,7 @@ import { Subscription } from 'rxjs';
     MatCard,
     MatCardHeader,
     MatCardTitle,
-    TranslateModule,
+    TranslatePipe,
     MatCardSubtitle,
     MatCardContent,
     FormsModule,
@@ -131,6 +131,6 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   changeLocale(event: MatSelectChange): void {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    this.languageService.changeLocale(event.value);
+    void this.languageService.changeLocale(event.value);
   }
 }

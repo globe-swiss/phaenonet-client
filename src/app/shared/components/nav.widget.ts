@@ -4,13 +4,13 @@ import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.widget.html',
   styleUrls: ['./nav.widget.scss'],
-  imports: [MatToolbar, MatToolbarRow, MatButton, RouterLink, TranslateModule]
+  imports: [MatToolbar, MatToolbarRow, MatButton, RouterLink, TranslatePipe]
 })
 export class NavComponent {
   private authService = inject(AuthService);

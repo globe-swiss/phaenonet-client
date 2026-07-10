@@ -3,7 +3,6 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatButton, MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { AlertService } from '@core/services/alert.service';
-import { TranslateModule } from '@ngx-translate/core';
 import { UserService } from '@shared/services/user.service';
 import { Observable } from 'rxjs';
 import { ButtonMode, SharedSubscriptionButtonComponent } from './shared-subscription.widget';
@@ -12,7 +11,7 @@ import { ButtonMode, SharedSubscriptionButtonComponent } from './shared-subscrip
   selector: 'app-user-subscription-button',
   templateUrl: './shared-subscription.widget.html',
   styleUrls: ['./shared-subscription.widget.scss'],
-  imports: [MatFabButton, MatIcon, MatButton, TranslateModule, AsyncPipe]
+  imports: [MatFabButton, MatIcon, MatButton, AsyncPipe]
 })
 export class UserSubscriptionButtonComponent extends SharedSubscriptionButtonComponent implements OnInit {
   private userService = inject(UserService);

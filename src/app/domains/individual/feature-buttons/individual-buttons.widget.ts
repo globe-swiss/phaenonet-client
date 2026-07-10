@@ -4,7 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterLink } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog.component';
 import { Individual } from '@shared/models/individual.model';
 import { IndividualService } from '@shared/services/individual.service';
@@ -16,7 +16,7 @@ import { ObservationService } from '../shared/observation.service';
   selector: 'app-individual-buttons',
   templateUrl: './individual-buttons.widget.html',
   styleUrls: ['./individual-buttons.widget.scss'],
-  imports: [MatButton, RouterLink, AsyncPipe, TranslateModule]
+  imports: [MatButton, RouterLink, AsyncPipe, TranslatePipe]
 })
 export class IndividualDescriptionButtonsComponent {
   private router = inject(Router);

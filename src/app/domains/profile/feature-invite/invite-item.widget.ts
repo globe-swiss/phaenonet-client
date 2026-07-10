@@ -2,7 +2,7 @@ import { Component, Input, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { MaybeIdLike } from '@core/core.model';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { UserSubscriptionButtonComponent } from '@shared/components/feature-subscription/user-subscription.widget';
 import { ShortdatePipe } from '@shared/utils/shortdate.pipe';
 import { Invite } from './invite.model';
@@ -12,7 +12,7 @@ import { InviteService } from './invite.service';
   selector: 'app-invite-item',
   templateUrl: './invite-item.widget.html',
   styleUrls: ['./invite-item.widget.scss'],
-  imports: [RouterLink, UserSubscriptionButtonComponent, MatButton, TranslateModule, ShortdatePipe]
+  imports: [RouterLink, UserSubscriptionButtonComponent, MatButton, TranslatePipe, ShortdatePipe]
 })
 export class InviteItemComponent {
   private inviteService = inject(InviteService);

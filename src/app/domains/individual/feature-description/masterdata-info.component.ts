@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import { Description, Distance, Exposition, Forest, Habitat, Irrigation, Shade } from '@shared/models/masterdata.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
@@ -12,7 +12,7 @@ import { switchMap } from 'rxjs/operators';
   selector: 'app-masterdata-info',
   templateUrl: './masterdata-info.component.html',
   styleUrls: ['./masterdata-info.component.scss'],
-  imports: [TranslateModule, AsyncPipe, RoundPipe]
+  imports: [TranslatePipe, AsyncPipe, RoundPipe]
 })
 export class IndividualDescriptionBasicInfoComponent implements OnInit {
   private masterdataService = inject(MasterdataService);

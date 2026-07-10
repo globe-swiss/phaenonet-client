@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { StatisticsFilterService } from '../shared/statistics-filter.service';
 
 import { AsyncPipe } from '@angular/common';
@@ -22,7 +22,7 @@ import { altitudeGroupValues, FilterGraphType, YearFilterType } from '../shared/
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslatePipe,
     MatOption,
     MatSelect,
     MatLabel,

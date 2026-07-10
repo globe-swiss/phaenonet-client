@@ -11,7 +11,7 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export interface ConfirmationDialogData {
   title: string;
@@ -34,7 +34,7 @@ export interface ConfirmationDialogData {
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
-    TranslateModule
+    TranslatePipe
   ]
 })
 export class ConfirmationDialogComponent {

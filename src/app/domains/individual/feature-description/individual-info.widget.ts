@@ -4,7 +4,7 @@ import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import { Phenophase, Species } from '@shared/models/masterdata.model';
 import { IndividualService } from '@shared/services/individual.service';
@@ -20,7 +20,7 @@ import { SensorsBoxComponent } from './sensors-box.component';
   templateUrl: './individual-info.widget.html',
   styleUrls: ['./individual-info.widget.scss'],
   imports: [
-    TranslateModule,
+    TranslatePipe,
     RouterLink,
     MatIconButton,
     MatTooltip,

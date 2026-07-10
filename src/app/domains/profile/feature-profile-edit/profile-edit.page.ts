@@ -1,4 +1,4 @@
-import { Component, effect, OnDestroy, OnInit, signal, Signal, WritableSignal, inject } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
@@ -12,7 +12,7 @@ import { PhenonetUser } from '@core/core.model';
 import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PublicUserService } from '@shared/services/public-user.service';
 import { UserService } from '@shared/services/user.service';
 import { Subscription } from 'rxjs';
@@ -26,7 +26,7 @@ import { ChangePasswordData } from './change-password.model';
   templateUrl: './profile-edit.page.html',
   styleUrls: ['./profile-edit.page.scss'],
   imports: [
-    TranslateModule,
+    TranslatePipe,
     FormsModule,
     ReactiveFormsModule,
     MatFormField,
@@ -112,7 +112,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   }
 
   cancel() {
-    this.languageService.changeLocale(this.initialLanguage);
+    this.userService.changeLanguage('ProfileEditPage.cancel', this.initialLanguage);
     void this.router.navigate(['profile']);
   }
 
@@ -143,7 +143,7 @@ export class ProfileEditComponent extends BaseDetailComponent<PhenonetUser> impl
   }
 
   changeLocale(event: MatSelectChange): void {
-    this.languageService.changeLocale(event.value as string);
+    this.userService.changeLanguage('ProfileEditPage.changeLocale', event.value as string);
   }
 
   isOwner(): boolean {

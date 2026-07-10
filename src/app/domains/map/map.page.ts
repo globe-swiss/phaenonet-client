@@ -10,7 +10,7 @@ import { MatSelect } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
 import { LocalService } from '@core/services/local.service';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { basemaps, MapType } from '@shared/models/basemaps.model';
 import { MapIndividual } from '@shared/models/individual.model';
 import { Species } from '@shared/models/masterdata.model';
@@ -51,7 +51,7 @@ type InfoWindowData = IndividualInfoWindowData | StationInfoWindowData;
     MatSelect,
     MatOption,
     AsyncPipe,
-    TranslateModule,
+    TranslatePipe,
     ShortdatePipe,
     TypeGuardPipe,
     MatFabButton

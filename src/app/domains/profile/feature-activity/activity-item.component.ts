@@ -1,6 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { formatShortDateTime } from '@shared/utils/formatDate';
 import { Activity } from './activity.model';
@@ -9,7 +9,7 @@ import { Activity } from './activity.model';
   selector: 'app-activity-item',
   templateUrl: './activity-item.component.html',
   styleUrls: ['./activity-item.component.scss'],
-  imports: [RouterLink, TranslateModule]
+  imports: [RouterLink, TranslatePipe]
 })
 export class ActivityItemComponent {
   private masterdataService = inject(MasterdataService);

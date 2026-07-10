@@ -10,7 +10,7 @@ import { MatInput } from '@angular/material/input';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IdLike } from '@core/core.model';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { altitudeLimits } from '@shared/models/altitude-limits.model';
 import { Individual } from '@shared/models/individual.model';
 import { Observation } from '@shared/models/observation.model';
@@ -34,7 +34,7 @@ import { PhenophaseDialogComponent } from './phenophase-dialog.component';
     MatInput,
     MatDatepickerInput,
     MatLabel,
-    TranslateModule,
+    TranslatePipe,
     MatDatepicker,
     MatIcon,
     MatSuffix,
