@@ -1,7 +1,7 @@
 import { Component, Input, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
 import { MasterdataService } from '@shared/services/masterdata.service';
 import { formatShortDate } from '@shared/utils/formatDate';
@@ -10,7 +10,7 @@ import { formatShortDate } from '@shared/utils/formatDate';
   selector: 'app-observation-species-item',
   templateUrl: './observation-species-item.component.html',
   styleUrls: ['./observation-species-item.component.scss'],
-  imports: [RouterLink, TranslateModule, MatIcon]
+  imports: [RouterLink, TranslatePipe, MatIcon]
 })
 export class ObservationSpeciesItemComponent {
   private masterdataService = inject(MasterdataService);

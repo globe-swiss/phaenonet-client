@@ -4,21 +4,12 @@ import { MatCard, MatCardActions, MatCardHeader, MatCardSubtitle, MatCardTitle }
 import { RouterLink } from '@angular/router';
 import { LOGIN_URL } from '@app/app.routes';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './logged-out.page.html',
   styleUrls: ['./logged-out.page.scss'],
-  imports: [
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatCardSubtitle,
-    MatCardActions,
-    MatButton,
-    RouterLink,
-    TranslateModule
-  ]
+  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardActions, MatButton, RouterLink, TranslatePipe]
 })
 export class LoggedOutComponent implements OnInit {
   private titleService = inject(TitleService);

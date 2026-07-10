@@ -7,7 +7,7 @@ import { MatInput } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +27,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatCardFooter,
     MatAnchor,
     RouterLink,
-    TranslateModule
+    TranslatePipe
   ]
 })
 export class LoginComponent implements OnInit {

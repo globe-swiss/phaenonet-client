@@ -1,7 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ActivityItemComponent } from './activity-item.component';
@@ -12,7 +11,7 @@ import { ActivityService } from './activity.service';
   selector: 'app-activity',
   templateUrl: './activity.widget.html',
   styleUrls: ['./activity.widget.scss'],
-  imports: [TranslateModule, ActivityItemComponent, MatButton, AsyncPipe]
+  imports: [ActivityItemComponent, MatButton, AsyncPipe]
 })
 export class ActivityComponent implements OnInit {
   private activityService = inject(ActivityService);

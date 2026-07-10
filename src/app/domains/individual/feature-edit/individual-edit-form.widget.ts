@@ -11,7 +11,7 @@ import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import {
   Description,
@@ -46,7 +46,7 @@ import { GeoposService } from '../shared/geopos.service';
     MatSuffix,
     MatButton,
     AsyncPipe,
-    TranslateModule
+    TranslatePipe
   ]
 })
 export class IndividualEditViewComponent implements OnInit, OnDestroy {

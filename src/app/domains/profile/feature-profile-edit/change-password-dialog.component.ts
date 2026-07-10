@@ -13,7 +13,7 @@ import {
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { equalValidation } from '@shared/utils/validation';
 import { ChangePasswordData } from './change-password.model';
 
@@ -34,7 +34,7 @@ import { ChangePasswordData } from './change-password.model';
     MatInput,
     MatError,
     MatDialogClose,
-    TranslateModule
+    TranslatePipe
   ]
 })
 export class ChangePasswordDialogComponent implements OnInit {

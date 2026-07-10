@@ -7,7 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 import { LOGGED_OUT_URL } from '@app/app.routes';
 import { AlertService, Level } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PublicUser } from '@shared/models/public-user.model';
 import { UserService } from '@shared/services/user.service';
 import { CopyClipboardDirective } from '@shared/utils/copy-clipboard.directive';
@@ -18,16 +18,7 @@ import { filter, map } from 'rxjs/operators';
   selector: 'app-profile-details',
   templateUrl: './profile-details.widget.html',
   styleUrls: ['./profile-details.widget.scss'],
-  imports: [
-    TranslateModule,
-    MatIcon,
-    MatTooltip,
-    MatIconButton,
-    CopyClipboardDirective,
-    MatButton,
-    RouterLink,
-    AsyncPipe
-  ]
+  imports: [TranslatePipe, MatIcon, MatTooltip, MatIconButton, CopyClipboardDirective, MatButton, RouterLink, AsyncPipe]
 })
 export class ProfileDetailsComponent implements OnInit {
   protected authService = inject(AuthService);

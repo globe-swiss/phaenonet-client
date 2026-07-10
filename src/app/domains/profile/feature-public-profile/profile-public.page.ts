@@ -5,7 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { AlertService, Level } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { UserSubscriptionButtonComponent } from '@shared/components/feature-subscription/user-subscription.widget';
 import { PublicUser } from '@shared/models/public-user.model';
 import { PublicUserService } from '@shared/services/public-user.service';
@@ -24,7 +24,7 @@ import { map } from 'rxjs/operators';
     CopyClipboardDirective,
     UserSubscriptionButtonComponent,
     AsyncPipe,
-    TranslateModule
+    TranslatePipe
   ]
 })
 export class ProfilePublicComponent implements OnInit {

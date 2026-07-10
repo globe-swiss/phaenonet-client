@@ -18,7 +18,7 @@ export class LanguageService {
   init(): void {
     this.translateService.addLangs(['de-CH', 'fr-CH', 'it-CH']);
     const currentLang = this.determineCurrentLang();
-    this.translateService.setDefaultLang('de-CH');
+    this.translateService.setFallbackLang('de-CH');
     this.changeLocale(currentLang);
   }
 

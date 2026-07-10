@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
 import { ObservationService } from '@app/domains/individual/shared/observation.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import { Observation } from '@shared/models/observation.model';
 import { DailySensorData } from '@shared/models/sensors';
@@ -19,8 +19,7 @@ import { mergeMap } from 'rxjs/operators';
 @Component({
   selector: 'app-individual-header-graph',
   templateUrl: './individual-header-graph.widget.html',
-  styleUrls: ['./individual-header-graph.widget.scss'],
-  imports: [TranslateModule]
+  styleUrls: ['./individual-header-graph.widget.scss']
 })
 export class IndividualHeaderGraphComponent implements OnInit, OnChanges, OnDestroy {
   private individualService = inject(IndividualService);

@@ -8,7 +8,7 @@ export class LocaleInterceptor implements HttpInterceptor {
   private translateService = inject(TranslateService);
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const locale = this.translateService.currentLang || this.translateService.defaultLang;
+    const locale = this.translateService.getCurrentLang() || this.translateService.getFallbackLang();
 
     const headers = request.headers.set('X-Locale', locale);
 

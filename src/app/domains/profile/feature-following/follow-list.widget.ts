@@ -2,7 +2,6 @@ import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
 import { PublicUser } from '@shared/models/public-user.model';
 import { IndividualService } from '@shared/services/individual.service'; // fixme
@@ -15,7 +14,7 @@ import { UserItemComponent } from './user-item.component';
   selector: 'app-follow-list',
   templateUrl: './follow-list.widget.html',
   styleUrls: ['./follow-list.widget.scss'],
-  imports: [TranslateModule, UserItemComponent, ObservationItemComponent, MatButton, RouterLink, AsyncPipe]
+  imports: [UserItemComponent, ObservationItemComponent, MatButton, RouterLink, AsyncPipe]
 })
 export class FollowListComponent implements OnInit {
   private individualService = inject(IndividualService);

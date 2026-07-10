@@ -8,7 +8,7 @@ import { MatInput } from '@angular/material/input';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { BaseDetailComponent } from '@core/components/base-detail.component';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Individual } from '@shared/models/individual.model';
 import { Comment, Phenophase, PhenophaseGroup } from '@shared/models/masterdata.model';
 import { Observation } from '@shared/models/observation.model';
@@ -25,7 +25,7 @@ import { ObservationService } from './shared/observation.service';
   styleUrls: ['./station.page.scss'],
   imports: [
     IndividualHeaderComponent,
-    TranslateModule,
+    TranslatePipe,
     MatSelect,
     MatOption,
     MatFormField,

@@ -6,7 +6,7 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { AuthService } from '@core/services/auth.service';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './reset-password.page.html',
@@ -23,7 +23,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatInput,
     MatButton,
     MatCardSubtitle,
-    TranslateModule
+    TranslatePipe
   ]
 })
 export class ResetPasswordComponent implements OnInit {

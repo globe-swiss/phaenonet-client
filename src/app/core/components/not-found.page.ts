@@ -3,22 +3,13 @@ import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-not-found',
   templateUrl: './not-found.page.html',
   styleUrls: ['./not-found.page.scss'],
-  imports: [
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatCardSubtitle,
-    MatCardActions,
-    MatButton,
-    RouterLink,
-    TranslateModule
-  ]
+  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardActions, MatButton, RouterLink, TranslatePipe]
 })
 export class NotFoundComponent implements OnInit {
   private titleService = inject(TitleService);

@@ -19,7 +19,7 @@ import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field'
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observation } from '@shared/models/observation.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -33,7 +33,7 @@ import { PhenophaseObservation } from '../shared/individual.model';
     MatButton,
     MatIcon,
     MatDialogTitle,
-    TranslateModule,
+    TranslatePipe,
     CdkScrollable,
     MatDialogContent,
     MatFormField,

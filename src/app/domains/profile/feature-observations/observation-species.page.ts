@@ -6,7 +6,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
 import { IndividualService } from '@shared/services/individual.service'; //fixme
 import { MasterdataService } from '@shared/services/masterdata.service';
@@ -24,7 +24,7 @@ class Data {
 @Component({
   templateUrl: './observation-species.page.html',
   styleUrls: ['./observation-species.page.scss'],
-  imports: [RouterLink, MatIcon, MatSelect, MatOption, ObservationItemComponent, AsyncPipe, TranslateModule]
+  imports: [RouterLink, MatIcon, MatSelect, MatOption, ObservationItemComponent, AsyncPipe, TranslatePipe]
 })
 export class ProfileSpeciesComponent implements OnInit {
   private titleService = inject(TitleService);

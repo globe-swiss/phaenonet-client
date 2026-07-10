@@ -7,7 +7,7 @@ import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { IndividualPhenophase } from '@shared/models/individual-phenophase.model';
 import { IndividualService } from '@shared/services/individual.service'; // fixme
 import { MasterdataService } from '@shared/services/masterdata.service';
@@ -22,7 +22,7 @@ import { ObservationSpeciesItemComponent } from './observation-species-item.comp
   templateUrl: './observation-list.widget.html',
   styleUrls: ['./observation-list.widget.scss'],
   imports: [
-    TranslateModule,
+    TranslatePipe,
     MatSelect,
     MatOption,
     ObservationSpeciesItemComponent,

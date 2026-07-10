@@ -12,7 +12,7 @@ import { PhenonetUser } from '@core/core.model';
 import { AuthService } from '@core/services/auth.service';
 import { LanguageService } from '@core/services/language.service';
 import { TitleService } from '@core/services/title.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PublicUserService } from '@shared/services/public-user.service';
 import { UserService } from '@shared/services/user.service';
 import { Subscription } from 'rxjs';
@@ -26,7 +26,7 @@ import { ChangePasswordData } from './change-password.model';
   templateUrl: './profile-edit.page.html',
   styleUrls: ['./profile-edit.page.scss'],
   imports: [
-    TranslateModule,
+    TranslatePipe,
     FormsModule,
     ReactiveFormsModule,
     MatFormField,
