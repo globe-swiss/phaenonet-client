@@ -220,8 +220,8 @@ importers:
         specifier: ^11.7.5
         version: 11.8.0
       mochawesome:
-        specifier: ^7.1.4
-        version: 7.1.4(mocha@11.8.0)
+        specifier: ^8.0.0
+        version: 8.0.1(mocha@11.8.0)
       playwright:
         specifier: ~1.51.1
         version: 1.51.1
@@ -5179,9 +5179,6 @@ packages:
   lodash.isboolean@3.0.3:
     resolution: {integrity: sha512-Bz5mupy2SVbPHURB98VAcw+aHh4vRV5IPNhILUCsOzRmsTmSQ17jIuqopAentWoehktxGd9e/hbIXq980/1QJg==}
 
-  lodash.isempty@4.4.0:
-    resolution: {integrity: sha512-oKMuF3xEeqDltrGMfDxAPGIVMSSRv8tbRSODbrs4KGsRRLEhrW8N8Rd4DRgB2+621hY8A8XwwrTVhXWpxFvMzg==}
-
   lodash.isfunction@3.0.9:
     resolution: {integrity: sha512-AirXNj15uRIMMPihnkInB4i3NHeb4iBtNg9WRWuK2o31S+ePwwNmDPaTL3o7dTJ+VXNZim7rFs4rxN4YU1oUJw==}
 
@@ -5193,9 +5190,6 @@ packages:
 
   lodash.isobject@2.4.1:
     resolution: {integrity: sha512-sTebg2a1PoicYEZXD5PBdQcTlIJ6hUslrlWr7iV0O7n+i4596s2NQ9I5CaZ5FbXSfya/9WQsrYLANUJv9paYVA==}
-
-  lodash.isobject@3.0.2:
-    resolution: {integrity: sha512-3/Qptq2vr7WeJbB4KHUSKlq8Pl7ASXi3UG6CMbBm8WRtXi8+GHm7mKaU3urfpSEzWe2wCIChs6/sdocUsTKJiA==}
 
   lodash.isplainobject@4.0.6:
     resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
@@ -5636,10 +5630,11 @@ packages:
     resolution: {integrity: sha512-iB6iyOUMyMr8XOUYTNfrqYuZQLZka3K/Gr2GPc6CHPe7t2ZhxxfcoVkpMLOtyDKnWbY1zgu1/7VNRsigrvKnOQ==}
     hasBin: true
 
-  mochawesome@7.1.4:
-    resolution: {integrity: sha512-fucGSh8643QkSvNRFOaJ3+kfjF0FhA/YtvDncnRAG0A4oCtAzHIFkt/+SgsWil1uwoeT+Nu5fsAnrKkFtnPcZQ==}
+  mochawesome@8.0.1:
+    resolution: {integrity: sha512-td4a9zw4KmPH6Z/IjA1JljEH4Ves860n8+xm35JfVmqqeHLvDpnU8WK9XSUCFZiY/lB+4wBdAMojiHexqvLtSQ==}
+    engines: {node: '>=22'}
     peerDependencies:
-      mocha: '>=7'
+      mocha: '>=8'
 
   moment-timezone@0.6.3:
     resolution: {integrity: sha512-pVEPA/HCFHHbwJ130ywnzYuZpkEGcP6Daa/OwNebpA18MybeFHmQilAGGovXgWijQ8vQtmud9jZrziUBgsykfg==}
@@ -7234,11 +7229,6 @@ packages:
 
   uuid@3.3.2:
     resolution: {integrity: sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==}
-    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
-    hasBin: true
-
-  uuid@8.3.2:
-    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
@@ -13270,8 +13260,6 @@ snapshots:
 
   lodash.isboolean@3.0.3: {}
 
-  lodash.isempty@4.4.0: {}
-
   lodash.isfunction@3.0.9: {}
 
   lodash.isinteger@4.0.4: {}
@@ -13281,8 +13269,6 @@ snapshots:
   lodash.isobject@2.4.1:
     dependencies:
       lodash._objecttypes: 2.4.1
-
-  lodash.isobject@3.0.2: {}
 
   lodash.isplainobject@4.0.6: {}
 
@@ -14000,19 +13986,12 @@ snapshots:
       tcomb-validation: 3.4.1
       yargs: 17.7.3
 
-  mochawesome@7.1.4(mocha@11.8.0):
+  mochawesome@8.0.1(mocha@11.8.0):
     dependencies:
-      chalk: 4.1.2
       diff: 5.2.2
       json-stringify-safe: 5.0.1
-      lodash.isempty: 4.4.0
-      lodash.isfunction: 3.0.9
-      lodash.isobject: 3.0.2
-      lodash.isstring: 4.0.1
       mocha: 11.8.0
       mochawesome-report-generator: 6.3.2
-      strip-ansi: 6.0.1
-      uuid: 8.3.2
 
   moment-timezone@0.6.3:
     dependencies:
@@ -15965,8 +15944,6 @@ snapshots:
   uuid@14.0.2: {}
 
   uuid@3.3.2: {}
-
-  uuid@8.3.2: {}
 
   uuid@9.0.1: {}
 
