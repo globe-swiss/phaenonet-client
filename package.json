@@ -75,10 +75,10 @@
   },
   "engines": {
     "node": "=22",
-    "pnpm": "10.24.0"
+    "pnpm": "12.4.0"
   },
   "name": "phaenonet",
-  "packageManager": "pnpm@10.24.0",
+  "packageManager": "pnpm@12.4.0",
   "pnpm": {
     "ignoredBuiltDependencies": [
       "@firebase/util",
