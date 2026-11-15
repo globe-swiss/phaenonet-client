@@ -115,7 +115,7 @@ jobs:
       - name: Build
         run: pnpm exec ng build ${{ env.PROJECT == 'phaenonet' && '--c=production' || '' }}
       - name: Upload Artifact
-        uses: ./.github/actions/upload-zip-artifact
+        uses: $/.github/actions/upload-zip-artifact
         with:
           name: ${{ env.PROJECT }}
           path: dist
@@ -138,7 +138,7 @@ jobs:
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - name: Download Artifact
-        uses: ./.github/actions/download-zip-artifact
+        uses: $/.github/actions/download-zip-artifact
         with:
           name: ${{ env.PROJECT }}
           node_version: ${{ env.NODE_VERSION }}
@@ -189,7 +189,7 @@ jobs:
           ssh-key: ${{ secrets.SECURITY_REPO_DEPLOY_KEY }}
           persist-credentials: false
       - name: Download Artifact
-        uses: ./.github/actions/download-zip-artifact
+        uses: $/.github/actions/download-zip-artifact
         with:
           name: ${{ env.PROJECT }}
           node_version: ${{ env.NODE_VERSION }}

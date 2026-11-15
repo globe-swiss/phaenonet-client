@@ -43,7 +43,7 @@ jobs:
       - name: Build test version
         run: pnpm exec ng build -c local
       - name: Upload Build Artifact
-        uses: ./.github/actions/upload-zip-artifact
+        uses: $/.github/actions/upload-zip-artifact
         with:
           name: dist-pr-build
           path: dist
@@ -68,17 +68,17 @@ jobs:
       - name: Set environment variables
         run: cat .env >> $GITHUB_ENV
       - name: Download Build Artifact
-        uses: ./.github/actions/download-zip-artifact
+        uses: $/.github/actions/download-zip-artifact
         with:
           name: dist-pr-build
           node_version: ${{ env.NODE_VERSION }}
       - name: Deploy Preview Channel
-        uses: ./.github/actions/deploy-hosting-action
+        uses: $/.github/actions/deploy-hosting-action
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          project_Id: phaenonet-test
+          project_id: phaenonet-test
           expires: 30d
   changes:
     permissions:
@@ -127,12 +127,12 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - name: Download Build Artifact
-        uses: ./.github/actions/download-zip-artifact
+        uses: $/.github/actions/download-zip-artifact
         with:
           name: dist-pr-build
           node_version: ${{ env.NODE_VERSION }}
       - name: Start server
-        uses: ./.github/actions/angular-http-server-action
+        uses: $/.github/actions/angular-http-server-action
         with:
           path: ./dist/phaenonet/browser
           port: 4200
@@ -143,7 +143,7 @@ jobs:
         working-directory: e2e
         run: pnpm exec codeceptjs run --reporter mochawesome --grep "@flaky" --invert
       - name: Upload E2E-Test Artifact
-        uses: ./.github/actions/upload-zip-artifact
+        uses: $/.github/actions/upload-zip-artifact
         with:
           name: e2e-test-report
           path: e2e/output
@@ -151,12 +151,12 @@ jobs:
           node_version: ${{ env.NODE_VERSION }}
         if: always()
       - name: Deploy E2E-Test Report
-        uses: ./.github/actions/deploy-hosting-action
+        uses: $/.github/actions/deploy-hosting-action
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          project_Id: phaenonet-test
+          project_id: phaenonet-test
           entry_point: e2e/
           channel_id: ${{ github.ref == 'refs/heads/master' && 'live' || null }}
           expires: 30d
