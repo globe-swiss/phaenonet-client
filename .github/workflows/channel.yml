@@ -52,11 +52,11 @@ jobs:
       - name: Build
         run: pnpm exec ng build
       - name: Deploy Preview Channel
-        uses: ./.github/actions/deploy-hosting-action
+        uses: $/.github/actions/deploy-hosting-action
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          project_Id: ${{ env.PROJECT }}
+          project_id: ${{ env.PROJECT }}
           channel_id: ${{ github.ref }}
           expires: ${{ env.EXP }}
